@@ -82,7 +82,7 @@
 }
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
-    //[self.navigationController setToolbarHidden:YES animated:YES];
+    ////[self.navigationController setToolbarHidden:YES animated:YES];
 }
 
 - (void)EnterShipping {
