@@ -12,6 +12,7 @@
 
 @interface ShoppingCartTVC (){
     int cartTotal;
+    BOOL edited;
 }
 @property (nonatomic, retain) UIImagePickerController *imagePicker;
 @property (nonatomic, retain) NSIndexPath *editingImageIndexPath;
@@ -86,114 +87,119 @@
 }
 
 - (void)EnterShipping {
-    BOOL edited = false;
-    NSInteger i = 0;
-    NSMutableArray *newShoppingCart = [[NSMutableArray alloc] init];
-    //NSLog(@"%@",[self sharedAppDelegate].shoppingCart);
-    for (NSArray *arr in [self sharedAppDelegate].shoppingCart) {
-
-        NSString *prod = [arr objectAtIndex:0];
-
-        NSString *quan = [arr objectAtIndex:1];
-
-        NSString *price= [arr objectAtIndex:2];
-//        int priceInt = [price intValue];
-//        int quanInt = [quan intValue];
-//        int total = priceInt * quanInt;
-        NSString *alumOpt = [arr objectAtIndex:4];
-        NSString *retouch = [arr objectAtIndex:3];
-        NSString *instruct = [arr objectAtIndex:5];
-        NSString *imgURL = [arr objectAtIndex:6];
-        NSString *imgTypeFrame = [arr objectAtIndex:7];
-        NSIndexPath *inPath = [NSIndexPath indexPathForRow:i inSection:0];
-        CartTVCCell *cell = [self.tableView cellForRowAtIndexPath:inPath];
-        if (![prod isEqualToString:cell.product_textField.text]) {
-            if (!edited) {
-                edited = true;
+    if (edited == YES) {
+        NSInteger i = 0;
+        NSMutableArray *newShoppingCart = [[NSMutableArray alloc] init];
+        //NSLog(@"%@",[self sharedAppDelegate].shoppingCart);
+        for (NSArray *arr in [self sharedAppDelegate].shoppingCart) {
+            
+            NSString *prod = [arr objectAtIndex:0];
+            
+            NSString *quan = [arr objectAtIndex:1];
+            
+            NSString *price= [arr objectAtIndex:2];
+            //        int priceInt = [price intValue];
+            //        int quanInt = [quan intValue];
+            //        int total = priceInt * quanInt;
+            NSString *alumOpt = [arr objectAtIndex:4];
+            NSString *retouch = [arr objectAtIndex:3];
+            NSString *instruct = [arr objectAtIndex:5];
+            NSString *imgURL = [arr objectAtIndex:6];
+            NSString *imgTypeFrame = [arr objectAtIndex:7];
+            NSIndexPath *inPath = [NSIndexPath indexPathForRow:i inSection:0];
+            CartTVCCell *cell = [self.tableView cellForRowAtIndexPath:inPath];
+            if (![prod isEqualToString:cell.product.text]) {
+                if (!edited) {
+                    edited = true;
+                }
+                prod = cell.product_textField.text;
             }
-            prod = cell.product_textField.text;
-        }
-        if (![alumOpt isEqualToString:cell.aluminum_textField.text]) {
-            if (!edited) {
-                edited = true;
+            if (![alumOpt isEqualToString:cell.aluminum_Outlet.text]) {
+                if (!edited) {
+                    edited = true;
+                }
+                alumOpt = cell.aluminum_textField.text;
             }
-            alumOpt = cell.aluminum_textField.text;
-        }
-        if (![retouch isEqualToString:cell.retouch_textField.text]) {
-            if (!edited) {
-                edited = true;
+            if (![retouch isEqualToString:cell.retouch_Outlet.text]) {
+                if (!edited) {
+                    edited = true;
+                }
+                retouch = cell.retouch_textField.text;
             }
-            retouch = cell.retouch_textField.text;
-        }
-        if (![instruct isEqualToString:cell.instructions_TextView.text]) {
-            if (!edited) {
-                edited = true;
+            if (![instruct isEqualToString:cell.instructions_TextView.text]) {
+                if (!edited) {
+                    edited = true;
+                }
+                instruct = cell.instructions_TextView.text;
             }
-            instruct = cell.instructions_TextView.text;
-        }
-        if (![quan isEqualToString:cell.quantity_TextField.text]) {
-            if (!edited) {
-                edited = true;
+            if (instruct == nil) {
+                instruct = @"";
             }
-            quan = cell.quantity_TextField.text;
-        }
-        if (![price isEqualToString:cell.total_Price.text]) {
-            if (!edited) {
-                edited = true;
+            if (![quan isEqualToString:cell.quantity_TextField.text]) {
+                if (!edited) {
+                    edited = true;
+                }
+                quan = cell.quantity_TextField.text;
             }
-            price = cell.total_Price.text;
-        }
-        //NSString *imgString1 = [UIImageJPEGRepresentation(cell.imgView.image, 0.0f) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
-        if (![imgURL isEqualToString:cell.imgViewURL]) {
-            if (!edited) {
-                edited = true;
+            if (![price isEqualToString:cell.total_Price.text]) {
+                if (!edited) {
+                    edited = true;
+                }
+                price = cell.total_Price.text;
             }
-            imgURL = cell.imgViewURL;
-        }
-        if (![imgTypeFrame isEqualToString:cell.imgType]) {
-            if (!edited) {
-                edited = true;
+            //NSString *imgString1 = [UIImageJPEGRepresentation(cell.imgView.image, 0.0f) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+            if (![imgURL isEqualToString:cell.imgViewURL]) {
+                if (!edited) {
+                    edited = true;
+                }
+                imgURL = cell.imgViewURL;
             }
-            if (cell.imgView.frame.size.width < cell.imgView.frame.size.height) {
-                NSLog(@"<");
-                imgTypeFrame = @"<";
+            if (![imgTypeFrame isEqualToString:cell.imgType]) {
+                if (!edited) {
+                    edited = true;
+                }
+                if (cell.imgView.frame.size.width < cell.imgView.frame.size.height) {
+                    NSLog(@"<");
+                    imgTypeFrame = @"<";
+                }
+                if (cell.imgView.frame.size.width > cell.imgView.frame.size.height) {
+                    NSLog(@">");
+                    imgTypeFrame = @">";
+                }
+                if (cell.imgView.frame.size.width == cell.imgView.frame.size.height) {
+                    NSLog(@"=");
+                    imgTypeFrame = @"=";
+                }
             }
-            if (cell.imgView.frame.size.width > cell.imgView.frame.size.height) {
-                NSLog(@">");
-                imgTypeFrame = @">";
+            
+            
+            //        NSArray *array = @[self.Product_Outlet.text,
+            //                           self.Quantity_TextField.text,
+            //                           price,
+            //                           self.Retouching_TextField.text,
+            //                           self.For_Aluminum_TextField.text,
+            //                           self.textView.text,
+            //                           imgString
+            //                           ];
+            
+            //        [newShoppingCart addObject:newShopItem];
+            
+            i++;
+            if (edited) {
+                NSArray *newShopItem = @[prod,
+                                         quan,
+                                         price,
+                                         retouch,
+                                         alumOpt,
+                                         instruct,
+                                         imgURL,
+                                         imgTypeFrame];
+                
+                [[self sharedAppDelegate].shoppingCart replaceObjectAtIndex:inPath.row withObject:newShopItem];
             }
-            if (cell.imgView.frame.size.width == cell.imgView.frame.size.height) {
-                NSLog(@"=");
-                imgTypeFrame = @"=";
-            }
-        }
-        
-
-//        NSArray *array = @[self.Product_Outlet.text,
-//                           self.Quantity_TextField.text,
-//                           price,
-//                           self.Retouching_TextField.text,
-//                           self.For_Aluminum_TextField.text,
-//                           self.textView.text,
-//                           imgString
-//                           ];
-
-//        [newShoppingCart addObject:newShopItem];
-        
-        i++;
-        if (edited) {
-            NSArray *newShopItem = @[prod,
-                                     quan,
-                                     price,
-                                     retouch,
-                                     alumOpt,
-                                     instruct,
-                                     imgURL,
-                                     imgTypeFrame];
-
-            [[self sharedAppDelegate].shoppingCart replaceObjectAtIndex:inPath.row withObject:newShopItem];
         }
     }
+
 //    if (edited) {
 //        //NSLog(@"%@",[self sharedAppDelegate].shoppingCart);
 //        [self sharedAppDelegate].shoppingCart = nil;
@@ -316,16 +322,7 @@
     cell.quantity_TextField.text = [array objectAtIndex:1];
     cell.retouch_Outlet.text = [array objectAtIndex:3];
     cell.aluminum_Outlet.text = [array objectAtIndex:4];
-    cell.instructions_TextView.layer.borderColor = [UIColor lightGrayColor].CGColor; // set color as you want.
-    cell.instructions_TextView.layer.borderWidth = 1.0; // set borderWidth as you want.
-    cell.instructions_TextView.editable = NO;
-    if ([[array objectAtIndex:5] isEqualToString:@""]) {
-        
-        cell.instructions_TextView.text = @"No Instructions";
-    }
-    else{
-        cell.instructions_TextView.text = [array objectAtIndex:5];
-    }
+
     
     int price = [[array objectAtIndex:2] intValue];
     int quan = [[array objectAtIndex:1] intValue];
@@ -345,7 +342,8 @@
     
         ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
     NSArray *cartArray = [[self sharedAppDelegate].shoppingCart objectAtIndex:indexPath.row];
-    [library assetForURL:[cartArray objectAtIndex:6]
+    NSURL *imgURL = [NSURL URLWithString:[cartArray objectAtIndex:6]];
+    [library assetForURL:imgURL
              resultBlock:^(ALAsset *asset) {
                  UIImage *thumbImg = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
                  //UIImage *fullImg = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
@@ -380,12 +378,11 @@
                      NSLog(@"=");
                      cell.imgType = @"=";
                  }
-
                  cell.imgViewURL = [cartArray objectAtIndex:6];
-                 [cell.imgView setFrame:CGRectMake(10, 29, thumbImg.size.width/3, thumbImg.size.height/3)];
-                 cell.imgView.layer.cornerRadius = 6.0; // set cornerRadius as you want.
+                 cell.img_View = [[UIImageView alloc] initWithFrame:CGRectMake(10, 29, thumbImg.size.width/3, thumbImg.size.height/3)];
+                 cell.img_View.layer.cornerRadius = 6.0; // set cornerRadius as you want.
                  //[cell.imgView setCenter:CGPointMake(cell.imgView.frame.origin.x, cell.bounds.size.height/3)];
-                 [cell.imgView setImage:thumbImg];
+                 [cell.img_View setImage:thumbImg];
 //                 UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
 //                 
 //                 
@@ -394,31 +391,46 @@
 //                 cell.imgView.userInteractionEnabled = YES;
 //                 [cell.imgView addGestureRecognizer:tapGesture];
 
-                 [cell.contentView addSubview:cell.imgView];
+                 [cell.contentView addSubview:cell.img_View];
                  
                  NSLog(@"Got to here %@",thumbImg);
              }
      
             failureBlock:^(NSError *error){ NSLog(@"operation was not successfull!"); } ];
     
-    int instuctionCenterY = cell.imgView.frame.origin.x + cell.imgView.frame.size.height + 30;
-    [cell.instructions_TextView setFrame:CGRectMake(0, instuctionCenterY, cell.frame.size.width - 38, 55)];
-    [cell.instructions_TextView setCenter:CGPointMake(cell.bounds.size.width/2, instuctionCenterY + cell.instructions_TextView.bounds.size.height/2)];
+    int instuctionCenterY = cell.imgView.frame.origin.x + cell.imgView.frame.size.height + cell.instructionsTextView.bounds.size.height/2 + 30;
+    cell.instructions_TextView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, cell.instructionsTextView.frame.size.width, cell.instructionsTextView.frame.size.height)];
+
+    [cell.instructions_TextView setCenter:CGPointMake(cell.bounds.size.width/2, instuctionCenterY )];
     cell.instructions_TextView.inputAccessoryView = self.keyboardDoneButtonView;
     cell.instructions_TextView.tag = indexPath.row;
     cell.instructions_TextView.layer.borderColor = [UIColor lightGrayColor].CGColor; // set color as you want.
     cell.instructions_TextView.layer.borderWidth = 1.0; // set borderWidth as you want.
-    [cell.instructionsOutlet setFrame:CGRectMake(cell.frame.size.width - 120 , cell.instructions_TextView.frame.origin.y - 21, 91, 21)];
-    [cell.instructionsOutlet setTextColor:[UIColor blackColor]];
-    cell.instructionsOutlet.text = @"Instructions";
+
+    cell.instructions_TextView.editable = NO;
+    cell.instructions_TextView.selectable = NO;
+
+    if ([[array objectAtIndex:5] isEqualToString:@""]) {
+        
+        cell.instructions_TextView.text = @"No Instructions";
+    }
+    else{
+        cell.instructions_TextView.text = [array objectAtIndex:5];
+    }
+
+    cell.instructions_Outlet = [[UILabel alloc] initWithFrame:CGRectMake(cell.frame.size.width - 120 , cell.instructions_TextView.frame.origin.y - 25, 91, 21)];
+    [cell.instructions_Outlet setTextColor:[UIColor blackColor]];
+    cell.instructions_Outlet.text = @"Instructions";
     
-    [cell.contentView addSubview:cell.instructionsOutlet];
+    [cell.contentView addSubview:cell.instructions_Outlet];
     [cell.contentView addSubview:cell.instructions_TextView];
     
     cell.quantity_TextField.inputAccessoryView = self.keyboardDoneButtonView;
     cell.quantity_TextField.tag = indexPath.row;
-
+    int aHeight = cell.instructions_TextView.frame.origin.y + cell.instructions_TextView.frame.size.height + 10;
+    NSLog(@"%i",aHeight);
         [self.cellArray addObject:cell];
+    
 //    if ([self sharedAppDelegate].shoppingCart.count == indexPath.row+1) {
 //        self.total_Outlet.title = [NSString stringWithFormat:@"%i",cartTotal];
 //    }
@@ -596,7 +608,7 @@ NSArray *currentItem;
     
     self.editingImageIndexPath = indexPath;
     currentItem = [[self sharedAppDelegate].shoppingCart objectAtIndex:indexPath.row];
-
+    edited = YES;
     [self performSegueWithIdentifier:@"EditCartItem" sender:self];
     NSLog(@"");
 }
@@ -618,6 +630,8 @@ NSArray *currentItem;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     CGFloat x = 0;
     //NSLog(@"%@",self.cellArray);
+//    CartTVCCell *cell = [self.cellArray objectAtIndex:indexPath.row];
+//    x = cell.instructions_TextView.frame.origin.y + cell.instructions_TextView.frame.size.height + 10;
     NSArray *cart = [[self sharedAppDelegate].shoppingCart objectAtIndex:indexPath.row];
     if ([[cart objectAtIndex:7] isEqualToString:@"<"]) {
         x = 221;
@@ -628,7 +642,7 @@ NSArray *currentItem;
     if ([[cart objectAtIndex:7] isEqualToString:@"="]) {
         x = 205;
     }
-    return x;
+    return 233;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath

@@ -176,8 +176,8 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
 //        }
         
         ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-
-            [library assetForURL:[self.currentItemToEdit objectAtIndex:6]
+        NSURL *newImgURL = [NSURL URLWithString:[self.currentItemToEdit objectAtIndex:6]];
+            [library assetForURL:newImgURL
                      resultBlock:^(ALAsset *asset) {
                          UIImage *thumbImg = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
                          UIImage *fullImg = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
@@ -646,7 +646,7 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
         self.selectedImageURL = nil;
     }
 
-    self.selectedImageURL = [info objectForKey:UIImagePickerControllerReferenceURL];
+    self.selectedImageURL = [[info objectForKey:UIImagePickerControllerReferenceURL] absoluteString];
     self.image = [info objectForKey:UIImagePickerControllerOriginalImage];
     [self.imagePicker dismissViewControllerAnimated:YES completion:nil];
     self.imgView = [[UIImageView alloc] initWithFrame:CGRectMake(146, 40, self.image.size.width/22, self.image.size.height/22)];
