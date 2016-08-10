@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ProductCategoryCell.h"
+#import "ProductCollectionViewController.h"
 
 @interface ProductCategorySelectionCollection : UICollectionViewController
 
