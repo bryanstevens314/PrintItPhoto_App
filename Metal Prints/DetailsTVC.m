@@ -649,23 +649,25 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
     self.selectedImageURL = [[info objectForKey:UIImagePickerControllerReferenceURL] absoluteString];
     self.image = [info objectForKey:UIImagePickerControllerOriginalImage];
     [self.imagePicker dismissViewControllerAnimated:YES completion:nil];
-    self.imgView = [[UIImageView alloc] initWithFrame:CGRectMake(146, 40, self.image.size.width/22, self.image.size.height/22)];
-    [self.imgView setCenter:CGPointMake(self.cell.bounds.size.width/2, self.cell.bounds.size.height/2)];
+    //self.imgView = [[UIImageView alloc] initWithFrame:CGRectMake(146, 40, self.image.size.width/22, self.image.size.height/22)];
+    
     self.imgView.layer.cornerRadius = 6.0; // set cornerRadius as you want.
-//    if (self.image.size.width < self.image.size.height) {
-//        NSLog(@"<");
-//        self.imgView = [[UIImageView alloc] initWithFrame:CGRectMake(146, 40, 93.75, 125)];
-//    }
-//    if (self.image.size.width > self.image.size.height) {
-//        NSLog(@">");
-//        self.imgView = [[UIImageView alloc] initWithFrame:CGRectMake(108, 44, 158, 118.5)];
-//    }
-//    if (self.image.size.width == self.image.size.height) {
-//        NSLog(@">");
-//        self.imgView = [[UIImageView alloc] initWithFrame:CGRectMake(125, 41, 124, 124)];
-//    }
+    if (self.image.size.width < self.image.size.height) {
+        NSLog(@"Portrait");
+        self.imgView = [[UIImageView alloc] initWithFrame:CGRectMake(146, 40, 93.75, 125)];
+    }
+    if (self.image.size.width > self.image.size.height) {
+
+        NSLog(@"Landscape");
+        self.imgView = [[UIImageView alloc] initWithFrame:CGRectMake(108, 44, 158, 118.5)];
+        
+    }
+    if (self.image.size.width == self.image.size.height) {
+        NSLog(@"Square");
+        self.imgView = [[UIImageView alloc] initWithFrame:CGRectMake(125, 41, 124, 124)];
+    }
     
-    
+    [self.imgView setCenter:CGPointMake(self.cell.bounds.size.width/2, self.cell.bounds.size.height/2)];
 //    // Get size of current image
 //    CGSize size = [self.image size];
 //    

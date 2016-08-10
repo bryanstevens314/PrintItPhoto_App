@@ -365,28 +365,38 @@
 //                     setNewHeight = thumbImg.size.height/3;
 //                 }
                  
-
-                 if (thumbImg.size.width < thumbImg.size.height) {
+                 float division = thumbImg.size.width/thumbImg.size.height;
+                 NSLog(@"Image ratio %f",division);
+                 if (division == 0.752941) {
                      NSLog(@"portrait");
                      cell.imgType = @"<";
                      cell.img_View = [[UIImageView alloc] initWithFrame:CGRectMake(10, 32, 102, 136)];
+
                  }
-                 if (thumbImg.size.width > thumbImg.size.height) {
+                 if (division == 1.328125) {
                      NSLog(@"landscape");
                      cell.imgType = @">";
                      cell.img_View = [[UIImageView alloc] initWithFrame:CGRectMake(10, 32, 102, 76.5)];
                      [cell.img_View setCenter:CGPointMake(cell.img_View.frame.size.width/2 + cell.img_View.frame.origin.x , cell.frame.size.height/2 )];
+
                  }
-                 if (thumbImg.size.width == thumbImg.size.height) {
+                 if (division == 1) {
                      NSLog(@"square");
                      cell.imgType = @"=";
                      cell.img_View = [[UIImageView alloc] initWithFrame:CGRectMake(10, 32, 102, 102)];
 
+
+                 }
+                 if (division == 0.561404) {
+                     NSLog(@"screenshot");
+                     cell.imgType = @"=";
+                     
+                     cell.img_View = [[UIImageView alloc] initWithFrame:CGRectMake(10, 32, 102, 102)];
                  }
                  cell.imgViewURL = [cartArray objectAtIndex:6];
-                 
+
 //                 NSLog(@"width:%f height:%f",thumbImg.size.width/2.5,thumbImg.size.height/2.5);
-                 cell.img_View.layer.cornerRadius = 6.0; // set cornerRadius as you want.
+                 //cell.img_View.layer.cornerRadius = 6.0; // set cornerRadius as you want.
                  //[cell.imgView setCenter:CGPointMake(cell.imgView.frame.origin.x, cell.bounds.size.height/3)];
                  [cell.img_View setImage:thumbImg];
 //                 UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
@@ -450,6 +460,9 @@
                      cell.instructions_TextView.text = @"";
                  }
                  [cell.contentView addSubview:cell.instructions_TextView];
+                 int anheight = cell.img_View.frame.origin.y + cell.img_View.frame.size.height + 10;
+                 
+                 NSLog(@"height %i",anheight);
              }
      
             failureBlock:^(NSError *error){ NSLog(@"operation was not successfull!"); } ];
@@ -477,8 +490,7 @@
     
     cell.quantity_TextField.inputAccessoryView = self.keyboardDoneButtonView;
     cell.quantity_TextField.tag = indexPath.row;
-    int anheight = cell.img_View.frame.origin.y + cell.img_View.frame.size.height + 10;
-    NSLog(@"height %i",anheight);
+
         [self.cellArray addObject:cell];
     
 //    if ([self sharedAppDelegate].shoppingCart.count == indexPath.row+1) {
@@ -692,7 +704,7 @@ NSArray *currentItem;
     if ([[cart objectAtIndex:7] isEqualToString:@"="]) {
         x = 205;
     }
-    return 135;
+    return 178;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath

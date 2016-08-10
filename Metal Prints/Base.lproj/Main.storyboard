@@ -230,6 +230,51 @@
             </objects>
             <point key="canvasLocation" x="-537.5" y="-400.5"/>
         </scene>
+        <!--Product Category Selection Collection-->
+        <scene sceneID="VK6-yn-0tk">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1No-gl-u74" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <collectionViewController id="AZj-5q-CCT" customClass="ProductCategorySelectionCollection" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="wBP-La-3dG">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="315"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Q7U-EL-jEi">
+                            <size key="itemSize" width="150" height="150"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="collectionCell" id="dYV-0y-3Uz" customClass="ProductCategoryCell">
+                                <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Aluminum" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qF9-hJ-mYd">
+                                            <rect key="frame" x="37" y="64" width="77" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <connections>
+                                    <outlet property="label" destination="qF9-hJ-mYd" id="Fyu-US-k0w"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="AZj-5q-CCT" id="o7Y-eP-JpH"/>
+                            <outlet property="delegate" destination="AZj-5q-CCT" id="Hgf-o9-kv4"/>
+                        </connections>
+                    </collectionView>
+                </collectionViewController>
+            </objects>
+            <point key="canvasLocation" x="-1495.5" y="26.5"/>
+        </scene>
         <!--My Gallery-->
         <scene sceneID="70M-Ux-sQH">
             <objects>
@@ -977,15 +1022,15 @@
             <objects>
                 <tableViewController automaticallyAdjustsScrollViewInsets="NO" id="ins-sp-rB0" customClass="ProductsTVC" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="L0n-fe-rCq">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="315"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Product" rowHeight="44" id="siG-Pg-Zz1" customClass="ProductTVCCell">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="siG-Pg-Zz1" id="phM-Jw-5Pc">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="$55" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="azy-kn-He0">
@@ -1018,7 +1063,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ckX-T4-sfk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1495.5" y="32.5"/>
+            <point key="canvasLocation" x="-2298" y="-18"/>
         </scene>
         <!--Store-->
         <scene sceneID="TGR-lI-w9u">
@@ -1033,19 +1078,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GHn-SA-KzH">
-                                <rect key="frame" x="0.0" y="352" width="375" height="315"/>
+                                <rect key="frame" x="0.0" y="176" width="375" height="315"/>
                                 <connections>
-                                    <segue destination="ins-sp-rB0" kind="embed" identifier="ProductContainer" id="PGa-JX-xLn"/>
+                                    <segue destination="AZj-5q-CCT" kind="embed" id="WH2-Pn-jbG"/>
                                 </connections>
                             </containerView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="photos_on_aluminum.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="gYN-IX-rpv">
-                                <rect key="frame" x="0.0" y="64" width="375" height="125"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="photosonwood4web.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="RLg-5Y-4B6">
-                                <rect key="frame" x="0.0" y="197" width="375" height="125"/>
-                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Select a product below to begin" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PfG-IK-GwY">
-                                <rect key="frame" x="66" y="323" width="243" height="21"/>
+                                <rect key="frame" x="66" y="147" width="243" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -1238,14 +1277,12 @@
         <image name="camera icon.png" width="720" height="720"/>
         <image name="grocery-cart-icon-6.png" width="30" height="30"/>
         <image name="photo-gallery-512.png" width="30" height="30"/>
-        <image name="photos_on_aluminum.jpg" width="900" height="300"/>
-        <image name="photosonwood4web.jpg" width="900" height="300"/>
         <image name="plainicon.com-54418-512px-51c.png" width="512" height="512"/>
         <image name="shop-icon.png" width="30" height="30"/>
         <image name="thin-363_photo_image_album-512.png" width="30" height="30"/>
         <image name="up-down.png" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Moj-sf-Chp"/>
+        <segue reference="bk8-j3-BoP"/>
     </inferredMetricsTieBreakers>
 </document>

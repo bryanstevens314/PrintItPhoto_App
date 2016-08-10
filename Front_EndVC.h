@@ -9,9 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "ProductsTVC.h"
 
-@interface Front_EndVC : UIViewController <ProductDelegate>
+@interface Front_EndVC : UIViewController <ProductDelegate,UICollectionViewDelegate,UICollectionViewDataSource>
 
 - (IBAction)ShoppingCartSelected:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *Shopping_Cart_Outlet;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @end
