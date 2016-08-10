@@ -398,7 +398,7 @@
      
             failureBlock:^(NSError *error){ NSLog(@"operation was not successfull!"); } ];
     
-    int instuctionCenterY = cell.imgView.frame.origin.x + cell.imgView.frame.size.height + cell.instructionsTextView.bounds.size.height/2 + 30;
+    int instuctionCenterY = cell.imgView.frame.origin.x + cell.imgView.frame.size.height + cell.instructionsTextView.bounds.size.height/2 + 18;
     cell.instructions_TextView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, cell.instructionsTextView.frame.size.width, cell.instructionsTextView.frame.size.height)];
 
     [cell.instructions_TextView setCenter:CGPointMake(cell.bounds.size.width/2, instuctionCenterY )];
@@ -410,13 +410,7 @@
     cell.instructions_TextView.editable = NO;
     cell.instructions_TextView.selectable = NO;
 
-    if ([[array objectAtIndex:5] isEqualToString:@""]) {
-        
-        cell.instructions_TextView.text = @"No Instructions";
-    }
-    else{
-        cell.instructions_TextView.text = [array objectAtIndex:5];
-    }
+    cell.instructions_TextView.text = [array objectAtIndex:5];
 
     cell.instructions_Outlet = [[UILabel alloc] initWithFrame:CGRectMake(cell.frame.size.width - 120 , cell.instructions_TextView.frame.origin.y - 25, 91, 21)];
     [cell.instructions_Outlet setTextColor:[UIColor blackColor]];
