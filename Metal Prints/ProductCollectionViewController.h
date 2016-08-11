@@ -8,11 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "ProductCollectionViewCell.h"
+#import "ProductCategorySelectionCollection.h"
 
 @interface ProductCollectionViewController : UICollectionViewController
 
 + (ProductCollectionViewController *)sharedProductCollectionVC;
 
 
-@property (retain,nonatomic) NSArray *currentProductArray;
+@property (strong,nonatomic) NSArray *currentProductArray;
 @end

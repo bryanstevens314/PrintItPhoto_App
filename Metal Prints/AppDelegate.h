@@ -19,6 +19,8 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic)NSArray *AluminumProductArray;
 @property (strong, nonatomic)NSArray *WoodenProductArray;
+@property (strong, nonatomic)NSArray *MugProductArray;
+@property (strong, nonatomic)NSArray *TileProductArray;
 @property (retain, nonatomic)NSMutableArray *shoppingCart;
 @property (retain, nonatomic)NSDictionary *shippingInfo;
 
@@ -32,5 +34,6 @@
 @property (retain, nonatomic) NSMutableArray *mutableArray;
 @property (retain, nonatomic) NSMutableArray *highlightedArray;
 @property (retain, nonatomic) NSMutableArray *imagesInCartArray;
+
 @end
 

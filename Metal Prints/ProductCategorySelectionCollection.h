@@ -9,8 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "ProductCategoryCell.h"
 #import "ProductCollectionViewController.h"
+#import "Front_EndVC.h"
 
 @interface ProductCategorySelectionCollection : UICollectionViewController
+
++ (ProductCategorySelectionCollection *)sharedProductCategorySelectionCollection;
+-(void)cellClickedWithRow:(NSInteger)clickedCell;
 
 @property (weak, nonatomic) IBOutlet UILabel *label;
 @end

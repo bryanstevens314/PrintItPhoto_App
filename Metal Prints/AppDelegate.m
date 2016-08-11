@@ -50,6 +50,10 @@
                            @[@"Photo Mug 11oz",@"12"],
                            @[@"Photo Mug 15oz",@"14"],];
     
+    self.MugProductArray = @[@[@"8x8 Wood",@"36"],];
+    
+    self.TileProductArray = @[@[@"8x8 Wood",@"36"],];
+    
     if ([[NSFileManager defaultManager] fileExistsAtPath:[self archivePathShoppingCart]]) {
         self.shoppingCart = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archivePathShoppingCart]];
     }

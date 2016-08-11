@@ -51,7 +51,7 @@ static NSString * const reuseIdentifier = @"Cell";
     }
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sharedInstance = (ProductCollectionViewController*)[storyboard instantiateViewControllerWithIdentifier: @"details"];
+        sharedInstance = (ProductCollectionViewController*)[storyboard instantiateViewControllerWithIdentifier: @"productDisplayCollection"];
     });
     return sharedInstance;
 }
@@ -64,7 +64,7 @@ static NSString * const reuseIdentifier = @"Cell";
     
     // Register cell classes
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
-    
+    self.collectionView.contentOffset = CGPointMake(0, 0);
     // Do any additional setup after loading the view.
 }
 
@@ -82,8 +82,7 @@ static NSString * const reuseIdentifier = @"Cell";
 #pragma mark <UICollectionViewDataSource>
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-#warning Incomplete implementation, return the number of sections
-    return 0;
+    return 1;
 }
 
 

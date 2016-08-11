@@ -8,10 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "ProductsTVC.h"
+#import "ProductCollectionViewController.h"
 
 @interface Front_EndVC : UIViewController <ProductDelegate,UICollectionViewDelegate,UICollectionViewDataSource>
 
++ (Front_EndVC *)sharedFrontEnd_VC;
 - (IBAction)ShoppingCartSelected:(id)sender;
+
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *Shopping_Cart_Outlet;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;

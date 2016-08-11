@@ -29,7 +29,7 @@
     return (AppDelegate *)[UIApplication sharedApplication].delegate;
 }
     
-    
+
 + (ImageCollectionViewController *)sharedImageCollectionViewController
 {
     static ImageCollectionViewController *sharedInstance = nil;

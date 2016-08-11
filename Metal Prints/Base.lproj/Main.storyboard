@@ -233,10 +233,11 @@
         <!--Product Collection View Controller-->
         <scene sceneID="BMC-I3-kzU">
             <objects>
-                <collectionViewController id="t4e-mf-5N1" customClass="ProductCollectionViewController" sceneMemberID="viewController">
+                <collectionViewController storyboardIdentifier="productDisplayCollection" id="t4e-mf-5N1" customClass="ProductCollectionViewController" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="kSW-xP-nVh">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="xdA-z5-cDj">
                             <size key="itemSize" width="125" height="125"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -254,8 +255,8 @@
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cp2-ZW-e7p">
                                             <rect key="frame" x="0.0" y="0.0" width="125" height="107"/>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g6l-eA-k8q">
-                                            <rect key="frame" x="41" y="104" width="42" height="21"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g6l-eA-k8q">
+                                            <rect key="frame" x="0.0" y="104" width="125" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
@@ -283,8 +284,7 @@
         <!--Product Category Selection Collection-->
         <scene sceneID="VK6-yn-0tk">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1No-gl-u74" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <collectionViewController id="AZj-5q-CCT" customClass="ProductCategorySelectionCollection" sceneMemberID="viewController">
+                <collectionViewController storyboardIdentifier="productCategoryCollection" id="AZj-5q-CCT" customClass="ProductCategorySelectionCollection" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="wBP-La-3dG">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="315"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -322,6 +322,7 @@
                         </connections>
                     </collectionView>
                 </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1No-gl-u74" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1495.5" y="26.5"/>
         </scene>
@@ -1118,7 +1119,7 @@
         <!--Store-->
         <scene sceneID="TGR-lI-w9u">
             <objects>
-                <viewController id="EyA-jj-rCO" customClass="Front_EndVC" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="front_End" id="EyA-jj-rCO" customClass="Front_EndVC" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="irx-qZ-Vix"/>
                         <viewControllerLayoutGuide type="bottom" id="Cym-q6-SJf"/>
