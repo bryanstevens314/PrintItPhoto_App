@@ -68,7 +68,20 @@
     UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:nil];
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
     [self.navigationItem setTitle:@"Store"];
+
 }
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+    ProductCategorySelectionCollection *collView = [ProductCategorySelectionCollection sharedProductCategorySelectionCollection];
+    
+    ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
+    productCollectionVC.currentProductArray = [self sharedAppDelegate].AluminumProductArray;
+    
+    [self.collectionViewView addSubview:collView.collectionView];
+}
+
+
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewWillAppear:YES];
@@ -148,6 +161,19 @@
     [self performSegueWithIdentifier:@"StartOrder" sender:self];
 }
 
+-(void)cellClickedWithRow:(NSInteger)clickedCell{
+    NSLog(@"CellClicked");
+    ProductCategorySelectionCollection *collView = [ProductCategorySelectionCollection sharedProductCategorySelectionCollection];
+    //[collView.collectionView removeFromSuperview];
+
+}
+
+- (IBAction)PanGesture:(id)sender {
+    [[ProductCategorySelectionCollection sharedProductCategorySelectionCollection] PanGestureInitiated];
+}
+
+- (IBAction)moveCollectionView:(id)sender {
+}
 
 #pragma mark <UICollectionViewDataSource>
 

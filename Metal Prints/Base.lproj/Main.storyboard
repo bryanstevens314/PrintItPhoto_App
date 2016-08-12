@@ -234,36 +234,37 @@
         <scene sceneID="BMC-I3-kzU">
             <objects>
                 <collectionViewController storyboardIdentifier="productDisplayCollection" id="t4e-mf-5N1" customClass="ProductCollectionViewController" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="kSW-xP-nVh">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" id="kSW-xP-nVh">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="xdA-z5-cDj">
-                            <size key="itemSize" width="125" height="125"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="16" minimumInteritemSpacing="10" id="xdA-z5-cDj">
+                            <size key="itemSize" width="100" height="100"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <inset key="sectionInset" minX="18" minY="62" maxX="18" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="productCell" id="skG-rx-GN0" customClass="ProductCollectionViewCell">
-                                <rect key="frame" x="0.0" y="0.0" width="125" height="125"/>
+                                <rect key="frame" x="18" y="62" width="100" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="125" height="125"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cp2-ZW-e7p">
-                                            <rect key="frame" x="0.0" y="0.0" width="125" height="107"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="100" height="77"/>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g6l-eA-k8q">
-                                            <rect key="frame" x="0.0" y="104" width="125" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <rect key="frame" x="0.0" y="79" width="100" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="productImage" destination="Cp2-ZW-e7p" id="8uZ-5K-M9u"/>
                                     <outlet property="productName" destination="g6l-eA-k8q" id="rLw-LG-zre"/>
@@ -284,27 +285,30 @@
         <!--Product Category Selection Collection-->
         <scene sceneID="VK6-yn-0tk">
             <objects>
-                <collectionViewController storyboardIdentifier="productCategoryCollection" id="AZj-5q-CCT" customClass="ProductCategorySelectionCollection" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="wBP-La-3dG">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="315"/>
+                <collectionViewController storyboardIdentifier="productCategoryCollection" automaticallyAdjustsScrollViewInsets="NO" id="AZj-5q-CCT" customClass="ProductCategorySelectionCollection" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" id="wBP-La-3dG">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Q7U-EL-jEi">
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="25" minimumInteritemSpacing="25" id="Q7U-EL-jEi">
                             <size key="itemSize" width="150" height="150"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <inset key="sectionInset" minX="25" minY="85" maxX="25" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="collectionCell" id="dYV-0y-3Uz" customClass="ProductCategoryCell">
-                                <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
+                                <rect key="frame" x="25" y="85" width="150" height="150"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g3K-z7-Kby">
+                                            <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
+                                        </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Aluminum" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qF9-hJ-mYd">
-                                            <rect key="frame" x="37" y="64" width="77" height="21"/>
+                                            <rect key="frame" x="37" y="121" width="77" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
@@ -313,6 +317,7 @@
                                 </view>
                                 <connections>
                                     <outlet property="label" destination="qF9-hJ-mYd" id="Fyu-US-k0w"/>
+                                    <outlet property="productImage" destination="g3K-z7-Kby" id="Tcq-2x-eEh"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -321,10 +326,15 @@
                             <outlet property="delegate" destination="AZj-5q-CCT" id="Hgf-o9-kv4"/>
                         </connections>
                     </collectionView>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1No-gl-u74" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1495.5" y="26.5"/>
+            <point key="canvasLocation" x="-1495.5" y="-136.5"/>
         </scene>
         <!--My Gallery-->
         <scene sceneID="70M-Ux-sQH">
@@ -383,7 +393,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Yy-6a-8ca" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1038.5" y="114.5"/>
+            <point key="canvasLocation" x="-1002.5" y="214.5"/>
         </scene>
         <!--Highlighted ImageCVC-->
         <scene sceneID="JGX-Ht-aAh">
@@ -436,7 +446,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Aai-Da-7gK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-189.5" y="1555.5"/>
+            <point key="canvasLocation" x="-241.5" y="1591.5"/>
         </scene>
         <!--CCTVC-->
         <scene sceneID="36J-XG-Zvl">
@@ -1129,17 +1139,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GHn-SA-KzH">
-                                <rect key="frame" x="0.0" y="176" width="375" height="315"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="598"/>
                                 <connections>
-                                    <segue destination="AZj-5q-CCT" kind="embed" id="WH2-Pn-jbG"/>
+                                    <segue destination="AZj-5q-CCT" kind="embed" id="Ck0-Fo-U9w"/>
                                 </connections>
                             </containerView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Select a product below to begin" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PfG-IK-GwY">
-                                <rect key="frame" x="66" y="147" width="243" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IJT-Mc-Ph1">
+                                <rect key="frame" x="21" y="176" width="334" height="315"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -1151,6 +1159,12 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fma-ro-Jgg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="JPn-rV-P1P"/>
+                <swipeGestureRecognizer direction="right" id="QlT-hD-UZp">
+                    <connections>
+                        <action selector="moveCollectionView:" destination="EyA-jj-rCO" id="PFI-ge-O5x"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-1495.5" y="613.5"/>
         </scene>

@@ -11,10 +11,14 @@
 #import "ProductCollectionViewController.h"
 #import "Front_EndVC.h"
 
-@interface ProductCategorySelectionCollection : UICollectionViewController
+@interface ProductCategorySelectionCollection : UICollectionViewController <UIGestureRecognizerDelegate>{
+    BOOL displayingProducts;
+    BOOL finished;
+}
 
 + (ProductCategorySelectionCollection *)sharedProductCategorySelectionCollection;
--(void)cellClickedWithRow:(NSInteger)clickedCell;
+-(void)PanGestureInitiated;
+
 
 @property (weak, nonatomic) IBOutlet UILabel *label;
 @end

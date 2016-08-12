@@ -13,7 +13,10 @@
 #import "DetailsTVC.h"
 #import "HighlightedImageCVC.h"
 
-@interface ImageCollectionViewController : UICollectionViewController
+@interface ImageCollectionViewController : UICollectionViewController{
+    BOOL reloadView;
+    BOOL loadingImages;
+}
 
 + (ImageCollectionViewController *)sharedImageCollectionViewController;
 -(void)removeHighlightedImagesFromView;
@@ -21,5 +24,7 @@
 - (IBAction)ToggleSelectedImages:(id)sender;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *toggleOutlet;
 @property (retain,nonatomic)UIImageView *collectionImgView;
+@property (retain,nonatomic)NSMutableArray *mutableImageArray;
+@property (retain,nonatomic)NSMutableArray *mutableHighlightedArray;
 @property (weak, nonatomic) IBOutlet UIImageView *inCartCheck;
 @end

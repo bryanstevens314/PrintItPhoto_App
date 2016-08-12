@@ -95,7 +95,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
 
-    return [self sharedAppDelegate].highlightedArray.count;
+    return self.highlightedImageArray.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -103,32 +103,34 @@ static NSString * const reuseIdentifier = @"Cell";
     static NSString *identifier = @"HighlightedCell";
     
     ImageCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-    NSArray *highlightedArray = [[self sharedAppDelegate].highlightedArray objectAtIndex:indexPath.row];
-    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-        [library assetForURL:[highlightedArray objectAtIndex:0]
-                 resultBlock:^(ALAsset *asset) {
-                     UIImage *thumbImg = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
+    NSArray *anArray = [self.highlightedImageArray objectAtIndex:indexPath.row];
+    UIImage *thumbImg = [anArray objectAtIndex:0];
+    NSURL *imgURL = [anArray objectAtIndex:1];
                      //UIImage *fullImg = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
                      //                 if (self.collectionImgView) {
                      //                     self.collectionImgView = nil;
                      //                 }
+                     float division = thumbImg.size.width/thumbImg.size.height;
                      if (thumbImg.size.width < thumbImg.size.height) {
-                         NSLog(@"<");
-                         [cell.cellImageView setFrame:CGRectMake(0, 0, thumbImg.size.width/2.9, thumbImg.size.height/2.9)];
-                         if (cell.cellImageView.frame.size.width >= cell.contentView.frame.size.width || cell.cellImageView.frame.size.height >= cell.contentView.frame.size.height) {
-                             [cell.cellImageView setFrame:CGRectMake(0, 0, thumbImg.size.width/3.4, thumbImg.size.height/3.4)];
-                         }
+                         NSLog(@"portrait");
+                         
+                         float newWidth = (cell.bounds.size.height - 5) * division;
+                         [cell.cellImageView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 5)];
+                         [cell.cellImageView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
+                         cell.cellImageView.image = thumbImg;
                      }
                      if (thumbImg.size.width > thumbImg.size.height) {
-                         NSLog(@">");
-                         [cell.cellImageView setFrame:CGRectMake(0, 0, thumbImg.size.width/2.9, thumbImg.size.height/2.9)];
-                         if (cell.cellImageView.frame.size.width >= cell.contentView.frame.size.width || cell.cellImageView.frame.size.height >= cell.contentView.frame.size.height) {
-                             [cell.cellImageView setFrame:CGRectMake(0, 0, thumbImg.size.width/3.4, thumbImg.size.height/3.4)];
-                         }
+                         NSLog(@"landscape");
+                         float newHeight = (cell.bounds.size.width - 5) / division;
+                         [cell.cellImageView setFrame:CGRectMake(0, 0, cell.bounds.size.width - 5, newHeight)];
+                         [cell.cellImageView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
+                         cell.cellImageView.image = thumbImg;
                      }
                      if (thumbImg.size.width == thumbImg.size.height) {
-                         NSLog(@"==");
-                         [cell.cellImageView setFrame:CGRectMake(0, 0, thumbImg.size.width/2.2, thumbImg.size.height/2.2)];
+                         NSLog(@"square");
+                         [cell.cellImageView setFrame:CGRectMake(0, 0, cell.bounds.size.height - 20, cell.bounds.size.height - 20)];
+                         [cell.cellImageView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
+                         cell.cellImageView.image = thumbImg;
                      }
                      
                      //                     if (thumbImg.size.width == thumbImg.size.height) {
@@ -158,11 +160,8 @@ static NSString * const reuseIdentifier = @"Cell";
 
                      }
                      
-                 }
-         
-                failureBlock:^(NSError *error){
-                    NSLog(@"operation was not successfull!");
-                }];
+                 
+
 
     
     

@@ -10,7 +10,7 @@
 #import "ProductCollectionViewCell.h"
 #import "ProductCategorySelectionCollection.h"
 
-@interface ProductCollectionViewController : UICollectionViewController
+@interface ProductCollectionViewController : UICollectionViewController <UIGestureRecognizerDelegate>
 
 + (ProductCollectionViewController *)sharedProductCollectionVC;
 

@@ -32,6 +32,7 @@
 @property (nonatomic) BOOL newCartItem;
 @property (nonatomic) NSInteger totalImageCount;
 @property (retain, nonatomic) NSMutableArray *mutableArray;
+@property (retain, nonatomic) NSArray *phoneImageArray;
 @property (retain, nonatomic) NSMutableArray *highlightedArray;
 @property (retain, nonatomic) NSMutableArray *imagesInCartArray;
 

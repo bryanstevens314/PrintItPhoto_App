@@ -14,8 +14,11 @@
 
 + (Front_EndVC *)sharedFrontEnd_VC;
 - (IBAction)ShoppingCartSelected:(id)sender;
+-(void)cellClickedWithRow:(NSInteger)clickedCell;
+- (IBAction)PanGesture:(id)sender;
+- (IBAction)moveCollectionView:(id)sender;
 
-
+@property (weak, nonatomic) IBOutlet UIView *collectionViewView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *Shopping_Cart_Outlet;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @end

@@ -57,6 +57,27 @@ static NSString * const reuseIdentifier = @"Cell";
     return sharedInstance;
 }
 
+- (void)PanGestureInitiated:(id)sender{
+    NSLog(@"Panned");
+    if (displayingProducts == YES) {
+        finished = NO;
+        displayingProducts = NO;
+        ProductCollectionViewController *prodColl = [ProductCollectionViewController sharedProductCollectionVC];
+        CGRect finalFrame = CGRectMake(self.view.frame.size.width + prodColl.collectionView.frame.size.width, prodColl.collectionView.frame.origin.y, prodColl.collectionView.frame.size.width, prodColl.collectionView.frame.size.height);
+        [UIView animateWithDuration:0.6 animations:^{
+            prodColl.collectionView.frame = finalFrame;
+            
+        } completion:^(BOOL finished1) {
+            finished = YES;
+            [prodColl.collectionView removeFromSuperview];
+            //[self.view removeGestureRecognizer:swipeUpRecognizer];
+        }];
+    }
+
+
+    
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -65,12 +86,22 @@ static NSString * const reuseIdentifier = @"Cell";
     
     // Register cell classes
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
+    finished = YES;
+    UIScreenEdgePanGestureRecognizer *pan = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self
+                                                                                              action:@selector(PanGestureInitiated:)];
+    [pan setEdges:UIRectEdgeLeft];
+    [pan setDelegate:self];
+    [self.view addGestureRecognizer:pan];
+
+
     
     // Do any additional setup after loading the view.
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
+
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:YES];
     // Dispose of any resources that can be recreated.
 }
 
@@ -100,16 +131,20 @@ static NSString * const reuseIdentifier = @"Cell";
     cell.contentView.layer.borderWidth = 1.0;
     cell.contentView.layer.borderColor = [[UIColor blackColor] CGColor];
     if (indexPath.row == 0) {
-        cell.label.text = @"Aluminum";
+        cell.label.text = @"";
+        cell.productImage.image = [UIImage imageNamed:@"aluminum-tin-cans.jpg"];
     }
     if (indexPath.row == 1) {
-        cell.label.text = @"Wood";
+        cell.label.text = @"";
+        cell.productImage.image = [UIImage imageNamed:@"wildtextures-old-wood-original-file.jpg"];
     }
     if (indexPath.row == 2) {
-        cell.label.text = @"Mug";
+        cell.label.text = @"";
+        cell.productImage.image = [UIImage imageNamed:@"broadway-coffee-mug.jpg"];
     }
     if (indexPath.row == 3) {
-        cell.label.text = @"Tile";
+        cell.label.text = @"";
+        cell.productImage.image = [UIImage imageNamed:@"d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg"];
     }
     
     return cell;
@@ -131,27 +166,40 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.row == 0) {
-        ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
-        productCollectionVC.currentProductArray = [self sharedAppDelegate].AluminumProductArray;
+    displayingProducts = YES;
+    if (finished == YES) {
+        if (indexPath.row == 0) {
+            NSLog(@"Aluminum");
+            ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
+            productCollectionVC.currentProductArray = [self sharedAppDelegate].AluminumProductArray;
+            [productCollectionVC.collectionView setFrame:self.collectionView.frame];
+            [productCollectionVC.collectionView reloadData];
+            [self.view addSubview:productCollectionVC.collectionView];
+        }
+        if (indexPath.row == 1) {
+            ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
+            productCollectionVC.currentProductArray = [self sharedAppDelegate].WoodenProductArray;
+            
+            [productCollectionVC.collectionView setFrame:self.collectionView.frame];
+            [productCollectionVC.collectionView reloadData];
+            [self.view addSubview:productCollectionVC.collectionView];
+        }
+        if (indexPath.row == 2) {
+            ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
+            productCollectionVC.currentProductArray = [self sharedAppDelegate].MugProductArray;
+            [productCollectionVC.collectionView setFrame:self.collectionView.frame];
+            [productCollectionVC.collectionView reloadData];
+            [self.view addSubview:productCollectionVC.collectionView];
+        }
+        if (indexPath.row == 3) {
+            ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
+            productCollectionVC.currentProductArray = [self sharedAppDelegate].TileProductArray;
+            [productCollectionVC.collectionView setFrame:self.collectionView.frame];
+            [productCollectionVC.collectionView reloadData];
+            [self.view addSubview:productCollectionVC.collectionView];
+        }
+    }
 
-        [self.view addSubview:productCollectionVC.collectionView];
-    }
-    if (indexPath.row == 1) {
-        ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
-        productCollectionVC.currentProductArray = [self sharedAppDelegate].WoodenProductArray;
-        [self.view addSubview:productCollectionVC.collectionView];
-    }
-    if (indexPath.row == 2) {
-        ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
-        productCollectionVC.currentProductArray = [self sharedAppDelegate].MugProductArray;
-        [self.view addSubview:productCollectionVC.collectionView];
-    }
-    if (indexPath.row == 3) {
-        ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
-        productCollectionVC.currentProductArray = [self sharedAppDelegate].TileProductArray;
-        [self.view addSubview:productCollectionVC.collectionView];
-    }
 }
 
 /*

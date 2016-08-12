@@ -46,11 +46,10 @@
     self.WoodenProductArray = @[@[@"8x8 Wood",@"36"],
                            @[@"8x10 Wood",@"40"],
                            @[@"10x10 Wood",@"44"],
-                           @[@"11x14 Wood",@"48"],
-                           @[@"Photo Mug 11oz",@"12"],
-                           @[@"Photo Mug 15oz",@"14"],];
+                           @[@"11x14 Wood",@"48"],];
     
-    self.MugProductArray = @[@[@"8x8 Wood",@"36"],];
+    self.MugProductArray = @[@[@"Photo Mug 11oz",@"12"],
+                             @[@"Photo Mug 15oz",@"14"],];
     
     self.TileProductArray = @[@[@"8x8 Wood",@"36"],];
     
@@ -110,9 +109,10 @@ NSInteger count;
                 // NSLog(@"assestlibrarymurari%@",assetURLDictionaries);
                 
                 NSURL *url= (NSURL*) [[result defaultRepresentation]url];
-                
+                //UIImage *thumbImg = [UIImage imageWithCGImage:[result aspectRatioThumbnail]];
                 NSLog(@"found image");
                 self.totalImageCount++;
+                //NSArray *anArray = @[thumbImg,url,];
                 [self.mutableArray addObject:url];
                 
                 //                if (counting == 25) {
@@ -132,6 +132,7 @@ NSInteger count;
             }
         }
         else{
+            self.phoneImageArray = [[NSArray alloc] initWithArray:self.mutableArray];
             //[self allPhotosCollected:mutableArray];
         }
     };

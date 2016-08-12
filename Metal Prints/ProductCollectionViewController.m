@@ -64,8 +64,18 @@ static NSString * const reuseIdentifier = @"Cell";
     
     // Register cell classes
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
-    self.collectionView.contentOffset = CGPointMake(0, 0);
+//    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(moveViewWithGestureRecognizer:)];
+//    [self.collectionView addGestureRecognizer:panGestureRecognizer];
+    
     // Do any additional setup after loading the view.
+}
+
+
+-(void)moveViewWithGestureRecognizer:(UIPanGestureRecognizer *)panGestureRecognizer{
+    CGPoint touchLocation = [panGestureRecognizer locationInView:self.view];
+    
+    self.collectionView.center = touchLocation;
+    
 }
 
 
@@ -87,6 +97,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    NSLog(@"Number of items");
     return self.currentProductArray.count;
 }
 

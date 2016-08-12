@@ -62,12 +62,12 @@
     return sharedInstance;
 }
     
-    
+
 static NSString * const reuseIdentifier = @"Cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    NSLog(@"Image View did load");
     // Uncomment the following line to preserve selection between presentations
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -82,8 +82,71 @@ static NSString * const reuseIdentifier = @"Cell";
     if ([[NSFileManager defaultManager] fileExistsAtPath:[self archiveHighlightedImages]]) {
         [self sharedAppDelegate].highlightedArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archiveHighlightedImages]];
     }
+    int x = 0;
+    self.mutableImageArray = [[NSMutableArray alloc] init];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:[self archiveImageArray]]) {
+        self.mutableImageArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archiveImageArray]];
+    }
+    else{
+        loadingImages = YES;
+        for (NSURL *imgURL in [self sharedAppDelegate].phoneImageArray) {
+            
+            
+            x++;
+            ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+            [library assetForURL:imgURL
+                     resultBlock:^(ALAsset *asset) {
+                         if (x != [self sharedAppDelegate].phoneImageArray.count) {
+                             
+                             UIImage *thumbImg = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
+                             NSArray *anArray = @[thumbImg,imgURL, @""];
+                             [self.mutableImageArray addObject:anArray];
+                         }
+                         if (x == [self sharedAppDelegate].phoneImageArray.count) {
+                             UIImage *thumbImg = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
+                             NSArray *anArray = @[thumbImg,imgURL,@""];
+                             [self.mutableImageArray addObject:anArray];
+                             loadingImages = NO;
+                             reloadView = YES;
+                             [self.collectionView reloadData];
+                             
+                             [activityIndicator stopAnimating];
+                             [activityIndicator removeFromSuperview];
+                         }
+                         
+                         //UIImage *fullImg = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
+                         //                 if (self.collectionImgView) {
+                         //                     self.collectionImgView = nil;
+                         //                 }
+                         
+                     }
+             
+                    failureBlock:^(NSError *error){
+                        NSLog(@"operation was not successfull!");
+                    }];
+        }
+    }
+
+
     
 }
+
+UIActivityIndicatorView *activityIndicator;
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+    
+    if (loadingImages == YES) {
+        activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        activityIndicator.frame = CGRectMake(0.0, 0.0, 40, 40.0);
+        activityIndicator.center = self.view.center;
+        CGAffineTransform transform = CGAffineTransformMakeScale(1.25f, 1.25f);
+        activityIndicator.transform = transform;
+        [self.view addSubview: activityIndicator];
+        [activityIndicator startAnimating];
+    }
+
+}
+
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:YES];
@@ -144,11 +207,24 @@ static NSString * const reuseIdentifier = @"Cell";
     return 1;
 }
 
-
+NSInteger numberOfCells = 100;
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     NSLog(@"number of items");
-
-    return [self sharedAppDelegate].mutableArray.count;
+    
+//    if (reloadView == YES) {
+//       numberOfCells = numberOfCells + 100;
+//        if (numberOfCells > [self sharedAppDelegate].phoneImageArray.count) {
+//            NSInteger sub = numberOfCells - [self sharedAppDelegate].phoneImageArray.count;
+//            numberOfCells = numberOfCells - sub;
+//        }
+//    }
+    if (loadingImages == YES) {
+        numberOfCells = 0;
+    }
+    else{
+        numberOfCells = self.mutableImageArray.count;
+    }
+    return numberOfCells;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -156,66 +232,88 @@ static NSString * const reuseIdentifier = @"Cell";
     static NSString *identifier = @"Cell";
     
     ImageCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+    NSArray *thumbArray = [self.mutableImageArray objectAtIndex:indexPath.row];
+    UIImage *thumbImg = [thumbArray objectAtIndex:0];
+    NSURL *thumbURL = [thumbArray objectAtIndex:1];
+    NSString *selected = [thumbArray objectAtIndex:2];
+//    long division = thumbImg.size.width/thumbImg.size.height;
+//    NSLog(@"Image ratio %f",division);
+//    if (division == 0.742690) {
+//        NSLog(@"portrait");
+//        float newWidth = (cell.bounds.size.height - 20) * 0.742690;
+//        [cell.cellImageView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 20)];
+//        [cell.cellImageView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
+//        cell.cellImageView.image = thumbImg;
+//    }
+//    if (division == 1.328125) {
+//        NSLog(@"landscape");
+//        float newHeight = (cell.bounds.size.height - 20) * 1.328125;
+//        [cell.cellImageView setFrame:CGRectMake(0, 0, cell.bounds.size.width - 20, newHeight)];
+//        [cell.cellImageView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
+//        cell.cellImageView.image = thumbImg;
+//        
+//    }
+//    if (division == 1) {
+//        NSLog(@"square");
+//        [cell.cellImageView setFrame:CGRectMake(0, 0, cell.bounds.size.height - 20, cell.bounds.size.height - 20)];
+//        [cell.cellImageView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
+//        cell.cellImageView.image = thumbImg;
+//        
+//        
+//    }
+//    if (division == 0.561404) {
+//        NSLog(@"screenshot");
+//        float newWidth = (cell.bounds.size.height - 20) * 0.561404;
+//        [cell.cellImageView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 20)];
+//        [cell.cellImageView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
+//        cell.cellImageView.image = thumbImg;
+//    }
+//    cell.contentView.layer.borderWidth = 1;
+//    cell.contentView.layer.borderColor = [[UIColor blackColor] CGColor];
+    float division = thumbImg.size.width/thumbImg.size.height;
+    if (thumbImg.size.width < thumbImg.size.height) {
+        NSLog(@"portrait");
+        
+        float newWidth = (cell.bounds.size.height - 5) * division;
+        [cell.cellImageView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 5)];
+        [cell.cellImageView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
+        cell.cellImageView.image = thumbImg;
+    }
+    if (thumbImg.size.width > thumbImg.size.height) {
+        NSLog(@"landscape");
+        float newHeight = (cell.bounds.size.width - 5) / division;
+        [cell.cellImageView setFrame:CGRectMake(0, 0, cell.bounds.size.width - 5, newHeight)];
+        [cell.cellImageView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
+        cell.cellImageView.image = thumbImg;
+    }
+    if (thumbImg.size.width == thumbImg.size.height) {
+        NSLog(@"square");
+        [cell.cellImageView setFrame:CGRectMake(0, 0, cell.bounds.size.height - 20, cell.bounds.size.height - 20)];
+        [cell.cellImageView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
+        cell.cellImageView.image = thumbImg;
+    }
     
-    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-        [library assetForURL:[[self sharedAppDelegate].mutableArray objectAtIndex:indexPath.row]
-                 resultBlock:^(ALAsset *asset) {
-                     UIImage *thumbImg = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
-                     //UIImage *fullImg = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
-                     //                 if (self.collectionImgView) {
-                     //                     self.collectionImgView = nil;
-                     //                 }
-                     if (thumbImg.size.width < thumbImg.size.height) {
-                         NSLog(@"<");
-                         [cell.cellImageView setFrame:CGRectMake(0, 0, thumbImg.size.width/2.9, thumbImg.size.height/2.9)];
-                         if (cell.cellImageView.frame.size.width >= cell.contentView.frame.size.width || cell.cellImageView.frame.size.height >= cell.contentView.frame.size.height) {
-                             [cell.cellImageView setFrame:CGRectMake(0, 0, thumbImg.size.width/3.4, thumbImg.size.height/3.4)];
-                         }
-                     }
-                     if (thumbImg.size.width > thumbImg.size.height) {
-                         NSLog(@">");
-                         [cell.cellImageView setFrame:CGRectMake(0, 0, thumbImg.size.width/2.9, thumbImg.size.height/2.9)];
-                         if (cell.cellImageView.frame.size.width >= cell.contentView.frame.size.width || cell.cellImageView.frame.size.height >= cell.contentView.frame.size.height) {
-                             [cell.cellImageView setFrame:CGRectMake(0, 0, thumbImg.size.width/3.4, thumbImg.size.height/3.4)];
-                         }
-                     }
-                     if (thumbImg.size.width == thumbImg.size.height) {
-                         NSLog(@"==");
-                         [cell.cellImageView setFrame:CGRectMake(0, 0, thumbImg.size.width/2.2, thumbImg.size.height/2.2)];
-                     }
-
-//                     if (thumbImg.size.width == thumbImg.size.height) {
-//                         [cell.cellImageView setFrame:CGRectMake(0, 0, thumbImg.size.width/2.2, thumbImg.size.height/2.2)];
-//                     }
-//                     else{
-//                         [cell.cellImageView setFrame:CGRectMake(0, 0, thumbImg.size.width/3.1, thumbImg.size.height/3.1)];
-//                     }
-                     
-                     [cell.cellImageView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
-//                     [cell.contentView.layer setBorderColor: [[UIColor blackColor] CGColor]];
-//                     [cell.contentView.layer setBorderWidth: 1];
-                     cell.cellImageView.image = thumbImg;
-                     if ([self sharedAppDelegate].highlightedArray != nil) {
-                         for (NSArray *anotherArray in [self sharedAppDelegate].highlightedArray) {
-
-
-                                 NSURL *highlightedURL = [anotherArray objectAtIndex:0];
-                                 NSURL *currentImageURL = [[self sharedAppDelegate].mutableArray objectAtIndex:indexPath.row];
-                                 
-                                 if ([[highlightedURL absoluteString] isEqualToString:[currentImageURL absoluteString]]) {
-
-                                     [cell.cellImageView.layer setBorderColor: [[UIColor blueColor] CGColor]];
-                                     [cell.cellImageView.layer setBorderWidth: 4];
-                                 }
-                             
-                         }
-
-
-                     }
-                 }
-         
-                failureBlock:^(NSError *error){ NSLog(@"operation was not successfull!"); } ];
+    //                     if (thumbImg.size.width == thumbImg.size.height) {
+    //                         [cell.cellImageView setFrame:CGRectMake(0, 0, thumbImg.size.width/2.2, thumbImg.size.height/2.2)];
+    //                     }
+    //                     else{
+    //                         [cell.cellImageView setFrame:CGRectMake(0, 0, thumbImg.size.width/3.1, thumbImg.size.height/3.1)];
+    //                     }
     
+    
+    //                     [cell.contentView.layer setBorderColor: [[UIColor blackColor] CGColor]];
+    //                     [cell.contentView.layer setBorderWidth: 1];
+    
+            if ([selected isEqualToString:@"Selected"]) {
+                
+                [cell.cellImageView.layer setBorderColor: [[UIColor blueColor] CGColor]];
+                [cell.cellImageView.layer setBorderWidth: 3];
+            }
+            else{
+                [cell.cellImageView.layer setBorderColor: [[UIColor clearColor] CGColor]];
+                [cell.cellImageView.layer setBorderWidth: 3];
+            }
+
 
 
     if ([self sharedAppDelegate].imagesInCartArray.count != 0) {
@@ -228,7 +326,6 @@ static NSString * const reuseIdentifier = @"Cell";
             cell.inCartCheck.image = img;
         }
     }
-    NSLog(@"creating cell");
     return cell;
 
 }
@@ -272,17 +369,20 @@ NSIndexPath *selectedIndex;
             stop = YES;
             NSLog(@"highlighted");
             [cell.cellImageView.layer setBorderColor: [[UIColor clearColor] CGColor]];
-            [cell.cellImageView.layer setBorderWidth: 4];
+            [cell.cellImageView.layer setBorderWidth: 3];
             cell.cellIsHighlighted = NO;
             NSIndexPath *removePath = [NSIndexPath indexPathForRow:cell.highlightedArrayIndex inSection:0];
             [[self sharedAppDelegate].highlightedArray removeObjectAtIndex:removePath.row];
-            [NSKeyedArchiver archiveRootObject:[self sharedAppDelegate].highlightedArray toFile:[self archiveHighlightedImages]];
+            NSArray *cellArray = [self.mutableImageArray objectAtIndex:indexPath.row];
+            NSArray *newArray = @[[cellArray objectAtIndex:0],[cellArray objectAtIndex:1], @"",];
+            [self.mutableImageArray replaceObjectAtIndex:indexPath.row withObject:newArray];
+            
         }
         if (cell.cellIsHighlighted == NO && stop == NO) {
             NSLog(@"not highlighted");
             newSelection = YES;
             [cell.cellImageView.layer setBorderColor: [[UIColor blueColor] CGColor]];
-            [cell.cellImageView.layer setBorderWidth: 4];
+            [cell.cellImageView.layer setBorderWidth: 3];
             cell.cellIsHighlighted = YES;
             if ([self sharedAppDelegate].highlightedArray.count == 0) {
                 cell.highlightedArrayIndex = 0;
@@ -293,10 +393,10 @@ NSIndexPath *selectedIndex;
             if (![self sharedAppDelegate].highlightedArray) {
                 [self sharedAppDelegate].highlightedArray = [[NSMutableArray alloc] init];
             }
-            NSURL *highlightedURL = [[self sharedAppDelegate].mutableArray objectAtIndex:indexPath.row];
-            NSArray *objArray = @[highlightedURL, indexPath];
-            [[self sharedAppDelegate].highlightedArray addObject:objArray];
-            [NSKeyedArchiver archiveRootObject:[self sharedAppDelegate].highlightedArray toFile:[self archiveHighlightedImages]];
+            NSArray *cellArray = [self.mutableImageArray objectAtIndex:indexPath.row];
+            NSArray *highlightedImageArray = @[[cellArray objectAtIndex:0],[cellArray objectAtIndex:1],@"Selected",];
+            [[self sharedAppDelegate].highlightedArray addObject:highlightedImageArray];
+            [self.mutableImageArray replaceObjectAtIndex:indexPath.row withObject:highlightedImageArray];
         }
 
 
@@ -310,32 +410,38 @@ NSIndexPath *selectedIndex;
 
 HighlightedImageCVC *imagevc;
 - (IBAction)ToggleSelectedImages:(id)sender {
-    if ([self sharedAppDelegate].highlightedArray.count != 0) {
-        if (displayingHighlightedImages == NO) {
-            displayingHighlightedImages = YES;
-            if (imagevc) {
-                if (newSelection == YES) {
+    if (loadingImages == NO) {
+        if ([self sharedAppDelegate].highlightedArray.count != 0) {
+            if (displayingHighlightedImages == NO) {
+                displayingHighlightedImages = YES;
+                if (imagevc) {
+                    if (newSelection == YES) {
+                        imagevc.highlightedImageArray = [self sharedAppDelegate].highlightedArray;
+                        [imagevc.collectionView reloadData];
+                    }
+                    
+                }
+                else{
+                    imagevc = [HighlightedImageCVC sharedHighlightedImageCVC];
+                    imagevc.highlightedImageArray = [self sharedAppDelegate].highlightedArray;
+                    int offset = [[UIApplication sharedApplication] statusBarFrame].size.height + self.navigationController.navigationBar.frame.size.height;
+                    CGRect newFrame = CGRectOffset(imagevc.collectionView.frame, 0, offset);
+                    
+                    imagevc.collectionView.frame = newFrame;
                     [imagevc.collectionView reloadData];
                 }
                 
+                newSelection = NO;
+                [self.view addSubview:imagevc.collectionView];
+                
             }
             else{
-                imagevc = [HighlightedImageCVC sharedHighlightedImageCVC];
-                int offset = [[UIApplication sharedApplication] statusBarFrame].size.height + self.navigationController.navigationBar.frame.size.height;
-                CGRect newFrame = CGRectOffset(imagevc.collectionView.frame, 0, offset);
-                
-                imagevc.collectionView.frame = newFrame;
+                displayingHighlightedImages = NO;
+                [imagevc.collectionView removeFromSuperview];
             }
-
-            newSelection = NO;
-            [self.view addSubview:imagevc.collectionView];
-
-        }
-        else{
-            displayingHighlightedImages = NO;
-            [imagevc.collectionView removeFromSuperview];
         }
     }
+
 
 }
 
@@ -375,6 +481,13 @@ NSLog(@"Segueing");
     NSArray *documentDirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docDir = documentDirs[0];
     return [docDir stringByAppendingPathComponent:@"highlighted"];
+}
+
+
+- (NSString*)archiveImageArray{
+    NSArray *documentDirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docDir = documentDirs[0];
+    return [docDir stringByAppendingPathComponent:@"ImageArray"];
 }
 
 
