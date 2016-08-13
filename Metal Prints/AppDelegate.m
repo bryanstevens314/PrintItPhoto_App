@@ -87,7 +87,12 @@
             }
         }];
     }
-    [self getAllPhotos];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:[self archiveImageArray]]) {
+        self.mutableArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archiveImageArray]];
+    }
+    else{
+        [self getAllPhotos];
+    }
     return YES;
 }
 
@@ -234,6 +239,10 @@ NSInteger count;
     return [docDir stringByAppendingPathComponent:@"cartImages"];
 }
 
-
+- (NSString*)archiveImageArray{
+    NSArray *documentDirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docDir = documentDirs[0];
+    return [docDir stringByAppendingPathComponent:@"ImageArray"];
+}
 
 @end

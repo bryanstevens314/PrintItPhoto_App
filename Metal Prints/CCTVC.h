@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface CCTVC : UITableViewController
++ (CCTVC *)sharedCCTVC;
 - (IBAction)BillingSameAsShipping:(id)sender;
 
+@property (nonatomic)BOOL BillingPresenting;
 @property (weak, nonatomic) IBOutlet UISwitch *BillingSameAsShippingOutlet;
 @property (weak, nonatomic) IBOutlet UITextField *firstName;
 @property (weak, nonatomic) IBOutlet UITextField *LastName;

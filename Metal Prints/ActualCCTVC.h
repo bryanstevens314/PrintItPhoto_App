@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface ActualCCTVC : UITableViewController<UIPickerViewDelegate,UIPickerViewDataSource>
++ (ActualCCTVC *)sharedActualCCTVC;
 
+@property (nonatomic)BOOL CCPresenting;
 @property (weak, nonatomic) IBOutlet UITextField *CCN;
 @property (weak, nonatomic) IBOutlet UITextField *securityCode;
 @property (weak, nonatomic) IBOutlet UITextField *expMonth;

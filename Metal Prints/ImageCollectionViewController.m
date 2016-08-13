@@ -83,11 +83,15 @@ static NSString * const reuseIdentifier = @"Cell";
         [self sharedAppDelegate].highlightedArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archiveHighlightedImages]];
     }
     int x = 0;
-    self.mutableImageArray = [[NSMutableArray alloc] init];
-    if ([[NSFileManager defaultManager] fileExistsAtPath:[self archiveImageArray]]) {
-        self.mutableImageArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archiveImageArray]];
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:[self archiveHighlightedImages]]) {
+        self.mutableHighlightedArray = [[NSMutableArray alloc] init];
     }
     else{
+        self.mutableHighlightedArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archiveHighlightedImages]];
+    }
+    if (self.mutableImageArray == nil){
+        self.mutableImageArray = [[NSMutableArray alloc] init];
         loadingImages = YES;
         for (NSURL *imgURL in [self sharedAppDelegate].phoneImageArray) {
             
@@ -101,11 +105,13 @@ static NSString * const reuseIdentifier = @"Cell";
                              UIImage *thumbImg = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
                              NSArray *anArray = @[thumbImg,imgURL, @""];
                              [self.mutableImageArray addObject:anArray];
+                             [self.mutableHighlightedArray addObject:@""];
                          }
                          if (x == [self sharedAppDelegate].phoneImageArray.count) {
                              UIImage *thumbImg = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
                              NSArray *anArray = @[thumbImg,imgURL,@""];
                              [self.mutableImageArray addObject:anArray];
+                             [self.mutableHighlightedArray addObject:@""];
                              loadingImages = NO;
                              reloadView = YES;
                              [self.collectionView reloadData];
@@ -235,7 +241,6 @@ NSInteger numberOfCells = 100;
     NSArray *thumbArray = [self.mutableImageArray objectAtIndex:indexPath.row];
     UIImage *thumbImg = [thumbArray objectAtIndex:0];
     NSURL *thumbURL = [thumbArray objectAtIndex:1];
-    NSString *selected = [thumbArray objectAtIndex:2];
 //    long division = thumbImg.size.width/thumbImg.size.height;
 //    NSLog(@"Image ratio %f",division);
 //    if (division == 0.742690) {
@@ -303,7 +308,7 @@ NSInteger numberOfCells = 100;
     
     //                     [cell.contentView.layer setBorderColor: [[UIColor blackColor] CGColor]];
     //                     [cell.contentView.layer setBorderWidth: 1];
-    
+    NSString *selected = [self.mutableHighlightedArray objectAtIndex:indexPath.row];
             if ([selected isEqualToString:@"Selected"]) {
                 
                 [cell.cellImageView.layer setBorderColor: [[UIColor blueColor] CGColor]];
@@ -371,8 +376,8 @@ NSIndexPath *selectedIndex;
             [cell.cellImageView.layer setBorderColor: [[UIColor clearColor] CGColor]];
             [cell.cellImageView.layer setBorderWidth: 3];
             cell.cellIsHighlighted = NO;
-            NSIndexPath *removePath = [NSIndexPath indexPathForRow:cell.highlightedArrayIndex inSection:0];
-            [[self sharedAppDelegate].highlightedArray removeObjectAtIndex:removePath.row];
+            [self.mutableHighlightedArray replaceObjectAtIndex:indexPath.row withObject:@""];
+            [NSKeyedArchiver archiveRootObject:self.mutableHighlightedArray toFile:[self archiveHighlightedImages]];
             NSArray *cellArray = [self.mutableImageArray objectAtIndex:indexPath.row];
             NSArray *newArray = @[[cellArray objectAtIndex:0],[cellArray objectAtIndex:1], @"",];
             [self.mutableImageArray replaceObjectAtIndex:indexPath.row withObject:newArray];
@@ -394,7 +399,9 @@ NSIndexPath *selectedIndex;
                 [self sharedAppDelegate].highlightedArray = [[NSMutableArray alloc] init];
             }
             NSArray *cellArray = [self.mutableImageArray objectAtIndex:indexPath.row];
-            NSArray *highlightedImageArray = @[[cellArray objectAtIndex:0],[cellArray objectAtIndex:1],@"Selected",];
+            NSArray *highlightedImageArray = @[[cellArray objectAtIndex:0],[cellArray objectAtIndex:1],];
+            [self.mutableHighlightedArray replaceObjectAtIndex:indexPath.row withObject:@"Selected"];
+            [NSKeyedArchiver archiveRootObject:self.mutableHighlightedArray toFile:[self archiveHighlightedImages]];
             [[self sharedAppDelegate].highlightedArray addObject:highlightedImageArray];
             [self.mutableImageArray replaceObjectAtIndex:indexPath.row withObject:highlightedImageArray];
         }

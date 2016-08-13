@@ -73,6 +73,7 @@
 		FB5047F41D5D649C00B2E223 /* wildtextures-old-wood-original-file.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FB5047F31D5D649C00B2E223 /* wildtextures-old-wood-original-file.jpg */; };
 		FB5047F61D5D64D100B2E223 /* broadway-coffee-mug.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FB5047F51D5D64D100B2E223 /* broadway-coffee-mug.jpg */; };
 		FB5047F81D5D64EB00B2E223 /* d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FB5047F71D5D64EB00B2E223 /* d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg */; };
+		FB5047FB1D5E94B500B2E223 /* ShippingInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5047FA1D5E94B500B2E223 /* ShippingInfoVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -194,6 +195,8 @@
 		FB5047F31D5D649C00B2E223 /* wildtextures-old-wood-original-file.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "wildtextures-old-wood-original-file.jpg"; sourceTree = "<group>"; };
 		FB5047F51D5D64D100B2E223 /* broadway-coffee-mug.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "broadway-coffee-mug.jpg"; sourceTree = "<group>"; };
 		FB5047F71D5D64EB00B2E223 /* d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg; sourceTree = "<group>"; };
+		FB5047F91D5E94B500B2E223 /* ShippingInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShippingInfoVC.h; sourceTree = "<group>"; };
+		FB5047FA1D5E94B500B2E223 /* ShippingInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShippingInfoVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -287,6 +290,8 @@
 				9369C8CA1D3DC21800FCD2CC /* ImageCollectionViewCell.m */,
 				93B4DECC1CCF259700C6E07A /* ShoppingCartTVC.h */,
 				93B4DECD1CCF259700C6E07A /* ShoppingCartTVC.m */,
+				FB5047F91D5E94B500B2E223 /* ShippingInfoVC.h */,
+				FB5047FA1D5E94B500B2E223 /* ShippingInfoVC.m */,
 				932F2ED61CC897FC0050094A /* ShippingTVC.h */,
 				932F2ED71CC897FC0050094A /* ShippingTVC.m */,
 				932F2ED31CC897ED0050094A /* CCTVC.h */,
@@ -583,6 +588,7 @@
 				932F2E971CC88BD10050094A /* main.m in Sources */,
 				9369C8CB1D3DC21900FCD2CC /* ImageCollectionViewCell.m in Sources */,
 				9386601F1CDEC7B300C1F208 /* NonCopyPasteTextField.m in Sources */,
+				FB5047FB1D5E94B500B2E223 /* ShippingInfoVC.m in Sources */,
 				93B4DECE1CCF259700C6E07A /* ShoppingCartTVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

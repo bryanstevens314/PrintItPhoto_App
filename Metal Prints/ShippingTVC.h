@@ -10,6 +10,9 @@
 #import <KinveyKit/KinveyKit.h>
 
 @interface ShippingTVC : UITableViewController
++ (ShippingTVC *)sharedShippingTVC;
+
+@property (nonatomic)BOOL ShippingPresenting;
 @property (weak, nonatomic) IBOutlet UITextField *email_TextField;
 
 @property (weak, nonatomic) IBOutlet UITextField *name_TextField;

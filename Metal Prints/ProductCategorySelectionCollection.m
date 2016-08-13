@@ -128,8 +128,8 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     ProductCategoryCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"collectionCell" forIndexPath:indexPath];
-    cell.contentView.layer.borderWidth = 1.0;
-    cell.contentView.layer.borderColor = [[UIColor blackColor] CGColor];
+//    cell.contentView.layer.borderWidth = 1.0;
+//    cell.contentView.layer.borderColor = [[UIColor blackColor] CGColor];
     if (indexPath.row == 0) {
         cell.label.text = @"";
         cell.productImage.image = [UIImage imageNamed:@"aluminum-tin-cans.jpg"];
