@@ -32,24 +32,24 @@
     
     // Override point for customization after application launch.
 [Stripe setDefaultPublishableKey:@"pk_test_ksluG61goDFXFGzyXZiRriat"];
-    self.AluminumProductArray = @[@[@"4x4 Aluminum",@"12"],
-                             @[@"5x5 Aluminum",@"15"],
-                             @[@"5x7 Aluminum",@"18"],
-                             @[@"8x10 Aluminum",@"26"],
-                             @[@"5x10 Aluminum",@"22"],
-                             @[@"5x17 Aluminum",@"30"],
-                             @[@"8x12 Aluminum",@"30"],
-                             @[@"11x14 Aluminum",@"48"],
-                             @[@"11x17 Aluminum",@"48"],
-                             @[@"12x18 Aluminum",@"54"],];
+    self.AluminumProductArray = @[@[@"4x4",@"12"],
+                                 @[@"5x5",@"15"],
+                                 @[@"5x7",@"18"],
+                                 @[@"8x10",@"26"],
+                                 @[@"5x10",@"22"],
+                                 @[@"5x17",@"30"],
+                                 @[@"8x12",@"30"],
+                                 @[@"11x14",@"48"],
+                                 @[@"11x17",@"48"],
+                                 @[@"12x18",@"54"],];
     
-    self.WoodenProductArray = @[@[@"8x8 Wood",@"36"],
-                           @[@"8x10 Wood",@"40"],
-                           @[@"10x10 Wood",@"44"],
-                           @[@"11x14 Wood",@"48"],];
+    self.WoodenProductArray = @[@[@"8x8",@"36"],
+                               @[@"8x10",@"40"],
+                               @[@"10x10",@"44"],
+                               @[@"11x14",@"48"],];
     
-    self.MugProductArray = @[@[@"Photo Mug 11oz",@"12"],
-                             @[@"Photo Mug 15oz",@"14"],];
+    self.MugProductArray = @[@[@"11oz",@"12"],
+                             @[@"15oz",@"14"],];
     
     self.TileProductArray = @[@[@"8x8 Wood",@"36"],];
     

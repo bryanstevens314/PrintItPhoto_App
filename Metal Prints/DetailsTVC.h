@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (retain, nonatomic) NSArray *currentItemToEdit;
 @property (retain,nonatomic) NSIndexPath *selectedImageIndex;
+@property (retain,nonatomic) UIImage *currentImage;
 @property (nonatomic) BOOL startingFromHighlightedImage;
 @property (nonatomic)NSInteger selectedRow;
 @property (nonatomic)NSInteger selectedSection;

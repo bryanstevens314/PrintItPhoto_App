@@ -103,9 +103,7 @@ static NSString * const reuseIdentifier = @"Cell";
     static NSString *identifier = @"HighlightedCell";
     
     ImageCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-    NSArray *anArray = [self.highlightedImageArray objectAtIndex:indexPath.row];
-    UIImage *thumbImg = [anArray objectAtIndex:0];
-    NSURL *imgURL = [anArray objectAtIndex:1];
+    UIImage *thumbImg = [self.highlightedImageArray objectAtIndex:indexPath.row];
                      //UIImage *fullImg = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
                      //                 if (self.collectionImgView) {
                      //                     self.collectionImgView = nil;
@@ -175,9 +173,16 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     NSLog(@"Selected image");
     
+    DetailsTVC *details = [DetailsTVC sharedDetailsTVCInstance];
+    details.selectedImageIndex = indexPath;
+    details.startingFromHighlightedImage = YES;
+    details.currentImage = [self.highlightedImageArray objectAtIndex:indexPath.row];
+    UIViewController *top = [UIApplication sharedApplication].keyWindow.rootViewController;
+
+    [top presentViewController:details animated:YES completion:nil];
     //[[ImageCollectionViewController sharedImageCollectionViewController] cellSelectedAtIndex:indexPath];
-    selectedIndex = indexPath;
-    [self performSegueWithIdentifier:@"StartOrderFromHighlightedImage" sender:self];
+//    selectedIndex = indexPath;
+//    [self performSegueWithIdentifier:@"StartOrderFromHighlightedImage" sender:self];
 }
 
 

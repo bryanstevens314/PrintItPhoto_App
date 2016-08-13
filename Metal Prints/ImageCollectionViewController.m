@@ -90,6 +90,13 @@ static NSString * const reuseIdentifier = @"Cell";
     else{
         self.mutableHighlightedArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archiveHighlightedImages]];
     }
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:[self archiveHighlightedImagesArray]]) {
+        self.mutableHighlightedImageArray = [[NSMutableArray alloc] init];
+    }
+    else{
+        self.mutableHighlightedImageArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archiveHighlightedImagesArray]];
+    }
     if (self.mutableImageArray == nil){
         self.mutableImageArray = [[NSMutableArray alloc] init];
         loadingImages = YES;
@@ -313,10 +320,12 @@ NSInteger numberOfCells = 100;
                 
                 [cell.cellImageView.layer setBorderColor: [[UIColor blueColor] CGColor]];
                 [cell.cellImageView.layer setBorderWidth: 3];
+                cell.cellIsHighlighted = YES;
             }
             else{
                 [cell.cellImageView.layer setBorderColor: [[UIColor clearColor] CGColor]];
                 [cell.cellImageView.layer setBorderWidth: 3];
+                cell.cellIsHighlighted = NO;
             }
 
 
@@ -377,11 +386,12 @@ NSIndexPath *selectedIndex;
             [cell.cellImageView.layer setBorderWidth: 3];
             cell.cellIsHighlighted = NO;
             [self.mutableHighlightedArray replaceObjectAtIndex:indexPath.row withObject:@""];
+            [self.mutableHighlightedImageArray removeObjectAtIndex:cell.highlightedArrayIndex];
+//            NSArray *cellArray = [self.mutableImageArray objectAtIndex:indexPath.row];
+//            NSArray *newArray = @[[cellArray objectAtIndex:0],[cellArray objectAtIndex:1],];
+//            [self.mutableImageArray replaceObjectAtIndex:indexPath.row withObject:newArray];
             [NSKeyedArchiver archiveRootObject:self.mutableHighlightedArray toFile:[self archiveHighlightedImages]];
-            NSArray *cellArray = [self.mutableImageArray objectAtIndex:indexPath.row];
-            NSArray *newArray = @[[cellArray objectAtIndex:0],[cellArray objectAtIndex:1], @"",];
-            [self.mutableImageArray replaceObjectAtIndex:indexPath.row withObject:newArray];
-            
+            [NSKeyedArchiver archiveRootObject:self.mutableHighlightedImageArray toFile:[self archiveHighlightedImagesArray]];
         }
         if (cell.cellIsHighlighted == NO && stop == NO) {
             NSLog(@"not highlighted");
@@ -389,21 +399,29 @@ NSIndexPath *selectedIndex;
             [cell.cellImageView.layer setBorderColor: [[UIColor blueColor] CGColor]];
             [cell.cellImageView.layer setBorderWidth: 3];
             cell.cellIsHighlighted = YES;
-            if ([self sharedAppDelegate].highlightedArray.count == 0) {
+            if (self.mutableHighlightedImageArray.count == 0) {
                 cell.highlightedArrayIndex = 0;
             }
             else{
-                cell.highlightedArrayIndex = [self sharedAppDelegate].highlightedArray.count;
+                cell.highlightedArrayIndex = self.mutableHighlightedImageArray.count;
             }
             if (![self sharedAppDelegate].highlightedArray) {
                 [self sharedAppDelegate].highlightedArray = [[NSMutableArray alloc] init];
             }
+            if (!self.mutableHighlightedImageArray) {
+                self.mutableHighlightedImageArray = [[NSMutableArray alloc] init];
+            }
             NSArray *cellArray = [self.mutableImageArray objectAtIndex:indexPath.row];
             NSArray *highlightedImageArray = @[[cellArray objectAtIndex:0],[cellArray objectAtIndex:1],];
+            [self.mutableHighlightedImageArray addObject:[cellArray objectAtIndex:0]];
+            
             [self.mutableHighlightedArray replaceObjectAtIndex:indexPath.row withObject:@"Selected"];
-            [NSKeyedArchiver archiveRootObject:self.mutableHighlightedArray toFile:[self archiveHighlightedImages]];
+
             [[self sharedAppDelegate].highlightedArray addObject:highlightedImageArray];
             [self.mutableImageArray replaceObjectAtIndex:indexPath.row withObject:highlightedImageArray];
+            
+            [NSKeyedArchiver archiveRootObject:self.mutableHighlightedArray toFile:[self archiveHighlightedImages]];
+            [NSKeyedArchiver archiveRootObject:self.mutableHighlightedImageArray toFile:[self archiveHighlightedImagesArray]];
         }
 
 
@@ -418,19 +436,19 @@ NSIndexPath *selectedIndex;
 HighlightedImageCVC *imagevc;
 - (IBAction)ToggleSelectedImages:(id)sender {
     if (loadingImages == NO) {
-        if ([self sharedAppDelegate].highlightedArray.count != 0) {
+        if (self.mutableHighlightedImageArray.count != 0) {
             if (displayingHighlightedImages == NO) {
                 displayingHighlightedImages = YES;
                 if (imagevc) {
                     if (newSelection == YES) {
-                        imagevc.highlightedImageArray = [self sharedAppDelegate].highlightedArray;
+                        imagevc.highlightedImageArray = self.mutableHighlightedImageArray;
                         [imagevc.collectionView reloadData];
                     }
                     
                 }
                 else{
                     imagevc = [HighlightedImageCVC sharedHighlightedImageCVC];
-                    imagevc.highlightedImageArray = [self sharedAppDelegate].highlightedArray;
+                    imagevc.highlightedImageArray = self.mutableHighlightedImageArray;
                     int offset = [[UIApplication sharedApplication] statusBarFrame].size.height + self.navigationController.navigationBar.frame.size.height;
                     CGRect newFrame = CGRectOffset(imagevc.collectionView.frame, 0, offset);
                     
@@ -458,7 +476,8 @@ HighlightedImageCVC *imagevc;
 -(void)cellSelectedAtIndex:(NSIndexPath*)selectedImagePath{
     NSLog(@"here");
     selectedIndex = selectedImagePath;
-    [self performSegueWithIdentifier:@"StartOrder1" sender:self];
+    //[self performSegueWithIdentifier:@"addCartItem" sender:self];
+
 }
 
 
@@ -472,14 +491,13 @@ HighlightedImageCVC *imagevc;
     // Pass the selected object to the new view controller.
     NSLog(@"Preparing for segue");
     
-    if ([segue.identifier isEqualToString:@"StartOrder1"]) {
+    if ([segue.identifier isEqualToString:@"addCartItem"]) {
 NSLog(@"Segueing");
         
 //        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"Back", returnbuttontitle) style:UIBarButtonItemStyleBordered target:nil action:nil];
 //        self.navigationItem.backBarButtonItem = backButton;
         DetailsTVC *details = segue.destinationViewController;
-        details.selectedImageIndex = selectedIndex;
-        details.startingFromHighlightedImage = YES;
+
     }
 }
 
@@ -495,6 +513,12 @@ NSLog(@"Segueing");
     NSArray *documentDirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docDir = documentDirs[0];
     return [docDir stringByAppendingPathComponent:@"ImageArray"];
+}
+
+- (NSString*)archiveHighlightedImagesArray{
+    NSArray *documentDirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docDir = documentDirs[0];
+    return [docDir stringByAppendingPathComponent:@"ActualImageArray"];
 }
 
 

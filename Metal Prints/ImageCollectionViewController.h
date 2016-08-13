@@ -26,5 +26,6 @@
 @property (retain,nonatomic)UIImageView *collectionImgView;
 @property (retain,nonatomic)NSMutableArray *mutableImageArray;
 @property (retain,nonatomic)NSMutableArray *mutableHighlightedArray;
+@property (retain,nonatomic)NSMutableArray *mutableHighlightedImageArray;
 @property (weak, nonatomic) IBOutlet UIImageView *inCartCheck;
 @end
