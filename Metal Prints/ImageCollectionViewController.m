@@ -315,7 +315,8 @@ NSInteger numberOfCells = 100;
     
     //                     [cell.contentView.layer setBorderColor: [[UIColor blackColor] CGColor]];
     //                     [cell.contentView.layer setBorderWidth: 1];
-    NSString *selected = [self.mutableHighlightedArray objectAtIndex:indexPath.row];
+    NSArray *selectedArray = [self.mutableHighlightedArray objectAtIndex:indexPath.row];
+    NSString *selected = [selectedArray objectAtIndex:0];
             if ([selected isEqualToString:@"Selected"]) {
                 
                 [cell.cellImageView.layer setBorderColor: [[UIColor blueColor] CGColor]];
@@ -413,7 +414,7 @@ NSIndexPath *selectedIndex;
             }
             NSArray *cellArray = [self.mutableImageArray objectAtIndex:indexPath.row];
             NSArray *highlightedImageArray = @[[cellArray objectAtIndex:0],[cellArray objectAtIndex:1],];
-            [self.mutableHighlightedImageArray addObject:[cellArray objectAtIndex:0]];
+            [self.mutableHighlightedImageArray addObject:highlightedImageArray];
             
             [self.mutableHighlightedArray replaceObjectAtIndex:indexPath.row withObject:@"Selected"];
 

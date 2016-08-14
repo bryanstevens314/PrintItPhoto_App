@@ -119,12 +119,17 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 */
 
-/*
-// Uncomment this method to specify if the specified item should be selected
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     return YES;
 }
-*/
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    DetailsTVC *details = [DetailsTVC sharedDetailsTVCInstance];
+    details.selectedSection = self.selectedSection;
+    details.selectedRow = indexPath.row;
+    UIViewController *top = [UIApplication sharedApplication].keyWindow.rootViewController;
+    [top.navigationController pushViewController:details animated:YES];
+}
 
 /*
 // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item

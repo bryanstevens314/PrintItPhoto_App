@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ProductCollectionViewCell.h"
 #import "ProductCategorySelectionCollection.h"
+#import "DetailsTVC.h"
 
 @interface ProductCollectionViewController : UICollectionViewController <UIGestureRecognizerDelegate>
 
@@ -16,4 +17,5 @@
 
 
 @property (strong,nonatomic) NSArray *currentProductArray;
+@property (nonatomic) NSInteger selectedSection;
 @end

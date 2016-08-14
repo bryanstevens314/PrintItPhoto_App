@@ -17,7 +17,7 @@
 @property (nonatomic, retain) UIImage *image;
 @property (nonatomic, retain) UIImageView* imgView ;
 @property (retain, nonatomic) UIToolbar* keyboardDoneButtonView;
-@property (nonatomic) int rowCount;
+@property (nonatomic) NSInteger rowCount;
 @end
 
 @implementation DetailsTVC
@@ -78,8 +78,8 @@
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
     [self.navigationItem setTitle:@"Details"];
     NSInteger integer = 0;
+    self.rowCount = [self sharedAppDelegate].AluminumProductArray.count + [self sharedAppDelegate].WoodenProductArray.count + [self sharedAppDelegate].MugProductArray.count + [self sharedAppDelegate].TileProductArray.count;
     if (self.selectedSection == 0) {
-        self.rowCount = 6;
         
         integer = self.selectedRow;
         NSArray *array = [[self sharedAppDelegate].AluminumProductArray objectAtIndex:self.selectedRow];
@@ -89,11 +89,23 @@
         [self.aluminumOptionsCell.contentView setAlpha:0.6];
         self.For_Aluminum_TextField.enabled = NO;
         self.For_Aluminum_TextField.text = @"";
-        self.rowCount = 6;
 //        self.aluminumOptionsCell.hidden = YES;
 //        NSLog(@"Section 1");
-        integer = self.selectedRow+10;
         NSArray *array = [[self sharedAppDelegate].WoodenProductArray objectAtIndex:self.selectedRow];
+        self.Product_Outlet.text = [array objectAtIndex:0];
+    }
+    if (self.selectedSection == 2) {
+        [self.aluminumOptionsCell.contentView setAlpha:0.6];
+        self.For_Aluminum_TextField.enabled = NO;
+        self.For_Aluminum_TextField.text = @"";
+        NSArray *array = [[self sharedAppDelegate].MugProductArray objectAtIndex:self.selectedRow];
+        self.Product_Outlet.text = [array objectAtIndex:0];
+    }
+    if (self.selectedSection == 3) {
+        [self.aluminumOptionsCell.contentView setAlpha:0.6];
+        self.For_Aluminum_TextField.enabled = NO;
+        self.For_Aluminum_TextField.text = @"";
+        NSArray *array = [[self sharedAppDelegate].TileProductArray objectAtIndex:self.selectedRow];
         self.Product_Outlet.text = [array objectAtIndex:0];
     }
     [[self Product_Outlet] setTintColor:[UIColor clearColor]];
@@ -214,30 +226,40 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
     }
     if (self.startingFromHighlightedImage == YES) {
         NSLog(@"got here");
-        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-        [library assetForURL:[[self sharedAppDelegate].highlightedArray objectAtIndex:self.selectedImageIndex]
-                 resultBlock:^(ALAsset *asset) {
-                     UIImage *thumbImg = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
-                     UIImage *fullImg = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
-                     self.image = fullImg;
-                     //                 if (self.collectionImgView) {
-                     //                     self.collectionImgView = nil;
-                     //                 }
-                     NSLog(@"%@",thumbImg);
-                     if (self.imgView) {
-                         self.imgView = nil;
-                     }
-                     self.imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, thumbImg.size.width/2, thumbImg.size.height/2)];
-                     NSIndexPath *indePath = [NSIndexPath indexPathForRow:0 inSection:0];
-                     UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indePath];
-                     [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2-20)];
-                     
-                     [self.imgView setImage:thumbImg];
-                     [self.view addSubview:self.imgView];
-                     self.camera_outlet.hidden = YES;
-                 }
-         
-                failureBlock:^(NSError *error){ NSLog(@"operation was not successfull!"); } ];
+        
+        self.image = [self.currentImageArray objectAtIndex:0];
+        //                 if (self.collectionImgView) {
+        //                     self.collectionImgView = nil;
+        //                 }
+        if (self.imgView) {
+            self.imgView = nil;
+        }
+        NSIndexPath *indePath = [NSIndexPath indexPathForRow:0 inSection:0];
+        UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indePath];
+        float division = self.image.size.width/self.image.size.height;
+        if (self.image.size.width < self.image.size.height) {
+            NSLog(@"portrait");
+            
+            float newWidth = 125 * division;
+            [self.imgView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 5)];
+            [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
+            self.imgView.image = self.image;
+        }
+        if (self.image.size.width > self.image.size.height) {
+            NSLog(@"landscape");
+            float newHeight = 125 / division;
+            [self.imgView setFrame:CGRectMake(0, 0, cell.bounds.size.width - 5, newHeight)];
+            [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
+            self.imgView.image = self.image;
+        }
+        if (self.image.size.width == self.image.size.height) {
+            NSLog(@"square");
+            [self.imgView setFrame:CGRectMake(0, 0, cell.bounds.size.height - 20, cell.bounds.size.height - 20)];
+            [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2 + 7)];
+            self.imgView.image = self.image;
+        }
+        [self.view addSubview:self.imgView];
+        self.camera_outlet.hidden = YES;
 
     }
 }
@@ -346,7 +368,7 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.rowCount;
+    return 6;
 }
 
 
@@ -385,7 +407,7 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
         
     }
     if (self.Product_Outlet.inputView == pickerView) {
-        rows = [self sharedAppDelegate].AluminumProductArray.count + [self sharedAppDelegate].WoodenProductArray.count;
+        rows = [self sharedAppDelegate].AluminumProductArray.count + [self sharedAppDelegate].WoodenProductArray.count + [self sharedAppDelegate].MugProductArray.count + [self sharedAppDelegate].TileProductArray.count;
     }
     return rows;
 }
@@ -423,12 +445,12 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
     
     if (self.Product_Outlet.inputView == pickerView) {
         
-        if (row <= 9) {
+        if (row <= [self sharedAppDelegate].AluminumProductArray.count - 1) {
             
             NSArray *array = [[self sharedAppDelegate].AluminumProductArray objectAtIndex:row];
             string = [array objectAtIndex:0];
         }
-        if (row >= 10) {
+        if (row > [self sharedAppDelegate].AluminumProductArray.count - 1) {
             NSArray *array = [[self sharedAppDelegate].WoodenProductArray objectAtIndex:row-10];
             string = [array objectAtIndex:0];
         }

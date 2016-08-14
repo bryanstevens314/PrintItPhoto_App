@@ -172,6 +172,7 @@ static NSString * const reuseIdentifier = @"Cell";
             NSLog(@"Aluminum");
             ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
             productCollectionVC.currentProductArray = [self sharedAppDelegate].AluminumProductArray;
+            productCollectionVC.selectedIndex = indexPath.row;
             [productCollectionVC.collectionView setFrame:self.collectionView.frame];
             [productCollectionVC.collectionView reloadData];
             [self.view addSubview:productCollectionVC.collectionView];
@@ -179,7 +180,7 @@ static NSString * const reuseIdentifier = @"Cell";
         if (indexPath.row == 1) {
             ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
             productCollectionVC.currentProductArray = [self sharedAppDelegate].WoodenProductArray;
-            
+            productCollectionVC.selectedIndex = indexPath.row;
             [productCollectionVC.collectionView setFrame:self.collectionView.frame];
             [productCollectionVC.collectionView reloadData];
             [self.view addSubview:productCollectionVC.collectionView];
@@ -187,6 +188,7 @@ static NSString * const reuseIdentifier = @"Cell";
         if (indexPath.row == 2) {
             ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
             productCollectionVC.currentProductArray = [self sharedAppDelegate].MugProductArray;
+            productCollectionVC.selectedIndex = indexPath.row;
             [productCollectionVC.collectionView setFrame:self.collectionView.frame];
             [productCollectionVC.collectionView reloadData];
             [self.view addSubview:productCollectionVC.collectionView];
@@ -194,6 +196,7 @@ static NSString * const reuseIdentifier = @"Cell";
         if (indexPath.row == 3) {
             ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
             productCollectionVC.currentProductArray = [self sharedAppDelegate].TileProductArray;
+            productCollectionVC.selectedIndex = indexPath.row;
             [productCollectionVC.collectionView setFrame:self.collectionView.frame];
             [productCollectionVC.collectionView reloadData];
             [self.view addSubview:productCollectionVC.collectionView];

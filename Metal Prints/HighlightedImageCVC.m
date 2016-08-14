@@ -176,7 +176,7 @@ static NSString * const reuseIdentifier = @"Cell";
     DetailsTVC *details = [DetailsTVC sharedDetailsTVCInstance];
     details.selectedImageIndex = indexPath;
     details.startingFromHighlightedImage = YES;
-    details.currentImage = [self.highlightedImageArray objectAtIndex:indexPath.row];
+    details.currentImageArray = [self.highlightedImageArray objectAtIndex:indexPath.row];
     UIViewController *top = [UIApplication sharedApplication].keyWindow.rootViewController;
 
     [top presentViewController:details animated:YES completion:nil];
