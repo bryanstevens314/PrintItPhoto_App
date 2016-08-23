@@ -9,14 +9,24 @@
 #import <UIKit/UIKit.h>
 #import "ProductsTVC.h"
 #import "ProductCollectionViewController.h"
+#import "ProductCategorySelectionCollection.h"
+#import "DetailsTVC.h"
 
-@interface Front_EndVC : UIViewController <ProductDelegate,UICollectionViewDelegate,UICollectionViewDataSource>
+@interface Front_EndVC : UIViewController <DetailsTVCDelegate, ProductCategoryDelegate,ProductCollectionDelegate,UICollectionViewDelegate,UICollectionViewDataSource>
+
 
 + (Front_EndVC *)sharedFrontEnd_VC;
+
+
 - (IBAction)ShoppingCartSelected:(id)sender;
 -(void)cellClickedWithRow:(NSInteger)clickedCell;
 - (IBAction)PanGesture:(id)sender;
 - (IBAction)moveCollectionView:(id)sender;
+
+//@property (nonatomic)  BOOL *collectionContainer;
+//@property (nonatomic)  BOOL *collectionContainer;
+
+@property (weak, nonatomic) IBOutlet UIView *collectionContainer;
 
 @property (weak, nonatomic) IBOutlet UIView *collectionViewView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *Shopping_Cart_Outlet;

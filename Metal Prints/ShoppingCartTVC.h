@@ -9,10 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "DetailsTVC.h"
 
-@interface ShoppingCartTVC : UITableViewController <UIPickerViewDelegate,UIPickerViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface ShoppingCartTVC : UITableViewController <DetailsTVCDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *total_Outlet;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *totalPrints;
 @property (weak, nonatomic) IBOutlet UIToolbar *toolBar;
 
 @end

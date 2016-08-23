@@ -73,19 +73,26 @@
     
     NSLog(@"!!");
     [super viewDidLoad];
+    if (self.currentItemToEdit) {
+        UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(PlaceOrder)];
+        [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
+    }
+    else{
+        UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Add to Cart" style:UIBarButtonItemStylePlain target:self action:@selector(PlaceOrder)];
+        [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
+    }
+
     
-    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Add to Cart" style:UIBarButtonItemStylePlain target:self action:@selector(PlaceOrder)];
-    [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
     [self.navigationItem setTitle:@"Details"];
     NSInteger integer = 0;
     self.rowCount = [self sharedAppDelegate].AluminumProductArray.count + [self sharedAppDelegate].WoodenProductArray.count + [self sharedAppDelegate].MugProductArray.count + [self sharedAppDelegate].TileProductArray.count;
-    if (self.selectedSection == 0) {
+    if (self.selectedSection1 == 0) {
         
         integer = self.selectedRow;
         NSArray *array = [[self sharedAppDelegate].AluminumProductArray objectAtIndex:self.selectedRow];
         self.Product_Outlet.text = [array objectAtIndex:0];
     }
-    if (self.selectedSection == 1) {
+    if (self.selectedSection1 == 1) {
         [self.aluminumOptionsCell.contentView setAlpha:0.6];
         self.For_Aluminum_TextField.enabled = NO;
         self.For_Aluminum_TextField.text = @"";
@@ -94,14 +101,14 @@
         NSArray *array = [[self sharedAppDelegate].WoodenProductArray objectAtIndex:self.selectedRow];
         self.Product_Outlet.text = [array objectAtIndex:0];
     }
-    if (self.selectedSection == 2) {
+    if (self.selectedSection1 == 2) {
         [self.aluminumOptionsCell.contentView setAlpha:0.6];
         self.For_Aluminum_TextField.enabled = NO;
         self.For_Aluminum_TextField.text = @"";
         NSArray *array = [[self sharedAppDelegate].MugProductArray objectAtIndex:self.selectedRow];
         self.Product_Outlet.text = [array objectAtIndex:0];
     }
-    if (self.selectedSection == 3) {
+    if (self.selectedSection1 == 3) {
         [self.aluminumOptionsCell.contentView setAlpha:0.6];
         self.For_Aluminum_TextField.enabled = NO;
         self.For_Aluminum_TextField.text = @"";
@@ -172,6 +179,7 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
         self.Retouching_TextField.text = [self.currentItemToEdit objectAtIndex:3];
         self.For_Aluminum_TextField.text = [self.currentItemToEdit objectAtIndex:4];
         self.textView.text = [self.currentItemToEdit objectAtIndex:5];
+        self.selectedImageURL = [self.currentItemToEdit objectAtIndex:6];
 //        NSData *data = [[NSData alloc]initWithBase64EncodedString:[self.currentItemToEdit objectAtIndex:6] options:NSDataBase64DecodingIgnoreUnknownCharacters];
 //        UIImage *image1 = [UIImage imageWithData:data];
 //        if (self.image.size.width < self.image.size.height) {
@@ -204,11 +212,21 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
                          self.imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, thumbImg.size.width/2, thumbImg.size.height/2)];
                          NSIndexPath *indePath = [NSIndexPath indexPathForRow:0 inSection:0];
                          UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indePath];
-                         [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2-20)];
+                         [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2 + 20)];
+                         
                          
                          [self.imgView setImage:thumbImg];
                          [self.view addSubview:self.imgView];
                          self.camera_outlet.hidden = YES;
+                         if (self.imgView.gestureRecognizers == 0) {
+                             UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+                             
+                             
+                             tapGesture.numberOfTapsRequired = 1;
+                             tapGesture.cancelsTouchesInView = NO;
+                             self.imgView.userInteractionEnabled = YES;
+                             [self.imgView addGestureRecognizer:tapGesture];
+                         }
                      }
              
                     failureBlock:^(NSError *error){ NSLog(@"operation was not successfull!"); } ];
@@ -260,6 +278,16 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
         }
         [self.view addSubview:self.imgView];
         self.camera_outlet.hidden = YES;
+        
+        if (self.imgView.gestureRecognizers == 0) {
+            UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+            
+            
+            tapGesture.numberOfTapsRequired = 1;
+            tapGesture.cancelsTouchesInView = NO;
+            self.imgView.userInteractionEnabled = YES;
+            [self.imgView addGestureRecognizer:tapGesture];
+        }
 
     }
 }
@@ -343,7 +371,8 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
                            self.Retouching_TextField.text,
                            self.For_Aluminum_TextField.text,
                            self.textView.text,
-                           self.selectedImageURL,imageSizeType1
+                           self.selectedImageURL,
+                           imageSizeType1
                            ];
         if (self.selectedImageIndex != nil) {
             if (![self sharedAppDelegate].imagesInCartArray) {
@@ -353,9 +382,21 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
             [[self sharedAppDelegate].imagesInCartArray addObject:self.selectedImageIndex];
         }
         [self sharedAppDelegate].newCartItem = YES;
-        [[self sharedAppDelegate].shoppingCart addObject:array];
-        [NSKeyedArchiver archiveRootObject:[self sharedAppDelegate].shoppingCart toFile:[self archivePathShoppingCart]];
-        [self.navigationController popViewControllerAnimated:YES];
+        if (self.currentItemToEdit != nil) {
+            [[self sharedAppDelegate].shoppingCart replaceObjectAtIndex:self.selectedRow withObject:array];
+            [NSKeyedArchiver archiveRootObject:[self sharedAppDelegate].shoppingCart toFile:[self archivePathShoppingCart]];
+            
+            [self.delegate editedCartItem];
+        }
+        else{
+            [[self sharedAppDelegate].shoppingCart addObject:array];
+            [NSKeyedArchiver archiveRootObject:[self sharedAppDelegate].shoppingCart toFile:[self archivePathShoppingCart]];
+            [self.delegate addedCartItem];
+        }
+        
+        
+        
+        
         //[self performSegueWithIdentifier:@"PayForPrint" sender:self];
         // Dispose of any resources that can be recreated.
     }
@@ -597,6 +638,10 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
 
 }
 
+-(void)cropImage{
+    [self cropImage:self.imgView.image];
+}
+
 - (void)camera1
 {
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
@@ -631,27 +676,36 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
 
 
 -(void)handleTap:(UIGestureRecognizer *)sender{
-    [self cropImage:self.imgView.image];
-//    UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"" message:@""preferredStyle:UIAlertControllerStyleActionSheet];
-//    
-//    UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"Take Photo"
-//                                                           style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-//                                                               [self camera1];
-//                                                           }]; // 2
-//    
-//    UIAlertAction *libraryAction = [UIAlertAction actionWithTitle:@"Choose Image"
-//                                                            style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-//                                                                [self library];
-//                                                            }]; // 2
-//    [cameraAction setValue:[[UIImage imageNamed:@"camera.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forKey:@"image"];
-//    [libraryAction setValue:[[UIImage imageNamed:@"photo icon.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]   forKey:@"image"];
-//    [alert2 addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-//        // Called when user taps outside
-//    }]];
-//    [alert2 addAction:cameraAction];
-//    [alert2 addAction:libraryAction];
-//    
-//    [self presentViewController:alert2 animated:YES completion:nil];
+    
+    UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"" message:@""preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *cropAction = [UIAlertAction actionWithTitle:@"Crop Image"
+                                                           style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                               [self cropImage];
+                                                           }]; // 2
+    
+    UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"Take Photo"
+                                                           style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                               [self camera1];
+                                                           }]; // 2
+    
+    UIAlertAction *libraryAction = [UIAlertAction actionWithTitle:@"Choose Image"
+                                                            style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                [self library];
+                                                            }]; // 2
+    
+    [cropAction setValue:[[UIImage imageNamed:@"camera.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forKey:@"image"];
+    [cameraAction setValue:[[UIImage imageNamed:@"camera.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forKey:@"image"];
+    [libraryAction setValue:[[UIImage imageNamed:@"photo icon.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]   forKey:@"image"];
+    [alert2 addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        // Called when user taps outside
+    }]];
+    
+    [alert2 addAction:cropAction];
+    [alert2 addAction:cameraAction];
+    [alert2 addAction:libraryAction];
+    
+    [self presentViewController:alert2 animated:YES completion:nil];
 }
 
 
@@ -690,6 +744,9 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
     }
     
     [self.imgView setCenter:CGPointMake(self.cell.bounds.size.width/2, self.cell.bounds.size.height/2)];
+    
+    [self.imgView setImage:self.image];
+    [self.cell addSubview:self.imgView];
 //    // Get size of current image
 //    CGSize size = [self.image size];
 //    
@@ -709,26 +766,18 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
 //    [self.imgView setFrame:CGRectMake(0, 200, (size.width / 2), (size.height / 2))];
 //    [[self view] addSubview:self.imgView];
     //Initialization
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
-    
-    
-    tapGesture.numberOfTapsRequired = 1;
-    tapGesture.cancelsTouchesInView = NO;
-    self.imgView.userInteractionEnabled = YES;
-    [self.imgView addGestureRecognizer:tapGesture];
-    
-    
-    //    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
-    //    tapGesture.numberOfTapsRequired = 1;
-    //    tapGesture.cancelsTouchesInView = NO;
-    //    self.Addimage.userInteractionEnabled = YES;
-    //    [self.Addimage addGestureRecognizer:tapGesture];
-    //chosePic = YES;
-    [self.imgView setImage:self.image];
-    [self.cell addSubview:self.imgView];
+
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+        
+        
+        tapGesture.numberOfTapsRequired = 1;
+        tapGesture.cancelsTouchesInView = NO;
+        self.imgView.userInteractionEnabled = YES;
+        [self.imgView addGestureRecognizer:tapGesture];
+
+
     
     self.camera_outlet.hidden = YES;
-    //self.image_View.hidden = NO;
 }
 
 

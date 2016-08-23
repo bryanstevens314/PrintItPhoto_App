@@ -64,6 +64,10 @@ static NSString * const reuseIdentifier = @"Cell";
     
     // Register cell classes
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
+    
+    UISwipeGestureRecognizer *swipeLeftGreen = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(slideToRightWithGestureRecognizer:)];
+    swipeLeftGreen.direction = UISwipeGestureRecognizerDirectionRight;
+    [self.collectionView addGestureRecognizer:swipeLeftGreen];
 //    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(moveViewWithGestureRecognizer:)];
 //    [self.collectionView addGestureRecognizer:panGestureRecognizer];
     
@@ -71,11 +75,11 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 
--(void)moveViewWithGestureRecognizer:(UIPanGestureRecognizer *)panGestureRecognizer{
-    CGPoint touchLocation = [panGestureRecognizer locationInView:self.view];
-    
-    self.collectionView.center = touchLocation;
-    
+
+-(void)slideToRightWithGestureRecognizer:(UISwipeGestureRecognizer *)gestureRecognizer{
+    [UIView animateWithDuration:0.2 animations:^{
+        self.collectionView.frame = CGRectOffset(self.collectionView.frame, self.view.frame.size.width, 0.0);
+    }];
 }
 
 
@@ -124,11 +128,13 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    DetailsTVC *details = [DetailsTVC sharedDetailsTVCInstance];
-    details.selectedSection = self.selectedSection;
-    details.selectedRow = indexPath.row;
-    UIViewController *top = [UIApplication sharedApplication].keyWindow.rootViewController;
-    [top.navigationController pushViewController:details animated:YES];
+    NSLog(@"got to here");
+//    DetailsTVC *details = [DetailsTVC sharedDetailsTVCInstance];
+//    details.currentProductArray1 = self.currentProductArray;
+//    details.selectedSection1 = self.selectedSection;
+//    details.selectedRow = indexPath.row;
+    
+    [self.delegate ProductSelectedWithRow:indexPath.row Section:self.selectedSection andArray:self.currentProductArray];
 }
 
 /*

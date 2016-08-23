@@ -37,9 +37,10 @@
     return (AppDelegate *)[UIApplication sharedApplication].delegate;
 }
 
+UIBarButtonItem *rightBarButtonItem;
 - (void)viewDidLoad {
     [super viewDidLoad];
-    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Check Out" style:UIBarButtonItemStylePlain target:self action:@selector(EnterShipping)];
+    rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Check Out" style:UIBarButtonItemStylePlain target:self action:@selector(EnterShipping)];
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
     [self.navigationItem setTitle:@"ShoppingCart"];
     
@@ -69,6 +70,12 @@
         NSLog(@"Total Price: $%i",cartPrice1);
     }
     self.total_Outlet.title = [NSString stringWithFormat:@"$%i",cartPrice1];
+    if ([self sharedAppDelegate].shoppingCart.count == 0) {
+        rightBarButtonItem.enabled = NO;
+    }
+    else{
+        rightBarButtonItem.enabled = YES;
+    }
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -79,6 +86,7 @@
         [self sharedAppDelegate].newCartItem = NO;
         [self.tableView reloadData];
     }
+
     //[self.tableView reloadData];
 }
 -(void)viewWillDisappear:(BOOL)animated{
@@ -87,128 +95,10 @@
 }
 
 - (void)EnterShipping {
-    if (edited == YES) {
-        NSInteger i = 0;
-        NSMutableArray *newShoppingCart = [[NSMutableArray alloc] init];
-        //NSLog(@"%@",[self sharedAppDelegate].shoppingCart);
-        for (NSArray *arr in [self sharedAppDelegate].shoppingCart) {
-            
-            NSString *prod = [arr objectAtIndex:0];
-            
-            NSString *quan = [arr objectAtIndex:1];
-            
-            NSString *price= [arr objectAtIndex:2];
-            //        int priceInt = [price intValue];
-            //        int quanInt = [quan intValue];
-            //        int total = priceInt * quanInt;
-            NSString *alumOpt = [arr objectAtIndex:4];
-            NSString *retouch = [arr objectAtIndex:3];
-            NSString *instruct = [arr objectAtIndex:5];
-            NSString *imgURL = [arr objectAtIndex:6];
-            NSString *imgTypeFrame = [arr objectAtIndex:7];
-            NSIndexPath *inPath = [NSIndexPath indexPathForRow:i inSection:0];
-            CartTVCCell *cell = [self.tableView cellForRowAtIndexPath:inPath];
-            if (![prod isEqualToString:cell.product.text]) {
-                if (!edited) {
-                    edited = true;
-                }
-                prod = cell.product_textField.text;
-            }
-            if (![alumOpt isEqualToString:cell.aluminum_Outlet.text]) {
-                if (!edited) {
-                    edited = true;
-                }
-                alumOpt = cell.aluminum_textField.text;
-            }
-            if (![retouch isEqualToString:cell.retouch_Outlet.text]) {
-                if (!edited) {
-                    edited = true;
-                }
-                retouch = cell.retouch_textField.text;
-            }
-            if (![instruct isEqualToString:cell.instructions_TextView.text]) {
-                if (!edited) {
-                    edited = true;
-                }
-                instruct = cell.instructions_TextView.text;
-            }
-            if (instruct == nil) {
-                instruct = @"";
-            }
-            if (![quan isEqualToString:cell.quantity_TextField.text]) {
-                if (!edited) {
-                    edited = true;
-                }
-                quan = cell.quantity_TextField.text;
-            }
-            if (![price isEqualToString:cell.total_Price.text]) {
-                if (!edited) {
-                    edited = true;
-                }
-                price = cell.total_Price.text;
-            }
-            //NSString *imgString1 = [UIImageJPEGRepresentation(cell.imgView.image, 0.0f) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
-            if (![imgURL isEqualToString:cell.imgViewURL]) {
-                if (!edited) {
-                    edited = true;
-                }
-                imgURL = cell.imgViewURL;
-            }
-            if (![imgTypeFrame isEqualToString:cell.imgType]) {
-                if (!edited) {
-                    edited = true;
-                }
-                if (cell.imgView.frame.size.width < cell.imgView.frame.size.height) {
-                    NSLog(@"<");
-                    imgTypeFrame = @"<";
-                }
-                if (cell.imgView.frame.size.width > cell.imgView.frame.size.height) {
-                    NSLog(@">");
-                    imgTypeFrame = @">";
-                }
-                if (cell.imgView.frame.size.width == cell.imgView.frame.size.height) {
-                    NSLog(@"=");
-                    imgTypeFrame = @"=";
-                }
-            }
-            
-            
-            //        NSArray *array = @[self.Product_Outlet.text,
-            //                           self.Quantity_TextField.text,
-            //                           price,
-            //                           self.Retouching_TextField.text,
-            //                           self.For_Aluminum_TextField.text,
-            //                           self.textView.text,
-            //                           imgString
-            //                           ];
-            
-            //        [newShoppingCart addObject:newShopItem];
-            
-            i++;
-            if (edited) {
-                NSArray *newShopItem = @[prod,
-                                         quan,
-                                         price,
-                                         retouch,
-                                         alumOpt,
-                                         instruct,
-                                         imgURL,
-                                         imgTypeFrame];
-                
-                [[self sharedAppDelegate].shoppingCart replaceObjectAtIndex:inPath.row withObject:newShopItem];
-            }
-        }
-    }
 
-//    if (edited) {
-//        //NSLog(@"%@",[self sharedAppDelegate].shoppingCart);
-//        [self sharedAppDelegate].shoppingCart = nil;
-//        [self sharedAppDelegate].shoppingCart = newShoppingCart;
-//        
-//    }
-
+[self performSegueWithIdentifier:@"StartShipping" sender:self];
     
-    [self performSegueWithIdentifier:@"StartShipping" sender:self];
+    
 }
 
 - (void)pickerDoneClicked1:(id)sender {
@@ -287,9 +177,14 @@
     return [self sharedAppDelegate].shoppingCart.count;
 }
 
-
+NSInteger numberOfPrints;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row == 0) {
+        numberOfPrints = 0;
+        self.total_Outlet.title = @"";
+    }
     CartTVCCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cartCell" forIndexPath:indexPath];
+    
     NSArray *array = [[self sharedAppDelegate].shoppingCart objectAtIndex:indexPath.row];
     if (!self.cellArray) {
         self.cellArray = [[NSMutableArray alloc] init];
@@ -326,6 +221,7 @@
     
     int price = [[array objectAtIndex:2] intValue];
     int quan = [[array objectAtIndex:1] intValue];
+    
     int total = price * quan;
     cartTotal = cartTotal + total;
     cell.total_Price.text = [NSString stringWithFormat:@"$%i",total];
@@ -334,7 +230,7 @@
         NSLog(@"Done loading table");
         self.total_Outlet.title = [NSString stringWithFormat:@"$%i",cartTotal];
     }
-    
+    numberOfPrints = numberOfPrints + quan;
     
     
 //    NSData *data = [[NSData alloc]initWithBase64EncodedString:[array objectAtIndex:6] options:NSDataBase64DecodingIgnoreUnknownCharacters];
@@ -492,7 +388,9 @@
     cell.quantity_TextField.tag = indexPath.row;
 
         [self.cellArray addObject:cell];
-    
+    if ([self sharedAppDelegate].shoppingCart.count-1 == indexPath.row) {
+        self.totalPrints.title = [NSString stringWithFormat:@"%li",(long)numberOfPrints];
+    }
 //    if ([self sharedAppDelegate].shoppingCart.count == indexPath.row+1) {
 //        self.total_Outlet.title = [NSString stringWithFormat:@"%i",cartTotal];
 //    }
@@ -665,11 +563,13 @@
 }
 
 NSArray *currentItem;
+NSInteger selectedRow;
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     self.editingImageIndexPath = indexPath;
     currentItem = [[self sharedAppDelegate].shoppingCart objectAtIndex:indexPath.row];
+    selectedRow = indexPath.row;
     edited = YES;
     [self performSegueWithIdentifier:@"EditCartItem" sender:self];
     NSLog(@"");
@@ -1039,12 +939,25 @@ NSArray *currentItem;
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"EditCartItem"]) {
         DetailsTVC *VC = segue.destinationViewController;
-        if (currentItem != nil) {
-            VC.currentItemToEdit = currentItem;
-        }
+        VC.delegate = self;
+        VC.currentItemToEdit = currentItem;
+        VC.selectedRow = selectedRow;
         
+        
+    }
+    
+    if ([segue.identifier isEqualToString:@"StartShipping"]) {
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"Cancel", returnbuttontitle) style:     UIBarButtonItemStyleBordered target:nil action:nil];
+        self.navigationItem.backBarButtonItem = backButton;
     }
 }
 
+
+- (void)editedCartItem{
+    NSLog(@"Got here");
+    [self.tableView reloadData];
+    [self.navigationController popViewControllerAnimated:YES];
+    
+}
 
 @end

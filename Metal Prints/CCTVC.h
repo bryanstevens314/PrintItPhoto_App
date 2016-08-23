@@ -10,6 +10,7 @@
 
 @interface CCTVC : UITableViewController
 + (CCTVC *)sharedCCTVC;
+@property (weak, nonatomic) IBOutlet UIView *tableContentView1;
 - (IBAction)BillingSameAsShipping:(id)sender;
 
 @property (nonatomic)BOOL BillingPresenting;

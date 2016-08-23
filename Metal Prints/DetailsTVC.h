@@ -10,7 +10,17 @@
 #import "NonCopyPasteTextField.h"
 #import "ImageCropView.h"
 
+@class DetailsTVC;
+
+@protocol DetailsTVCDelegate
+
+- (void)editedCartItem;
+-(void)addedCartItem;
+
+@end
+
 @interface DetailsTVC : UITableViewController<UIPickerViewDelegate,UIPickerViewDataSource,UIImagePickerControllerDelegate,ImageCropViewControllerDelegate, UINavigationControllerDelegate>
+@property (weak, nonatomic) id<DetailsTVCDelegate> delegate;
 
 + (DetailsTVC *)sharedDetailsTVCInstance;
 - (IBAction)camera:(id)sender;
@@ -24,9 +34,10 @@
 @property (retain,nonatomic) NSIndexPath *selectedImageIndex;
 @property (retain,nonatomic) UIImage *currentImage;
 @property (retain,nonatomic) NSArray *currentImageArray;
+@property (retain,nonatomic) NSArray *currentProductArray1;
 @property (nonatomic) BOOL startingFromHighlightedImage;
 @property (nonatomic)NSInteger selectedRow;
-@property (nonatomic)NSInteger selectedSection;
+@property (nonatomic)NSInteger selectedSection1;
 @property (weak, nonatomic) IBOutlet NonCopyPasteTextField *Retouching_TextField;
 @property (weak, nonatomic) IBOutlet UITextField *Instructions_TextField;
 @property (weak, nonatomic) IBOutlet NonCopyPasteTextField *For_Aluminum_TextField;

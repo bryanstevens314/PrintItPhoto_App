@@ -8,15 +8,23 @@
 
 #import <UIKit/UIKit.h>
 #import "ProductCategoryCell.h"
-#import "ProductCollectionViewController.h"
-#import "Front_EndVC.h"
+
+@class ProductCategorySelectionCollection;
+
+@protocol ProductCategoryDelegate
+
+- (void)selectedCategoryWithSection:(NSInteger)section;
+
+@end
 
 @interface ProductCategorySelectionCollection : UICollectionViewController <UIGestureRecognizerDelegate>{
     BOOL displayingProducts;
     BOOL finished;
 }
+@property (weak, nonatomic) id<ProductCategoryDelegate> delegate;
 
 + (ProductCategorySelectionCollection *)sharedProductCategorySelectionCollection;
+
 -(void)PanGestureInitiated;
 
 

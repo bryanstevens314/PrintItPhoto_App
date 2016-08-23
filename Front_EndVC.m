@@ -8,13 +8,14 @@
 
 #import "Front_EndVC.h"
 #import "OrderTVC.h"
-#import "DetailsTVC.h"
+
 #import "AppDelegate.h"
 @interface Front_EndVC (){
 
 }
 @property(nonatomic) NSInteger selectedProduct;
 @property(nonatomic) NSInteger selectedProductSection;
+@property(nonatomic) NSArray* currentArray1;
 @end
 
 @implementation Front_EndVC
@@ -68,23 +69,25 @@
     UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:nil];
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
     [self.navigationItem setTitle:@"Store"];
+    
+    
 
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
+
     ProductCategorySelectionCollection *collView = [ProductCategorySelectionCollection sharedProductCategorySelectionCollection];
-    
-    ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
-    productCollectionVC.currentProductArray = [self sharedAppDelegate].AluminumProductArray;
-    
-    [self.collectionViewView addSubview:collView.collectionView];
+
+    collView.delegate = self;
+    [self.view addSubview:collView.collectionView];
 }
 
 
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewWillAppear:YES];
+
 
 }
 - (void)Settings {
@@ -103,7 +106,9 @@
         NSLog(@"preparing segue");
         DetailsTVC *order = segue.destinationViewController;
         order.selectedRow = self.selectedProduct;
-        order.selectedSection = self.selectedProductSection;
+        order.selectedSection1 = self.selectedProductSection;
+        order.currentProductArray1 = self.currentArray1;
+        order.delegate = self;
         UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"Cancel", returnbuttontitle) style:     UIBarButtonItemStyleBordered target:nil action:nil];
         self.navigationItem.backBarButtonItem = backButton;
         
@@ -111,6 +116,11 @@
     }
 }
 
+
+-(void)addedCartItem{
+    [self.navigationController popViewControllerAnimated:YES];
+    
+}
 
 - (IBAction)ShoppingCartSelected:(id)sender {
 
@@ -154,10 +164,11 @@
 }
 
 
-- (void)ProductSelectedWithRow:(NSInteger)row andSection:(NSInteger)section{
+- (void)ProductSelectedWithRow:(NSInteger)row Section:(NSInteger)section andArray:(NSArray*)curArray {
     NSLog(@"Product selected");
     self.selectedProduct = row;
     self.selectedProductSection = section;
+    self.currentArray1 = curArray;
     [self performSegueWithIdentifier:@"StartOrder" sender:self];
 }
 
@@ -166,6 +177,58 @@
     ProductCategorySelectionCollection *collView = [ProductCategorySelectionCollection sharedProductCategorySelectionCollection];
     //[collView.collectionView removeFromSuperview];
 
+}
+
+- (void)selectedCategoryWithSection:(NSInteger)section{
+    if (section == 0) {
+        NSLog(@"Aluminum");
+        
+        ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
+        productCollectionVC.delegate = self;
+        productCollectionVC.currentProductArray = [self sharedAppDelegate].AluminumProductArray;
+        productCollectionVC.selectedSection = section;
+        [productCollectionVC.collectionView reloadData];
+        productCollectionVC.collectionView.frame = CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
+         [self.view addSubview:productCollectionVC.collectionView];
+        [UIView animateWithDuration:0.2f animations:^{
+            productCollectionVC.collectionView.frame = CGRectOffset(productCollectionVC.collectionView.frame, -self.view.frame.size.width, 0);
+        }];
+       
+        //[self.collectionContainer bringSubviewToFront:productCollectionVC.collectionView];
+    }
+    if (section == 1) {
+        ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
+        productCollectionVC.currentProductArray = [self sharedAppDelegate].WoodenProductArray;
+        productCollectionVC.selectedSection = section;
+        [productCollectionVC.collectionView reloadData];
+        productCollectionVC.collectionView.frame = CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
+        [self.view addSubview:productCollectionVC.collectionView];
+        [UIView animateWithDuration:0.2f animations:^{
+            productCollectionVC.collectionView.frame = CGRectOffset(productCollectionVC.collectionView.frame, -self.view.frame.size.width, 0);
+        }];
+    }
+    if (section == 2) {
+        ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
+        productCollectionVC.currentProductArray = [self sharedAppDelegate].MugProductArray;
+        productCollectionVC.selectedSection = section;
+        [productCollectionVC.collectionView reloadData];
+        productCollectionVC.collectionView.frame = CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
+        [self.view addSubview:productCollectionVC.collectionView];
+        [UIView animateWithDuration:0.2f animations:^{
+            productCollectionVC.collectionView.frame = CGRectOffset(productCollectionVC.collectionView.frame, -self.view.frame.size.width, 0);
+        }];
+    }
+    if (section == 3) {
+        ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
+        productCollectionVC.currentProductArray = [self sharedAppDelegate].TileProductArray;
+        productCollectionVC.selectedSection = section;
+        [productCollectionVC.collectionView reloadData];
+        productCollectionVC.collectionView.frame = CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
+        [self.view addSubview:productCollectionVC.collectionView];
+        [UIView animateWithDuration:0.2f animations:^{
+            productCollectionVC.collectionView.frame = CGRectOffset(productCollectionVC.collectionView.frame, -self.view.frame.size.width, 0);
+        }];
+    }
 }
 
 - (IBAction)PanGesture:(id)sender {

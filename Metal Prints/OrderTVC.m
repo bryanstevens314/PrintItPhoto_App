@@ -48,7 +48,9 @@
     // Dispose of any resources that can be recreated.
 }
 
-
+-(void)cropImage{
+    
+}
 
 
 - (void)camera
@@ -191,6 +193,11 @@
 -(void)handleTap:(UIGestureRecognizer *)sender{
     UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"" message:@""preferredStyle:UIAlertControllerStyleActionSheet];
     
+    UIAlertAction *cropAction = [UIAlertAction actionWithTitle:@"Crop Image"
+                                                            style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                [self cropImage];
+                                                            }]; // 2
+    
     UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"Take Photo"
                                                            style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                                [self camera];
@@ -200,9 +207,11 @@
                                                             style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                                 [self library];
                                                             }]; // 2
+    [cropAction setValue:[[UIImage imageNamed:@"camera.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forKey:@"image"];
     [cameraAction setValue:[[UIImage imageNamed:@"camera.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forKey:@"image"];
     [libraryAction setValue:[[UIImage imageNamed:@"photo icon.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]   forKey:@"image"];
     
+    [alert2 addAction:cropAction];
     [alert2 addAction:cameraAction];
     [alert2 addAction:libraryAction];
     

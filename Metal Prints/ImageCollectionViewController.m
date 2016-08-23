@@ -79,26 +79,27 @@ static NSString * const reuseIdentifier = @"Cell";
     self.collectionView.backgroundColor = [UIColor whiteColor];
     self.toggleOutlet.tintColor = [UIColor lightGrayColor];
     
-    if ([[NSFileManager defaultManager] fileExistsAtPath:[self archiveHighlightedImages]]) {
-        [self sharedAppDelegate].highlightedArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archiveHighlightedImages]];
-    }
+//    if ([[NSFileManager defaultManager] fileExistsAtPath:[self archiveHighlightedImages]]) {
+//        [self sharedAppDelegate].highlightedArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archiveHighlightedImages]];
+//    }
+//
+//    
+//    if (![[NSFileManager defaultManager] fileExistsAtPath:[self archiveHighlightedImages]]) {
+//        self.mutableHighlightedArray = [[NSMutableArray alloc] init];
+//    }
+//    else{
+//        self.mutableHighlightedArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archiveHighlightedImages]];
+//    }
+//    
+//    if (![[NSFileManager defaultManager] fileExistsAtPath:[self archiveHighlightedImagesArray]]) {
+//        self.mutableHighlightedImageArray = [[NSMutableArray alloc] init];
+//    }
+//    else{
+//        self.mutableHighlightedImageArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archiveHighlightedImagesArray]];
+//    }
+//    if (self.mutableImageArray == nil){
+//        self.mutableImageArray = [[NSMutableArray alloc] init];
     int x = 0;
-    
-    if (![[NSFileManager defaultManager] fileExistsAtPath:[self archiveHighlightedImages]]) {
-        self.mutableHighlightedArray = [[NSMutableArray alloc] init];
-    }
-    else{
-        self.mutableHighlightedArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archiveHighlightedImages]];
-    }
-    
-    if (![[NSFileManager defaultManager] fileExistsAtPath:[self archiveHighlightedImagesArray]]) {
-        self.mutableHighlightedImageArray = [[NSMutableArray alloc] init];
-    }
-    else{
-        self.mutableHighlightedImageArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archiveHighlightedImagesArray]];
-    }
-    if (self.mutableImageArray == nil){
-        self.mutableImageArray = [[NSMutableArray alloc] init];
         loadingImages = YES;
         for (NSURL *imgURL in [self sharedAppDelegate].phoneImageArray) {
             
@@ -138,7 +139,7 @@ static NSString * const reuseIdentifier = @"Cell";
                         NSLog(@"operation was not successfull!");
                     }];
         }
-    }
+    
 
 
     
@@ -148,15 +149,15 @@ UIActivityIndicatorView *activityIndicator;
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     
-    if (loadingImages == YES) {
-        activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        activityIndicator.frame = CGRectMake(0.0, 0.0, 40, 40.0);
-        activityIndicator.center = self.view.center;
-        CGAffineTransform transform = CGAffineTransformMakeScale(1.25f, 1.25f);
-        activityIndicator.transform = transform;
-        [self.view addSubview: activityIndicator];
-        [activityIndicator startAnimating];
-    }
+//    if (loadingImages == YES) {
+//        activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+//        activityIndicator.frame = CGRectMake(0.0, 0.0, 40, 40.0);
+//        activityIndicator.center = self.view.center;
+//        CGAffineTransform transform = CGAffineTransformMakeScale(1.25f, 1.25f);
+//        activityIndicator.transform = transform;
+//        [self.view addSubview: activityIndicator];
+//        [activityIndicator startAnimating];
+//    }
 
 }
 
@@ -231,13 +232,13 @@ NSInteger numberOfCells = 100;
 //            numberOfCells = numberOfCells - sub;
 //        }
 //    }
-    if (loadingImages == YES) {
-        numberOfCells = 0;
-    }
-    else{
-        numberOfCells = self.mutableImageArray.count;
-    }
-    return numberOfCells;
+//    if (loadingImages == YES) {
+//        numberOfCells = 0;
+//    }
+//    else{
+//        numberOfCells = self.mutableImageArray.count;
+//    }
+    return [self sharedAppDelegate].phoneImageArray.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -245,9 +246,10 @@ NSInteger numberOfCells = 100;
     static NSString *identifier = @"Cell";
     
     ImageCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-    NSArray *thumbArray = [self.mutableImageArray objectAtIndex:indexPath.row];
-    UIImage *thumbImg = [thumbArray objectAtIndex:0];
-    NSURL *thumbURL = [thumbArray objectAtIndex:1];
+    NSArray *thumbArray = [[self sharedAppDelegate].phoneImageArray objectAtIndex:indexPath.row];
+    NSURL *thumbURL  = [thumbArray objectAtIndex:0];
+    UIImage *thumbImg = [thumbArray objectAtIndex:1];
+    NSString *highlighted = [thumbArray objectAtIndex:2];
 //    long division = thumbImg.size.width/thumbImg.size.height;
 //    NSLog(@"Image ratio %f",division);
 //    if (division == 0.742690) {
@@ -304,43 +306,31 @@ NSInteger numberOfCells = 100;
         [cell.cellImageView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
         cell.cellImageView.image = thumbImg;
     }
-    
-    //                     if (thumbImg.size.width == thumbImg.size.height) {
-    //                         [cell.cellImageView setFrame:CGRectMake(0, 0, thumbImg.size.width/2.2, thumbImg.size.height/2.2)];
-    //                     }
-    //                     else{
-    //                         [cell.cellImageView setFrame:CGRectMake(0, 0, thumbImg.size.width/3.1, thumbImg.size.height/3.1)];
-    //                     }
-    
-    
-    //                     [cell.contentView.layer setBorderColor: [[UIColor blackColor] CGColor]];
-    //                     [cell.contentView.layer setBorderWidth: 1];
-    NSArray *selectedArray = [self.mutableHighlightedArray objectAtIndex:indexPath.row];
-    NSString *selected = [selectedArray objectAtIndex:0];
-            if ([selected isEqualToString:@"Selected"]) {
-                
-                [cell.cellImageView.layer setBorderColor: [[UIColor blueColor] CGColor]];
-                [cell.cellImageView.layer setBorderWidth: 3];
-                cell.cellIsHighlighted = YES;
-            }
-            else{
-                [cell.cellImageView.layer setBorderColor: [[UIColor clearColor] CGColor]];
-                [cell.cellImageView.layer setBorderWidth: 3];
-                cell.cellIsHighlighted = NO;
-            }
 
-
-
-    if ([self sharedAppDelegate].imagesInCartArray.count != 0) {
-        NSIndexPath *iPath = [[self sharedAppDelegate].imagesInCartArray objectAtIndex:indexPath.row];
-        if (iPath.row == indexPath.row) {
-            
-            [cell.inCartCheck setFrame:CGRectMake(0, 0, 30, 30)];
-            [cell.inCartCheck setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
-            UIImage *img = [UIImage imageNamed:@"MW-Icon-CheckMark.svg.png"];
-            cell.inCartCheck.image = img;
-        }
+    if ([highlighted isEqualToString:@"YES"]) {
+        
+        [cell.cellImageView.layer setBorderColor: [[UIColor blueColor] CGColor]];
+        [cell.cellImageView.layer setBorderWidth: 3];
+        cell.cellIsHighlighted = YES;
     }
+    else{
+        [cell.cellImageView.layer setBorderColor: [[UIColor clearColor] CGColor]];
+        [cell.cellImageView.layer setBorderWidth: 3];
+        cell.cellIsHighlighted = NO;
+    }
+
+
+
+//    if ([self sharedAppDelegate].imagesInCartArray.count != 0) {
+//        NSIndexPath *iPath = [[self sharedAppDelegate].imagesInCartArray objectAtIndex:indexPath.row];
+//        if (iPath.row == indexPath.row) {
+//            
+//            [cell.inCartCheck setFrame:CGRectMake(0, 0, 30, 30)];
+//            [cell.inCartCheck setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
+//            UIImage *img = [UIImage imageNamed:@"MW-Icon-CheckMark.svg.png"];
+//            cell.inCartCheck.image = img;
+//        }
+//    }
     return cell;
 
 }
@@ -400,29 +390,11 @@ NSIndexPath *selectedIndex;
             [cell.cellImageView.layer setBorderColor: [[UIColor blueColor] CGColor]];
             [cell.cellImageView.layer setBorderWidth: 3];
             cell.cellIsHighlighted = YES;
-            if (self.mutableHighlightedImageArray.count == 0) {
-                cell.highlightedArrayIndex = 0;
-            }
-            else{
-                cell.highlightedArrayIndex = self.mutableHighlightedImageArray.count;
-            }
-            if (![self sharedAppDelegate].highlightedArray) {
-                [self sharedAppDelegate].highlightedArray = [[NSMutableArray alloc] init];
-            }
-            if (!self.mutableHighlightedImageArray) {
-                self.mutableHighlightedImageArray = [[NSMutableArray alloc] init];
-            }
-            NSArray *cellArray = [self.mutableImageArray objectAtIndex:indexPath.row];
-            NSArray *highlightedImageArray = @[[cellArray objectAtIndex:0],[cellArray objectAtIndex:1],];
-            [self.mutableHighlightedImageArray addObject:highlightedImageArray];
-            
-            [self.mutableHighlightedArray replaceObjectAtIndex:indexPath.row withObject:@"Selected"];
 
-            [[self sharedAppDelegate].highlightedArray addObject:highlightedImageArray];
-            [self.mutableImageArray replaceObjectAtIndex:indexPath.row withObject:highlightedImageArray];
-            
-            [NSKeyedArchiver archiveRootObject:self.mutableHighlightedArray toFile:[self archiveHighlightedImages]];
-            [NSKeyedArchiver archiveRootObject:self.mutableHighlightedImageArray toFile:[self archiveHighlightedImagesArray]];
+            NSArray *cellArray = [[self sharedAppDelegate].phoneImageArray objectAtIndex:indexPath.row];
+            NSArray *highlightedImageArray = @[[cellArray objectAtIndex:0],[cellArray objectAtIndex:1],@"YES"];
+
+            [[self sharedAppDelegate].phoneImageArray replaceObjectAtIndex:indexPath.row withObject:highlightedImageArray];
         }
 
 

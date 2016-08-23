@@ -10,6 +10,7 @@
 
 @interface ActualCCTVC : UITableViewController<UIPickerViewDelegate,UIPickerViewDataSource>
 + (ActualCCTVC *)sharedActualCCTVC;
+@property (weak, nonatomic) IBOutlet UIView *tableContentsView;
 
 @property (nonatomic)BOOL CCPresenting;
 @property (weak, nonatomic) IBOutlet UITextField *CCN;

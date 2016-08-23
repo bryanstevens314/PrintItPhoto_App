@@ -74,6 +74,13 @@
 		FB5047F61D5D64D100B2E223 /* broadway-coffee-mug.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FB5047F51D5D64D100B2E223 /* broadway-coffee-mug.jpg */; };
 		FB5047F81D5D64EB00B2E223 /* d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FB5047F71D5D64EB00B2E223 /* d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg */; };
 		FB5047FB1D5E94B500B2E223 /* ShippingInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5047FA1D5E94B500B2E223 /* ShippingInfoVC.m */; };
+		FBBF087E1D6A1A3900BF5332 /* rounded-512.png in Resources */ = {isa = PBXBuildFile; fileRef = FBBF087D1D6A1A3900BF5332 /* rounded-512.png */; };
+		FBF301C11D6A445B0076C070 /* UserObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FBF301C01D6A445B0076C070 /* UserObject.m */; };
+		FBF301C41D6A449B0076C070 /* UserShipping.m in Sources */ = {isa = PBXBuildFile; fileRef = FBF301C31D6A449B0076C070 /* UserShipping.m */; };
+		FBF301C71D6A44A60076C070 /* UserBilling.m in Sources */ = {isa = PBXBuildFile; fileRef = FBF301C61D6A44A60076C070 /* UserBilling.m */; };
+		FBF301CA1D6A45980076C070 /* UserPayment.m in Sources */ = {isa = PBXBuildFile; fileRef = FBF301C91D6A45980076C070 /* UserPayment.m */; };
+		FBF301CE1D6B2F460076C070 /* BillingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = FBF301CD1D6B2F460076C070 /* BillingVC.m */; };
+		FBF301D31D6B2FCE0076C070 /* PaymentVC.m in Sources */ = {isa = PBXBuildFile; fileRef = FBF301D21D6B2FCE0076C070 /* PaymentVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -197,6 +204,19 @@
 		FB5047F71D5D64EB00B2E223 /* d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg; sourceTree = "<group>"; };
 		FB5047F91D5E94B500B2E223 /* ShippingInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShippingInfoVC.h; sourceTree = "<group>"; };
 		FB5047FA1D5E94B500B2E223 /* ShippingInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShippingInfoVC.m; sourceTree = "<group>"; };
+		FBBF087D1D6A1A3900BF5332 /* rounded-512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rounded-512.png"; sourceTree = "<group>"; };
+		FBF301BF1D6A445B0076C070 /* UserObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserObject.h; sourceTree = "<group>"; };
+		FBF301C01D6A445B0076C070 /* UserObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserObject.m; sourceTree = "<group>"; };
+		FBF301C21D6A449B0076C070 /* UserShipping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserShipping.h; sourceTree = "<group>"; };
+		FBF301C31D6A449B0076C070 /* UserShipping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserShipping.m; sourceTree = "<group>"; };
+		FBF301C51D6A44A60076C070 /* UserBilling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserBilling.h; sourceTree = "<group>"; };
+		FBF301C61D6A44A60076C070 /* UserBilling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserBilling.m; sourceTree = "<group>"; };
+		FBF301C81D6A45980076C070 /* UserPayment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserPayment.h; sourceTree = "<group>"; };
+		FBF301C91D6A45980076C070 /* UserPayment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserPayment.m; sourceTree = "<group>"; };
+		FBF301CC1D6B2F460076C070 /* BillingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BillingVC.h; sourceTree = "<group>"; };
+		FBF301CD1D6B2F460076C070 /* BillingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BillingVC.m; sourceTree = "<group>"; };
+		FBF301D11D6B2FCE0076C070 /* PaymentVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaymentVC.h; sourceTree = "<group>"; };
+		FBF301D21D6B2FCE0076C070 /* PaymentVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaymentVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -264,6 +284,7 @@
 			children = (
 				932F2EA31CC88BD10050094A /* LaunchScreen.storyboard */,
 				932F2E9E1CC88BD10050094A /* Main.storyboard */,
+				FBF301CB1D6ABBD90076C070 /* User */,
 				932F2E981CC88BD10050094A /* AppDelegate.h */,
 				932F2E991CC88BD10050094A /* AppDelegate.m */,
 				9369C8B41D3C2F0100FCD2CC /* TabController.h */,
@@ -290,14 +311,8 @@
 				9369C8CA1D3DC21800FCD2CC /* ImageCollectionViewCell.m */,
 				93B4DECC1CCF259700C6E07A /* ShoppingCartTVC.h */,
 				93B4DECD1CCF259700C6E07A /* ShoppingCartTVC.m */,
-				FB5047F91D5E94B500B2E223 /* ShippingInfoVC.h */,
-				FB5047FA1D5E94B500B2E223 /* ShippingInfoVC.m */,
-				932F2ED61CC897FC0050094A /* ShippingTVC.h */,
-				932F2ED71CC897FC0050094A /* ShippingTVC.m */,
-				932F2ED31CC897ED0050094A /* CCTVC.h */,
-				932F2ED41CC897ED0050094A /* CCTVC.m */,
-				938660201CDFD7A100C1F208 /* ActualCCTVC.h */,
-				938660211CDFD7A100C1F208 /* ActualCCTVC.m */,
+				FBF301D01D6B2F730076C070 /* Order VCs */,
+				FBF301CF1D6B2F580076C070 /* Order TableViews */,
 				932F2ED91CC898100050094A /* OrderPlacedVC.h */,
 				932F2EDA1CC898100050094A /* OrderPlacedVC.m */,
 				930CA6951D1CBE29003C6864 /* UserAccountTVC.h */,
@@ -323,6 +338,7 @@
 		932F2E951CC88BD10050094A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				FBBF087D1D6A1A3900BF5332 /* rounded-512.png */,
 				FB5047F71D5D64EB00B2E223 /* d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg */,
 				FB5047F51D5D64D100B2E223 /* broadway-coffee-mug.jpg */,
 				FB5047F31D5D649C00B2E223 /* wildtextures-old-wood-original-file.jpg */,
@@ -409,6 +425,47 @@
 				932F2EE01CC89B4F0050094A /* ProductTVCCell.m */,
 			);
 			name = Cells;
+			sourceTree = "<group>";
+		};
+		FBF301CB1D6ABBD90076C070 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				FBF301BF1D6A445B0076C070 /* UserObject.h */,
+				FBF301C01D6A445B0076C070 /* UserObject.m */,
+				FBF301C21D6A449B0076C070 /* UserShipping.h */,
+				FBF301C31D6A449B0076C070 /* UserShipping.m */,
+				FBF301C51D6A44A60076C070 /* UserBilling.h */,
+				FBF301C61D6A44A60076C070 /* UserBilling.m */,
+				FBF301C81D6A45980076C070 /* UserPayment.h */,
+				FBF301C91D6A45980076C070 /* UserPayment.m */,
+			);
+			name = User;
+			sourceTree = "<group>";
+		};
+		FBF301CF1D6B2F580076C070 /* Order TableViews */ = {
+			isa = PBXGroup;
+			children = (
+				932F2ED61CC897FC0050094A /* ShippingTVC.h */,
+				932F2ED71CC897FC0050094A /* ShippingTVC.m */,
+				932F2ED31CC897ED0050094A /* CCTVC.h */,
+				932F2ED41CC897ED0050094A /* CCTVC.m */,
+				938660201CDFD7A100C1F208 /* ActualCCTVC.h */,
+				938660211CDFD7A100C1F208 /* ActualCCTVC.m */,
+			);
+			name = "Order TableViews";
+			sourceTree = "<group>";
+		};
+		FBF301D01D6B2F730076C070 /* Order VCs */ = {
+			isa = PBXGroup;
+			children = (
+				FB5047F91D5E94B500B2E223 /* ShippingInfoVC.h */,
+				FB5047FA1D5E94B500B2E223 /* ShippingInfoVC.m */,
+				FBF301CC1D6B2F460076C070 /* BillingVC.h */,
+				FBF301CD1D6B2F460076C070 /* BillingVC.m */,
+				FBF301D11D6B2FCE0076C070 /* PaymentVC.h */,
+				FBF301D21D6B2FCE0076C070 /* PaymentVC.m */,
+			);
+			name = "Order VCs";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -527,6 +584,7 @@
 				9369C8C21D3C389900FCD2CC /* shop-icon.png in Resources */,
 				FB5047F81D5D64EB00B2E223 /* d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg in Resources */,
 				932F2EA21CC88BD10050094A /* Assets.xcassets in Resources */,
+				FBBF087E1D6A1A3900BF5332 /* rounded-512.png in Resources */,
 				932F2EA01CC88BD10050094A /* Main.storyboard in Resources */,
 				932F2F161CC9D5E80050094A /* photos_on_aluminum.jpg in Resources */,
 				9369C8D11D3F250A00FCD2CC /* MW-Icon-CheckMark.svg.png in Resources */,
@@ -565,6 +623,7 @@
 				9399C4871CF8CBDD00818E10 /* DetailsTVCCell.m in Sources */,
 				932F2EDB1CC898100050094A /* OrderPlacedVC.m in Sources */,
 				932F2ED21CC894C70050094A /* DetailsTVC.m in Sources */,
+				FBF301C71D6A44A60076C070 /* UserBilling.m in Sources */,
 				FB35D0EB1D5AE03100BCD6C6 /* ProductCategorySelectionCollection.m in Sources */,
 				932F2E9D1CC88BD10050094A /* ViewController.m in Sources */,
 				9369C8C81D3C951B00FCD2CC /* FXBlurView.m in Sources */,
@@ -577,8 +636,11 @@
 				932F2ED51CC897ED0050094A /* CCTVC.m in Sources */,
 				FB35D0F41D5BB64200BCD6C6 /* ProductCollectionViewCell.m in Sources */,
 				FB35D0EE1D5AE3C000BCD6C6 /* ProductCategoryCell.m in Sources */,
+				FBF301CA1D6A45980076C070 /* UserPayment.m in Sources */,
+				FBF301CE1D6B2F460076C070 /* BillingVC.m in Sources */,
 				932F2EDE1CC8981D0050094A /* ProductsTVC.m in Sources */,
 				934906591CCDAD2C00E69EB4 /* Front_EndVC.m in Sources */,
+				FBF301D31D6B2FCE0076C070 /* PaymentVC.m in Sources */,
 				932F2ECA1CC88C860050094A /* OrderTVC.m in Sources */,
 				93C8CBDD1D1EFECB00EA4C5A /* ImageCollectionViewController.m in Sources */,
 				932FCB651CF4059D00CF8869 /* TestVC.m in Sources */,
@@ -588,7 +650,9 @@
 				932F2E971CC88BD10050094A /* main.m in Sources */,
 				9369C8CB1D3DC21900FCD2CC /* ImageCollectionViewCell.m in Sources */,
 				9386601F1CDEC7B300C1F208 /* NonCopyPasteTextField.m in Sources */,
+				FBF301C11D6A445B0076C070 /* UserObject.m in Sources */,
 				FB5047FB1D5E94B500B2E223 /* ShippingInfoVC.m in Sources */,
+				FBF301C41D6A449B0076C070 /* UserShipping.m in Sources */,
 				93B4DECE1CCF259700C6E07A /* ShoppingCartTVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -32,26 +32,26 @@
     
     // Override point for customization after application launch.
 [Stripe setDefaultPublishableKey:@"pk_test_ksluG61goDFXFGzyXZiRriat"];
-    self.AluminumProductArray = @[@[@"4x4",@"12"],
-                                 @[@"5x5",@"15"],
-                                 @[@"5x7",@"18"],
-                                 @[@"8x10",@"26"],
-                                 @[@"5x10",@"22"],
-                                 @[@"5x17",@"30"],
-                                 @[@"8x12",@"30"],
-                                 @[@"11x14",@"48"],
-                                 @[@"11x17",@"48"],
-                                 @[@"12x18",@"54"],];
+    self.AluminumProductArray = @[@[@"4x4 Aluminum",@"12"],
+                                 @[@"5x5 Aluminum",@"15"],
+                                 @[@"5x7 Aluminum",@"18"],
+                                 @[@"8x10 Aluminum",@"26"],
+                                 @[@"5x10 Aluminum",@"22"],
+                                 @[@"5x17 Aluminum",@"30"],
+                                 @[@"8x12 Aluminum",@"30"],
+                                 @[@"11x14 Aluminum",@"48"],
+                                 @[@"11x17 Aluminum",@"48"],
+                                 @[@"12x18 Aluminum",@"54"],];
     
-    self.WoodenProductArray = @[@[@"8x8",@"36"],
-                               @[@"8x10",@"40"],
-                               @[@"10x10",@"44"],
-                               @[@"11x14",@"48"],];
+    self.WoodenProductArray = @[@[@"8x8 Wood",@"36"],
+                               @[@"8x10 Wood",@"40"],
+                               @[@"10x10 Wood",@"44"],
+                               @[@"11x14 Wood",@"48"],];
     
-    self.MugProductArray = @[@[@"11oz",@"12"],
-                             @[@"15oz",@"14"],];
+    self.MugProductArray = @[@[@"11oz Mug",@"12"],
+                             @[@"15oz Mug",@"14"],];
     
-    self.TileProductArray = @[@[@"8x8 Wood",@"36"],];
+    self.TileProductArray = @[@[@"8x8 Tile",@"36"],];
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:[self archivePathShoppingCart]]) {
         self.shoppingCart = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archivePathShoppingCart]];
@@ -91,7 +91,7 @@
         self.mutableArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archiveImageArray]];
     }
     else{
-        [self getAllPhotos];
+        //[self getAllPhotos];
     }
     return YES;
 }
@@ -101,7 +101,7 @@ NSInteger count;
 -(void)getAllPhotos{
     
     //NSArray  *imageArray=[[NSArray alloc] init];
-    self.mutableArray =[[NSMutableArray alloc]init];
+    self.phoneImageArray =[[NSMutableArray alloc]init];
     NSMutableArray* assetURLDictionaries = [[NSMutableArray alloc] init];
     
     ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
@@ -114,11 +114,12 @@ NSInteger count;
                 // NSLog(@"assestlibrarymurari%@",assetURLDictionaries);
                 
                 NSURL *url= (NSURL*) [[result defaultRepresentation]url];
-                //UIImage *thumbImg = [UIImage imageWithCGImage:[result aspectRatioThumbnail]];
+                UIImage *thumbImg = [UIImage imageWithCGImage:[result aspectRatioThumbnail]];
                 NSLog(@"found image");
                 self.totalImageCount++;
                 //NSArray *anArray = @[thumbImg,url,];
-                [self.mutableArray addObject:url];
+                NSArray *imgArray = @[url,thumbImg,@"NO"];
+                [self.mutableArray addObject:imgArray];
                 
                 //                if (counting == 25) {
                 //                    counting = 0;
@@ -137,8 +138,7 @@ NSInteger count;
             }
         }
         else{
-            self.phoneImageArray = [[NSArray alloc] initWithArray:self.mutableArray];
-            //[self allPhotosCollected:mutableArray];
+            
         }
     };
     

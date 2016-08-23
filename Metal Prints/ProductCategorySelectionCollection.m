@@ -59,20 +59,20 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)PanGestureInitiated:(id)sender{
     NSLog(@"Panned");
-    if (displayingProducts == YES) {
-        finished = NO;
-        displayingProducts = NO;
-        ProductCollectionViewController *prodColl = [ProductCollectionViewController sharedProductCollectionVC];
-        CGRect finalFrame = CGRectMake(self.view.frame.size.width + prodColl.collectionView.frame.size.width, prodColl.collectionView.frame.origin.y, prodColl.collectionView.frame.size.width, prodColl.collectionView.frame.size.height);
-        [UIView animateWithDuration:0.6 animations:^{
-            prodColl.collectionView.frame = finalFrame;
-            
-        } completion:^(BOOL finished1) {
-            finished = YES;
-            [prodColl.collectionView removeFromSuperview];
-            //[self.view removeGestureRecognizer:swipeUpRecognizer];
-        }];
-    }
+//    if (displayingProducts == YES) {
+//        finished = NO;
+//        displayingProducts = NO;
+//        ProductCollectionViewController *prodColl = [ProductCollectionViewController sharedProductCollectionVC];
+//        CGRect finalFrame = CGRectMake(self.view.frame.size.width + prodColl.collectionView.frame.size.width, prodColl.collectionView.frame.origin.y, prodColl.collectionView.frame.size.width, prodColl.collectionView.frame.size.height);
+//        [UIView animateWithDuration:0.6 animations:^{
+//            prodColl.collectionView.frame = finalFrame;
+//            
+//        } completion:^(BOOL finished1) {
+//            finished = YES;
+//            [prodColl.collectionView removeFromSuperview];
+//            //[self.view removeGestureRecognizer:swipeUpRecognizer];
+//        }];
+//    }
 
 
     
@@ -168,39 +168,7 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     displayingProducts = YES;
     if (finished == YES) {
-        if (indexPath.row == 0) {
-            NSLog(@"Aluminum");
-            ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
-            productCollectionVC.currentProductArray = [self sharedAppDelegate].AluminumProductArray;
-            productCollectionVC.selectedIndex = indexPath.row;
-            [productCollectionVC.collectionView setFrame:self.collectionView.frame];
-            [productCollectionVC.collectionView reloadData];
-            [self.view addSubview:productCollectionVC.collectionView];
-        }
-        if (indexPath.row == 1) {
-            ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
-            productCollectionVC.currentProductArray = [self sharedAppDelegate].WoodenProductArray;
-            productCollectionVC.selectedIndex = indexPath.row;
-            [productCollectionVC.collectionView setFrame:self.collectionView.frame];
-            [productCollectionVC.collectionView reloadData];
-            [self.view addSubview:productCollectionVC.collectionView];
-        }
-        if (indexPath.row == 2) {
-            ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
-            productCollectionVC.currentProductArray = [self sharedAppDelegate].MugProductArray;
-            productCollectionVC.selectedIndex = indexPath.row;
-            [productCollectionVC.collectionView setFrame:self.collectionView.frame];
-            [productCollectionVC.collectionView reloadData];
-            [self.view addSubview:productCollectionVC.collectionView];
-        }
-        if (indexPath.row == 3) {
-            ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
-            productCollectionVC.currentProductArray = [self sharedAppDelegate].TileProductArray;
-            productCollectionVC.selectedIndex = indexPath.row;
-            [productCollectionVC.collectionView setFrame:self.collectionView.frame];
-            [productCollectionVC.collectionView reloadData];
-            [self.view addSubview:productCollectionVC.collectionView];
-        }
+        [self.delegate selectedCategoryWithSection:indexPath.row];
     }
 
 }

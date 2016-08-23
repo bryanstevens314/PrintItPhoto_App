@@ -10,6 +10,7 @@
 #import <KinveyKit/KinveyKit.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "TabController.h"
+#import "UserObject.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -28,11 +29,12 @@
 @property (retain, nonatomic)NSString *cartTotal;
 @property (retain, nonatomic) KCSAppdataStore *store;
 @property (retain, nonatomic) TabController *TheTabController;
+@property (retain, nonatomic) UserObject *userSettings;
 @property (nonatomic) BOOL signedIn;
 @property (nonatomic) BOOL newCartItem;
 @property (nonatomic) NSInteger totalImageCount;
 @property (retain, nonatomic) NSMutableArray *mutableArray;
-@property (retain, nonatomic) NSArray *phoneImageArray;
+@property (retain, nonatomic) NSMutableArray *phoneImageArray;
 @property (retain, nonatomic) NSMutableArray *highlightedArray;
 @property (retain, nonatomic) NSMutableArray *imagesInCartArray;
 

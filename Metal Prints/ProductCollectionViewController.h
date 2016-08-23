@@ -10,9 +10,18 @@
 #import "ProductCollectionViewCell.h"
 #import "ProductCategorySelectionCollection.h"
 #import "DetailsTVC.h"
+#import "TabController.h"
+
+@class ProductCollectionViewController;
+
+@protocol ProductCollectionDelegate
+
+- (void)ProductSelectedWithRow:(NSInteger)row Section:(NSInteger)section andArray:(NSArray*)curArray;
+
+@end
 
 @interface ProductCollectionViewController : UICollectionViewController <UIGestureRecognizerDelegate>
-
+@property (weak, nonatomic) id<ProductCollectionDelegate> delegate;
 + (ProductCollectionViewController *)sharedProductCollectionVC;
 
 
