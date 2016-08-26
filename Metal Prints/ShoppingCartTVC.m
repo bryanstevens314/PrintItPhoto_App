@@ -37,11 +37,11 @@
     return (AppDelegate *)[UIApplication sharedApplication].delegate;
 }
 
-UIBarButtonItem *rightBarButtonItem;
+UIBarButtonItem *rightBarButtonItem6;
 - (void)viewDidLoad {
     [super viewDidLoad];
-    rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Check Out" style:UIBarButtonItemStylePlain target:self action:@selector(EnterShipping)];
-    [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
+    rightBarButtonItem6 = [[UIBarButtonItem alloc] initWithTitle:@"Check Out" style:UIBarButtonItemStylePlain target:self action:@selector(EnterShipping)];
+    [self.navigationItem setRightBarButtonItem:rightBarButtonItem6];
     [self.navigationItem setTitle:@"ShoppingCart"];
     
     CGRect rect = self.toolBar.frame;
@@ -71,10 +71,10 @@ UIBarButtonItem *rightBarButtonItem;
     }
     self.total_Outlet.title = [NSString stringWithFormat:@"$%i",cartPrice1];
     if ([self sharedAppDelegate].shoppingCart.count == 0) {
-        rightBarButtonItem.enabled = NO;
+        rightBarButtonItem6.enabled = NO;
     }
     else{
-        rightBarButtonItem.enabled = YES;
+        rightBarButtonItem6.enabled = YES;
     }
 }
 
@@ -126,7 +126,10 @@ UIBarButtonItem *rightBarButtonItem;
                 NSString *stringWithoutSpaces = [self.total_Outlet.title
                                                  stringByReplacingOccurrencesOfString:@"$" withString:@""];
                 int newtotal = [stringWithoutSpaces intValue] - totalToSubtract;
+
                 self.total_Outlet.title = [NSString stringWithFormat:@"$%i",newtotal];
+                numberOfPrints = numberOfPrints - x;
+                self.totalPrints.text = [NSString stringWithFormat@"%fl",numberOfPrints];
             }
             if (sub >= 0) {
                 NSLog(@"adding");
@@ -135,6 +138,8 @@ UIBarButtonItem *rightBarButtonItem;
                                                  stringByReplacingOccurrencesOfString:@"$" withString:@""];
                 int newtotal = [stringWithoutSpaces intValue] + totalToSubtract;
                 self.total_Outlet.title = [NSString stringWithFormat:@"$%i",newtotal];
+                numberOfPrints = numberOfPrints + x;
+                self.totalPrints.text = [NSString stringWithFormat@"%fl",numberOfPrints];
             }
         }
         cell.total_Price.text = [NSString stringWithFormat:@"$%i",total];
@@ -184,7 +189,7 @@ NSInteger numberOfPrints;
         self.total_Outlet.title = @"";
     }
     CartTVCCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cartCell" forIndexPath:indexPath];
-    
+
     NSArray *array = [[self sharedAppDelegate].shoppingCart objectAtIndex:indexPath.row];
     if (!self.cellArray) {
         self.cellArray = [[NSMutableArray alloc] init];
@@ -225,11 +230,7 @@ NSInteger numberOfPrints;
     int total = price * quan;
     cartTotal = cartTotal + total;
     cell.total_Price.text = [NSString stringWithFormat:@"$%i",total];
-    NSLog(@"%i",total);
-    if ([self sharedAppDelegate].shoppingCart.count == indexPath.row+1) {
-        NSLog(@"Done loading table");
-        self.total_Outlet.title = [NSString stringWithFormat:@"$%i",cartTotal];
-    }
+
     numberOfPrints = numberOfPrints + quan;
     
     
@@ -263,12 +264,7 @@ NSInteger numberOfPrints;
                  
                  float division = thumbImg.size.width/thumbImg.size.height;
                  NSLog(@"Image ratio %f",division);
-                 if (division == 0.752941) {
-                     NSLog(@"portrait");
-                     cell.imgType = @"<";
-                     cell.img_View = [[UIImageView alloc] initWithFrame:CGRectMake(10, 32, 102, 136)];
 
-                 }
                  if (division == 1.328125) {
                      NSLog(@"landscape");
                      cell.imgType = @">";
@@ -288,6 +284,13 @@ NSInteger numberOfPrints;
                      cell.imgType = @"=";
                      
                      cell.img_View = [[UIImageView alloc] initWithFrame:CGRectMake(10, 32, 102, 102)];
+                 }
+                 
+                 if (division == 0.752941) {
+                     NSLog(@"portrait");
+                     cell.imgType = @"<";
+                     cell.img_View = [[UIImageView alloc] initWithFrame:CGRectMake(10, 32, 102, 136)];
+                     
                  }
                  cell.imgViewURL = [cartArray objectAtIndex:6];
 
@@ -390,6 +393,7 @@ NSInteger numberOfPrints;
         [self.cellArray addObject:cell];
     if ([self sharedAppDelegate].shoppingCart.count-1 == indexPath.row) {
         self.totalPrints.title = [NSString stringWithFormat:@"%li",(long)numberOfPrints];
+        self.total_Outlet.title = [NSString stringWithFormat:@"$%i",cartTotal];
     }
 //    if ([self sharedAppDelegate].shoppingCart.count == indexPath.row+1) {
 //        self.total_Outlet.title = [NSString stringWithFormat:@"%i",cartTotal];

@@ -10,7 +10,7 @@
 #import "AppDelegate.h"
 
 @interface CCTVC ()
-
+@property (retain, nonatomic) UIToolbar* keyboardDoneButtonView2;
 @end
 
 @implementation CCTVC
@@ -57,33 +57,87 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(Next)];
-    [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
+    UIBarButtonItem *rightBarButtonItem1 = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(Next)];
+    [self.navigationItem setRightBarButtonItem:rightBarButtonItem1];
     [self.navigationItem setTitle:@"Billing"];
     self.BillingSameAsShippingOutlet.on  = NO;
+    
+    self.keyboardDoneButtonView2 = [[UIToolbar alloc] init];
+    self.keyboardDoneButtonView2.barStyle = UIBarStyleDefault;
+    self.keyboardDoneButtonView2.translucent = YES;
+    self.keyboardDoneButtonView2.tintColor = nil;
+    [self.keyboardDoneButtonView2 sizeToFit];
+    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Next"
+                                                                   style:UIBarButtonItemStyleDone target:self
+                                                                  action:@selector(NextClicked1:)];
+    
+    [self.keyboardDoneButtonView2 setItems:[NSArray arrayWithObjects:flexSpace,doneButton, nil]];
+    
+    self.firstName.inputAccessoryView = self.keyboardDoneButtonView2;
+    
+    self.streetAddress.inputAccessoryView = self.keyboardDoneButtonView2;
+    
+    self.apt.inputAccessoryView = self.keyboardDoneButtonView2;
+    
+    self.City.inputAccessoryView = self.keyboardDoneButtonView2;
+    
+    self.zip.inputAccessoryView = self.keyboardDoneButtonView2;
+    
+    self.state.inputAccessoryView = self.keyboardDoneButtonView2;
 }
 
 
--(void)Next{
-    NSString *first = self.firstName.text;
-    NSString *last = self.LastName.text;
-    NSString *street = self.streetAddress.text;
-    NSString *aptNumber = self.apt.text;
-    NSString *cityString = self.City.text;
-    NSString *zipString = self.zip.text;
-    NSString *stateString = self.state.text;
-    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
-                          first,@"name",
-                          last,@"last",
-                          street,@"street",
-                          aptNumber,@"apt",
-                          cityString,@"city",
-                          stateString,@"state",
-                          zipString,@"zip",
-                          @"",@"country",nil];
-    [self sharedAppDelegate].billingInfo = dict;
-    [self performSegueWithIdentifier:@"EnterCreditCard" sender:self];
+-(void)NextClicked1:(id)sender{
+
+    if ([self.firstName isFirstResponder]) {
+        [self.streetAddress becomeFirstResponder];
+    }
+    
+    if ([self.streetAddress isFirstResponder]) {
+        [self.apt becomeFirstResponder];
+    }
+    
+    if ([self.apt isFirstResponder]) {
+        [self.City becomeFirstResponder];
+    }
+    
+    if ([self.City isFirstResponder]) {
+        [self.state becomeFirstResponder];
+    }
+    
+    if ([self.state isFirstResponder]) {
+        [self.zip becomeFirstResponder];
+    }
+    
+    if ([self.zip isFirstResponder]) {
+        [self.zip resignFirstResponder];
+    }
 }
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    
+    if (textField == self.firstName) {
+        [self.streetAddress becomeFirstResponder];
+    }
+    if (textField == self.streetAddress) {
+        [self.apt becomeFirstResponder];
+    }
+    if (textField == self.apt) {
+        [self.City becomeFirstResponder];
+    }
+    if (textField == self.City) {
+        [self.state becomeFirstResponder];
+    }
+    if (textField == self.state) {
+        [self.zip becomeFirstResponder];
+    }
+    if (textField == self.zip) {
+        [self.zip resignFirstResponder];
+    }
+    return YES;
+}
+
 
 #pragma mark - Table view data source
 

@@ -14,4 +14,5 @@
 @property (nonatomic) BOOL cellIsHighlighted;
 @property (nonatomic) NSInteger highlightedArrayIndex;
 @property (weak, nonatomic) IBOutlet UIImageView *inCartCheck;
+@property (weak, nonatomic) UIImage *cellImage;
 @end

@@ -11,6 +11,7 @@
 #import "Order.h"
 
 @interface ShippingTVC ()
+@property (retain, nonatomic) UIToolbar* keyboardDoneButtonView1;
 
 @end
 
@@ -62,13 +63,56 @@
     UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(PlaceAndConfirmOrder)];
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
     [self.navigationItem setTitle:@"Shipping"];
+    
+    self.keyboardDoneButtonView1 = [[UIToolbar alloc] init];
+    self.keyboardDoneButtonView1.barStyle = UIBarStyleDefault;
+    self.keyboardDoneButtonView1.translucent = YES;
+    self.keyboardDoneButtonView1.tintColor = nil;
+    [self.keyboardDoneButtonView1 sizeToFit];
+    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Next"
+                                                                   style:UIBarButtonItemStyleDone target:self
+                                                                  action:@selector(NextClicked:)];
+    
+    [self.keyboardDoneButtonView1 setItems:[NSArray arrayWithObjects:flexSpace,doneButton, nil]];
+    
+    self.name_TextField.inputAccessoryView = self.keyboardDoneButtonView1;
+    
+    self.email_TextField.inputAccessoryView = self.keyboardDoneButtonView1;
+    
+    self.street_TextField.inputAccessoryView = self.keyboardDoneButtonView1;
+    
+    self.apt_TextField.inputAccessoryView = self.keyboardDoneButtonView1;
+    
+    self.city_TextField.inputAccessoryView = self.keyboardDoneButtonView1;
+    
+    self.state_TextField.inputAccessoryView = self.keyboardDoneButtonView1;
 }
 
-- (void)Order {
-    //[self performSegueWithIdentifier:@"PlaceOrder" sender:self];
+- (void)NextClicked:(id)sender {
+    if ([self.name_TextField isFirstResponder]) {
+        [self.email_TextField becomeFirstResponder];
+    }
     
+    if ([self.email_TextField isFirstResponder]) {
+        [self.street_TextField becomeFirstResponder];
+    }
     
-
+    if ([self.street_TextField isFirstResponder]) {
+        [self.apt_TextField becomeFirstResponder];
+    }
+    
+    if ([self.city_TextField isFirstResponder]) {
+        [self.state_TextField becomeFirstResponder];
+    }
+    
+    if ([self.state_TextField isFirstResponder]) {
+        [self.zip_TextField becomeFirstResponder];
+    }
+    
+    if ([self.zip_TextField isFirstResponder]) {
+        [self.zip_TextField resignFirstResponder];
+    }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{

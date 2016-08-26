@@ -74,12 +74,12 @@
     NSLog(@"!!");
     [super viewDidLoad];
     if (self.currentItemToEdit) {
-        UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(PlaceOrder)];
-        [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
+        UIBarButtonItem *rightBarButtonItem2 = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(PlaceOrder)];
+        [self.navigationItem setRightBarButtonItem:rightBarButtonItem2];
     }
     else{
-        UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Add to Cart" style:UIBarButtonItemStylePlain target:self action:@selector(PlaceOrder)];
-        [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
+        UIBarButtonItem *rightBarButtonItem2 = [[UIBarButtonItem alloc] initWithTitle:@"Add to Cart" style:UIBarButtonItemStylePlain target:self action:@selector(PlaceOrder)];
+        [self.navigationItem setRightBarButtonItem:rightBarButtonItem2];
     }
 
     
@@ -245,7 +245,7 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
     if (self.startingFromHighlightedImage == YES) {
         NSLog(@"got here");
         
-        self.image = [self.currentImageArray objectAtIndex:0];
+        self.image = [self.currentImageArray objectAtIndex:1];
         //                 if (self.collectionImgView) {
         //                     self.collectionImgView = nil;
         //                 }

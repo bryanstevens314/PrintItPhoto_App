@@ -16,8 +16,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(Done)];
-    [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
+    UIBarButtonItem *rightBarButtonItem4 = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(Done)];
+    [self.navigationItem setRightBarButtonItem:rightBarButtonItem4];
     [self.navigationItem setTitle:@"Order Successful"];
 }
 

@@ -103,7 +103,8 @@ static NSString * const reuseIdentifier = @"Cell";
     static NSString *identifier = @"HighlightedCell";
     
     ImageCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-    UIImage *thumbImg = [self.highlightedImageArray objectAtIndex:indexPath.row];
+    NSArray *highlightedArray = [self.highlightedImageArray objectAtIndex:indexPath.row];
+    UIImage *thumbImg = [highlightedArray objectAtIndex:1];
                      //UIImage *fullImg = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
                      //                 if (self.collectionImgView) {
                      //                     self.collectionImgView = nil;

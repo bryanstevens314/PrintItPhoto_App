@@ -26,15 +26,15 @@
 }
 
 
-UIBarButtonItem *rightBarButtonItem;
+UIBarButtonItem *rightBarButtonItem5;
 - (void)viewDidLoad {
     [super viewDidLoad];
-    rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(EnterBilling)];
-    [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
+    rightBarButtonItem5 = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(EnterBilling)];
+    [self.navigationItem setRightBarButtonItem:rightBarButtonItem5];
     
     shippingTable = [ShippingTVC sharedShippingTVC];
     shippingTable.ShippingPresenting = YES;
-    shippingTable.tableView.frame = self.orderDataView.frame;
+    shippingTable.tableView.frame = CGRectMake(self.orderDataView.frame.origin.x, self.orderDataView.frame.origin.y-160, self.orderDataView.frame.size.width, self.orderDataView.frame.size.height);
     [self.orderDataView addSubview:shippingTable.tableView];
     if ([self sharedAppDelegate].userSettings.shipping != nil) {
         shippingTable.name_TextField.text = [self sharedAppDelegate].userSettings.shipping.name;
@@ -60,6 +60,7 @@ UIBarButtonItem *rightBarButtonItem;
 
 
 -(void)EnterBilling{
+    
     if (![shippingTable.name_TextField.text isEqualToString: @""] && ![shippingTable.street_TextField.text isEqualToString: @""] && ![shippingTable.city_TextField.text isEqualToString: @""] && ![shippingTable.state_TextField.text isEqualToString: @""] && ![shippingTable.zip_TextField.text isEqualToString: @""]) {
         
         [self sharedAppDelegate].userSettings.shipping.name = shippingTable.name_TextField.text;

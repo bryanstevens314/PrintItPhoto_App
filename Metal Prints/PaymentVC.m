@@ -32,7 +32,7 @@
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
     
     paymentTable = [ActualCCTVC sharedActualCCTVC];
-    paymentTable.tableView.frame = self.tableContentView1.frame;
+    paymentTable.tableView.frame = CGRectMake(self.tableContentView1.frame.origin.x, self.tableContentView1.frame.origin.y-150, self.tableContentView1.frame.size.width, self.tableContentView1.frame.size.height);
     [self.tableContentView1 addSubview:paymentTable.tableView];
 }
 

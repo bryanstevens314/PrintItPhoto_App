@@ -59,6 +59,13 @@
     else{
         self.shoppingCart = [[NSMutableArray alloc] init];
     }
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:[self archivehighlightedImages]]) {
+        self.highlightedArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archivehighlightedImages]];
+    }
+    else{
+        self.highlightedArray = [[NSMutableArray alloc] init];
+    }
     // Initialize Reachability
     Reachability *reachability = [Reachability reachabilityWithHostName:@"https://www.google.com"];
     
@@ -87,12 +94,10 @@
             }
         }];
     }
-    if ([[NSFileManager defaultManager] fileExistsAtPath:[self archiveImageArray]]) {
-        self.mutableArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archiveImageArray]];
-    }
-    else{
-        //[self getAllPhotos];
-    }
+    
+    [self getAllPhotos];
+    
+
     return YES;
 }
 
@@ -101,11 +106,13 @@ NSInteger count;
 -(void)getAllPhotos{
     
     //NSArray  *imageArray=[[NSArray alloc] init];
-    self.phoneImageArray =[[NSMutableArray alloc]init];
     NSMutableArray* assetURLDictionaries = [[NSMutableArray alloc] init];
     
     ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
     
+    NSMutableArray *tempMutArray = [[NSMutableArray alloc] init];
+    
+    self.phoneImageArray = [[NSMutableArray alloc] init];
     void (^assetEnumerator)( ALAsset *, NSUInteger, BOOL *) = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
         NSLog(@"%@",result);
         if(result != nil) {
@@ -114,12 +121,13 @@ NSInteger count;
                 // NSLog(@"assestlibrarymurari%@",assetURLDictionaries);
                 
                 NSURL *url= (NSURL*) [[result defaultRepresentation]url];
-                UIImage *thumbImg = [UIImage imageWithCGImage:[result aspectRatioThumbnail]];
+
+                NSArray *array = @[url, @""];
                 NSLog(@"found image");
                 self.totalImageCount++;
-                //NSArray *anArray = @[thumbImg,url,];
-                NSArray *imgArray = @[url,thumbImg,@"NO"];
-                [self.mutableArray addObject:imgArray];
+                
+                [self.phoneImageArray addObject:array];
+
                 
                 //                if (counting == 25) {
                 //                    counting = 0;
@@ -150,7 +158,14 @@ NSInteger count;
             [assetGroups addObject:group];
             NSLog(@"AssetGroup%@",assetGroups);
             count = [group numberOfAssets];
-            [group enumerateAssetsUsingBlock:assetEnumerator];
+            if ([[NSFileManager defaultManager] fileExistsAtPath:[self archiveImageArray]]) {
+                self.phoneImageArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archiveImageArray]];
+
+            }
+            else{
+                [group enumerateAssetsUsingBlock:assetEnumerator];
+            }
+            
         }
     };
     
@@ -206,9 +221,10 @@ NSInteger count;
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    [NSKeyedArchiver archiveRootObject:self.highlightedArray toFile:[self archivehighlightedImages]];
+    NSLog(@"Got To Here");
+    [NSKeyedArchiver archiveRootObject:self.phoneImageArray toFile:[self archiveImageArray]];
     [NSKeyedArchiver archiveRootObject:self.imagesInCartArray toFile:[self archiveImagesInCart]];
-    
+    [NSKeyedArchiver archiveRootObject:self.highlightedArray toFile:[self archivehighlightedImages]];
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }

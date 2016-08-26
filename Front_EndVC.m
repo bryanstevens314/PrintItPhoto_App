@@ -66,8 +66,8 @@
     // Do any additional setup after loading the view.
     UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"|||" style:UIBarButtonItemStylePlain target:self action:@selector(Settings)];
     [self.navigationItem setLeftBarButtonItem:leftBarButtonItem];
-    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:nil];
-    [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
+    UIBarButtonItem *rightBarButtonItem3 = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:nil];
+    [self.navigationItem setRightBarButtonItem:rightBarButtonItem3];
     [self.navigationItem setTitle:@"Store"];
     
     
