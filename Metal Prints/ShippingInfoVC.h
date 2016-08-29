@@ -11,7 +11,7 @@
 #import "CCTVC.h"
 #import "ActualCCTVC.h"
 
-@interface ShippingInfoVC : UIViewController <UIPickerViewDelegate,UIPickerViewDataSource>
+@interface ShippingInfoVC : UIViewController <UIPickerViewDelegate,UIPickerViewDataSource,ShippingTVCDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *orderDataView;
 

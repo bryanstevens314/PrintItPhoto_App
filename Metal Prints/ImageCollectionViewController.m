@@ -62,6 +62,59 @@
     });
     return sharedInstance;
 }
+
+
+-(void)reloadTheCollectionView{
+    NSLog(@"Reloading collectionView");
+    
+    if ([self sharedAppDelegate].theNewImageArray.count != 0) {
+        loadingImages = YES;
+        int x = 0;
+        for (NSArray *imgArray1 in [self sharedAppDelegate].theNewImageArray) {
+            x++;
+            ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+            [library assetForURL:[imgArray1 objectAtIndex:0]
+                     resultBlock:^(ALAsset *asset) {
+                         
+                         if (x < [self sharedAppDelegate].theNewImageArray.count) {
+                             NSLog(@"Less than: %i",x);
+                             
+                             UIImage *thumbImg = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
+                             if (thumbImg == nil || thumbImg == NULL) {
+                                 [[self sharedAppDelegate].phoneImageArray removeObjectAtIndex:x];
+                             }else{
+                                 [self.mutableImageArray insertObject:thumbImg atIndex:0];
+                             }
+                         }
+                         if (x == [self sharedAppDelegate].theNewImageArray.count) {
+                             NSLog(@"Equal to");
+                             UIImage *thumbImg = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
+                             if (thumbImg == nil || thumbImg == NULL) {
+                                 [[self sharedAppDelegate].phoneImageArray removeObjectAtIndex:x];
+                             }else{
+                                 [self.mutableImageArray insertObject:thumbImg atIndex:0];
+                             }
+                             
+                             loadingImages = NO;
+                             
+
+                             [self.collectionView setNeedsDisplay];
+                             
+                             
+                         }
+                     }
+             
+                    failureBlock:^(NSError *error){
+                        NSLog(@"operation was not successfull!");
+                    }];
+            
+        }
+    }
+}
+
+-(void)viewWillLayoutSubviews{
+    
+}
     
 
 static NSString * const reuseIdentifier = @"Cell";
@@ -79,7 +132,7 @@ UIAlertController *loadingAlert;
 
     //[self.navigationItem setTitle:@"My Gallery"];
     self.collectionView.backgroundColor = [UIColor whiteColor];
-    self.toggleOutlet.tintColor = [UIColor lightGrayColor];
+    
 
     
     self.mutableImageArray = [[NSMutableArray alloc] init];
@@ -117,31 +170,36 @@ UIAlertController *loadingAlert;
 UIActivityIndicatorView *activityIndicator;
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
+    self.toggleOutlet.tintColor = [UIColor lightGrayColor];
     
-    loadingAlert = [UIAlertController alertControllerWithTitle:@""
-                                                       message:@"Loading Images"
-                                                preferredStyle:UIAlertControllerStyleAlert]; // 1
+    if (self.mutableImageArray.count == 0) {
+        loadingAlert = [UIAlertController alertControllerWithTitle:@""
+                                                           message:@"Loading Images"
+                                                    preferredStyle:UIAlertControllerStyleAlert]; // 1
+        
+        UIViewController *customVC     = [[UIViewController alloc] init];
+        [loadingAlert.view setFrame:CGRectMake(0, 300, 320, 275)];
+        
+        UIActivityIndicatorView* spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [spinner startAnimating];
+        [customVC.view addSubview:spinner];
+        [spinner setCenter:CGPointMake(100, 27)];
+        
+        [customVC.view addConstraint:[NSLayoutConstraint
+                                      constraintWithItem: spinner
+                                      attribute:NSLayoutAttributeCenterX
+                                      relatedBy:NSLayoutRelationEqual
+                                      toItem:customVC.view
+                                      attribute:NSLayoutAttributeCenterX
+                                      multiplier:1.0f
+                                      constant:0.0f]];
+        
+        
+        [loadingAlert setValue:customVC forKey:@"contentViewController"];
+        [self presentViewController:loadingAlert animated:YES completion:nil];
+    }
     
-    UIViewController *customVC     = [[UIViewController alloc] init];
-    [loadingAlert.view setFrame:CGRectMake(0, 300, 320, 275)];
-    
-    UIActivityIndicatorView* spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [spinner startAnimating];
-    [customVC.view addSubview:spinner];
-    [spinner setCenter:CGPointMake(100, 27)];
-    
-    [customVC.view addConstraint:[NSLayoutConstraint
-                                  constraintWithItem: spinner
-                                  attribute:NSLayoutAttributeCenterX
-                                  relatedBy:NSLayoutRelationEqual
-                                  toItem:customVC.view
-                                  attribute:NSLayoutAttributeCenterX
-                                  multiplier:1.0f
-                                  constant:0.0f]];
-    
-    
-    [loadingAlert setValue:customVC forKey:@"contentViewController"];
-    [self presentViewController:loadingAlert animated:YES completion:nil];
+
     
 //    int x = 0;
 //    loadingImages = YES;
@@ -202,55 +260,55 @@ UIActivityIndicatorView *activityIndicator;
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:YES];
-    
-    int x = 0;
-    
-    for (NSArray *imgArray1 in [self sharedAppDelegate].phoneImageArray) {
-        x++;
-        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-        [library assetForURL:[imgArray1 objectAtIndex:0]
-                 resultBlock:^(ALAsset *asset) {
-                     
-                     if (x < [self sharedAppDelegate].phoneImageArray.count) {
-                         NSLog(@"Less than: %i",x);
+    if (self.mutableImageArray.count == 0) {
+        loadingImages = YES;
+        int x = 0;
+        NSLog(@"%@",[self sharedAppDelegate].phoneImageArray);
+        for (NSArray *imgArray1 in [self sharedAppDelegate].phoneImageArray) {
+            x++;
+            ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+            [library assetForURL:[imgArray1 objectAtIndex:0]
+                     resultBlock:^(ALAsset *asset) {
                          
-                         UIImage *thumbImg = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
-                         if (thumbImg == nil || thumbImg == NULL) {
-                             [[self sharedAppDelegate].phoneImageArray removeObjectAtIndex:x];
-                         }else{
-                             [self.mutableImageArray insertObject:thumbImg atIndex:0];
+                         if (x < [self sharedAppDelegate].phoneImageArray.count) {
+                             NSLog(@"Less than: %i",x);
+                             
+                             UIImage *thumbImg = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
+                             if (thumbImg == nil || thumbImg == NULL) {
+                                 [[self sharedAppDelegate].phoneImageArray removeObjectAtIndex:x];
+                             }else{
+                                 [self.mutableImageArray addObject:thumbImg];
+                             }
+                         }
+                         if (x == [self sharedAppDelegate].phoneImageArray.count) {
+                             NSLog(@"Equal to");
+                             UIImage *thumbImg = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
+                             if (thumbImg == nil || thumbImg == NULL) {
+                                 [[self sharedAppDelegate].phoneImageArray removeObjectAtIndex:x];
+                             }else{
+                                 [self.mutableImageArray addObject:thumbImg];
+                             }
+                             
+                             loadingImages = NO;
+                             
+                             if (loadingAlert) {
+                                 [loadingAlert dismissViewControllerAnimated:YES completion:nil];
+                                 loadingAlert = nil;
+                             }
+                             
+                             [self.collectionView reloadData];
+                             
+                             
                          }
                      }
-                     if (x == [self sharedAppDelegate].phoneImageArray.count) {
-                         NSLog(@"Equal to");
-                         UIImage *thumbImg = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
-                         if (thumbImg == nil || thumbImg == NULL) {
-                             [[self sharedAppDelegate].phoneImageArray removeObjectAtIndex:x];
-                         }else{
-                             [self.mutableImageArray insertObject:thumbImg atIndex:0];
-                         }
-                         
-                         loadingImages = NO;
-                         NSArray *array = [[self.mutableImageArray reverseObjectEnumerator] allObjects];
-                         self.reverseImageArray = [NSMutableArray arrayWithArray:array];
-                         NSArray *array1 = [[[self sharedAppDelegate].phoneImageArray reverseObjectEnumerator] allObjects];
-                         self.reversePhoneImageArray = [NSMutableArray arrayWithArray:array1];
-                         if (loadingAlert) {
-                             [loadingAlert dismissViewControllerAnimated:YES completion:nil];
-                             loadingAlert = nil;
-                         }
-                         
-                         [self.collectionView reloadData];
-                         
-
-                     }
-                 }
-         
-                failureBlock:^(NSError *error){
-                    NSLog(@"operation was not successfull!");
-                }];
-        
+             
+                    failureBlock:^(NSError *error){
+                        NSLog(@"operation was not successfull!");
+                    }];
+            
+        }
     }
+
 }
 
 
@@ -307,8 +365,16 @@ NSInteger numberOfCells = 0;
     static NSString *identifier = @"Cell";
     
     ImageCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
-    UIImage  *thumbImg = [self.reverseImageArray objectAtIndex:indexPath.row];
+    if (cell.imageViewCell != nil) {
+        [cell.imageViewCell removeFromSuperview];
+        cell.imageViewCell = nil;
+    }
+    cell.imageViewCell = [[UIImageView alloc] init];
+    UIImage  *thumbImg = [self.mutableImageArray objectAtIndex:indexPath.row];
     NSArray *urlImageArray = [[self sharedAppDelegate].phoneImageArray objectAtIndex:indexPath.row];
+    
+    NSLog(@"%lu",(unsigned long)self.mutableImageArray.count);
+    NSLog(@"%lu",(unsigned long)[self sharedAppDelegate].phoneImageArray.count);
     NSString *highlighted = [urlImageArray objectAtIndex:1];
     //cell.cellImage = thumbImg;
 
@@ -321,36 +387,38 @@ NSInteger numberOfCells = 0;
         NSLog(@"portrait");
         NSLog(@"ImageView %@",cell.cellImageView);
         float newWidth = (cell.bounds.size.height - 5) * division;
-        [cell.cellImageView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 5)];
-        [cell.cellImageView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
-        [cell.cellImageView setImage:thumbImg];
-        
+        cell.imageViewCell.frame  = CGRectMake(0, 0, newWidth, cell.bounds.size.height - 5);
+        cell.imageViewCell.center = CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2);
+        cell.imageViewCell.image = thumbImg;
+        [cell.contentView addSubview:cell.imageViewCell];
         NSLog(@"ImageView 2 %@",cell.cellImageView);
     }
     if (thumbImg.size.width > thumbImg.size.height) {
         NSLog(@"landscape");
         float newHeight = (cell.bounds.size.width - 5) / division;
-        [cell.cellImageView setFrame:CGRectMake(0, 0, cell.bounds.size.width - 5, newHeight)];
-        [cell.cellImageView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
-        cell.cellImageView.image = thumbImg;
+        [cell.imageViewCell setFrame:CGRectMake(0, 0, cell.bounds.size.width - 5, newHeight)];
+        [cell.imageViewCell setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
+        cell.imageViewCell.image = thumbImg;
+        [cell.contentView addSubview:cell.imageViewCell];
     }
     if (thumbImg.size.width == thumbImg.size.height) {
         NSLog(@"square");
-        [cell.cellImageView setFrame:CGRectMake(0, 0, cell.bounds.size.height - 20, cell.bounds.size.height - 20)];
-        [cell.cellImageView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
-        cell.cellImageView.image = thumbImg;
+        [cell.imageViewCell setFrame:CGRectMake(0, 0, cell.bounds.size.height - 20, cell.bounds.size.height - 20)];
+        [cell.imageViewCell setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
+        cell.imageViewCell.image = thumbImg;
+        [cell.contentView addSubview:cell.imageViewCell];
     }
 
     
     if ([highlighted isEqualToString:@"YES"]) {
-        [cell.cellImageView.layer setBorderColor: [[UIColor blueColor] CGColor]];
-        [cell.cellImageView.layer setBorderWidth: 3];
+        [cell.imageViewCell.layer setBorderColor: [[UIColor blueColor] CGColor]];
+        [cell.imageViewCell.layer setBorderWidth: 3];
         cell.cellIsHighlighted = YES;
-        cell.highlightedArrayIndex = [[urlImageArray objectAtIndex:2] integerValue];
+//        cell.highlightedArrayIndex = [[urlImageArray objectAtIndex:2] integerValue];
     }
     else{
-        [cell.cellImageView.layer setBorderColor: [[UIColor clearColor] CGColor]];
-        [cell.cellImageView.layer setBorderWidth: 3];
+        [cell.imageViewCell.layer setBorderColor: [[UIColor clearColor] CGColor]];
+        [cell.imageViewCell.layer setBorderWidth: 3];
         cell.cellIsHighlighted = NO;
     }
 
@@ -396,8 +464,8 @@ NSIndexPath *selectedIndex;
             newSelection = YES;
             stop = YES;
             NSLog(@"highlighted");
-            [cell.cellImageView.layer setBorderColor: [[UIColor clearColor] CGColor]];
-            [cell.cellImageView.layer setBorderWidth: 3];
+            [cell.imageViewCell.layer setBorderColor: [[UIColor clearColor] CGColor]];
+            [cell.imageViewCell.layer setBorderWidth: 3];
             cell.cellIsHighlighted = NO;
             
             NSLog(@"Indec: %ld",(long)cell.highlightedArrayIndex);
@@ -410,16 +478,17 @@ NSIndexPath *selectedIndex;
         if (cell.cellIsHighlighted == NO && stop == NO) {
             NSLog(@"not highlighted");
             newSelection = YES;
-            [cell.cellImageView.layer setBorderColor: [[UIColor blueColor] CGColor]];
-            [cell.cellImageView.layer setBorderWidth: 3];
+            [cell.imageViewCell.layer setBorderColor: [[UIColor blueColor] CGColor]];
+            [cell.imageViewCell.layer setBorderWidth: 3];
             cell.cellIsHighlighted = YES;
             cell.highlightedArrayIndex = [self sharedAppDelegate].highlightedArray.count;
             
             NSArray *cellArray = [[self sharedAppDelegate].phoneImageArray objectAtIndex:indexPath.row];
-            NSArray *highlightedImageArray = @[[cellArray objectAtIndex:0],@"YES", [NSString stringWithFormat:@"%lu",(unsigned long)self.mutHighlightedArray.count]];
-            NSArray *highlightedImageArray1 = @[[cellArray objectAtIndex:0],[self.reverseImageArray objectAtIndex:indexPath.row]];
+            NSArray *highlightedImageArray = @[[cellArray objectAtIndex:0],@"YES"];
+            NSArray *highlightedImageArray1 = @[[cellArray objectAtIndex:0],[self.mutableImageArray objectAtIndex:indexPath.row]];
             [[self sharedAppDelegate].highlightedArray addObject:highlightedImageArray1];
             [[self sharedAppDelegate].phoneImageArray replaceObjectAtIndex:indexPath.row withObject:highlightedImageArray];
+            
         }
 
 
@@ -440,12 +509,17 @@ HighlightedImageCVC *imagevc;
                 if (imagevc) {
                     if (newSelection == YES) {
                         imagevc.highlightedImageArray = [self sharedAppDelegate].highlightedArray;
+//                        int offset = [[UIApplication sharedApplication] statusBarFrame].size.height + self.navigationController.navigationBar.frame.size.height;
+//                        CGRect newFrame = CGRectOffset(imagevc.collectionView.frame, 0, offset);
+//                        
+//                        imagevc.collectionView.frame = newFrame;
                         [imagevc.collectionView reloadData];
                     }
                     
                 }
                 else{
                     imagevc = [HighlightedImageCVC sharedHighlightedImageCVC];
+                    imagevc.delegate = self;
                     imagevc.highlightedImageArray = [self sharedAppDelegate].highlightedArray;
                     int offset = [[UIApplication sharedApplication] statusBarFrame].size.height + self.navigationController.navigationBar.frame.size.height;
                     CGRect newFrame = CGRectOffset(imagevc.collectionView.frame, 0, offset);
@@ -479,10 +553,25 @@ HighlightedImageCVC *imagevc;
 }
 
 
+NSArray *currentTempArray;
+NSIndexPath *iPath;
+- (void)imageSelectedWithArray:(NSArray*)array andIndexPath:(NSIndexPath*)path{
+    NSLog(@"Selected Image got here");
+    currentTempArray = array;
+    NSLog(@"Array: %@",array);
+    NSLog(@"temp Array: %@",currentTempArray);
+    iPath = path;
+    [self performSegueWithIdentifier:@"addCartItem" sender:self];
+}
+
+
 -(void)removeHighlightedImagesFromView{
     
 }
-    
+
+-(void)addedCartItem{
+    [self.navigationController popViewControllerAnimated:YES];
+}
     
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
@@ -496,6 +585,17 @@ NSLog(@"Segueing");
 //        self.navigationItem.backBarButtonItem = backButton;
         DetailsTVC *details = segue.destinationViewController;
 
+    }
+    if ([segue.identifier isEqualToString:@"addCartItem"]) {
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"Back", returnbuttontitle) style:UIBarButtonItemStyleBordered target:nil action:nil];
+        self.navigationItem.backBarButtonItem = backButton;
+        DetailsTVC *details = segue.destinationViewController;
+        details.delegate = self;
+        details.selectedImageIndex = iPath;
+        details.startingFromHighlightedImage = YES;
+        details.currentImageArray = currentTempArray;
+        NSLog(@"temp Array: %@",currentTempArray);
+        NSLog(@"temp Array: %@",details.currentImageArray);
     }
 }
 

@@ -26,7 +26,6 @@
 - (IBAction)camera:(id)sender;
 @property (weak, nonatomic) IBOutlet UITableViewCell *aluminumOptionsCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *instructionsCell;
-@property (retain, nonatomic) NSString* selectedImageURL;
 @property (weak, nonatomic) IBOutlet UITableViewCell *cell;
 @property (weak, nonatomic) IBOutlet UIButton *camera_outlet;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;

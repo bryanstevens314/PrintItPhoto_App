@@ -34,6 +34,8 @@
     paymentTable = [ActualCCTVC sharedActualCCTVC];
     paymentTable.tableView.frame = CGRectMake(self.tableContentView1.frame.origin.x, self.tableContentView1.frame.origin.y-150, self.tableContentView1.frame.size.width, self.tableContentView1.frame.size.height);
     [self.tableContentView1 addSubview:paymentTable.tableView];
+    
+    NSLog(@"%@",[self sharedAppDelegate].userSettings.billing);
 }
 
 - (void)PlaceOrderAndUploadImages {
@@ -43,7 +45,8 @@
     params.expMonth = [paymentTable.expMonth.text integerValue];
     params.expYear = [paymentTable.expYear.text integerValue];
     params.cvc = paymentTable.securityCode.text;
-    params.name = [self sharedAppDelegate].userSettings.billing.name;
+    NSString *fullName = [NSString stringWithFormat:@"%@ %@",[self sharedAppDelegate].userSettings.billing.firstName, [self sharedAppDelegate].userSettings.billing.lastName];
+    params.name = fullName;
     params.addressLine1 = [self sharedAppDelegate].userSettings.billing.street;
     params.addressLine2 = [self sharedAppDelegate].userSettings.billing.apt;
     params.addressCity = [self sharedAppDelegate].userSettings.billing.city;
@@ -67,17 +70,16 @@ NSTimer *timer2;
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://final-project-order-viewer-stevens-apps.c9users.io/stripeStuff.php"]];
 
-    int Amount = [[self sharedAppDelegate].cartTotal intValue];
-    int totalAmount = Amount * 100;
-    int fee = totalAmount * 0.3;
-    NSString *stringAmount = [NSString stringWithFormat:@"%i",totalAmount];
-    NSString *feeAmount = [NSString stringWithFormat:@"%i",fee];
+    NSInteger totalAmount = [self sharedAppDelegate].cartTotal * 100;
+    NSInteger fee = totalAmount * 0.3;
+    NSString *stringAmount = [NSString stringWithFormat:@"%li",(long)totalAmount];
+    NSString *feeAmount = [NSString stringWithFormat:@"%li",(long)fee];
     NSDictionary *chargeParams = [NSDictionary dictionaryWithObjectsAndKeys:
                                   token.tokenId, @"stripeToken",
                                   stringAmount, @"chargeAmount",
                                   @"example charge", @"description",
                                   @"incrementing ID", @"orderID",
-                                  [self sharedAppDelegate].userSettings.billing.name, @"name",
+                                  [self sharedAppDelegate].userSettings.billing.firstName, @"name",
                                   feeAmount, @"fee",nil];
     
     NSError *error2;

@@ -8,7 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+@class CCTVC;
+
+@protocol CCTVCDelegate
+
+-(void)moveViewUp;
+-(void)moveViewDown;
+
+@end
+
+
 @interface CCTVC : UITableViewController
+@property (weak, nonatomic) id<CCTVCDelegate> delegate;
 + (CCTVC *)sharedCCTVC;
 @property (weak, nonatomic) IBOutlet UIView *tableContentView1;
 - (IBAction)BillingSameAsShipping:(id)sender;

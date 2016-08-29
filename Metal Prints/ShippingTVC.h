@@ -9,7 +9,18 @@
 #import <UIKit/UIKit.h>
 #import <KinveyKit/KinveyKit.h>
 
+@class ShippingTVC;
+
+@protocol ShippingTVCDelegate
+
+- (void) zipIsFirstResponderMoveViewUp;
+- (void) zipResignedFirstResponderMoveViewDown;
+
+@end
+
+
 @interface ShippingTVC : UITableViewController
+@property (weak, nonatomic) id<ShippingTVCDelegate> delegate;
 + (ShippingTVC *)sharedShippingTVC;
 
 @property (nonatomic)BOOL ShippingPresenting;

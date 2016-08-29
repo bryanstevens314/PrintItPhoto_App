@@ -8,10 +8,19 @@
 
 #import <UIKit/UIKit.h>
 #import <AssetsLibrary/AssetsLibrary.h>
-#import "ImageCollectionViewController.h"
 #import "ImageCollectionViewCell.h"
 
+@class HighlightedImageCVC;
+
+@protocol HighlightedImageCVCDelegate
+
+- (void)imageSelectedWithArray:(NSArray*)array andIndexPath:(NSIndexPath*)path;
+-(void)addedCartItem;
+
+@end
+
 @interface HighlightedImageCVC : UICollectionViewController
+@property (weak, nonatomic) id<HighlightedImageCVCDelegate> delegate;
 
     + (HighlightedImageCVC *)sharedHighlightedImageCVC;
     

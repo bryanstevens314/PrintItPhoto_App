@@ -10,4 +10,6 @@
 
 @interface TabController : UITabBarController
 
++ (TabController *)sharedTabController;
+
 @end

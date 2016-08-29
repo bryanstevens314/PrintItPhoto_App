@@ -9,6 +9,8 @@
 #import "ShippingInfoVC.h"
 
 #import "AppDelegate.h"
+#import "UserShipping.h"
+#import "UserObject.h"
 
 @interface ShippingInfoVC (){
     ShippingTVC *shippingTable;
@@ -33,19 +35,20 @@ UIBarButtonItem *rightBarButtonItem5;
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem5];
     
     shippingTable = [ShippingTVC sharedShippingTVC];
+    shippingTable.delegate = self;
     shippingTable.ShippingPresenting = YES;
-    shippingTable.tableView.frame = CGRectMake(self.orderDataView.frame.origin.x, self.orderDataView.frame.origin.y-160, self.orderDataView.frame.size.width, self.orderDataView.frame.size.height);
+    shippingTable.tableView.frame = CGRectMake(self.orderDataView.frame.origin.x, self.orderDataView.frame.origin.y-125, self.orderDataView.frame.size.width, self.orderDataView.frame.size.height);
     [self.orderDataView addSubview:shippingTable.tableView];
     if ([self sharedAppDelegate].userSettings.shipping != nil) {
-        shippingTable.name_TextField.text = [self sharedAppDelegate].userSettings.shipping.name;
+        shippingTable.name_TextField.text = [self sharedAppDelegate].userSettings.shipping.firstName;
         
         shippingTable.street_TextField.text = [self sharedAppDelegate].userSettings.shipping.street;
         
         shippingTable.apt_TextField.text = [self sharedAppDelegate].userSettings.shipping.apt;
         
-        shippingTable.city_TextField.text = [self sharedAppDelegate].userSettings.shipping.name;
+        shippingTable.city_TextField.text = [self sharedAppDelegate].userSettings.shipping.city;
         
-        shippingTable.state_TextField.text = [self sharedAppDelegate].userSettings.shipping.city;
+        shippingTable.state_TextField.text = [self sharedAppDelegate].userSettings.shipping.state;
         
         shippingTable.zip_TextField.text = [self sharedAppDelegate].userSettings.shipping.zip;
         
@@ -63,7 +66,11 @@ UIBarButtonItem *rightBarButtonItem5;
     
     if (![shippingTable.name_TextField.text isEqualToString: @""] && ![shippingTable.street_TextField.text isEqualToString: @""] && ![shippingTable.city_TextField.text isEqualToString: @""] && ![shippingTable.state_TextField.text isEqualToString: @""] && ![shippingTable.zip_TextField.text isEqualToString: @""]) {
         
-        [self sharedAppDelegate].userSettings.shipping.name = shippingTable.name_TextField.text;
+        [self sharedAppDelegate].userSettings = [[UserObject alloc] init];
+        [self sharedAppDelegate].userSettings.shipping = [[UserShipping alloc] init];
+        [self sharedAppDelegate].userSettings.shipping.firstName = shippingTable.name_TextField.text;
+        
+        [self sharedAppDelegate].userSettings.shipping.lastName = shippingTable.name_TextField.text;
         
         [self sharedAppDelegate].userSettings.shipping.street = shippingTable.street_TextField.text;
         
@@ -74,7 +81,7 @@ UIBarButtonItem *rightBarButtonItem5;
         [self sharedAppDelegate].userSettings.shipping.state = shippingTable.state_TextField.text;
         
         [self sharedAppDelegate].userSettings.shipping.zip = shippingTable.zip_TextField.text;
-        
+
         [self performSegueWithIdentifier:@"Billing" sender:self];
     }
     else{
@@ -101,16 +108,17 @@ UIBarButtonItem *rightBarButtonItem5;
     // Pass the selected object to the new view controller.
 }
 */
-
-
-
-
--(void)ChargeCard{
-    
-
-    
-    
-    
+- (void)zipIsFirstResponderMoveViewUp{
+    [UIView animateWithDuration:0.25f animations:^{
+        [self.view setFrame:CGRectMake(0,-30,self.view.bounds.size.width,self.view.bounds.size.height)];
+    }];
 }
+
+- (void) zipResignedFirstResponderMoveViewDown{
+    [UIView animateWithDuration:0.25f animations:^{
+        [self.view setFrame:CGRectMake(0,0,self.view.bounds.size.width,self.view.bounds.size.height)];
+    }];
+}
+
 
 @end

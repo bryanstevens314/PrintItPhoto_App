@@ -53,6 +53,25 @@
     
     self.TileProductArray = @[@[@"8x8 Tile",@"36"],];
     
+    self.allProductsArray = [[NSMutableArray alloc] init];
+    
+    [self.allProductsArray addObject:@"Aluminum Products"];
+    
+    [self.allProductsArray addObjectsFromArray:self.AluminumProductArray];
+    
+    [self.allProductsArray addObject:@"Wood Products"];
+    
+    [self.allProductsArray addObjectsFromArray:self.WoodenProductArray];
+    
+    [self.allProductsArray addObject:@"Mugs"];
+    
+    [self.allProductsArray addObjectsFromArray:self.MugProductArray];
+    
+    [self.allProductsArray addObject:@"Tile Products"];
+    
+    [self.allProductsArray addObjectsFromArray:self.TileProductArray];
+    
+    
     if ([[NSFileManager defaultManager] fileExistsAtPath:[self archivePathShoppingCart]]) {
         self.shoppingCart = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archivePathShoppingCart]];
     }
@@ -65,6 +84,11 @@
     }
     else{
         self.highlightedArray = [[NSMutableArray alloc] init];
+    }
+    if ([[NSFileManager defaultManager] fileExistsAtPath:[self archiveCartTotals]]) {
+        NSArray *array = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archiveCartTotals]];
+        self.cartTotal = [[array objectAtIndex:0] integerValue];
+        self.cartPrintTotal = [[array objectAtIndex:1] integerValue];
     }
     // Initialize Reachability
     Reachability *reachability = [Reachability reachabilityWithHostName:@"https://www.google.com"];
@@ -94,7 +118,8 @@
             }
         }];
     }
-    
+    self.gettingPhotos = YES;
+    self.reloadImageCollection = NO;
     [self getAllPhotos];
     
 
@@ -102,7 +127,7 @@
 }
 
 NSInteger count;
-
+NSInteger x = 0;
 -(void)getAllPhotos{
     
     //NSArray  *imageArray=[[NSArray alloc] init];
@@ -112,22 +137,43 @@ NSInteger count;
     
     NSMutableArray *tempMutArray = [[NSMutableArray alloc] init];
     
-    self.phoneImageArray = [[NSMutableArray alloc] init];
+
     void (^assetEnumerator)( ALAsset *, NSUInteger, BOOL *) = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
         NSLog(@"%@",result);
-        if(result != nil) {
+        
+
+        if(result != nil && result != NULL) {
             if([[result valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
                 [assetURLDictionaries addObject:[result valueForProperty:ALAssetPropertyURLs]];
                 // NSLog(@"assestlibrarymurari%@",assetURLDictionaries);
                 
                 NSURL *url= (NSURL*) [[result defaultRepresentation]url];
 
-                NSArray *array = @[url, @""];
-                NSLog(@"found image");
+                NSArray *array;
+                if (self.tempPhoneImageArray != nil) {
+                    if (x >= 0) {
+                        if ([self.tempPhoneImageArray objectAtIndex:x] != nil) {
+                            NSArray *array1 = [self.tempPhoneImageArray objectAtIndex:x];
+                            array = @[url, [array1 objectAtIndex:1]];
+                            x--;
+                        }
+
+                    }
+                    else{
+                        
+                        array = @[url, @""];
+                        [self.theNewImageArray addObject:array];
+                    }
+                }
+                else{
+                    array = @[url, @""];
+                }
+
                 self.totalImageCount++;
                 
-                [self.phoneImageArray addObject:array];
-
+                [self.phoneImageArray insertObject:array atIndex:0];
+                //NSLog(@"Array:%@",self.phoneImageArray);
+                
                 
                 //                if (counting == 25) {
                 //                    counting = 0;
@@ -146,7 +192,10 @@ NSInteger count;
             }
         }
         else{
-            
+            self.gettingPhotos = NO;
+//            if (self.reloadImageCollection == YES) {
+//                [[ImageCollectionViewController sharedImageCollectionViewController] reloadTheCollectionView];
+//            }
         }
     };
     
@@ -156,14 +205,43 @@ NSInteger count;
         if(group != nil) {
             
             [assetGroups addObject:group];
-            NSLog(@"AssetGroup%@",assetGroups);
+            //NSLog(@"AssetGroup%@",assetGroups);
             count = [group numberOfAssets];
-            if ([[NSFileManager defaultManager] fileExistsAtPath:[self archiveImageArray]]) {
-                self.phoneImageArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archiveImageArray]];
+            if (self.phoneImageArray.count != 0) {
+                if (count != self.phoneImageArray.count) {
+                    NSLog(@"");
+                    self.tempPhoneImageArray = self.phoneImageArray;
+                    if (self.phoneImageArray != nil) {
+                        self.phoneImageArray = nil;
+                    }
+                    self.phoneImageArray = [[NSMutableArray alloc] init];
+                    self.theNewImageArray = [[NSMutableArray alloc] init];
+                    if (self.tempPhoneImageArray != nil) {
+                        x = self.tempPhoneImageArray.count - 1;
+                    }
 
+                    [group enumerateAssetsUsingBlock:assetEnumerator];
+                }
             }
             else{
-                [group enumerateAssetsUsingBlock:assetEnumerator];
+                if ([[NSFileManager defaultManager] fileExistsAtPath:[self archiveImageArray]]) {
+                    self.tempPhoneImageArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archiveImageArray]];
+                    if (count != self.tempPhoneImageArray.count) {
+                        if (self.phoneImageArray != nil) {
+                            self.phoneImageArray = nil;
+                        }
+                        self.phoneImageArray = [[NSMutableArray alloc] init];
+                        self.theNewImageArray = [[NSMutableArray alloc] init];
+                        if (self.tempPhoneImageArray != nil) {
+                            x = self.tempPhoneImageArray.count - 1;
+                        }
+                        [group enumerateAssetsUsingBlock:assetEnumerator];
+                    }
+                }
+                else{
+                    self.phoneImageArray = [[NSMutableArray alloc] init];
+                    [group enumerateAssetsUsingBlock:assetEnumerator];
+                }
             }
             
         }
@@ -225,6 +303,9 @@ NSInteger count;
     [NSKeyedArchiver archiveRootObject:self.phoneImageArray toFile:[self archiveImageArray]];
     [NSKeyedArchiver archiveRootObject:self.imagesInCartArray toFile:[self archiveImagesInCart]];
     [NSKeyedArchiver archiveRootObject:self.highlightedArray toFile:[self archivehighlightedImages]];
+    NSArray *array = @[[NSString stringWithFormat:@"%ld",(long)self.cartTotal], [NSString stringWithFormat:@"%ld",(long)self.cartPrintTotal]];
+    [NSKeyedArchiver archiveRootObject:array toFile:[self archiveCartTotals]];
+    NSLog(@"got here");
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
@@ -234,6 +315,11 @@ NSInteger count;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
+//    if (self.gettingPhotos == NO) {
+//        self.reloadImageCollection = YES;
+//        [self getAllPhotos];
+//    }
+
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 }
 
@@ -259,6 +345,12 @@ NSInteger count;
     NSArray *documentDirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docDir = documentDirs[0];
     return [docDir stringByAppendingPathComponent:@"ImageArray"];
+}
+
+- (NSString*)archiveCartTotals{
+    NSArray *documentDirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docDir = documentDirs[0];
+    return [docDir stringByAppendingPathComponent:@"cartTotals"];
 }
 
 @end

@@ -76,6 +76,8 @@
     
     self.firstName.inputAccessoryView = self.keyboardDoneButtonView2;
     
+    self.LastName.inputAccessoryView = self.keyboardDoneButtonView2;
+    
     self.streetAddress.inputAccessoryView = self.keyboardDoneButtonView2;
     
     self.apt.inputAccessoryView = self.keyboardDoneButtonView2;
@@ -89,52 +91,81 @@
 
 
 -(void)NextClicked1:(id)sender{
-
-    if ([self.firstName isFirstResponder]) {
+    BOOL stop = NO;
+    [self.delegate moveViewDown];
+    
+    if ([self.firstName isFirstResponder]&& stop == NO) {
+        stop = YES;
+        [self.LastName becomeFirstResponder];
+    }
+    
+    if ([self.LastName isFirstResponder]&& stop == NO) {
+        stop = YES;
         [self.streetAddress becomeFirstResponder];
     }
     
-    if ([self.streetAddress isFirstResponder]) {
+    if ([self.streetAddress isFirstResponder]&& stop == NO) {
+        stop = YES;
         [self.apt becomeFirstResponder];
     }
     
-    if ([self.apt isFirstResponder]) {
+    if ([self.apt isFirstResponder]&& stop == NO) {
+        stop = YES;
         [self.City becomeFirstResponder];
     }
     
-    if ([self.City isFirstResponder]) {
+    if ([self.City isFirstResponder]&& stop == NO) {
+        stop = YES;
         [self.state becomeFirstResponder];
+        [self.delegate moveViewUp];
     }
     
-    if ([self.state isFirstResponder]) {
+    if ([self.state isFirstResponder]&& stop == NO) {
+        stop = YES;
         [self.zip becomeFirstResponder];
     }
     
-    if ([self.zip isFirstResponder]) {
+    if ([self.zip isFirstResponder]&& stop == NO) {
+        stop = YES;
+        [self.keyboardDoneButtonView2 removeFromSuperview];
         [self.zip resignFirstResponder];
+        
     }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     
     if (textField == self.firstName) {
+        [self.LastName becomeFirstResponder];
+    }
+    
+    if (textField == self.LastName) {
         [self.streetAddress becomeFirstResponder];
     }
+    
     if (textField == self.streetAddress) {
         [self.apt becomeFirstResponder];
     }
+    
     if (textField == self.apt) {
         [self.City becomeFirstResponder];
     }
+    
     if (textField == self.City) {
         [self.state becomeFirstResponder];
+        [self.delegate moveViewUp];
     }
+    
     if (textField == self.state) {
         [self.zip becomeFirstResponder];
     }
+    
     if (textField == self.zip) {
+        [self.keyboardDoneButtonView2 removeFromSuperview];
         [self.zip resignFirstResponder];
+        [self.delegate moveViewDown];
     }
+    
     return YES;
 }
 
@@ -204,7 +235,39 @@
 }
 
 - (IBAction)BillingSameAsShipping:(id)sender {
-    [self sharedAppDelegate].billingInfo = [[self sharedAppDelegate] shippingInfo];
-    [self performSegueWithIdentifier:@"EnterCreditCard" sender:self];
+    if (self.BillingSameAsShippingOutlet.on == YES) {
+        NSLog(@"State: %@",[self sharedAppDelegate].userSettings.shipping.state);
+        NSLog(@"Street: %@",[self sharedAppDelegate].userSettings.shipping.street);
+        self.firstName.text = [self sharedAppDelegate].userSettings.shipping.firstName;
+        
+        self.LastName.text = [self sharedAppDelegate].userSettings.shipping.lastName;
+        
+        self.streetAddress.text = [self sharedAppDelegate].userSettings.shipping.street;
+        
+        self.apt.text = [self sharedAppDelegate].userSettings.shipping.apt;
+        
+        self.City.text = [self sharedAppDelegate].userSettings.shipping.city;
+        
+        self.state.text = [self sharedAppDelegate].userSettings.shipping.state;
+        
+        self.zip.text = [self sharedAppDelegate].userSettings.shipping.zip;
+        
+    }
+    else{
+        self.firstName.text = @"";
+        
+        self.LastName.text = @"";
+        
+        self.streetAddress.text = @"";
+        
+        self.apt.text = @"";
+        
+        self.City.text = @"";
+        
+        self.state.text = @"";
+        
+        self.zip.text = @"";
+    }
+
 }
 @end

@@ -103,6 +103,12 @@ static NSString * const reuseIdentifier = @"Cell";
     static NSString *identifier = @"HighlightedCell";
     
     ImageCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+    if (cell.imageViewCell != nil) {
+        [cell.imageViewCell removeFromSuperview];
+        cell.imageViewCell = nil;
+    }
+    cell.imageViewCell = [[UIImageView alloc] init];
+    
     NSArray *highlightedArray = [self.highlightedImageArray objectAtIndex:indexPath.row];
     UIImage *thumbImg = [highlightedArray objectAtIndex:1];
                      //UIImage *fullImg = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
@@ -114,22 +120,26 @@ static NSString * const reuseIdentifier = @"Cell";
                          NSLog(@"portrait");
                          
                          float newWidth = (cell.bounds.size.height - 5) * division;
-                         [cell.cellImageView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 5)];
-                         [cell.cellImageView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
-                         cell.cellImageView.image = thumbImg;
+                         
+                         [cell.imageViewCell setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 5)];
+                         [cell.imageViewCell setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
+                         cell.imageViewCell.image = thumbImg;
+                         [cell.contentView addSubview:cell.imageViewCell];
                      }
                      if (thumbImg.size.width > thumbImg.size.height) {
                          NSLog(@"landscape");
                          float newHeight = (cell.bounds.size.width - 5) / division;
-                         [cell.cellImageView setFrame:CGRectMake(0, 0, cell.bounds.size.width - 5, newHeight)];
-                         [cell.cellImageView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
-                         cell.cellImageView.image = thumbImg;
+                         [cell.imageViewCell setFrame:CGRectMake(0, 0, cell.bounds.size.width - 5, newHeight)];
+                         [cell.imageViewCell setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
+                         cell.imageViewCell.image = thumbImg;
+                         [cell.contentView addSubview:cell.imageViewCell];
                      }
                      if (thumbImg.size.width == thumbImg.size.height) {
                          NSLog(@"square");
-                         [cell.cellImageView setFrame:CGRectMake(0, 0, cell.bounds.size.height - 20, cell.bounds.size.height - 20)];
-                         [cell.cellImageView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
-                         cell.cellImageView.image = thumbImg;
+                         [cell.imageViewCell setFrame:CGRectMake(0, 0, cell.bounds.size.height - 20, cell.bounds.size.height - 20)];
+                         [cell.imageViewCell setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
+                         cell.imageViewCell.image = thumbImg;
+                         [cell.contentView addSubview:cell.imageViewCell];
                      }
                      
                      //                     if (thumbImg.size.width == thumbImg.size.height) {
@@ -139,14 +149,14 @@ static NSString * const reuseIdentifier = @"Cell";
                      //                         [cell.cellImageView setFrame:CGRectMake(0, 0, thumbImg.size.width/3.1, thumbImg.size.height/3.1)];
                      //                     }
                      
-                     [cell.cellImageView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
+                     [cell.imageViewCell setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
                      //                     [cell.contentView.layer setBorderColor: [[UIColor blackColor] CGColor]];
                      //                     [cell.contentView.layer setBorderWidth: 1];
-                     cell.cellImageView.image = thumbImg;
+                     cell.imageViewCell.image = thumbImg;
 
-                     [cell.cellImageView.layer setBorderColor: [[UIColor blueColor] CGColor]];
-                     [cell.cellImageView.layer setBorderWidth: 4];
-                     
+//                     [cell.cellImageView.layer setBorderColor: [[UIColor blueColor] CGColor]];
+//                     [cell.cellImageView.layer setBorderWidth: 4];
+    
                      if ([self sharedAppDelegate].imagesInCartArray.count != 0) {
                          NSURL *highlightedImageURL = [[self sharedAppDelegate].highlightedArray objectAtIndex:indexPath.row];
                          NSURL *cartImageURL = [[self sharedAppDelegate].imagesInCartArray objectAtIndex:indexPath.row];
@@ -174,31 +184,20 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     NSLog(@"Selected image");
     
-    DetailsTVC *details = [DetailsTVC sharedDetailsTVCInstance];
-    details.selectedImageIndex = indexPath;
-    details.startingFromHighlightedImage = YES;
-    details.currentImageArray = [self.highlightedImageArray objectAtIndex:indexPath.row];
-    UIViewController *top = [UIApplication sharedApplication].keyWindow.rootViewController;
+    NSLog(@"Selected array: %@",[self.highlightedImageArray objectAtIndex:indexPath.row]);
+    [self.delegate imageSelectedWithArray:[self.highlightedImageArray objectAtIndex:indexPath.row] andIndexPath:indexPath];
 
-    [top presentViewController:details animated:YES completion:nil];
-    //[[ImageCollectionViewController sharedImageCollectionViewController] cellSelectedAtIndex:indexPath];
-//    selectedIndex = indexPath;
-//    [self performSegueWithIdentifier:@"StartOrderFromHighlightedImage" sender:self];
 }
 
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
-    NSLog(@"Preparing for segue");
-    if ([segue.identifier isEqualToString:@"StartOrderFromHighlightedImage"]) {
-        NSLog(@"Segueing");
-        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"Back", returnbuttontitle) style:UIBarButtonItemStyleBordered target:nil action:nil];
-        self.navigationItem.backBarButtonItem = backButton;
-        DetailsTVC *details = segue.destinationViewController;
-        details.selectedImageIndex = selectedIndex;
-        details.startingFromHighlightedImage = YES;
-    }
+//    NSLog(@"Preparing for segue");
+//    if ([segue.identifier isEqualToString:@"StartOrderFromHighlightedImage"]) {
+//        NSLog(@"Segueing");
+//
+//    }
 }
 
 #pragma mark <UICollectionViewDelegate>

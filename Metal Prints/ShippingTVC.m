@@ -70,11 +70,17 @@
     self.keyboardDoneButtonView1.tintColor = nil;
     [self.keyboardDoneButtonView1 sizeToFit];
     UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Next"
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back"
+                                                                   style:UIBarButtonItemStyleDone target:self
+                                                                  action:@selector(BackClicked:)];
+    UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:@"Next"
                                                                    style:UIBarButtonItemStyleDone target:self
                                                                   action:@selector(NextClicked:)];
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
+                                                                   style:UIBarButtonItemStyleDone target:self
+                                                                  action:@selector(DoneClicked:)];
     
-    [self.keyboardDoneButtonView1 setItems:[NSArray arrayWithObjects:flexSpace,doneButton, nil]];
+    [self.keyboardDoneButtonView1 setItems:[NSArray arrayWithObjects:backButton,nextButton,flexSpace,doneButton, nil]];
     
     self.name_TextField.inputAccessoryView = self.keyboardDoneButtonView1;
     
@@ -87,56 +93,181 @@
     self.city_TextField.inputAccessoryView = self.keyboardDoneButtonView1;
     
     self.state_TextField.inputAccessoryView = self.keyboardDoneButtonView1;
+    
+    self.zip_TextField.inputAccessoryView = self.keyboardDoneButtonView1;
 }
 
-- (void)NextClicked:(id)sender {
-    if ([self.name_TextField isFirstResponder]) {
+
+- (void)BackClicked:(id)sender {
+    BOOL stop = NO;
+    if ([self.name_TextField isFirstResponder] && stop == NO) {
+        NSLog(@"name");
+        stop = YES;
+    }
+    
+    if ([self.email_TextField isFirstResponder] && stop == NO) {
+        NSLog(@"email");
+        stop = YES;
+        [self.name_TextField becomeFirstResponder];
+    }
+    
+    if ([self.street_TextField isFirstResponder] && stop == NO) {
+        NSLog(@"street");
+        stop = YES;
         [self.email_TextField becomeFirstResponder];
     }
     
-    if ([self.email_TextField isFirstResponder]) {
+    if ([self.apt_TextField isFirstResponder] && stop == NO) {
+        NSLog(@"city");
+        stop = YES;
         [self.street_TextField becomeFirstResponder];
     }
     
-    if ([self.street_TextField isFirstResponder]) {
+    if ([self.city_TextField isFirstResponder] && stop == NO) {
+        NSLog(@"city");
+        stop = YES;
         [self.apt_TextField becomeFirstResponder];
     }
     
-    if ([self.city_TextField isFirstResponder]) {
+    if ([self.state_TextField isFirstResponder] && stop == NO) {
+        NSLog(@"state");
+        stop = YES;
+        [self.city_TextField becomeFirstResponder];
+    }
+    
+    if ([self.zip_TextField isFirstResponder] && stop == NO) {
+        NSLog(@"Zip");
+        stop = YES;
         [self.state_TextField becomeFirstResponder];
+        
+
+    }
+}
+
+- (void)DoneClicked:(id)sender {
+    [self.delegate zipResignedFirstResponderMoveViewDown];
+    if ([self.name_TextField isFirstResponder]) {
+        NSLog(@"name");
+        [self.name_TextField resignFirstResponder];
+    }
+    
+    if ([self.email_TextField isFirstResponder]) {
+        NSLog(@"email");
+        [self.email_TextField resignFirstResponder];
+    }
+    
+    if ([self.street_TextField isFirstResponder]) {
+        NSLog(@"street");
+        [self.street_TextField resignFirstResponder];
+    }
+    
+    if ([self.apt_TextField isFirstResponder]) {
+        NSLog(@"city");
+        [self.apt_TextField resignFirstResponder];
+    }
+    
+    if ([self.city_TextField isFirstResponder]) {
+        NSLog(@"city");
+        [self.city_TextField resignFirstResponder];
     }
     
     if ([self.state_TextField isFirstResponder]) {
-        [self.zip_TextField becomeFirstResponder];
+        NSLog(@"state");
+        [self.state_TextField resignFirstResponder];
     }
     
     if ([self.zip_TextField isFirstResponder]) {
+        NSLog(@"Zip");
         [self.zip_TextField resignFirstResponder];
+        
+    }
+}
+        
+        
+- (void)NextClicked:(id)sender {
+    BOOL stop = NO;
+    if ([self.name_TextField isFirstResponder] && stop == NO) {
+        NSLog(@"name");
+        stop = YES;
+        [self.email_TextField becomeFirstResponder];
+    }
+    
+    if ([self.email_TextField isFirstResponder] && stop == NO) {
+        NSLog(@"email");
+        stop = YES;
+        [self.street_TextField becomeFirstResponder];
+    }
+    
+    if ([self.street_TextField isFirstResponder] && stop == NO) {
+        NSLog(@"street");
+        stop = YES;
+        [self.apt_TextField becomeFirstResponder];
+    }
+    
+    if ([self.apt_TextField isFirstResponder] && stop == NO) {
+        NSLog(@"city");
+        stop = YES;
+        [self.city_TextField becomeFirstResponder];
+    }
+    
+    if ([self.city_TextField isFirstResponder] && stop == NO) {
+        NSLog(@"city");
+        stop = YES;
+        [self.state_TextField becomeFirstResponder];
+    }
+    
+    if ([self.state_TextField isFirstResponder] && stop == NO) {
+        NSLog(@"state");
+        stop = YES;
+        [self.zip_TextField becomeFirstResponder];
+        [self.delegate zipIsFirstResponderMoveViewUp];
+    }
+    
+    if ([self.zip_TextField isFirstResponder] && stop == NO) {
+        NSLog(@"Zip");
+        stop = YES;             
+        [self.zip_TextField resignFirstResponder];
+        
+        [self.delegate zipResignedFirstResponderMoveViewDown];
     }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
-    
+    BOOL stop = NO;
     if (textField == self.name_TextField) {
+        stop = YES;
         [self.email_TextField becomeFirstResponder];
     }
     if (textField == self.email_TextField) {
+        stop = YES;
         [self.street_TextField becomeFirstResponder];
     }
     if (textField == self.street_TextField) {
+        stop = YES;
         [self.apt_TextField becomeFirstResponder];
     }
     if (textField == self.apt_TextField) {
+        stop = YES;
         [self.city_TextField becomeFirstResponder];
     }
     if (textField == self.city_TextField) {
+        stop = YES;
         [self.state_TextField becomeFirstResponder];
     }
     if (textField == self.state_TextField) {
+        stop = YES;
         [self.zip_TextField becomeFirstResponder];
     }
     if (textField == self.zip_TextField) {
+        stop = YES;
         [self.zip_TextField resignFirstResponder];
+    }
+    return YES;
+}
+
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    if (textField == self.zip_TextField) {
+        [self.delegate zipIsFirstResponderMoveViewUp];
     }
     return YES;
 }

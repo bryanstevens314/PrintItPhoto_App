@@ -124,11 +124,14 @@
     self.keyboardDoneButtonView.tintColor = nil;
     [self.keyboardDoneButtonView sizeToFit];
     UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:@"Next"
+                                                                   style:UIBarButtonItemStyleDone target:self
+                                                                  action:@selector(pickerNextClicked:)];
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
                                                                    style:UIBarButtonItemStyleDone target:self
                                                                   action:@selector(pickerDoneClicked:)];
     
-    [self.keyboardDoneButtonView setItems:[NSArray arrayWithObjects:flexSpace,doneButton, nil]];
+    [self.keyboardDoneButtonView setItems:[NSArray arrayWithObjects:nextButton,flexSpace,doneButton, nil]];
     
     
 //    [[self expYear] setTintColor:[UIColor clearColor]];
@@ -152,6 +155,29 @@
     
     self.expYear.text = self.currentYear;
     self.expMonth.text = self.currentMonth;
+}
+
+
+
+- (void)pickerNextClicked:(id)sender {
+    if ([self.CCN isFirstResponder]) {
+        [self.securityCode  becomeFirstResponder];
+    }
+    
+    if ([self.securityCode isFirstResponder]) {
+        [self.expMonth  becomeFirstResponder];
+    }
+    
+    if ([self.expMonth isFirstResponder]) {
+        [self.expYear  becomeFirstResponder];
+    }
+    if ([self.expYear isFirstResponder]) {
+        [self.keyboardDoneButtonView removeFromSuperview];
+        [self.expYear  resignFirstResponder];
+    }
+
+
+    
 }
 
 

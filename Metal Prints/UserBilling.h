@@ -11,12 +11,13 @@
 
 @interface UserBilling : NSObject
 
-@property (weak, nonatomic) NSString *name;
-@property (weak, nonatomic) NSString *street;
-@property (weak, nonatomic) NSString *apt;
-@property (weak, nonatomic) NSString *city;
-@property (weak, nonatomic) NSString *state;
-@property (weak, nonatomic) NSString *zip;
+@property (retain, nonatomic) NSString *firstName;
+@property (retain, nonatomic) NSString *lastName;
+@property (retain, nonatomic) NSString *street;
+@property (retain, nonatomic) NSString *apt;
+@property (retain, nonatomic) NSString *city;
+@property (retain, nonatomic) NSString *state;
+@property (retain, nonatomic) NSString *zip;
 
 @property (weak, nonatomic) UserPayment *payment;
 

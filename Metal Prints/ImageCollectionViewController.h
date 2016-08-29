@@ -13,12 +13,13 @@
 #import "DetailsTVC.h"
 #import "HighlightedImageCVC.h"
 
-@interface ImageCollectionViewController : UICollectionViewController{
+@interface ImageCollectionViewController : UICollectionViewController <HighlightedImageCVCDelegate,DetailsTVCDelegate>{
     BOOL reloadView;
     BOOL loadingImages;
 }
 
 + (ImageCollectionViewController *)sharedImageCollectionViewController;
+-(void)reloadTheCollectionView;
 -(void)removeHighlightedImagesFromView;
 -(void)cellSelectedAtIndex:(NSIndexPath*)selectedImagePath;
 - (IBAction)ToggleSelectedImages:(id)sender;

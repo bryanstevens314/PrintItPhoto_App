@@ -13,6 +13,8 @@
 @property (retain, nonatomic) UIPickerView *picker1;
 @property (retain, nonatomic) UIPickerView *picker2;
 @property (retain, nonatomic) UIPickerView *picker3;
+@property (retain, nonatomic) NSURL *selectedImageURL;
+@property (retain, nonatomic) UIImage *selectedImage;
 @property (nonatomic, retain) UIImagePickerController *imagePicker;
 @property (nonatomic, retain) UIImage *image;
 @property (nonatomic, retain) UIImageView* imgView ;
@@ -209,13 +211,33 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
                          if (self.imgView) {
                              self.imgView = nil;
                          }
-                         self.imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, thumbImg.size.width/2, thumbImg.size.height/2)];
                          NSIndexPath *indePath = [NSIndexPath indexPathForRow:0 inSection:0];
                          UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indePath];
-                         [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2 + 20)];
-                         
-                         
-                         [self.imgView setImage:thumbImg];
+                         float division = self.image.size.width/self.image.size.height;
+                         self.imgView = [[UIImageView alloc] init];
+                         if (self.image.size.width < self.image.size.height) {
+                             NSLog(@"portrait");
+                             
+                             float newWidth = (cell.bounds.size.height - 39) * division;
+                             [self.imgView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 39)];
+                             int centerY = cell.bounds.size.height/2 + 10;
+                             [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,centerY)];
+                             self.imgView.image = self.image;
+                         }
+                         if (self.image.size.width > self.image.size.height) {
+                             NSLog(@"landscape");
+                             float newWidth = (cell.bounds.size.height - 65) * division;
+                             [self.imgView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 65)];
+                             int centerY = cell.bounds.size.height/2 + 10;
+                             [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,centerY)];
+                             self.imgView.image = self.image;
+                         }
+                         if (self.image.size.width == self.image.size.height) {
+                             NSLog(@"square");
+                             [self.imgView setFrame:CGRectMake(0, 0, cell.bounds.size.height - 65, cell.bounds.size.height - 65)];
+                             [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2 + 7)];
+                             self.imgView.image = self.image;
+                         }
                          [self.view addSubview:self.imgView];
                          self.camera_outlet.hidden = YES;
                          if (self.imgView.gestureRecognizers == 0) {
@@ -244,8 +266,10 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
     }
     if (self.startingFromHighlightedImage == YES) {
         NSLog(@"got here");
-        
+        self.selectedImageURL = [self.currentImageArray objectAtIndex:0];
         self.image = [self.currentImageArray objectAtIndex:1];
+        NSLog(@"url:%@",self.selectedImageURL);
+        NSLog(@"image: %@",self.image);
         //                 if (self.collectionImgView) {
         //                     self.collectionImgView = nil;
         //                 }
@@ -255,28 +279,32 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
         NSIndexPath *indePath = [NSIndexPath indexPathForRow:0 inSection:0];
         UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indePath];
         float division = self.image.size.width/self.image.size.height;
+        self.imgView = [[UIImageView alloc] init];
         if (self.image.size.width < self.image.size.height) {
             NSLog(@"portrait");
             
-            float newWidth = 125 * division;
-            [self.imgView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 5)];
-            [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
+            float newWidth = (cell.bounds.size.height - 39) * division;
+            [self.imgView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 39)];
+            int centerY = cell.bounds.size.height/2 + 10;
+            [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,centerY)];
             self.imgView.image = self.image;
         }
         if (self.image.size.width > self.image.size.height) {
             NSLog(@"landscape");
-            float newHeight = 125 / division;
-            [self.imgView setFrame:CGRectMake(0, 0, cell.bounds.size.width - 5, newHeight)];
-            [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
+            float newWidth = (cell.bounds.size.height - 65) * division;
+            [self.imgView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 65)];
+            int centerY = cell.bounds.size.height/2 + 10;
+            [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,centerY)];
             self.imgView.image = self.image;
         }
         if (self.image.size.width == self.image.size.height) {
             NSLog(@"square");
-            [self.imgView setFrame:CGRectMake(0, 0, cell.bounds.size.height - 20, cell.bounds.size.height - 20)];
+            [self.imgView setFrame:CGRectMake(0, 0, cell.bounds.size.height - 65, cell.bounds.size.height - 65)];
             [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2 + 7)];
             self.imgView.image = self.image;
         }
         [self.view addSubview:self.imgView];
+        NSLog(@"ImageView %@",self.imgView);
         self.camera_outlet.hidden = YES;
         
         if (self.imgView.gestureRecognizers == 0) {
@@ -335,6 +363,7 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
             i++;
             if ([[array objectAtIndex:0] isEqualToString:self.Product_Outlet.text]) {
                 price = [array objectAtIndex:1];
+                [self sharedAppDelegate].cartTotal = [self sharedAppDelegate].cartTotal + [price integerValue];
                 NSLog(@"%@2",price);
             }
         }
@@ -345,6 +374,7 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
                 i++;
                 if ([[array objectAtIndex:0] isEqualToString:self.Product_Outlet.text]) {
                     price = [array objectAtIndex:1];
+                    [self sharedAppDelegate].cartTotal = [self sharedAppDelegate].cartTotal + [price integerValue];
                 }
             }
         }
@@ -361,7 +391,7 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
             NSLog(@"=");
             imageSizeType1 = @"=";
         }
-
+        [self sharedAppDelegate].cartPrintTotal = [self sharedAppDelegate].cartPrintTotal + [self.Quantity_TextField.text integerValue];
         //[self.image setAccessibilityIdentifier:@"filename"] ;
         
         //NSString *imgString = [UIImageJPEGRepresentation(self.image, 0.0f) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
@@ -371,7 +401,7 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
                            self.Retouching_TextField.text,
                            self.For_Aluminum_TextField.text,
                            self.textView.text,
-                           self.selectedImageURL,
+                           [self.selectedImageURL absoluteString],
                            imageSizeType1
                            ];
         if (self.selectedImageIndex != nil) {
@@ -484,17 +514,9 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
 
     }
     
-    if (self.Product_Outlet.inputView == pickerView) {
-        
-        if (row <= [self sharedAppDelegate].AluminumProductArray.count - 1) {
-            
-            NSArray *array = [[self sharedAppDelegate].AluminumProductArray objectAtIndex:row];
-            string = [array objectAtIndex:0];
-        }
-        if (row > [self sharedAppDelegate].AluminumProductArray.count - 1) {
-            NSArray *array = [[self sharedAppDelegate].WoodenProductArray objectAtIndex:row-10];
-            string = [array objectAtIndex:0];
-        }
+    if (pickerView == self.Product_Outlet.inputView) {
+
+        string = [[self sharedAppDelegate].allProductsArray objectAtIndex:row];
     }
     return string;
 }
@@ -533,23 +555,11 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
     
     if (self.Product_Outlet.inputView == pickerView) {
         
-        if (row <= 9) {
-            if (!self.For_Aluminum_TextField.enabled) {
-                self.aluminumOptionsCell.alpha = 1.0;
-                self.For_Aluminum_TextField.enabled = YES;
-            }
-
-            NSArray *array = [[self sharedAppDelegate].AluminumProductArray objectAtIndex:row];
-            string = [array objectAtIndex:0];
+        if ([[[self sharedAppDelegate].allProductsArray objectAtIndex:row] isEqualToString:@"Aluminum Products"] || [[[self sharedAppDelegate].allProductsArray objectAtIndex:row] isEqualToString:@"Wood Products"] || [[[self sharedAppDelegate].allProductsArray objectAtIndex:row] isEqualToString:@"Mugs"] || [[[self sharedAppDelegate].allProductsArray objectAtIndex:row] isEqualToString:@"Tile Products"]) {
+            string = [[self sharedAppDelegate].allProductsArray objectAtIndex:row++];
         }
-        if (row >= 10) {
-            if (self.For_Aluminum_TextField.enabled) {
-                self.aluminumOptionsCell.alpha = 0.6;
-                self.For_Aluminum_TextField.enabled = NO;
-            }
-
-            NSArray *array = [[self sharedAppDelegate].WoodenProductArray objectAtIndex:row-10];
-            string = [array objectAtIndex:0];
+        else{
+            string = [[self sharedAppDelegate].allProductsArray objectAtIndex:row];
         }
         self.Product_Outlet.text = string;
     }
@@ -667,7 +677,7 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
 
 - (void)library{
     self.imagePicker = [[UIImagePickerController alloc] init];
-    [self.imagePicker setSourceType:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
+    [self.imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
     //self.imagePicker.allowsEditing = YES;
     self.imagePicker.delegate = self;
     
@@ -722,39 +732,48 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
         self.selectedImageURL = nil;
     }
 
-    self.selectedImageURL = [[info objectForKey:UIImagePickerControllerReferenceURL] absoluteString];
+    self.selectedImageURL = [info objectForKey:UIImagePickerControllerReferenceURL];
     self.image = [info objectForKey:UIImagePickerControllerOriginalImage];
     [self.imagePicker dismissViewControllerAnimated:YES completion:nil];
     //self.imgView = [[UIImageView alloc] initWithFrame:CGRectMake(146, 40, self.image.size.width/22, self.image.size.height/22)];
     
-    self.imgView.layer.cornerRadius = 6.0; // set cornerRadius as you want.
+    NSIndexPath *indePath = [NSIndexPath indexPathForRow:0 inSection:0];
+    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indePath];
+    
+    float division = self.image.size.width/self.image.size.height;
+    self.imgView = [[UIImageView alloc] init];
     if (self.image.size.width < self.image.size.height) {
-        NSLog(@"Portrait");
-        self.imgView = [[UIImageView alloc] initWithFrame:CGRectMake(146, 40, 93.75, 125)];
+        NSLog(@"portrait");
+        
+        float newWidth = (cell.bounds.size.height - 39) * division;
+        [self.imgView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 39)];
+        int centerY = cell.bounds.size.height/2 + 10;
+        [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,centerY)];
+        self.imgView.image = self.image;
     }
     if (self.image.size.width > self.image.size.height) {
-
-        NSLog(@"Landscape");
-        self.imgView = [[UIImageView alloc] initWithFrame:CGRectMake(108, 44, 158, 118.5)];
-        
+        NSLog(@"landscape");
+        float newWidth = (cell.bounds.size.height - 65) * division;
+        [self.imgView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 65)];
+        int centerY = cell.bounds.size.height/2 + 10;
+        [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,centerY)];
+        self.imgView.image = self.image;
     }
     if (self.image.size.width == self.image.size.height) {
-        NSLog(@"Square");
-        self.imgView = [[UIImageView alloc] initWithFrame:CGRectMake(125, 41, 124, 124)];
+        NSLog(@"square");
+        [self.imgView setFrame:CGRectMake(0, 0, cell.bounds.size.height - 65, cell.bounds.size.height - 65)];
+        [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2 + 7)];
+        self.imgView.image = self.image;
     }
-    
-    [self.imgView setCenter:CGPointMake(self.cell.bounds.size.width/2, self.cell.bounds.size.height/2)];
-    
-    [self.imgView setImage:self.image];
     [self.cell addSubview:self.imgView];
 //    // Get size of current image
 //    CGSize size = [self.image size];
-//    
+//
 //    // Create rectangle that represents a cropped image
 //    // from the middle of the existing image
 //    CGRect rect = CGRectMake(size.width / 4, size.height / 4 ,
 //                             (size.width / 2), (size.height / 2));
-//    
+//
 //    // Create bitmap image from original image data,
 //    // using rectangle to specify desired crop area
 //    CGImageRef imageRef = CGImageCreateWithImageInRect([self.image CGImage], rect);
