@@ -13,19 +13,19 @@
 #import "DetailsTVC.h"
 #import "HighlightedImageCVC.h"
 
-@interface ImageCollectionViewController : UICollectionViewController <HighlightedImageCVCDelegate,DetailsTVCDelegate>{
+@interface ImageCollectionViewController : UICollectionViewController <HighlightedImageCVCDelegate,DetailsTVCDelegate,UIGestureRecognizerDelegate>{
     BOOL reloadView;
     BOOL loadingImages;
 }
-
 + (ImageCollectionViewController *)sharedImageCollectionViewController;
 -(void)reloadTheCollectionView;
 -(void)removeHighlightedImagesFromView;
 -(void)cellSelectedAtIndex:(NSIndexPath*)selectedImagePath;
 - (IBAction)ToggleSelectedImages:(id)sender;
+@property (strong, nonatomic, readonly) UILongPressGestureRecognizer *longPressGesture1;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *toggleOutlet;
 @property (retain,nonatomic)UIImageView *collectionImgView;
-@property (retain,nonatomic)NSMutableArray *mutableImageArray;
+
 @property (retain,nonatomic)NSMutableArray *mutableHighlightedArray;
 @property (retain,nonatomic)NSMutableArray *mutableHighlightedImageArray;
 @property (weak, nonatomic) IBOutlet UIImageView *inCartCheck;

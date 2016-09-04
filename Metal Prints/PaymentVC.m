@@ -30,9 +30,10 @@
     
     UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(PlaceOrderAndUploadImages)];
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
+    [self.navigationItem setTitle:@"Payment"];
     
     paymentTable = [ActualCCTVC sharedActualCCTVC];
-    paymentTable.tableView.frame = CGRectMake(self.tableContentView1.frame.origin.x, self.tableContentView1.frame.origin.y-150, self.tableContentView1.frame.size.width, self.tableContentView1.frame.size.height);
+    paymentTable.tableView.frame = CGRectMake(self.tableContentView1.frame.origin.x, self.tableContentView1.frame.origin.y-125, self.tableContentView1.frame.size.width, self.tableContentView1.frame.size.height);
     [self.tableContentView1 addSubview:paymentTable.tableView];
     
     NSLog(@"%@",[self sharedAppDelegate].userSettings.billing);
@@ -209,8 +210,8 @@ NSTimer *timer2;
     {
         //[self performSegueWithIdentifier:@"OrderPlaced" sender:self];
         NSLog(@"got response==%@", responseString);
-        [alert dismissViewControllerAnimated:YES completion:nil];
-        [self performSegueWithIdentifier:@"OrderComplete" sender:self];
+        [self sendEmail];
+
     }
     else
     {
@@ -231,6 +232,67 @@ NSTimer *timer2;
     
 }
 
+
+-(void)sendEmail
+{
+    
+    Sendpulse* sendpulse = [[Sendpulse alloc] initWithUserIdandSecret:@"fb64b33382f07958418bb735ccbaffc9" :@"021a14d05af42f4be25cf2546e65ec0f"];
+    NSDictionary *from = [NSDictionary dictionaryWithObjectsAndKeys:@"Bryan Stevens", @"name", @"btcfaucetfree@gmail.com", @"email", nil];
+    NSMutableArray* to = [[NSMutableArray alloc] initWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:@"Bryan Stevens", @"name", @"btcfaucetfree@gmail.com", @"email", nil], nil];
+    NSString *messageBody = [NSString stringWithFormat:@"test Email"];
+    NSMutableDictionary *emaildata = [NSMutableDictionary dictionaryWithObjectsAndKeys:messageBody, @"html", messageBody, @"text",@"BTC Faucet Withdrawal",@"subject",from,@"from",to,@"to", nil];
+    [sendpulse smtpSendMail:emaildata];
+    
+    
+    
+    
+}
+
+//-(void)messageSent:(SKPSMTPMessage *)message{
+//    NSLog(@"sent");
+//    [alert dismissViewControllerAnimated:YES completion:nil];
+//    [self performSegueWithIdentifier:@"OrderComplete" sender:self];
+//    //save was successful
+//}
+//-(void)messageFailed:(SKPSMTPMessage *)message error:(NSError *)error{
+//    NSLog(@"Failed to send: %@",error);
+//}
+//- (void)paymentContextDidChange:(STPPaymentContext *)paymentContext {
+//    self.activityIndicator.animating = paymentContext.loading;
+//    self.paymentButton.enabled = paymentContext.selectedPaymentMethod != nil;
+//    self.paymentLabel.text = paymentContext.selectedPaymentMethod.label;
+//    self.paymentIcon.image = paymentContext.selectedPaymentMethod.image;
+//}
+//
+//- (void)paymentContext:(STPPaymentContext *)paymentContext
+//didCreatePaymentResult:(STPPaymentResult *)paymentResult
+//            completion:(STPErrorBlock)completion {
+//    [self.apiClient createCharge:paymentResult.source.stripeID completion:^(NSError *error) {
+//        if (error) {
+//            completion(error);
+//        } else {
+//            completion(nil);
+//        }
+//    }];
+//}
+//
+//- (void)paymentContext:(STPPaymentContext *)paymentContext
+//   didFinishWithStatus:(STPPaymentStatus)status
+//                 error:(NSError *)error {
+//    switch (status) {
+//        case STPPaymentStatusSuccess:
+//            [self showReceipt];
+//        case STPPaymentStatusError:
+//            [self showError:error];
+//        case STPPaymentStatusUserCancellation:
+//            return; // Do nothing
+//    }
+//}
+
+- (void)paymentContext:(STPPaymentContext *)paymentContext didFailToLoadWithError:(NSError *)error {
+    [self.navigationController popViewControllerAnimated:YES];
+    // Show the error to your user, etc.
+}
 
 /*
 #pragma mark - Navigation

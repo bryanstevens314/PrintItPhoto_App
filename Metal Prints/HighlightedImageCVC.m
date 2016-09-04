@@ -67,12 +67,121 @@ static NSString * const reuseIdentifier = @"Cell";
     // Register cell classes
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     self.collectionView.backgroundColor = [UIColor whiteColor];
-    // Do any additional setup after loading the view.
+    
+    //create long press gesture recognizer(gestureHandler will be triggered after gesture is detected)
+    _longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(gestureHandler:)];
+    _longPressGesture.delegate = self;
+    _longPressGesture.delaysTouchesBegan = YES;
+    //adjust time interval(floating value CFTimeInterval in seconds)
+    [_longPressGesture setMinimumPressDuration:0.5];
+    //add gesture to view you want to listen for it(note that if you want whole view to "listen" for gestures you should add gesture to self.view instead)
+    for (UIGestureRecognizer *gestureRecognizer in self.collectionView.gestureRecognizers) {
+        if ([gestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]]) {
+            [gestureRecognizer requireGestureRecognizerToFail:_longPressGesture];
+        }
+    }
+    
+    [self.collectionView addGestureRecognizer:_longPressGesture];
+    
+    _panGestureRecognizer1 = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(moveViewWithGestureRecognizer:)];
+    _panGestureRecognizer1.delegate = self;
+    [self.collectionView addGestureRecognizer:_panGestureRecognizer1];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+BOOL started = NO;
+-(void)moveViewWithGestureRecognizer:(UIPanGestureRecognizer *)panGestureRecognizer{
+    
+    
+    CGPoint touchLocation = [panGestureRecognizer locationInView:self.view];
+    NSLog(@"location: %f",touchLocation.x);
+    if (touchLocation.x <= 40 && started == NO) {
+        NSLog(@"started");
+        started = YES;
+        self.collectionView.frame = CGRectMake(touchLocation.x, self.collectionView.frame.origin.y, self.collectionView.frame.size.width, self.collectionView.frame.size.height);
+    }
+    if (started == YES) {
+        NSLog(@"Continueing");
+        self.collectionView.frame = CGRectMake(touchLocation.x, self.collectionView.frame.origin.y, self.collectionView.frame.size.width, self.collectionView.frame.size.height);
+
+    }
+
+    if(UIGestureRecognizerStateEnded == panGestureRecognizer.state)
+    {
+        if (started == YES) {
+            if (touchLocation.x >= 160) {
+                [UIView animateWithDuration:0.2 animations:^{
+                    
+                    self.collectionView.frame = CGRectMake(self.view.bounds.size.width, self.collectionView.frame.origin.y, self.collectionView.frame.size.width, self.collectionView.frame.size.height);
+                    
+                }completion:^(BOOL finished) {
+                    [self.delegate userSwipedBack];
+                    started = NO;
+                }];
+                
+                
+            }
+            else{
+                [UIView animateWithDuration:0.3 animations:^{
+                    self.collectionView.frame = CGRectMake(self.view.bounds.origin.x, self.collectionView.frame.origin.y, self.collectionView.frame.size.width, self.collectionView.frame.size.height);
+                    started = NO;
+                }];
+            }
+        }
+    }
+    
+}
+
+
+
+
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    BOOL simultaneous;
+    if ([_longPressGesture isEqual:gestureRecognizer]) {
+        simultaneous = NO;
+    }
+    
+    if (started == YES) {
+        simultaneous = NO;
+    }
+    if (started == NO) {
+        simultaneous = YES;
+    }
+    
+    return simultaneous;
+}
+
+
+NSIndexPath *initialSelection;
+-(void)gestureHandler:(UISwipeGestureRecognizer *)gesture
+{
+    
+    if(UIGestureRecognizerStateBegan == gesture.state)
+    {
+        CGPoint location = [gesture locationInView:self.collectionView];
+        NSIndexPath *removeIndexPath = [self.collectionView indexPathForItemAtPoint:location];
+        initialSelection = removeIndexPath;
+        ImageCollectionViewCell* cell = [self.collectionView cellForItemAtIndexPath:removeIndexPath];
+        cell.imageViewCell.frame = CGRectMake(cell.imageViewCell.frame.origin.x-5, cell.imageViewCell.frame.origin.y-5, cell.imageViewCell.frame.size.width + 10, cell.imageViewCell.frame.size.height + 10);
+    }
+    if(UIGestureRecognizerStateEnded == gesture.state)
+    {
+        
+        CGPoint location = [gesture locationInView:self.collectionView];
+        NSIndexPath *removeIndexPath = [self.collectionView indexPathForItemAtPoint:location];
+        if (initialSelection == removeIndexPath) {
+            [[self sharedAppDelegate].highlightedArray removeObjectAtIndex:removeIndexPath.row];
+            self.highlightedImageArray = nil;
+            self.highlightedImageArray = [self sharedAppDelegate].highlightedArray;
+            [self.collectionView reloadData];
+        }
+        else{
+            NSLog(@"Ended selection");
+            ImageCollectionViewCell* cell = [self.collectionView cellForItemAtIndexPath:initialSelection];
+            cell.imageViewCell.frame = CGRectMake(cell.imageViewCell.frame.origin.x+5, cell.imageViewCell.frame.origin.y+5, cell.imageViewCell.frame.size.width - 10, cell.imageViewCell.frame.size.height - 10);
+        }
+
+    }
 }
 
 /*
@@ -141,21 +250,7 @@ static NSString * const reuseIdentifier = @"Cell";
                          cell.imageViewCell.image = thumbImg;
                          [cell.contentView addSubview:cell.imageViewCell];
                      }
-                     
-                     //                     if (thumbImg.size.width == thumbImg.size.height) {
-                     //                         [cell.cellImageView setFrame:CGRectMake(0, 0, thumbImg.size.width/2.2, thumbImg.size.height/2.2)];
-                     //                     }
-                     //                     else{
-                     //                         [cell.cellImageView setFrame:CGRectMake(0, 0, thumbImg.size.width/3.1, thumbImg.size.height/3.1)];
-                     //                     }
-                     
-                     [cell.imageViewCell setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
-                     //                     [cell.contentView.layer setBorderColor: [[UIColor blackColor] CGColor]];
-                     //                     [cell.contentView.layer setBorderWidth: 1];
-                     cell.imageViewCell.image = thumbImg;
 
-//                     [cell.cellImageView.layer setBorderColor: [[UIColor blueColor] CGColor]];
-//                     [cell.cellImageView.layer setBorderWidth: 4];
     
                      if ([self sharedAppDelegate].imagesInCartArray.count != 0) {
                          NSURL *highlightedImageURL = [[self sharedAppDelegate].highlightedArray objectAtIndex:indexPath.row];
@@ -188,6 +283,9 @@ static NSString * const reuseIdentifier = @"Cell";
     [self.delegate imageSelectedWithArray:[self.highlightedImageArray objectAtIndex:indexPath.row] andIndexPath:indexPath];
 
 }
+
+
+
 
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

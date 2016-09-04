@@ -40,9 +40,9 @@
 UIBarButtonItem *rightBarButtonItem6;
 - (void)viewDidLoad {
     [super viewDidLoad];
-    rightBarButtonItem6 = [[UIBarButtonItem alloc] initWithTitle:@"Check Out" style:UIBarButtonItemStylePlain target:self action:@selector(EnterShipping)];
+    rightBarButtonItem6 = [[UIBarButtonItem alloc] initWithTitle:@"Place Order" style:UIBarButtonItemStylePlain target:self action:@selector(EnterShipping)];
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem6];
-    [self.navigationItem setTitle:@"ShoppingCart"];
+    [self.navigationItem setTitle:@"Shopping Cart"];
     
     CGRect rect = self.toolBar.frame;
     rect.origin.y = MIN(0, [[self navigationController] navigationBar].bounds.size.height);
@@ -58,16 +58,7 @@ UIBarButtonItem *rightBarButtonItem6;
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 -(void)viewWillAppear{
-    NSLog(@"ViewWillAppear");
-
-    self.total_Outlet.title = [NSString stringWithFormat:@"$%li",(long)[self sharedAppDelegate].cartTotal];
-    self.totalPrints.title = [NSString stringWithFormat:@"$%li",(long)[self sharedAppDelegate].cartPrintTotal];
-    if ([self sharedAppDelegate].shoppingCart.count == 0) {
-        rightBarButtonItem6.enabled = NO;
-    }
-    else{
-        rightBarButtonItem6.enabled = YES;
-    }
+NSLog(@"ViewWillAppear");
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -78,6 +69,12 @@ UIBarButtonItem *rightBarButtonItem6;
         [self sharedAppDelegate].newCartItem = NO;
         [self.tableView reloadData];
     }
+    
+    NSLog(@"total: %li", [self sharedAppDelegate].cartTotal);
+    NSLog(@"prints %li", [self sharedAppDelegate].cartPrintTotal);
+    self.total_Outlet.title = [NSString stringWithFormat:@"$%li",(long)[self sharedAppDelegate].cartTotal];
+    self.totalPrints.title = [NSString stringWithFormat:@"%li",(long)[self sharedAppDelegate].cartPrintTotal];
+
 
     //[self.tableView reloadData];
 }
@@ -87,12 +84,42 @@ UIBarButtonItem *rightBarButtonItem6;
 }
 
 - (void)EnterShipping {
+    
+//    if ([self sharedAppDelegate].shoppingCart.count != 0) {
+//        [self performSegueWithIdentifier:@"StartShipping" sender:self];
+//    }
+//    else{
+//        UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"" message:@"You must add items to your cart before proceeding"preferredStyle:UIAlertControllerStyleAlert];
+//        
+//        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"OK"
+//                                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+//                                                                   [alert2 dismissViewControllerAnimated:YES completion:nil];
+//                                                               }]; // 2
+//        
+//        [alert2 addAction:cameraAction];
+//        
+//        [self presentViewController:alert2 animated:YES completion:nil];
+//    }
+//    
 
-[self performSegueWithIdentifier:@"StartShipping" sender:self];
+    [self sendEmail];
+}
+
+
+-(void)sendEmail
+{
+    
+    Sendpulse* sendpulse = [[Sendpulse alloc] initWithUserIdandSecret:@"8b5aae1baf276ae0f96b0df3a9199c17" :@"835bcc351243980dc677f602b8b13c5c"];
+    NSDictionary *from = [NSDictionary dictionaryWithObjectsAndKeys:@"Bryan Stevens", @"name", @"btcfaucetfree@gmail.com", @"email", nil];
+    NSMutableArray* to = [[NSMutableArray alloc] initWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:@"Bryan Stevens", @"name", @"btcfaucetfree@gmail.com", @"email", nil], nil];
+    NSString *messageBody = @"<html><body><p>This is <b>bold text</b>, this is a <a href=\"http://www.chilkatsoft.com/\">hyperlink</a></p></body></html>";
+    NSMutableDictionary *emaildata = [NSMutableDictionary dictionaryWithObjectsAndKeys:messageBody, @"html", @"", @"text",@"BTC Faucet Withdrawal",@"subject",from,@"from",to,@"to", nil];
+    [sendpulse smtpSendMail:emaildata];
+    
+    
     
     
 }
-
 - (void)pickerDoneClicked1:(id)sender {
     
     CartTVCCell *cell = [self.cellArray objectAtIndex:self.editingImageIndexPath.row];
@@ -225,7 +252,7 @@ NSInteger numberOfPrints;
     int quan = [[array objectAtIndex:1] intValue];
     
     int total = price * quan;
-    
+    cell.total_Price.text = [NSString stringWithFormat:@"$%i",total];
     
 //    NSData *data = [[NSData alloc]initWithBase64EncodedString:[array objectAtIndex:6] options:NSDataBase64DecodingIgnoreUnknownCharacters];
 //    UIImage *image1 = [UIImage imageWithData:data];
@@ -236,76 +263,25 @@ NSInteger numberOfPrints;
     [library assetForURL:imgURL
              resultBlock:^(ALAsset *asset) {
                  UIImage *thumbImg = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
-                 //UIImage *fullImg = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
-                 //                 if (self.collectionImgView) {
-                 //                     self.collectionImgView = nil;
-                 //                 }
-//                 int setNewWidth = 0;
-//                 int setNewHeight = 0;
-//                 if (thumbImg.size.width/3 < cell.contentView.frame.size.width-10) {
-//                     setNewWidth = thumbImg.size.width/3 - 10;
-//                 }
-//                 else{
-//                     setNewWidth = thumbImg.size.width/3;
-//                 }
-//                 if (thumbImg.size.height/3 < cell.contentView.frame.size.height-10) {
-//                     setNewHeight = thumbImg.size.height/3 - 10;
-//                 }
-//                 else{
-//                     setNewHeight = thumbImg.size.height/3;
-//                 }
                  
-//                 float division = thumbImg.size.width/thumbImg.size.height;
-//                 NSLog(@"Image ratio %f",division);
-//
-//                 if (division == 1.328125) {
-//                     NSLog(@"landscape");
-//                     cell.imgType = @">";
-//                     cell.img_View = [[UIImageView alloc] initWithFrame:CGRectMake(10, 32, 102, 76.5)];
-//                     [cell.img_View setCenter:CGPointMake(cell.img_View.frame.size.width/2 + cell.img_View.frame.origin.x , cell.frame.size.height/2 )];
-//
-//                 }
-//                 if (division == 1) {
-//                     NSLog(@"square");
-//                     cell.imgType = @"=";
-//                     cell.img_View = [[UIImageView alloc] initWithFrame:CGRectMake(10, 32, 102, 102)];
-//
-//
-//                 }
-//                 if (division == 0.561404) {
-//                     NSLog(@"screenshot");
-//                     cell.imgType = @"=";
-//                     
-//                     cell.img_View = [[UIImageView alloc] initWithFrame:CGRectMake(10, 32, 102, 102)];
-//                 }
-//                 
-//                 if (division == 0.752941) {
-//                     NSLog(@"portrait");
-//                     cell.imgType = @"<";
-//                     cell.img_View = [[UIImageView alloc] initWithFrame:CGRectMake(10, 32, 102, 136)];
-//                     
-//                 }
-                 
-
                  
                  float division = thumbImg.size.width/thumbImg.size.height;
+                 int centerY = cell.bounds.size.height + (cell.product.bounds.origin.x + cell.product.bounds.size.height) ;
                  
                  if (thumbImg.size.width < thumbImg.size.height) {
                      NSLog(@"portrait");
-                     NSLog(@"ImageView %@",cell.img_View);
-                     float newWidth = 136 * division;
-                     cell.img_View.frame  = CGRectMake(0, 0, newWidth, 136);
-                     cell.img_View.center = CGPointMake(cell.img_View.bounds.size.width/2 + 10,cell.bounds.size.height/2);
+                     float newWidth = 120 * division;
+                     cell.img_View.frame  = CGRectMake(0, 0, newWidth, 120);
+                     cell.img_View.center = CGPointMake(cell.img_View.bounds.size.width/2 + 10 ,centerY/2);
                      cell.img_View.image = thumbImg;
                      [cell.contentView addSubview:cell.img_View];
                      cell.imgViewURL = [cartArray objectAtIndex:6];
-                     NSLog(@"ImageView 2 %@",cell.img_View);
                  }
                  if (thumbImg.size.width > thumbImg.size.height) {
                      NSLog(@"landscape");
-                     float newWidth = 76.5 * division;
-                     [cell.img_View setFrame:CGRectMake(0, 0, newWidth, 76.5)];
-                     [cell.img_View setCenter:CGPointMake(cell.img_View.bounds.size.width/2 + 10,cell.bounds.size.height/2)];
+                     float newWidth = 80 * division;
+                     [cell.img_View setFrame:CGRectMake(0, 0, newWidth, 80)];
+                     [cell.img_View setCenter:CGPointMake(cell.img_View.bounds.size.width/2 + 10 ,centerY/2)];
                      cell.img_View.image = thumbImg;
                      [cell.contentView addSubview:cell.img_View];
                      cell.imgViewURL = [cartArray objectAtIndex:6];
@@ -313,10 +289,70 @@ NSInteger numberOfPrints;
                  if (thumbImg.size.width == thumbImg.size.height) {
                      NSLog(@"square");
                      [cell.img_View setFrame:CGRectMake(0, 0, 102, 102)];
-                     [cell.img_View setCenter:CGPointMake(cell.img_View.bounds.size.width/2 + 10,cell.bounds.size.height/2)];
+                     [cell.img_View setCenter:CGPointMake(cell.img_View.bounds.size.width/2 + 10 ,centerY/2)];
                      cell.img_View.image = thumbImg;
                      [cell.contentView addSubview:cell.img_View];
                      cell.imgViewURL = [cartArray objectAtIndex:6];
+                 }
+                 cell.instructionsTextView.tag = indexPath.row;
+//                 int instuctionY = cell.bounds.size.height - cell.instructionsTextView.bounds.size.height - 10 ;
+//                 int instructionsWidth = cell.frame.size.width - (cell.img_View.frame.origin.x + cell.img_View.frame.size.width);
+//                 
+//                 cell.instructions_TextView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, 250, cell.instructionsTextView.frame.size.height)];
+//                 NSLog(@"textView: %i",instructionsWidth);
+//                 [cell.instructions_TextView setCenter:CGPointMake(instructionsWidth - 35, 135 )];
+//                 cell.instructions_TextView.inputAccessoryView = self.keyboardDoneButtonView;
+//                 
+                 cell.instructionsTextView.layer.borderColor = [UIColor lightGrayColor].CGColor; // set color as you want.
+                 cell.instructionsTextView.layer.borderWidth = 1.0; // set borderWidth as you want.
+//
+//                 cell.instructions_TextView.editable = NO;
+//                 cell.instructions_TextView.selectable = NO;
+//                 [cell.contentView addSubview:cell.instructions_TextView];
+                 
+//                 array = @[product,
+//                           self.Quantity_TextField.text,
+//                           price,
+//                           self.Retouching_TextField.text,
+//                           self.For_Aluminum_TextField.text,
+//                           self.textView.text,
+//                           [self.selectedImageURL absoluteString],
+//                           self.image,
+//                           [NSString stringWithFormat:@"%li",(long)self.selectedRow],
+//                           [NSString stringWithFormat:@"%li",(long)self.selectedSection1]
+//                           ];
+                 
+                 //all exist
+                 if (![[array objectAtIndex:3] isEqualToString:@""] && ![[array objectAtIndex:4] isEqualToString:@""] && ![[array objectAtIndex:5] isEqualToString:@""]) {
+                     cell.instructionsTextView.text = [NSString stringWithFormat:@"%@\n%@\n%@",[array objectAtIndex:5],[array objectAtIndex:3],[array objectAtIndex:4]];
+                 }
+                 //no aluminum option
+                 if (![[array objectAtIndex:3] isEqualToString:@""] && [[array objectAtIndex:4] isEqualToString:@""] && ![[array objectAtIndex:5] isEqualToString:@""]) {
+                     cell.instructionsTextView.text = [NSString stringWithFormat:@"%@\n%@",[array objectAtIndex:5],[array objectAtIndex:3]];
+                 }
+                 //no instructions
+                 if (![[array objectAtIndex:3] isEqualToString:@""] && ![[array objectAtIndex:4] isEqualToString:@""] && [[array objectAtIndex:5] isEqualToString:@""]) {
+                     cell.instructionsTextView.text = [NSString stringWithFormat:@"%@\n%@",[array objectAtIndex:3],[array objectAtIndex:4]];
+                     //no retouching
+                 }
+                 if ([[array objectAtIndex:3] isEqualToString:@""] && ![[array objectAtIndex:4] isEqualToString:@""] && ![[array objectAtIndex:5] isEqualToString:@""]) {
+                     cell.instructionsTextView.text = [NSString stringWithFormat:@"%@\n%@",[array objectAtIndex:5],[array objectAtIndex:4]];
+                 }
+                 //no aluminum options and retouching
+                 if ([[array objectAtIndex:3] isEqualToString:@""] && [[array objectAtIndex:4] isEqualToString:@""] && ![[array objectAtIndex:5] isEqualToString:@""]) {
+                     cell.instructionsTextView.text = [NSString stringWithFormat:@"%@",[array objectAtIndex:5]];
+                 }
+                 //no aluminum options or instructions
+                 if ([[array objectAtIndex:3] isEqualToString:@""] && ![[array objectAtIndex:4] isEqualToString:@""] && [[array objectAtIndex:5] isEqualToString:@""]) {
+                     cell.instructionsTextView.text = [NSString stringWithFormat:@"%@",[array objectAtIndex:3]];
+                 }
+                 //no retouching or instructions
+                 if (![[array objectAtIndex:3] isEqualToString:@""] && [[array objectAtIndex:4] isEqualToString:@""] && [[array objectAtIndex:5] isEqualToString:@""]) {
+                     cell.instructionsTextView.text = [NSString stringWithFormat:@"%@",[array objectAtIndex:4]];
+                 }
+                 //none
+                 if ([[array objectAtIndex:3] isEqualToString:@""] && [[array objectAtIndex:4] isEqualToString:@""] && [[array objectAtIndex:5] isEqualToString:@""]) {
+                     cell.instructionsTextView.text = @"";
                  }
              }
      
@@ -339,21 +375,7 @@ NSInteger numberOfPrints;
 
     
     
-    int instuctionCenterY = (cell.img_View.frame.origin.y + cell.img_View.frame.size.height) - cell.instructionsTextView.bounds.size.height/2 - 5;
-    int instructionsWidth = cell.frame.size.width-(cell.img_View.frame.origin.x + cell.img_View.frame.size.width);
-    int instuctionCenterX = cell.bounds.size.width ;
-    
-    cell.instructions_TextView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, instructionsWidth-30, cell.instructionsTextView.frame.size.height)];
-    NSLog(@"textview y:%d",instuctionCenterY);
-    [cell.instructions_TextView setCenter:CGPointMake(instructionsWidth-20, 135 )];
-    cell.instructions_TextView.inputAccessoryView = self.keyboardDoneButtonView;
-    cell.instructions_TextView.tag = indexPath.row;
-    cell.instructions_TextView.layer.borderColor = [UIColor lightGrayColor].CGColor; // set color as you want.
-    cell.instructions_TextView.layer.borderWidth = 1.0; // set borderWidth as you want.
-    
-    cell.instructions_TextView.editable = NO;
-    cell.instructions_TextView.selectable = NO;
-    [cell.contentView addSubview:cell.instructions_TextView];
+
     
 //    NSArray *array = @[self.Product_Outlet.text,
 //                       self.Quantity_TextField.text,
@@ -366,38 +388,7 @@ NSInteger numberOfPrints;
 //                       ];
     
     
-    //all exist
-    if (![[array objectAtIndex:3] isEqualToString:@""] && ![[array objectAtIndex:4] isEqualToString:@""] && ![[array objectAtIndex:5] isEqualToString:@""]) {
-        cell.instructions_TextView.text = [NSString stringWithFormat:@"%@; %@; %@",[array objectAtIndex:5],[array objectAtIndex:3],[array objectAtIndex:4]];
-    }
-    //no aluminum option
-    if (![[array objectAtIndex:3] isEqualToString:@""] && [[array objectAtIndex:4] isEqualToString:@""] && ![[array objectAtIndex:5] isEqualToString:@""]) {
-        cell.instructions_TextView.text = [NSString stringWithFormat:@"%@; %@",[array objectAtIndex:5],[array objectAtIndex:3]];
-    }
-    //no instructions
-    if (![[array objectAtIndex:3] isEqualToString:@""] && ![[array objectAtIndex:4] isEqualToString:@""] && [[array objectAtIndex:5] isEqualToString:@""]) {
-        cell.instructions_TextView.text = [NSString stringWithFormat:@"%@; %@",[array objectAtIndex:3],[array objectAtIndex:4]];
-        //no retouching
-    }
-    if ([[array objectAtIndex:3] isEqualToString:@""] && ![[array objectAtIndex:4] isEqualToString:@""] && ![[array objectAtIndex:5] isEqualToString:@""]) {
-        cell.instructions_TextView.text = [NSString stringWithFormat:@"%@; %@",[array objectAtIndex:5],[array objectAtIndex:4]];
-    }
-    //no aluminum options and retouching
-    if ([[array objectAtIndex:3] isEqualToString:@""] && [[array objectAtIndex:4] isEqualToString:@""] && ![[array objectAtIndex:5] isEqualToString:@""]) {
-        cell.instructions_TextView.text = [NSString stringWithFormat:@"%@",[array objectAtIndex:5]];
-    }
-    //no aluminum options or instructions
-    if ([[array objectAtIndex:3] isEqualToString:@""] && ![[array objectAtIndex:4] isEqualToString:@""] && [[array objectAtIndex:5] isEqualToString:@""]) {
-        cell.instructions_TextView.text = [NSString stringWithFormat:@"%@",[array objectAtIndex:3]];
-    }
-    //no retouching or instructions
-    if (![[array objectAtIndex:3] isEqualToString:@""] && [[array objectAtIndex:4] isEqualToString:@""] && [[array objectAtIndex:5] isEqualToString:@""]) {
-        cell.instructions_TextView.text = [NSString stringWithFormat:@"%@",[array objectAtIndex:4]];
-    }
-    //none
-    if ([[array objectAtIndex:3] isEqualToString:@""] && [[array objectAtIndex:4] isEqualToString:@""] && [[array objectAtIndex:5] isEqualToString:@""]) {
-        cell.instructions_TextView.text = @"";
-    }
+
     
     
     
@@ -413,10 +404,6 @@ NSInteger numberOfPrints;
     cell.quantity_TextField.tag = indexPath.row;
 
         [self.cellArray addObject:cell];
-    if ([self sharedAppDelegate].shoppingCart.count-1 == indexPath.row) {
-        self.totalPrints.title = [NSString stringWithFormat:@"%li",(long)numberOfPrints];
-        self.total_Outlet.title = [NSString stringWithFormat:@"$%i",cartTotal];
-    }
 //    if ([self sharedAppDelegate].shoppingCart.count == indexPath.row+1) {
 //        self.total_Outlet.title = [NSString stringWithFormat:@"%i",cartTotal];
 //    }
@@ -590,6 +577,7 @@ NSInteger numberOfPrints;
 
 NSArray *currentItem;
 NSInteger selectedRow;
+NSInteger selectedSection;
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     
@@ -616,20 +604,7 @@ NSInteger selectedRow;
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    CGFloat x = 0;
-    //NSLog(@"%@",self.cellArray);
-//    CartTVCCell *cell = [self.cellArray objectAtIndex:indexPath.row];
-//    x = cell.instructions_TextView.frame.origin.y + cell.instructions_TextView.frame.size.height + 10;
-    NSArray *cart = [[self sharedAppDelegate].shoppingCart objectAtIndex:indexPath.row];
-    if ([[cart objectAtIndex:7] isEqualToString:@"<"]) {
-        x = 221;
-    }
-    if ([[cart objectAtIndex:7] isEqualToString:@">"]) {
-        x = 191;
-    }
-    if ([[cart objectAtIndex:7] isEqualToString:@"="]) {
-        x = 205;
-    }
+
     return 178;
 }
 
@@ -640,8 +615,18 @@ NSInteger selectedRow;
         // Delete the row from the data source
         NSArray *array = [[self sharedAppDelegate].shoppingCart objectAtIndex:indexPath.row];
         int price2 = [[array objectAtIndex:2] intValue];
-        int newTotal = [self.total_Outlet.title intValue] - price2;
+        int quantity = [[array objectAtIndex:1] intValue];
+        NSString *theTotal = [self.total_Outlet.title stringByReplacingOccurrencesOfString:@"$" withString:@""];
+        int newTotal = [theTotal intValue] - (price2 * quantity);
+        NSLog(@"New total:%i",newTotal);
+        NSLog(@"price:%i",price2);
+        NSLog(@"quan:%i",quantity);
         self.total_Outlet.title = [NSString stringWithFormat:@"$%i",newTotal];
+
+        int totalPrints1 = [self.totalPrints.title intValue] - quantity;
+        self.totalPrints.title = [NSString stringWithFormat:@"%i",totalPrints1];
+        [self sharedAppDelegate].cartTotal = newTotal;
+        [self sharedAppDelegate].cartPrintTotal = totalPrints1;
         [[self sharedAppDelegate].shoppingCart removeObjectAtIndex:indexPath.row];
         [NSKeyedArchiver archiveRootObject:[self sharedAppDelegate].shoppingCart toFile:[self archivePathShoppingCart]];
         

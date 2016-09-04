@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "DetailsTVC.h"
+#import "ShippingTVC.h"
+#import "ShippingInfoVC.h"
+#import "Sendpulse.h"
 
 @interface ShoppingCartTVC : UITableViewController <DetailsTVCDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 

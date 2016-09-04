@@ -13,6 +13,7 @@
 #import "UserObject.h"
 #import "ImageCollectionViewController.h"
 #import "TabController.h"
+#import "LaunchController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -23,8 +24,10 @@
 @property (retain, nonatomic) NSMutableArray *allProductsArray;
 @property (strong, nonatomic)NSArray *AluminumProductArray;
 @property (strong, nonatomic)NSArray *WoodenProductArray;
-@property (strong, nonatomic)NSArray *MugProductArray;
+@property (strong, nonatomic)NSArray *SlateProductArray;
 @property (strong, nonatomic)NSArray *TileProductArray;
+@property (strong, nonatomic)NSArray *OtherProductArray;
+@property (strong, nonatomic)NSArray *categoryArray;
 @property (retain, nonatomic)NSMutableArray *shoppingCart;
 @property (retain, nonatomic)NSDictionary *shippingInfo;
 
@@ -36,11 +39,12 @@
 @property (retain, nonatomic) UserObject *userSettings;
 @property (nonatomic) BOOL signedIn;
 @property (nonatomic) BOOL newCartItem;
-@property (nonatomic) BOOL gettingPhotos;
 @property (nonatomic) BOOL reloadImageCollection;
+@property (nonatomic) BOOL loadingImages;
 @property (nonatomic) NSInteger totalImageCount;
 
 @property (retain, nonatomic) NSMutableArray *phoneImageArray;
+@property (retain, nonatomic) NSMutableArray *mutableImageArray;
 @property (retain, nonatomic) NSMutableArray *tempPhoneImageArray;
 @property (retain, nonatomic) NSMutableArray *highlightedArray;
 @property (retain, nonatomic) NSMutableArray *imagesInCartArray;

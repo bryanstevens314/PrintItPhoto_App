@@ -123,7 +123,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 4;
+    return 5;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -143,6 +143,10 @@ static NSString * const reuseIdentifier = @"Cell";
         cell.productImage.image = [UIImage imageNamed:@"broadway-coffee-mug.jpg"];
     }
     if (indexPath.row == 3) {
+        cell.label.text = @"";
+        cell.productImage.image = [UIImage imageNamed:@"d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg"];
+    }
+    if (indexPath.row == 4) {
         cell.label.text = @"";
         cell.productImage.image = [UIImage imageNamed:@"d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg"];
     }

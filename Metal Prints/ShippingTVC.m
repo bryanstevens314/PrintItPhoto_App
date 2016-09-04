@@ -145,6 +145,7 @@
 }
 
 - (void)DoneClicked:(id)sender {
+    [self.keyboardDoneButtonView1 removeFromSuperview];
     [self.delegate zipResignedFirstResponderMoveViewDown];
     if ([self.name_TextField isFirstResponder]) {
         NSLog(@"name");
@@ -227,7 +228,7 @@
         NSLog(@"Zip");
         stop = YES;             
         [self.zip_TextField resignFirstResponder];
-        
+        [self.keyboardDoneButtonView1 removeFromSuperview];
         [self.delegate zipResignedFirstResponderMoveViewDown];
     }
 }

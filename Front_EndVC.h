@@ -16,7 +16,7 @@
 
 
 + (Front_EndVC *)sharedFrontEnd_VC;
-
+- (void)FinishedLoadingImages;
 
 - (IBAction)ShoppingCartSelected:(id)sender;
 -(void)cellClickedWithRow:(NSInteger)clickedCell;

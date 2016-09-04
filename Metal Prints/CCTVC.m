@@ -67,12 +67,18 @@
     self.keyboardDoneButtonView2.translucent = YES;
     self.keyboardDoneButtonView2.tintColor = nil;
     [self.keyboardDoneButtonView2 sizeToFit];
-    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Next"
+    UIBarButtonItem *flexSpace1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *backButton1 = [[UIBarButtonItem alloc] initWithTitle:@"Back"
+                                                                   style:UIBarButtonItemStyleDone target:self
+                                                                  action:@selector(BackClicked1:)];
+    UIBarButtonItem *nextButton1 = [[UIBarButtonItem alloc] initWithTitle:@"Next"
                                                                    style:UIBarButtonItemStyleDone target:self
                                                                   action:@selector(NextClicked1:)];
+    UIBarButtonItem *doneButton1 = [[UIBarButtonItem alloc] initWithTitle:@"Done"
+                                                                   style:UIBarButtonItemStyleDone target:self
+                                                                  action:@selector(DoneClicked1:)];
     
-    [self.keyboardDoneButtonView2 setItems:[NSArray arrayWithObjects:flexSpace,doneButton, nil]];
+    [self.keyboardDoneButtonView2 setItems:[NSArray arrayWithObjects:backButton1,nextButton1,flexSpace1,doneButton1, nil]];
     
     self.firstName.inputAccessoryView = self.keyboardDoneButtonView2;
     
@@ -90,48 +96,142 @@
 }
 
 
--(void)NextClicked1:(id)sender{
+- (void)BackClicked1:(id)sender {
     BOOL stop = NO;
-    [self.delegate moveViewDown];
+    if ([self.firstName isFirstResponder] && stop == NO) {
+        NSLog(@"name");
+        stop = YES;
+    }
     
-    if ([self.firstName isFirstResponder]&& stop == NO) {
+    if ([self.LastName isFirstResponder] && stop == NO) {
+        NSLog(@"email");
+        stop = YES;
+        [self.firstName becomeFirstResponder];
+    }
+    
+    if ([self.streetAddress isFirstResponder] && stop == NO) {
+        NSLog(@"street");
         stop = YES;
         [self.LastName becomeFirstResponder];
     }
     
-    if ([self.LastName isFirstResponder]&& stop == NO) {
+    if ([self.apt isFirstResponder] && stop == NO) {
+        NSLog(@"city");
         stop = YES;
         [self.streetAddress becomeFirstResponder];
     }
     
-    if ([self.streetAddress isFirstResponder]&& stop == NO) {
+    if ([self.City isFirstResponder] && stop == NO) {
+        NSLog(@"city");
         stop = YES;
         [self.apt becomeFirstResponder];
     }
     
-    if ([self.apt isFirstResponder]&& stop == NO) {
+    if ([self.state isFirstResponder] && stop == NO) {
+        NSLog(@"state");
         stop = YES;
         [self.City becomeFirstResponder];
     }
     
-    if ([self.City isFirstResponder]&& stop == NO) {
+    if ([self.zip isFirstResponder] && stop == NO) {
+        NSLog(@"Zip");
+        stop = YES;
+        [self.state becomeFirstResponder];
+        
+        
+    }
+}
+
+- (void)DoneClicked1:(id)sender {
+    [self.keyboardDoneButtonView2 removeFromSuperview];
+    [self.delegate moveViewDown];
+    if ([self.firstName isFirstResponder]) {
+        NSLog(@"name");
+        [self.firstName resignFirstResponder];
+    }
+    
+    if ([self.LastName isFirstResponder]) {
+        NSLog(@"email");
+        [self.LastName resignFirstResponder];
+    }
+    
+    if ([self.streetAddress isFirstResponder]) {
+        NSLog(@"street");
+        [self.streetAddress resignFirstResponder];
+    }
+    
+    if ([self.apt isFirstResponder]) {
+        NSLog(@"city");
+        [self.apt resignFirstResponder];
+    }
+    
+    if ([self.City isFirstResponder]) {
+        NSLog(@"city");
+        [self.City resignFirstResponder];
+    }
+    
+    if ([self.state isFirstResponder]) {
+        NSLog(@"state");
+        [self.state resignFirstResponder];
+    }
+    
+    if ([self.zip isFirstResponder]) {
+        NSLog(@"Zip");
+        [self.zip resignFirstResponder];
+        
+    }
+}
+
+
+- (void)NextClicked1:(id)sender {
+    BOOL stop = NO;
+    if ([self.firstName isFirstResponder] && stop == NO) {
+        NSLog(@"name");
+        stop = YES;
+        [self.LastName becomeFirstResponder];
+    }
+    
+    if ([self.LastName isFirstResponder] && stop == NO) {
+        NSLog(@"email");
+        stop = YES;
+        [self.streetAddress becomeFirstResponder];
+    }
+    
+    if ([self.streetAddress isFirstResponder] && stop == NO) {
+        NSLog(@"street");
+        stop = YES;
+        [self.apt becomeFirstResponder];
+    }
+    
+    if ([self.apt isFirstResponder] && stop == NO) {
+        NSLog(@"city");
+        stop = YES;
+        [self.City becomeFirstResponder];
+    }
+    
+    if ([self.City isFirstResponder] && stop == NO) {
+        NSLog(@"city");
         stop = YES;
         [self.state becomeFirstResponder];
         [self.delegate moveViewUp];
     }
     
-    if ([self.state isFirstResponder]&& stop == NO) {
+    if ([self.state isFirstResponder] && stop == NO) {
+        NSLog(@"state");
         stop = YES;
         [self.zip becomeFirstResponder];
-    }
-    
-    if ([self.zip isFirstResponder]&& stop == NO) {
-        stop = YES;
-        [self.keyboardDoneButtonView2 removeFromSuperview];
-        [self.zip resignFirstResponder];
         
     }
+    
+    if ([self.zip isFirstResponder] && stop == NO) {
+        NSLog(@"Zip");
+        stop = YES;
+        [self.zip resignFirstResponder];
+        [self.keyboardDoneButtonView2 removeFromSuperview];
+        [self.delegate moveViewDown];
+    }
 }
+
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     

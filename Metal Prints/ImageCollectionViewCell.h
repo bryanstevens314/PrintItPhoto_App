@@ -16,4 +16,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *inCartCheck;
 @property (retain, nonatomic) UIImageView *imageViewCell;
 @property (weak, nonatomic) UIImage *cellImage;
+@property (weak, nonatomic) UIImage *fullImage;
+@property (weak, nonatomic) NSURL *imgURL;
 @end

@@ -31,6 +31,7 @@
     
     UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(EnterPayment)];
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
+    [self.navigationItem setTitle:@"Billing"];
     
     CCTable = [CCTVC sharedCCTVC];
     CCTable.delegate = self;

@@ -21,6 +21,40 @@
 @implementation ShippingInfoVC
 
 
+
++ (ShippingInfoVC *)sharedShippingInfoVC
+{
+    static ShippingInfoVC *sharedInstance = nil;
+    
+    UIStoryboard *storyboard;
+    
+    // detect the height of our screen
+    int height = [UIScreen mainScreen].bounds.size.height;
+    
+    if (height == 480) {
+        storyboard = [UIStoryboard storyboardWithName:@"Main_3.5_inch" bundle:nil];
+        // NSLog(@"Device has a 3.5inch Display.");
+    }
+    if (height == 568) {
+        storyboard = [UIStoryboard storyboardWithName:@"Main_4_inch" bundle:nil];
+        // NSLog(@"Device has a 4inch Display.");
+    }
+    if (height == 667) {
+        storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        // NSLog(@"Device has a 4inch Display.");
+    }
+    if (height == 736) {
+        storyboard = [UIStoryboard storyboardWithName:@"Main_5.5_inch" bundle:nil];
+        // NSLog(@"Device has a 4inch Display.");
+    }
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedInstance = (ShippingInfoVC*)[storyboard instantiateViewControllerWithIdentifier: @"ShippingInfo"];
+    });
+    return sharedInstance;
+}
+
+
 - (AppDelegate *)sharedAppDelegate
 {
     
@@ -33,6 +67,7 @@ UIBarButtonItem *rightBarButtonItem5;
     [super viewDidLoad];
     rightBarButtonItem5 = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(EnterBilling)];
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem5];
+    [self.navigationItem setTitle:@"Shipping"];
     
     shippingTable = [ShippingTVC sharedShippingTVC];
     shippingTable.delegate = self;
@@ -63,6 +98,42 @@ UIBarButtonItem *rightBarButtonItem5;
 
 
 -(void)EnterBilling{
+    
+    if ([shippingTable.name_TextField isFirstResponder]) {
+        NSLog(@"name");
+        [shippingTable.name_TextField resignFirstResponder];
+    }
+    
+    if ([shippingTable.email_TextField isFirstResponder]) {
+        NSLog(@"email");
+        [shippingTable.email_TextField resignFirstResponder];
+    }
+    
+    if ([shippingTable.street_TextField isFirstResponder]) {
+        NSLog(@"street");
+        [shippingTable.street_TextField resignFirstResponder];
+    }
+    
+    if ([shippingTable.apt_TextField isFirstResponder]) {
+        NSLog(@"city");
+        [shippingTable.apt_TextField resignFirstResponder];
+    }
+    
+    if ([shippingTable.city_TextField isFirstResponder]) {
+        NSLog(@"city");
+        [shippingTable.city_TextField resignFirstResponder];
+    }
+    
+    if ([shippingTable.state_TextField isFirstResponder]) {
+        NSLog(@"state");
+        [shippingTable.state_TextField resignFirstResponder];
+    }
+    
+    if ([shippingTable.zip_TextField isFirstResponder]) {
+        NSLog(@"Zip");
+        [shippingTable.zip_TextField resignFirstResponder];
+        
+    }
     
     if (![shippingTable.name_TextField.text isEqualToString: @""] && ![shippingTable.street_TextField.text isEqualToString: @""] && ![shippingTable.city_TextField.text isEqualToString: @""] && ![shippingTable.state_TextField.text isEqualToString: @""] && ![shippingTable.zip_TextField.text isEqualToString: @""]) {
         

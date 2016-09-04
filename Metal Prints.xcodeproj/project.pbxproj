@@ -47,7 +47,6 @@
 		932F2F181CC9D6730050094A /* photosonwood4web.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 932F2F171CC9D6730050094A /* photosonwood4web.jpg */; };
 		932F2F1C1CC9DDE40050094A /* shopping cart.png in Resources */ = {isa = PBXBuildFile; fileRef = 932F2F1B1CC9DDE40050094A /* shopping cart.png */; };
 		932FCB651CF4059D00CF8869 /* TestVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 932FCB641CF4059D00CF8869 /* TestVC.m */; };
-		932FCB671CF5329800CF8869 /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 932FCB661CF5329700CF8869 /* Stripe.framework */; };
 		934906591CCDAD2C00E69EB4 /* Front_EndVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 934906581CCDAD2C00E69EB4 /* Front_EndVC.m */; };
 		9369C8B61D3C2F0100FCD2CC /* TabController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9369C8B51D3C2F0100FCD2CC /* TabController.m */; };
 		9369C8BE1D3C384900FCD2CC /* thin-363_photo_image_album-512.png in Resources */ = {isa = PBXBuildFile; fileRef = 9369C8BD1D3C384900FCD2CC /* thin-363_photo_image_album-512.png */; };
@@ -74,7 +73,53 @@
 		FB5047F61D5D64D100B2E223 /* broadway-coffee-mug.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FB5047F51D5D64D100B2E223 /* broadway-coffee-mug.jpg */; };
 		FB5047F81D5D64EB00B2E223 /* d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FB5047F71D5D64EB00B2E223 /* d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg */; };
 		FB5047FB1D5E94B500B2E223 /* ShippingInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5047FA1D5E94B500B2E223 /* ShippingInfoVC.m */; };
+		FBA823401D79A5300028D3A1 /* LoveStoryProjectLogo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FBA8233F1D79A5300028D3A1 /* LoveStoryProjectLogo.jpg */; };
+		FBA823421D7A850E0028D3A1 /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA823411D7A850E0028D3A1 /* Stripe.framework */; };
+		FBA823441D7A85200028D3A1 /* Stripe.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FBA823431D7A85200028D3A1 /* Stripe.bundle */; };
+		FBA823471D7A87430028D3A1 /* StripeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA823461D7A87430028D3A1 /* StripeViewController.m */; };
+		FBA823961D7BC6B70028D3A1 /* 2x3 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA823861D7BC6B70028D3A1 /* 2x3 aluminum.png */; };
+		FBA823971D7BC6B70028D3A1 /* 4x4 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA823871D7BC6B70028D3A1 /* 4x4 aluminum.png */; };
+		FBA823981D7BC6B70028D3A1 /* 4x6 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA823881D7BC6B70028D3A1 /* 4x6 aluminum.png */; };
+		FBA823991D7BC6B70028D3A1 /* 5x5  aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA823891D7BC6B70028D3A1 /* 5x5  aluminum.png */; };
+		FBA8239A1D7BC6B70028D3A1 /* 5x7 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA8238A1D7BC6B70028D3A1 /* 5x7 aluminum.png */; };
+		FBA8239B1D7BC6B70028D3A1 /* 5x10 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA8238B1D7BC6B70028D3A1 /* 5x10 aluminum.png */; };
+		FBA8239C1D7BC6B70028D3A1 /* 5x11 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA8238C1D7BC6B70028D3A1 /* 5x11 aluminum.png */; };
+		FBA8239D1D7BC6B70028D3A1 /* 5x17 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA8238D1D7BC6B70028D3A1 /* 5x17 aluminum.png */; };
+		FBA8239E1D7BC6B70028D3A1 /* 8x8 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA8238E1D7BC6B70028D3A1 /* 8x8 aluminum.png */; };
+		FBA8239F1D7BC6B70028D3A1 /* 8x10 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA8238F1D7BC6B70028D3A1 /* 8x10 aluminum.png */; };
+		FBA823A01D7BC6B70028D3A1 /* 8x12 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA823901D7BC6B70028D3A1 /* 8x12 aluminum.png */; };
+		FBA823A11D7BC6B70028D3A1 /* 10x10 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA823911D7BC6B70028D3A1 /* 10x10 aluminum.png */; };
+		FBA823A21D7BC6B70028D3A1 /* 11x14 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA823921D7BC6B70028D3A1 /* 11x14 aluminum.png */; };
+		FBA823A31D7BC6B70028D3A1 /* 11x17 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA823931D7BC6B70028D3A1 /* 11x17 aluminum.png */; };
+		FBA823A41D7BC6B70028D3A1 /* 12x12 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA823941D7BC6B70028D3A1 /* 12x12 aluminum.png */; };
+		FBA823A51D7BC6B70028D3A1 /* 12x18 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA823951D7BC6B70028D3A1 /* 12x18 aluminum.png */; };
+		FBA823A91D7BC6BE0028D3A1 /* 6x6 slate.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA823A61D7BC6BE0028D3A1 /* 6x6 slate.png */; };
+		FBA823AA1D7BC6BE0028D3A1 /* 6x8 slate.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA823A71D7BC6BE0028D3A1 /* 6x8 slate.png */; };
+		FBA823AB1D7BC6BE0028D3A1 /* 8x12 slate.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA823A81D7BC6BE0028D3A1 /* 8x12 slate.png */; };
+		FBA823B01D7BC6C30028D3A1 /* 4x4 tile.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA823AC1D7BC6C30028D3A1 /* 4x4 tile.png */; };
+		FBA823B11D7BC6C30028D3A1 /* 6x6 tile.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA823AD1D7BC6C30028D3A1 /* 6x6 tile.png */; };
+		FBA823B21D7BC6C30028D3A1 /* 6x8 tile.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA823AE1D7BC6C30028D3A1 /* 6x8 tile.png */; };
+		FBA823B31D7BC6C30028D3A1 /* 8x10 tile.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA823AF1D7BC6C30028D3A1 /* 8x10 tile.png */; };
+		FBA823B81D7BC6CA0028D3A1 /* 8x8 wood.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA823B41D7BC6CA0028D3A1 /* 8x8 wood.png */; };
+		FBA823B91D7BC6CA0028D3A1 /* 8x10 wood.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA823B51D7BC6CA0028D3A1 /* 8x10 wood.png */; };
+		FBA823BA1D7BC6CA0028D3A1 /* 10x10 wood.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA823B61D7BC6CA0028D3A1 /* 10x10 wood.png */; };
+		FBA823BB1D7BC6CA0028D3A1 /* 11x14 wood.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA823B71D7BC6CA0028D3A1 /* 11x14 wood.png */; };
+		FBA823BE1D7CB1140028D3A1 /* RTSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA823BD1D7CB1140028D3A1 /* RTSerializer.m */; };
+		FBA823C11D7CB11F0028D3A1 /* Sendpulse.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA823C01D7CB11F0028D3A1 /* Sendpulse.m */; };
+		FBA823D71D7CB1280028D3A1 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA823C41D7CB1280028D3A1 /* SBJsonParser.m */; };
+		FBA823D81D7CB1280028D3A1 /* SBJsonStreamParser.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA823C61D7CB1280028D3A1 /* SBJsonStreamParser.m */; };
+		FBA823D91D7CB1280028D3A1 /* SBJsonStreamParserAccumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA823C81D7CB1280028D3A1 /* SBJsonStreamParserAccumulator.m */; };
+		FBA823DA1D7CB1280028D3A1 /* SBJsonStreamParserAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA823CA1D7CB1280028D3A1 /* SBJsonStreamParserAdapter.m */; };
+		FBA823DB1D7CB1280028D3A1 /* SBJsonStreamParserState.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA823CC1D7CB1280028D3A1 /* SBJsonStreamParserState.m */; };
+		FBA823DC1D7CB1280028D3A1 /* SBJsonStreamTokeniser.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA823CE1D7CB1280028D3A1 /* SBJsonStreamTokeniser.m */; };
+		FBA823DD1D7CB1280028D3A1 /* SBJsonStreamWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA823D01D7CB1280028D3A1 /* SBJsonStreamWriter.m */; };
+		FBA823DE1D7CB1280028D3A1 /* SBJsonStreamWriterAccumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA823D21D7CB1280028D3A1 /* SBJsonStreamWriterAccumulator.m */; };
+		FBA823DF1D7CB1280028D3A1 /* SBJsonStreamWriterState.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA823D41D7CB1280028D3A1 /* SBJsonStreamWriterState.m */; };
+		FBA823E01D7CB1280028D3A1 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA823D61D7CB1280028D3A1 /* SBJsonWriter.m */; };
 		FBBF087E1D6A1A3900BF5332 /* rounded-512.png in Resources */ = {isa = PBXBuildFile; fileRef = FBBF087D1D6A1A3900BF5332 /* rounded-512.png */; };
+		FBE5C83F1D74756C00B78EC6 /* Screen Shot 2016-08-29 at 6.50.44 AM.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE5C83E1D74756C00B78EC6 /* Screen Shot 2016-08-29 at 6.50.44 AM.png */; };
+		FBE5C8411D74775A00B78EC6 /* secure-payment.png in Resources */ = {isa = PBXBuildFile; fileRef = FBE5C8401D74775A00B78EC6 /* secure-payment.png */; };
+		FBE8DDEA1D79157400693765 /* LaunchController.m in Sources */ = {isa = PBXBuildFile; fileRef = FBE8DDE91D79157400693765 /* LaunchController.m */; };
 		FBF301C11D6A445B0076C070 /* UserObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FBF301C01D6A445B0076C070 /* UserObject.m */; };
 		FBF301C41D6A449B0076C070 /* UserShipping.m in Sources */ = {isa = PBXBuildFile; fileRef = FBF301C31D6A449B0076C070 /* UserShipping.m */; };
 		FBF301C71D6A44A60076C070 /* UserBilling.m in Sources */ = {isa = PBXBuildFile; fileRef = FBF301C61D6A44A60076C070 /* UserBilling.m */; };
@@ -160,7 +205,6 @@
 		932F2F1B1CC9DDE40050094A /* shopping cart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shopping cart.png"; sourceTree = "<group>"; };
 		932FCB631CF4059D00CF8869 /* TestVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestVC.h; sourceTree = "<group>"; };
 		932FCB641CF4059D00CF8869 /* TestVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestVC.m; sourceTree = "<group>"; };
-		932FCB661CF5329700CF8869 /* Stripe.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Stripe.framework; sourceTree = "<group>"; };
 		934906571CCDAD2B00E69EB4 /* Front_EndVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Front_EndVC.h; path = ../Front_EndVC.h; sourceTree = "<group>"; };
 		934906581CCDAD2C00E69EB4 /* Front_EndVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Front_EndVC.m; path = ../Front_EndVC.m; sourceTree = "<group>"; };
 		9369C8B41D3C2F0100FCD2CC /* TabController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabController.h; sourceTree = "<group>"; };
@@ -204,7 +248,68 @@
 		FB5047F71D5D64EB00B2E223 /* d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg; sourceTree = "<group>"; };
 		FB5047F91D5E94B500B2E223 /* ShippingInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShippingInfoVC.h; sourceTree = "<group>"; };
 		FB5047FA1D5E94B500B2E223 /* ShippingInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShippingInfoVC.m; sourceTree = "<group>"; };
+		FBA8233F1D79A5300028D3A1 /* LoveStoryProjectLogo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LoveStoryProjectLogo.jpg; sourceTree = "<group>"; };
+		FBA823411D7A850E0028D3A1 /* Stripe.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Stripe.framework; sourceTree = "<group>"; };
+		FBA823431D7A85200028D3A1 /* Stripe.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Stripe.bundle; sourceTree = "<group>"; };
+		FBA823451D7A87430028D3A1 /* StripeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StripeViewController.h; sourceTree = "<group>"; };
+		FBA823461D7A87430028D3A1 /* StripeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StripeViewController.m; sourceTree = "<group>"; };
+		FBA823861D7BC6B70028D3A1 /* 2x3 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "2x3 aluminum.png"; path = "../../products/aluminum/2x3 aluminum.png"; sourceTree = "<group>"; };
+		FBA823871D7BC6B70028D3A1 /* 4x4 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "4x4 aluminum.png"; path = "../../products/aluminum/4x4 aluminum.png"; sourceTree = "<group>"; };
+		FBA823881D7BC6B70028D3A1 /* 4x6 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "4x6 aluminum.png"; path = "../../products/aluminum/4x6 aluminum.png"; sourceTree = "<group>"; };
+		FBA823891D7BC6B70028D3A1 /* 5x5  aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "5x5  aluminum.png"; path = "../../products/aluminum/5x5  aluminum.png"; sourceTree = "<group>"; };
+		FBA8238A1D7BC6B70028D3A1 /* 5x7 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "5x7 aluminum.png"; path = "../../products/aluminum/5x7 aluminum.png"; sourceTree = "<group>"; };
+		FBA8238B1D7BC6B70028D3A1 /* 5x10 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "5x10 aluminum.png"; path = "../../products/aluminum/5x10 aluminum.png"; sourceTree = "<group>"; };
+		FBA8238C1D7BC6B70028D3A1 /* 5x11 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "5x11 aluminum.png"; path = "../../products/aluminum/5x11 aluminum.png"; sourceTree = "<group>"; };
+		FBA8238D1D7BC6B70028D3A1 /* 5x17 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "5x17 aluminum.png"; path = "../../products/aluminum/5x17 aluminum.png"; sourceTree = "<group>"; };
+		FBA8238E1D7BC6B70028D3A1 /* 8x8 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "8x8 aluminum.png"; path = "../../products/aluminum/8x8 aluminum.png"; sourceTree = "<group>"; };
+		FBA8238F1D7BC6B70028D3A1 /* 8x10 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "8x10 aluminum.png"; path = "../../products/aluminum/8x10 aluminum.png"; sourceTree = "<group>"; };
+		FBA823901D7BC6B70028D3A1 /* 8x12 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "8x12 aluminum.png"; path = "../../products/aluminum/8x12 aluminum.png"; sourceTree = "<group>"; };
+		FBA823911D7BC6B70028D3A1 /* 10x10 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "10x10 aluminum.png"; path = "../../products/aluminum/10x10 aluminum.png"; sourceTree = "<group>"; };
+		FBA823921D7BC6B70028D3A1 /* 11x14 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "11x14 aluminum.png"; path = "../../products/aluminum/11x14 aluminum.png"; sourceTree = "<group>"; };
+		FBA823931D7BC6B70028D3A1 /* 11x17 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "11x17 aluminum.png"; path = "../../products/aluminum/11x17 aluminum.png"; sourceTree = "<group>"; };
+		FBA823941D7BC6B70028D3A1 /* 12x12 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "12x12 aluminum.png"; path = "../../products/aluminum/12x12 aluminum.png"; sourceTree = "<group>"; };
+		FBA823951D7BC6B70028D3A1 /* 12x18 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "12x18 aluminum.png"; path = "../../products/aluminum/12x18 aluminum.png"; sourceTree = "<group>"; };
+		FBA823A61D7BC6BE0028D3A1 /* 6x6 slate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "6x6 slate.png"; path = "../../products/slate/6x6 slate.png"; sourceTree = "<group>"; };
+		FBA823A71D7BC6BE0028D3A1 /* 6x8 slate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "6x8 slate.png"; path = "../../products/slate/6x8 slate.png"; sourceTree = "<group>"; };
+		FBA823A81D7BC6BE0028D3A1 /* 8x12 slate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "8x12 slate.png"; path = "../../products/slate/8x12 slate.png"; sourceTree = "<group>"; };
+		FBA823AC1D7BC6C30028D3A1 /* 4x4 tile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "4x4 tile.png"; path = "../../products/tile/4x4 tile.png"; sourceTree = "<group>"; };
+		FBA823AD1D7BC6C30028D3A1 /* 6x6 tile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "6x6 tile.png"; path = "../../products/tile/6x6 tile.png"; sourceTree = "<group>"; };
+		FBA823AE1D7BC6C30028D3A1 /* 6x8 tile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "6x8 tile.png"; path = "../../products/tile/6x8 tile.png"; sourceTree = "<group>"; };
+		FBA823AF1D7BC6C30028D3A1 /* 8x10 tile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "8x10 tile.png"; path = "../../products/tile/8x10 tile.png"; sourceTree = "<group>"; };
+		FBA823B41D7BC6CA0028D3A1 /* 8x8 wood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "8x8 wood.png"; path = "../../products/wood/8x8 wood.png"; sourceTree = "<group>"; };
+		FBA823B51D7BC6CA0028D3A1 /* 8x10 wood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "8x10 wood.png"; path = "../../products/wood/8x10 wood.png"; sourceTree = "<group>"; };
+		FBA823B61D7BC6CA0028D3A1 /* 10x10 wood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "10x10 wood.png"; path = "../../products/wood/10x10 wood.png"; sourceTree = "<group>"; };
+		FBA823B71D7BC6CA0028D3A1 /* 11x14 wood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "11x14 wood.png"; path = "../../products/wood/11x14 wood.png"; sourceTree = "<group>"; };
+		FBA823BC1D7CB1140028D3A1 /* RTSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSerializer.h; sourceTree = "<group>"; };
+		FBA823BD1D7CB1140028D3A1 /* RTSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSerializer.m; sourceTree = "<group>"; };
+		FBA823BF1D7CB11F0028D3A1 /* Sendpulse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sendpulse.h; sourceTree = "<group>"; };
+		FBA823C01D7CB11F0028D3A1 /* Sendpulse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sendpulse.m; sourceTree = "<group>"; };
+		FBA823C21D7CB1280028D3A1 /* SBJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJson.h; sourceTree = "<group>"; };
+		FBA823C31D7CB1280028D3A1 /* SBJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
+		FBA823C41D7CB1280028D3A1 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
+		FBA823C51D7CB1280028D3A1 /* SBJsonStreamParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamParser.h; sourceTree = "<group>"; };
+		FBA823C61D7CB1280028D3A1 /* SBJsonStreamParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamParser.m; sourceTree = "<group>"; };
+		FBA823C71D7CB1280028D3A1 /* SBJsonStreamParserAccumulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamParserAccumulator.h; sourceTree = "<group>"; };
+		FBA823C81D7CB1280028D3A1 /* SBJsonStreamParserAccumulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamParserAccumulator.m; sourceTree = "<group>"; };
+		FBA823C91D7CB1280028D3A1 /* SBJsonStreamParserAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamParserAdapter.h; sourceTree = "<group>"; };
+		FBA823CA1D7CB1280028D3A1 /* SBJsonStreamParserAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamParserAdapter.m; sourceTree = "<group>"; };
+		FBA823CB1D7CB1280028D3A1 /* SBJsonStreamParserState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamParserState.h; sourceTree = "<group>"; };
+		FBA823CC1D7CB1280028D3A1 /* SBJsonStreamParserState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamParserState.m; sourceTree = "<group>"; };
+		FBA823CD1D7CB1280028D3A1 /* SBJsonStreamTokeniser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamTokeniser.h; sourceTree = "<group>"; };
+		FBA823CE1D7CB1280028D3A1 /* SBJsonStreamTokeniser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamTokeniser.m; sourceTree = "<group>"; };
+		FBA823CF1D7CB1280028D3A1 /* SBJsonStreamWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamWriter.h; sourceTree = "<group>"; };
+		FBA823D01D7CB1280028D3A1 /* SBJsonStreamWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamWriter.m; sourceTree = "<group>"; };
+		FBA823D11D7CB1280028D3A1 /* SBJsonStreamWriterAccumulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamWriterAccumulator.h; sourceTree = "<group>"; };
+		FBA823D21D7CB1280028D3A1 /* SBJsonStreamWriterAccumulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamWriterAccumulator.m; sourceTree = "<group>"; };
+		FBA823D31D7CB1280028D3A1 /* SBJsonStreamWriterState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamWriterState.h; sourceTree = "<group>"; };
+		FBA823D41D7CB1280028D3A1 /* SBJsonStreamWriterState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamWriterState.m; sourceTree = "<group>"; };
+		FBA823D51D7CB1280028D3A1 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
+		FBA823D61D7CB1280028D3A1 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		FBBF087D1D6A1A3900BF5332 /* rounded-512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rounded-512.png"; sourceTree = "<group>"; };
+		FBE5C83E1D74756C00B78EC6 /* Screen Shot 2016-08-29 at 6.50.44 AM.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Screen Shot 2016-08-29 at 6.50.44 AM.png"; sourceTree = "<group>"; };
+		FBE5C8401D74775A00B78EC6 /* secure-payment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "secure-payment.png"; sourceTree = "<group>"; };
+		FBE8DDE81D79157400693765 /* LaunchController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaunchController.h; sourceTree = "<group>"; };
+		FBE8DDE91D79157400693765 /* LaunchController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaunchController.m; sourceTree = "<group>"; };
 		FBF301BF1D6A445B0076C070 /* UserObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserObject.h; sourceTree = "<group>"; };
 		FBF301C01D6A445B0076C070 /* UserObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserObject.m; sourceTree = "<group>"; };
 		FBF301C21D6A449B0076C070 /* UserShipping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserShipping.h; sourceTree = "<group>"; };
@@ -227,7 +332,7 @@
 				932F2EFF1CC95F500050094A /* libsqlite3.tbd in Frameworks */,
 				932F2EF31CC95F470050094A /* Accounts.framework in Frameworks */,
 				932F2EF41CC95F470050094A /* CoreGraphics.framework in Frameworks */,
-				932FCB671CF5329800CF8869 /* Stripe.framework in Frameworks */,
+				FBA823421D7A850E0028D3A1 /* Stripe.framework in Frameworks */,
 				932F2EF51CC95F470050094A /* CoreMedia.framework in Frameworks */,
 				932F2EF61CC95F470050094A /* CoreTelephony.framework in Frameworks */,
 				932F2EF71CC95F470050094A /* EventKit.framework in Frameworks */,
@@ -285,6 +390,8 @@
 				932F2EA31CC88BD10050094A /* LaunchScreen.storyboard */,
 				932F2E9E1CC88BD10050094A /* Main.storyboard */,
 				FBF301CB1D6ABBD90076C070 /* User */,
+				FBE8DDE81D79157400693765 /* LaunchController.h */,
+				FBE8DDE91D79157400693765 /* LaunchController.m */,
 				932F2E981CC88BD10050094A /* AppDelegate.h */,
 				932F2E991CC88BD10050094A /* AppDelegate.m */,
 				9369C8B41D3C2F0100FCD2CC /* TabController.h */,
@@ -338,6 +445,13 @@
 		932F2E951CC88BD10050094A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				FBA8237F1D7BC5CA0028D3A1 /* slate */,
+				FBA823761D7BC5B60028D3A1 /* tile */,
+				FBA8236D1D7BC5A50028D3A1 /* wood */,
+				FBA8234C1D7BC58F0028D3A1 /* aluminum */,
+				FBA8233F1D79A5300028D3A1 /* LoveStoryProjectLogo.jpg */,
+				FBE5C8401D74775A00B78EC6 /* secure-payment.png */,
+				FBE5C83E1D74756C00B78EC6 /* Screen Shot 2016-08-29 at 6.50.44 AM.png */,
 				FBBF087D1D6A1A3900BF5332 /* rounded-512.png */,
 				FB5047F71D5D64EB00B2E223 /* d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg */,
 				FB5047F51D5D64D100B2E223 /* broadway-coffee-mug.jpg */,
@@ -381,7 +495,9 @@
 		932F2F021CC962480050094A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				932FCB661CF5329700CF8869 /* Stripe.framework */,
+				FBA823E11D7CB1340028D3A1 /* Sendpulse */,
+				FBA823431D7A85200028D3A1 /* Stripe.bundle */,
+				FBA823411D7A850E0028D3A1 /* Stripe.framework */,
 				932F2EFE1CC95F500050094A /* libsqlite3.tbd */,
 				932F2EE81CC95F470050094A /* Accounts.framework */,
 				932F2EE91CC95F470050094A /* CoreGraphics.framework */,
@@ -427,6 +543,94 @@
 			name = Cells;
 			sourceTree = "<group>";
 		};
+		FBA8234C1D7BC58F0028D3A1 /* aluminum */ = {
+			isa = PBXGroup;
+			children = (
+				FBA823861D7BC6B70028D3A1 /* 2x3 aluminum.png */,
+				FBA823871D7BC6B70028D3A1 /* 4x4 aluminum.png */,
+				FBA823881D7BC6B70028D3A1 /* 4x6 aluminum.png */,
+				FBA823891D7BC6B70028D3A1 /* 5x5  aluminum.png */,
+				FBA8238A1D7BC6B70028D3A1 /* 5x7 aluminum.png */,
+				FBA8238B1D7BC6B70028D3A1 /* 5x10 aluminum.png */,
+				FBA8238C1D7BC6B70028D3A1 /* 5x11 aluminum.png */,
+				FBA8238D1D7BC6B70028D3A1 /* 5x17 aluminum.png */,
+				FBA8238E1D7BC6B70028D3A1 /* 8x8 aluminum.png */,
+				FBA8238F1D7BC6B70028D3A1 /* 8x10 aluminum.png */,
+				FBA823901D7BC6B70028D3A1 /* 8x12 aluminum.png */,
+				FBA823911D7BC6B70028D3A1 /* 10x10 aluminum.png */,
+				FBA823921D7BC6B70028D3A1 /* 11x14 aluminum.png */,
+				FBA823931D7BC6B70028D3A1 /* 11x17 aluminum.png */,
+				FBA823941D7BC6B70028D3A1 /* 12x12 aluminum.png */,
+				FBA823951D7BC6B70028D3A1 /* 12x18 aluminum.png */,
+			);
+			name = aluminum;
+			sourceTree = "<group>";
+		};
+		FBA8236D1D7BC5A50028D3A1 /* wood */ = {
+			isa = PBXGroup;
+			children = (
+				FBA823B41D7BC6CA0028D3A1 /* 8x8 wood.png */,
+				FBA823B51D7BC6CA0028D3A1 /* 8x10 wood.png */,
+				FBA823B61D7BC6CA0028D3A1 /* 10x10 wood.png */,
+				FBA823B71D7BC6CA0028D3A1 /* 11x14 wood.png */,
+			);
+			name = wood;
+			sourceTree = "<group>";
+		};
+		FBA823761D7BC5B60028D3A1 /* tile */ = {
+			isa = PBXGroup;
+			children = (
+				FBA823AC1D7BC6C30028D3A1 /* 4x4 tile.png */,
+				FBA823AD1D7BC6C30028D3A1 /* 6x6 tile.png */,
+				FBA823AE1D7BC6C30028D3A1 /* 6x8 tile.png */,
+				FBA823AF1D7BC6C30028D3A1 /* 8x10 tile.png */,
+			);
+			name = tile;
+			sourceTree = "<group>";
+		};
+		FBA8237F1D7BC5CA0028D3A1 /* slate */ = {
+			isa = PBXGroup;
+			children = (
+				FBA823A61D7BC6BE0028D3A1 /* 6x6 slate.png */,
+				FBA823A71D7BC6BE0028D3A1 /* 6x8 slate.png */,
+				FBA823A81D7BC6BE0028D3A1 /* 8x12 slate.png */,
+			);
+			name = slate;
+			sourceTree = "<group>";
+		};
+		FBA823E11D7CB1340028D3A1 /* Sendpulse */ = {
+			isa = PBXGroup;
+			children = (
+				FBA823BC1D7CB1140028D3A1 /* RTSerializer.h */,
+				FBA823BD1D7CB1140028D3A1 /* RTSerializer.m */,
+				FBA823BF1D7CB11F0028D3A1 /* Sendpulse.h */,
+				FBA823C01D7CB11F0028D3A1 /* Sendpulse.m */,
+				FBA823C21D7CB1280028D3A1 /* SBJson.h */,
+				FBA823C31D7CB1280028D3A1 /* SBJsonParser.h */,
+				FBA823C41D7CB1280028D3A1 /* SBJsonParser.m */,
+				FBA823C51D7CB1280028D3A1 /* SBJsonStreamParser.h */,
+				FBA823C61D7CB1280028D3A1 /* SBJsonStreamParser.m */,
+				FBA823C71D7CB1280028D3A1 /* SBJsonStreamParserAccumulator.h */,
+				FBA823C81D7CB1280028D3A1 /* SBJsonStreamParserAccumulator.m */,
+				FBA823C91D7CB1280028D3A1 /* SBJsonStreamParserAdapter.h */,
+				FBA823CA1D7CB1280028D3A1 /* SBJsonStreamParserAdapter.m */,
+				FBA823CB1D7CB1280028D3A1 /* SBJsonStreamParserState.h */,
+				FBA823CC1D7CB1280028D3A1 /* SBJsonStreamParserState.m */,
+				FBA823CD1D7CB1280028D3A1 /* SBJsonStreamTokeniser.h */,
+				FBA823CE1D7CB1280028D3A1 /* SBJsonStreamTokeniser.m */,
+				FBA823CF1D7CB1280028D3A1 /* SBJsonStreamWriter.h */,
+				FBA823D01D7CB1280028D3A1 /* SBJsonStreamWriter.m */,
+				FBA823D11D7CB1280028D3A1 /* SBJsonStreamWriterAccumulator.h */,
+				FBA823D21D7CB1280028D3A1 /* SBJsonStreamWriterAccumulator.m */,
+				FBA823D31D7CB1280028D3A1 /* SBJsonStreamWriterState.h */,
+				FBA823D41D7CB1280028D3A1 /* SBJsonStreamWriterState.m */,
+				FBA823D51D7CB1280028D3A1 /* SBJsonWriter.h */,
+				FBA823D61D7CB1280028D3A1 /* SBJsonWriter.m */,
+			);
+			name = Sendpulse;
+			path = "Metal Prints";
+			sourceTree = "<group>";
+		};
 		FBF301CB1D6ABBD90076C070 /* User */ = {
 			isa = PBXGroup;
 			children = (
@@ -464,6 +668,8 @@
 				FBF301CD1D6B2F460076C070 /* BillingVC.m */,
 				FBF301D11D6B2FCE0076C070 /* PaymentVC.h */,
 				FBF301D21D6B2FCE0076C070 /* PaymentVC.m */,
+				FBA823451D7A87430028D3A1 /* StripeViewController.h */,
+				FBA823461D7A87430028D3A1 /* StripeViewController.m */,
 			);
 			name = "Order VCs";
 			sourceTree = "<group>";
@@ -575,24 +781,55 @@
 				932F2F131CC9A3240050094A /* up-down.png in Resources */,
 				FB5047F41D5D649C00B2E223 /* wildtextures-old-wood-original-file.jpg in Resources */,
 				9369C8BE1D3C384900FCD2CC /* thin-363_photo_image_album-512.png in Resources */,
+				FBA823971D7BC6B70028D3A1 /* 4x4 aluminum.png in Resources */,
+				FBE5C83F1D74756C00B78EC6 /* Screen Shot 2016-08-29 at 6.50.44 AM.png in Resources */,
+				FBA823A01D7BC6B70028D3A1 /* 8x12 aluminum.png in Resources */,
+				FBA823B81D7BC6CA0028D3A1 /* 8x8 wood.png in Resources */,
 				932F2F1C1CC9DDE40050094A /* shopping cart.png in Resources */,
+				FBA8239E1D7BC6B70028D3A1 /* 8x8 aluminum.png in Resources */,
 				FB5047F61D5D64D100B2E223 /* broadway-coffee-mug.jpg in Resources */,
 				932F2ECF1CC8946E0050094A /* camera icon.png in Resources */,
 				932F2F181CC9D6730050094A /* photosonwood4web.jpg in Resources */,
 				932F2EA51CC88BD10050094A /* LaunchScreen.storyboard in Resources */,
 				FB5047F21D5D642E00B2E223 /* aluminum-tin-cans.jpg in Resources */,
 				9369C8C21D3C389900FCD2CC /* shop-icon.png in Resources */,
+				FBA823A11D7BC6B70028D3A1 /* 10x10 aluminum.png in Resources */,
+				FBE5C8411D74775A00B78EC6 /* secure-payment.png in Resources */,
+				FBA823441D7A85200028D3A1 /* Stripe.bundle in Resources */,
+				FBA823BB1D7BC6CA0028D3A1 /* 11x14 wood.png in Resources */,
 				FB5047F81D5D64EB00B2E223 /* d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg in Resources */,
+				FBA823B21D7BC6C30028D3A1 /* 6x8 tile.png in Resources */,
 				932F2EA21CC88BD10050094A /* Assets.xcassets in Resources */,
+				FBA823401D79A5300028D3A1 /* LoveStoryProjectLogo.jpg in Resources */,
+				FBA823A51D7BC6B70028D3A1 /* 12x18 aluminum.png in Resources */,
+				FBA823BA1D7BC6CA0028D3A1 /* 10x10 wood.png in Resources */,
 				FBBF087E1D6A1A3900BF5332 /* rounded-512.png in Resources */,
+				FBA823A21D7BC6B70028D3A1 /* 11x14 aluminum.png in Resources */,
+				FBA823AB1D7BC6BE0028D3A1 /* 8x12 slate.png in Resources */,
 				932F2EA01CC88BD10050094A /* Main.storyboard in Resources */,
+				FBA8239F1D7BC6B70028D3A1 /* 8x10 aluminum.png in Resources */,
 				932F2F161CC9D5E80050094A /* photos_on_aluminum.jpg in Resources */,
 				9369C8D11D3F250A00FCD2CC /* MW-Icon-CheckMark.svg.png in Resources */,
 				932F2F111CC988460050094A /* photo icon.png in Resources */,
+				FBA823B91D7BC6CA0028D3A1 /* 8x10 wood.png in Resources */,
 				9369C8CF1D3DC6CC00FCD2CC /* photo-gallery-512.png in Resources */,
 				932F2F101CC988460050094A /* camera.png in Resources */,
+				FBA823981D7BC6B70028D3A1 /* 4x6 aluminum.png in Resources */,
+				FBA823B01D7BC6C30028D3A1 /* 4x4 tile.png in Resources */,
+				FBA823A31D7BC6B70028D3A1 /* 11x17 aluminum.png in Resources */,
+				FBA823B31D7BC6C30028D3A1 /* 8x10 tile.png in Resources */,
+				FBA8239B1D7BC6B70028D3A1 /* 5x10 aluminum.png in Resources */,
+				FBA823991D7BC6B70028D3A1 /* 5x5  aluminum.png in Resources */,
+				FBA823AA1D7BC6BE0028D3A1 /* 6x8 slate.png in Resources */,
+				FBA823961D7BC6B70028D3A1 /* 2x3 aluminum.png in Resources */,
 				9369C8C01D3C387D00FCD2CC /* grocery-cart-icon-6.png in Resources */,
+				FBA8239C1D7BC6B70028D3A1 /* 5x11 aluminum.png in Resources */,
+				FBA823A41D7BC6B70028D3A1 /* 12x12 aluminum.png in Resources */,
+				FBA8239A1D7BC6B70028D3A1 /* 5x7 aluminum.png in Resources */,
+				FBA823B11D7BC6C30028D3A1 /* 6x6 tile.png in Resources */,
+				FBA823A91D7BC6BE0028D3A1 /* 6x6 slate.png in Resources */,
 				932F2F0D1CC96A780050094A /* plainicon.com-54418-512px-51c.png in Resources */,
+				FBA8239D1D7BC6B70028D3A1 /* 5x17 aluminum.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -620,24 +857,34 @@
 				93CB294D1D4C1D0F00DD5F76 /* HighlightedImageCVC.m in Sources */,
 				932F2F0B1CC963E10050094A /* Order.m in Sources */,
 				FB35D0F11D5BB63100BCD6C6 /* ProductCollectionViewController.m in Sources */,
+				FBA823DE1D7CB1280028D3A1 /* SBJsonStreamWriterAccumulator.m in Sources */,
 				9399C4871CF8CBDD00818E10 /* DetailsTVCCell.m in Sources */,
 				932F2EDB1CC898100050094A /* OrderPlacedVC.m in Sources */,
 				932F2ED21CC894C70050094A /* DetailsTVC.m in Sources */,
+				FBA823D91D7CB1280028D3A1 /* SBJsonStreamParserAccumulator.m in Sources */,
+				FBA823DD1D7CB1280028D3A1 /* SBJsonStreamWriter.m in Sources */,
 				FBF301C71D6A44A60076C070 /* UserBilling.m in Sources */,
 				FB35D0EB1D5AE03100BCD6C6 /* ProductCategorySelectionCollection.m in Sources */,
 				932F2E9D1CC88BD10050094A /* ViewController.m in Sources */,
 				9369C8C81D3C951B00FCD2CC /* FXBlurView.m in Sources */,
+				FBA823471D7A87430028D3A1 /* StripeViewController.m in Sources */,
 				93B4DED11CCF25B900C6E07A /* CartTVCCell.m in Sources */,
 				938660221CDFD7A100C1F208 /* ActualCCTVC.m in Sources */,
+				FBA823E01D7CB1280028D3A1 /* SBJsonWriter.m in Sources */,
 				932F2F071CC962920050094A /* Reachability.m in Sources */,
+				FBA823C11D7CB11F0028D3A1 /* Sendpulse.m in Sources */,
 				930CA6971D1CBE29003C6864 /* UserAccountTVC.m in Sources */,
+				FBA823DB1D7CB1280028D3A1 /* SBJsonStreamParserState.m in Sources */,
 				9369C8B61D3C2F0100FCD2CC /* TabController.m in Sources */,
 				932F2E9A1CC88BD10050094A /* AppDelegate.m in Sources */,
+				FBA823BE1D7CB1140028D3A1 /* RTSerializer.m in Sources */,
 				932F2ED51CC897ED0050094A /* CCTVC.m in Sources */,
 				FB35D0F41D5BB64200BCD6C6 /* ProductCollectionViewCell.m in Sources */,
+				FBA823D71D7CB1280028D3A1 /* SBJsonParser.m in Sources */,
 				FB35D0EE1D5AE3C000BCD6C6 /* ProductCategoryCell.m in Sources */,
 				FBF301CA1D6A45980076C070 /* UserPayment.m in Sources */,
 				FBF301CE1D6B2F460076C070 /* BillingVC.m in Sources */,
+				FBA823DA1D7CB1280028D3A1 /* SBJsonStreamParserAdapter.m in Sources */,
 				932F2EDE1CC8981D0050094A /* ProductsTVC.m in Sources */,
 				934906591CCDAD2C00E69EB4 /* Front_EndVC.m in Sources */,
 				FBF301D31D6B2FCE0076C070 /* PaymentVC.m in Sources */,
@@ -645,7 +892,9 @@
 				93C8CBDD1D1EFECB00EA4C5A /* ImageCollectionViewController.m in Sources */,
 				932FCB651CF4059D00CF8869 /* TestVC.m in Sources */,
 				932F2EE11CC89B4F0050094A /* ProductTVCCell.m in Sources */,
+				FBE8DDEA1D79157400693765 /* LaunchController.m in Sources */,
 				9369C8C51D3C943400FCD2CC /* ImageCropView.m in Sources */,
+				FBA823DF1D7CB1280028D3A1 /* SBJsonStreamWriterState.m in Sources */,
 				932F2ED81CC897FC0050094A /* ShippingTVC.m in Sources */,
 				932F2E971CC88BD10050094A /* main.m in Sources */,
 				9369C8CB1D3DC21900FCD2CC /* ImageCollectionViewCell.m in Sources */,
@@ -654,6 +903,8 @@
 				FB5047FB1D5E94B500B2E223 /* ShippingInfoVC.m in Sources */,
 				FBF301C41D6A449B0076C070 /* UserShipping.m in Sources */,
 				93B4DECE1CCF259700C6E07A /* ShoppingCartTVC.m in Sources */,
+				FBA823DC1D7CB1280028D3A1 /* SBJsonStreamTokeniser.m in Sources */,
+				FBA823D81D7CB1280028D3A1 /* SBJsonStreamParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

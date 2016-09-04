@@ -6,10 +6,11 @@
 //  Copyright © 2016 Pocket Tools. All rights reserved.
 //
 
+@import Stripe;
 #import "AppDelegate.h"
 #import "Order.h"
 #import "Reachability.h"
-#import <Stripe/Stripe.h>
+#import "Front_EndVC.h"
 
 @interface AppDelegate (){
     NSTimer *pingTimer;
@@ -31,46 +32,48 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     // Override point for customization after application launch.
-[Stripe setDefaultPublishableKey:@"pk_test_ksluG61goDFXFGzyXZiRriat"];
-    self.AluminumProductArray = @[@[@"4x4 Aluminum",@"12"],
-                                 @[@"5x5 Aluminum",@"15"],
-                                 @[@"5x7 Aluminum",@"18"],
-                                 @[@"8x10 Aluminum",@"26"],
-                                 @[@"5x10 Aluminum",@"22"],
-                                 @[@"5x17 Aluminum",@"30"],
-                                 @[@"8x12 Aluminum",@"30"],
-                                 @[@"11x14 Aluminum",@"48"],
-                                 @[@"11x17 Aluminum",@"48"],
-                                 @[@"12x18 Aluminum",@"54"],];
+     [[STPPaymentConfiguration sharedConfiguration] setPublishableKey:@"pk_test_ksluG61goDFXFGzyXZiRriat"];
+    self.AluminumProductArray = @[@[@"2x3",@"6",[UIImage imageNamed:@"2x3 aluminum.png"]],
+                                @[@"4x4",@"12",[UIImage imageNamed:@"4x4 aluminum.png"]],
+                                 @[@"5x5",@"15",[UIImage imageNamed:@"5x5  aluminum.png"]],
+                                  @[@"4x6",@"15",[UIImage imageNamed:@"4x6 aluminum.png"]],
+                                 @[@"5x7",@"18",[UIImage imageNamed:@"5x7 aluminum.png"]],
+                                 @[@"5x10",@"22",[UIImage imageNamed:@"5x10 aluminum.png"]],
+                                  @[@"5x11",@"25",[UIImage imageNamed:@"5x11 aluminum.png"]],
+                                  @[@"8x8",@"22",[UIImage imageNamed:@"8x8 aluminum.png"]],
+                                 @[@"5x17",@"32",[UIImage imageNamed:@"5x17 aluminum.png"]],
+                                  @[@"8x10",@"24",[UIImage imageNamed:@"8x10 aluminum.png"]],
+                                 @[@"8x12",@"28",[UIImage imageNamed:@"8x12 aluminum.png"]],
+                                  @[@"10x10",@"28",[UIImage imageNamed:@"10x10 aluminum.png"]],
+                                 @[@"11x14",@"40",[UIImage imageNamed:@"11x14 aluminum.png"]],
+                                  @[@"12x12",@"40",[UIImage imageNamed:@"12x12 aluminum.png"]],
+                                 @[@"11x17",@"48",[UIImage imageNamed:@"11x17 aluminum.png"]],
+                                 @[@"12x18",@"54",[UIImage imageNamed:@"12x18 aluminum.png"]],];
     
-    self.WoodenProductArray = @[@[@"8x8 Wood",@"36"],
-                               @[@"8x10 Wood",@"40"],
-                               @[@"10x10 Wood",@"44"],
-                               @[@"11x14 Wood",@"48"],];
+    self.WoodenProductArray = @[@[@"8x8",@"36",[UIImage imageNamed:@"8x8 wood.png"]],
+                               @[@"8x10",@"40",[UIImage imageNamed:@"8x10 wood.png"]],
+                               @[@"10x10",@"44",[UIImage imageNamed:@"10x10 wood.png"]],
+                               @[@"11x14",@"48",[UIImage imageNamed:@"11x14 wood.png"]],];
     
-    self.MugProductArray = @[@[@"11oz Mug",@"12"],
-                             @[@"15oz Mug",@"14"],];
+    self.TileProductArray = @[@[@"4x4",@"14",[UIImage imageNamed:@"4x4 tile.png"]],
+                             @[@"6x6",@"18",[UIImage imageNamed:@"6x6 tile.png"]],
+                              @[@"6x8",@"22",[UIImage imageNamed:@"6x8 tile.png"]],
+                              @[@"8x10",@"30",[UIImage imageNamed:@"8x10 tile.png"]],];
     
-    self.TileProductArray = @[@[@"8x8 Tile",@"36"],];
+    self.SlateProductArray = @[@[@"6x6",@"24",[UIImage imageNamed:@"6x6 slate.png"]],
+                               @[@"6x8",@"30",[UIImage imageNamed:@"6x8 slate.png"]],
+                               @[@"8x12",@"36",[UIImage imageNamed:@"8x12 slate.png"]],];
     
-    self.allProductsArray = [[NSMutableArray alloc] init];
+    self.OtherProductArray = @[@[@"Square Keychain",@"12",[UIImage imageNamed:@"8x12 slate.png"]],
+                              @[@"Rectangle Keychain",@"12",[UIImage imageNamed:@"8x12 slate.png"]],
+                              @[@"Long Keychaing",@"12",[UIImage imageNamed:@"8x12 slate.png"]],
+                              @[@"Dog Tag",@"12",[UIImage imageNamed:@"8x12 slate.png"]],
+                              @[@"Square Pendant",@"16",[UIImage imageNamed:@"8x12 slate.png"]],
+                              @[@"Round Pendant",@"16",[UIImage imageNamed:@"8x12 slate.png"]],
+                              @[@"Long Pendant",@"18",[UIImage imageNamed:@"8x12 slate.png"]],
+                              @[@"Clock",@"36",[UIImage imageNamed:@"8x12 slate.png"]],];
     
-    [self.allProductsArray addObject:@"Aluminum Products"];
-    
-    [self.allProductsArray addObjectsFromArray:self.AluminumProductArray];
-    
-    [self.allProductsArray addObject:@"Wood Products"];
-    
-    [self.allProductsArray addObjectsFromArray:self.WoodenProductArray];
-    
-    [self.allProductsArray addObject:@"Mugs"];
-    
-    [self.allProductsArray addObjectsFromArray:self.MugProductArray];
-    
-    [self.allProductsArray addObject:@"Tile Products"];
-    
-    [self.allProductsArray addObjectsFromArray:self.TileProductArray];
-    
+    self.categoryArray = @[@"Aluminum",@"Wood",@"Tile",@"Slate",@"Other Goodies",];
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:[self archivePathShoppingCart]]) {
         self.shoppingCart = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archivePathShoppingCart]];
@@ -118,9 +121,10 @@
             }
         }];
     }
-    self.gettingPhotos = YES;
-    self.reloadImageCollection = NO;
-    [self getAllPhotos];
+    
+//    self.loadingImages  = YES;
+//    self.reloadImageCollection = NO;
+//    [self getAllPhotos];
     
 
     return YES;
@@ -148,7 +152,7 @@ NSInteger x = 0;
                 // NSLog(@"assestlibrarymurari%@",assetURLDictionaries);
                 
                 NSURL *url= (NSURL*) [[result defaultRepresentation]url];
-
+                UIImage *thumbImg = [UIImage imageWithCGImage: [result aspectRatioThumbnail]];
                 NSArray *array;
                 if (self.tempPhoneImageArray != nil) {
                     if (x >= 0) {
@@ -192,7 +196,50 @@ NSInteger x = 0;
             }
         }
         else{
-            self.gettingPhotos = NO;
+            int x = 0;
+            for (NSArray *imgArray1 in self.phoneImageArray) {
+                x++;
+                ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+                [library assetForURL:[imgArray1 objectAtIndex:0]
+                         resultBlock:^(ALAsset *asset) {
+                             
+                             if (x < self.phoneImageArray.count) {
+                                 NSLog(@"Less than: %i",x);
+                                 
+                                 UIImage *thumbImg = [UIImage imageWithCGImage: [asset aspectRatioThumbnail]];
+                                 
+                                 if (thumbImg == nil || thumbImg == NULL) {
+                                     [self.phoneImageArray removeObjectAtIndex:x];
+                                 }else{
+                                     [self.mutableImageArray addObject:thumbImg];
+                                 }
+                             }
+                             if (x == self.phoneImageArray.count) {
+                                 NSLog(@"Equal to");
+                                 UIImage *thumbImg = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
+                                 if (thumbImg == nil || thumbImg == NULL) {
+                                     [self.phoneImageArray removeObjectAtIndex:x];
+                                 }else{
+                                     [self.mutableImageArray addObject:thumbImg];
+                                 }
+                                
+                                 
+                                 self.loadingImages = NO;
+                                 [[Front_EndVC sharedFrontEnd_VC] FinishedLoadingImages];
+                                 
+                                 
+                             }
+                                 
+
+                         }
+                 
+                        failureBlock:^(NSError *error){
+                            NSLog(@"operation was not successfull!");
+                        }];
+                
+            }
+            
+
 //            if (self.reloadImageCollection == YES) {
 //                [[ImageCollectionViewController sharedImageCollectionViewController] reloadTheCollectionView];
 //            }
@@ -216,6 +263,7 @@ NSInteger x = 0;
                     }
                     self.phoneImageArray = [[NSMutableArray alloc] init];
                     self.theNewImageArray = [[NSMutableArray alloc] init];
+                    self.mutableImageArray = [[NSMutableArray alloc] init];
                     if (self.tempPhoneImageArray != nil) {
                         x = self.tempPhoneImageArray.count - 1;
                     }
@@ -232,6 +280,7 @@ NSInteger x = 0;
                         }
                         self.phoneImageArray = [[NSMutableArray alloc] init];
                         self.theNewImageArray = [[NSMutableArray alloc] init];
+                        self.mutableImageArray = [[NSMutableArray alloc] init];
                         if (self.tempPhoneImageArray != nil) {
                             x = self.tempPhoneImageArray.count - 1;
                         }
@@ -240,6 +289,7 @@ NSInteger x = 0;
                 }
                 else{
                     self.phoneImageArray = [[NSMutableArray alloc] init];
+                    self.mutableImageArray = [[NSMutableArray alloc] init];
                     [group enumerateAssetsUsingBlock:assetEnumerator];
                 }
             }

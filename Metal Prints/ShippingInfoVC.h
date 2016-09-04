@@ -14,6 +14,6 @@
 @interface ShippingInfoVC : UIViewController <UIPickerViewDelegate,UIPickerViewDataSource,ShippingTVCDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *orderDataView;
-
+//@property (retain, nonatomic) STPPaymentContext *paymentContext;
 - (IBAction)PresentNextView:(id)sender;
 @end

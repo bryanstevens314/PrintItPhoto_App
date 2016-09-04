@@ -17,7 +17,7 @@
 @property (retain, nonatomic) NSMutableArray *monthArray;
 @property (retain, nonatomic) NSString *currentYear;
 @property (retain, nonatomic) NSString *currentMonth;
-@property (retain, nonatomic) UIToolbar* keyboardDoneButtonView;
+@property (retain, nonatomic) UIToolbar* keyboardDoneButtonView3;
 @end
 
 @implementation ActualCCTVC
@@ -88,7 +88,8 @@
     
     NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitMonth fromDate:[NSDate date]];
     NSInteger month = [components month];
-    self.currentMonth = [NSString stringWithFormat:@"%ld",(long)month];
+
+    self.currentMonth = [self.monthArray objectAtIndex:month-1];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy"];
     self.currentYear = [formatter stringFromDate:[NSDate date]];
@@ -118,20 +119,23 @@
     self.expMonth.inputAssistantItem.trailingBarButtonGroups = @[];
     NSInteger selectmonth = month--;
     [self.monthPicker selectRow:selectmonth inComponent:0 animated:NO];
-    self.keyboardDoneButtonView = [[UIToolbar alloc] init];
-    self.keyboardDoneButtonView.barStyle = UIBarStyleDefault;
-    self.keyboardDoneButtonView.translucent = YES;
-    self.keyboardDoneButtonView.tintColor = nil;
-    [self.keyboardDoneButtonView sizeToFit];
-    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:@"Next"
-                                                                   style:UIBarButtonItemStyleDone target:self
-                                                                  action:@selector(pickerNextClicked:)];
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
-                                                                   style:UIBarButtonItemStyleDone target:self
-                                                                  action:@selector(pickerDoneClicked:)];
+    self.keyboardDoneButtonView3 = [[UIToolbar alloc] init];
+    self.keyboardDoneButtonView3.barStyle = UIBarStyleDefault;
+    self.keyboardDoneButtonView3.translucent = YES;
+    self.keyboardDoneButtonView3.tintColor = nil;
+    [self.keyboardDoneButtonView3 sizeToFit];
+    UIBarButtonItem *flexSpace11 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *backButton11 = [[UIBarButtonItem alloc] initWithTitle:@"Back"
+                                                                    style:UIBarButtonItemStyleDone target:self
+                                                                   action:@selector(BackClicked11:)];
+    UIBarButtonItem *nextButton11 = [[UIBarButtonItem alloc] initWithTitle:@"Next"
+                                                                    style:UIBarButtonItemStyleDone target:self
+                                                                   action:@selector(NextClicked11:)];
+    UIBarButtonItem *doneButton11 = [[UIBarButtonItem alloc] initWithTitle:@"Done"
+                                                                    style:UIBarButtonItemStyleDone target:self
+                                                                   action:@selector(DoneClicked11:)];
     
-    [self.keyboardDoneButtonView setItems:[NSArray arrayWithObjects:nextButton,flexSpace,doneButton, nil]];
+    [self.keyboardDoneButtonView3 setItems:[NSArray arrayWithObjects:backButton11,nextButton11,flexSpace11,doneButton11, nil]];
     
     
 //    [[self expYear] setTintColor:[UIColor clearColor]];
@@ -148,60 +152,97 @@
 //    self.expYear.inputAssistantItem.leadingBarButtonGroups = @[];
 //    self.expYear.inputAssistantItem.trailingBarButtonGroups = @[];
     
-    self.expMonth.inputAccessoryView = self.keyboardDoneButtonView;
+    self.expMonth.inputAccessoryView = self.keyboardDoneButtonView3;
 //    self.expYear.inputAccessoryView = self.keyboardDoneButtonView;
-    self.CCN.inputAccessoryView = self.keyboardDoneButtonView;
-    self.securityCode.inputAccessoryView = self.keyboardDoneButtonView;
+    self.CCN.inputAccessoryView = self.keyboardDoneButtonView3;
+    self.securityCode.inputAccessoryView = self.keyboardDoneButtonView3;
     
-    self.expYear.text = self.currentYear;
-    self.expMonth.text = self.currentMonth;
+    self.expMonth.text = [NSString stringWithFormat:@"%@/%@",self.currentMonth,self.currentYear];
 }
 
 
 
-- (void)pickerNextClicked:(id)sender {
+- (void)BackClicked11:(id)sender {
+    BOOL stop = NO;
+    if ([self.CCN isFirstResponder] && stop == NO) {
+        NSLog(@"name");
+        stop = YES;
+    }
+    
+    if ([self.securityCode isFirstResponder] && stop == NO) {
+        NSLog(@"email");
+        stop = YES;
+        [self.CCN becomeFirstResponder];
+    }
+    
+    if ([self.expMonth isFirstResponder] && stop == NO) {
+        NSLog(@"street");
+        stop = YES;
+        [self.securityCode becomeFirstResponder];
+    }
+    
+    if ([self.expYear isFirstResponder] && stop == NO) {
+        NSLog(@"city");
+        stop = YES;
+        [self.expMonth becomeFirstResponder];
+    }
+
+}
+
+- (void)DoneClicked11:(id)sender {
+    [self.keyboardDoneButtonView3 removeFromSuperview];
     if ([self.CCN isFirstResponder]) {
-        [self.securityCode  becomeFirstResponder];
+        NSLog(@"name");
+        [self.CCN resignFirstResponder];
     }
     
     if ([self.securityCode isFirstResponder]) {
-        [self.expMonth  becomeFirstResponder];
+        NSLog(@"email");
+        [self.securityCode resignFirstResponder];
     }
     
     if ([self.expMonth isFirstResponder]) {
-        [self.expYear  becomeFirstResponder];
-    }
-    if ([self.expYear isFirstResponder]) {
-        [self.keyboardDoneButtonView removeFromSuperview];
-        [self.expYear  resignFirstResponder];
-    }
-
-
-    
-}
-
-
-- (void)pickerDoneClicked:(id)sender {
-    [self.keyboardDoneButtonView removeFromSuperview];
-    if ([self.expMonth isFirstResponder]) {
-        [self.expMonth  resignFirstResponder];
-    }
-    if ([self.expYear isFirstResponder]) {
-        [self.expYear  resignFirstResponder];
-    }
-    if ([self.CCN isFirstResponder]) {
-        [self.CCN  resignFirstResponder];
-    }
-    if ([self.securityCode isFirstResponder]) {
-        [self.securityCode  resignFirstResponder];
+        NSLog(@"street");
+        [self.expMonth resignFirstResponder];
     }
     
+    if ([self.expYear isFirstResponder]) {
+        NSLog(@"city");
+        [self.expYear resignFirstResponder];
+    }
+
 }
 
 
-- (void)PlaceOrder {
+- (void)NextClicked11:(id)sender {
+    BOOL stop = NO;
+    if ([self.CCN isFirstResponder] && stop == NO) {
+        NSLog(@"name");
+        stop = YES;
+        [self.securityCode becomeFirstResponder];
+    }
+    
+    if ([self.securityCode isFirstResponder] && stop == NO) {
+        NSLog(@"email");
+        stop = YES;
+        [self.expMonth becomeFirstResponder];
+    }
+    
+    if ([self.expMonth isFirstResponder] && stop == NO) {
+        NSLog(@"street");
+        stop = YES;
+        [self.expYear becomeFirstResponder];
+    }
+    
+    if ([self.expYear isFirstResponder] && stop == NO) {
+        NSLog(@"city");
+        stop = YES;
+        [self.keyboardDoneButtonView3 removeFromSuperview];
+        [self.expYear resignFirstResponder];
+    }
 
 }
+
 
 
 
@@ -272,6 +313,7 @@
     return string;
 }
 
+
 // Catpure the picker view selection
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
@@ -279,13 +321,13 @@
     NSString *string;
     if (component == 1) {
         
-        string = [self.yearArray objectAtIndex:row];
-        self.expYear.text = string;
+        self.currentYear = [self.yearArray objectAtIndex:row];
+        self.expMonth.text = [NSString stringWithFormat:@"%@/%@",self.currentMonth,self.currentYear];
     }
     if (component == 0) {
         
-        string = [self.monthArray objectAtIndex:row];
-        self.expMonth.text = string;
+        self.currentMonth = [self.monthArray objectAtIndex:row];
+        self.expMonth.text = [NSString stringWithFormat:@"%@/%@",self.currentMonth,self.currentYear];
     }
     
 }

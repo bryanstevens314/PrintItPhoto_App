@@ -63,25 +63,74 @@ static NSString * const reuseIdentifier = @"Cell";
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Register cell classes
+    
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
-    UISwipeGestureRecognizer *swipeLeftGreen = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(slideToRightWithGestureRecognizer:)];
-    swipeLeftGreen.direction = UISwipeGestureRecognizerDirectionRight;
-    [self.collectionView addGestureRecognizer:swipeLeftGreen];
-//    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(moveViewWithGestureRecognizer:)];
-//    [self.collectionView addGestureRecognizer:panGestureRecognizer];
+    _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(moveViewWithGestureRecognizer1:)];
+    _panGestureRecognizer.delegate = self;
+    [self.collectionView addGestureRecognizer:_panGestureRecognizer];
+}
+
+
+
+
+BOOL started1 = NO;
+-(void)moveViewWithGestureRecognizer1:(UIPanGestureRecognizer *)panGestureRecognizer{
     
-    // Do any additional setup after loading the view.
+    
+    CGPoint touchLocation = [panGestureRecognizer locationInView:self.view];
+    NSLog(@"location: %f",touchLocation.x);
+    if (touchLocation.x <= 40 && started1 == NO) {
+        NSLog(@"started");
+        started1 = YES;
+        self.collectionView.frame = CGRectMake(touchLocation.x, self.collectionView.frame.origin.y, self.collectionView.frame.size.width, self.collectionView.frame.size.height);
+    }
+    if (started1 == YES) {
+        NSLog(@"Continueing");
+        self.collectionView.frame = CGRectMake(touchLocation.x, self.collectionView.frame.origin.y, self.collectionView.frame.size.width, self.collectionView.frame.size.height);
+        
+    }
+    
+    if(UIGestureRecognizerStateEnded == panGestureRecognizer.state)
+    {
+        if (started1 == YES) {
+            if (touchLocation.x >= 160) {
+                [UIView animateWithDuration:0.2 animations:^{
+                    
+                    self.collectionView.frame = CGRectMake(self.view.bounds.size.width, self.collectionView.frame.origin.y, self.collectionView.frame.size.width, self.collectionView.frame.size.height);
+                    
+                }completion:^(BOOL finished) {
+                    [self.collectionView removeFromSuperview];
+                    started1 = NO;
+                }];
+                
+                
+            }
+            else{
+                [UIView animateWithDuration:0.3 animations:^{
+                    self.collectionView.frame = CGRectMake(self.view.bounds.origin.x, self.collectionView.frame.origin.y, self.collectionView.frame.size.width, self.collectionView.frame.size.height);
+                    started1 = NO;
+                }];
+            }
+        }
+
+        
+    }
+    
 }
 
 
-
--(void)slideToRightWithGestureRecognizer:(UISwipeGestureRecognizer *)gestureRecognizer{
-    [UIView animateWithDuration:0.2 animations:^{
-        self.collectionView.frame = CGRectOffset(self.collectionView.frame, self.view.frame.size.width, 0.0);
-    }];
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    BOOL simultaneous;
+    if (started1 == YES) {
+        simultaneous = NO;
+    }
+    if (started1 == NO) {
+        simultaneous = YES;
+    }
+    return simultaneous;
 }
-
 
 /*
 #pragma mark - Navigation
@@ -109,6 +158,71 @@ static NSString * const reuseIdentifier = @"Cell";
     ProductCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"productCell" forIndexPath:indexPath];
     NSArray *productArray = [self.currentProductArray objectAtIndex:indexPath.row];
     cell.productName.text = [productArray objectAtIndex:0];
+    if (cell.theProductImage) {
+        [cell.theProductImage removeFromSuperview];
+        cell.theProductImage = nil;
+    }
+    cell.theProductImage = [[UIImageView alloc] init];
+    UIImage *image = [productArray objectAtIndex:2];
+    
+    if (image.size.height/6 > 84) {
+        float ratio = image.size.width/image.size.height;
+        int theWidth = 84 * ratio;
+        [cell.theProductImage setFrame:CGRectMake(0, 0, theWidth, 84)];
+    }
+    else if (image.size.width/6 > cell.bounds.size.width-10){
+        float ratio = image.size.width/image.size.height;
+        int theHeight = (cell.bounds.size.width-10)/ratio;
+        [cell.theProductImage setFrame:CGRectMake(0, 0, (cell.bounds.size.width-10), theHeight)];
+    }
+    else{
+        [cell.theProductImage setFrame:CGRectMake(0, 0, image.size.width/6, image.size.height/6)];
+    }
+    
+    [cell.theProductImage setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
+    cell.theProductImage.image = image;
+    
+    [cell.contentView addSubview:cell.theProductImage];
+    [cell.theProductImage.layer setCornerRadius:7];
+    cell.theProductImage.layer.masksToBounds = YES;
+    if (indexPath.row == 4) {
+        NSLog(@"image hieght:%f",image.size.height/6);
+    }
+//    float division = image.size.width/image.size.height;
+//    
+//    if (image.size.width < image.size.height) {
+//        NSLog(@"portrait");
+//        float newWidth = (cell.bounds.size.height - 20) * division;
+//        cell.theProductImage.frame  = CGRectMake(0, 0, newWidth, cell.bounds.size.height - 20);
+//        cell.theProductImage.center = CGPointMake(cell.bounds.size.width/2,cell.theProductImage.center.y);
+//        cell.theProductImage.image = image;
+//        
+//        [cell.contentView addSubview:cell.theProductImage];
+//        [cell.theProductImage.layer setCornerRadius:7];
+//        cell.theProductImage.layer.masksToBounds = YES;
+//    }
+//    if (image.size.width > image.size.height) {
+//        NSLog(@"landscape");
+//        float newHeight = (cell.bounds.size.width - 10) / division;
+//        [cell.theProductImage setFrame:CGRectMake(0, 0, cell.bounds.size.width - 10, newHeight)];
+//        [cell.theProductImage setCenter:CGPointMake(cell.bounds.size.width/2,cell.theProductImage.center.y)];
+//        cell.theProductImage.image = image;
+//        [cell.contentView addSubview:cell.theProductImage];
+//        [cell.theProductImage.layer setCornerRadius:4];
+//        cell.theProductImage.layer.masksToBounds = YES;
+//    }
+//    if (image.size.width == image.size.height) {
+//        NSLog(@"square");
+//        [cell.theProductImage setFrame:CGRectMake(0, 0, cell.bounds.size.height - 20, cell.bounds.size.height - 20)];
+//        [cell.theProductImage setCenter:CGPointMake(cell.bounds.size.width/2,cell.theProductImage.center.y)];
+//        cell.theProductImage.image = image;
+//        
+//        [cell.contentView addSubview:cell.theProductImage];
+//        [cell.theProductImage.layer setCornerRadius:7];
+//        cell.theProductImage.layer.masksToBounds = YES;
+//    }
+    
+    
     // Configure the cell
     
     return cell;

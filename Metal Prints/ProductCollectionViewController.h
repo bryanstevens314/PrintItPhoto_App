@@ -14,7 +14,7 @@
 
 @class ProductCollectionViewController;
 
-@protocol ProductCollectionDelegate
+@protocol ProductCollectionDelegate <UIGestureRecognizerDelegate>
 
 - (void)ProductSelectedWithRow:(NSInteger)row Section:(NSInteger)section andArray:(NSArray*)curArray;
 
@@ -24,7 +24,7 @@
 @property (weak, nonatomic) id<ProductCollectionDelegate> delegate;
 + (ProductCollectionViewController *)sharedProductCollectionVC;
 
-
+@property (strong, nonatomic, readonly) UIPanGestureRecognizer *panGestureRecognizer;
 @property (strong,nonatomic) NSArray *currentProductArray;
 @property (nonatomic) NSInteger selectedSection;
 @end

@@ -12,4 +12,5 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *productImage;
 @property (weak, nonatomic) IBOutlet UILabel *productName;
+@property (retain, nonatomic) UIImageView *theProductImage;
 @end

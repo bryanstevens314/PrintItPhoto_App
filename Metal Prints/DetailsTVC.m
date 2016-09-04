@@ -13,6 +13,7 @@
 @property (retain, nonatomic) UIPickerView *picker1;
 @property (retain, nonatomic) UIPickerView *picker2;
 @property (retain, nonatomic) UIPickerView *picker3;
+@property (retain, nonatomic) UIPickerView *picker4;
 @property (retain, nonatomic) NSURL *selectedImageURL;
 @property (retain, nonatomic) UIImage *selectedImage;
 @property (nonatomic, retain) UIImagePickerController *imagePicker;
@@ -86,13 +87,12 @@
 
     
     [self.navigationItem setTitle:@"Details"];
-    NSInteger integer = 0;
-    self.rowCount = [self sharedAppDelegate].AluminumProductArray.count + [self sharedAppDelegate].WoodenProductArray.count + [self sharedAppDelegate].MugProductArray.count + [self sharedAppDelegate].TileProductArray.count;
+    self.Category_Outlet.text = [[self sharedAppDelegate].categoryArray objectAtIndex:self.selectedSection1];
     if (self.selectedSection1 == 0) {
-        
-        integer = self.selectedRow;
         NSArray *array = [[self sharedAppDelegate].AluminumProductArray objectAtIndex:self.selectedRow];
         self.Product_Outlet.text = [array objectAtIndex:0];
+        
+        self.rowCount = [self sharedAppDelegate].AluminumProductArray.count;
     }
     if (self.selectedSection1 == 1) {
         [self.aluminumOptionsCell.contentView setAlpha:0.6];
@@ -102,33 +102,48 @@
 //        NSLog(@"Section 1");
         NSArray *array = [[self sharedAppDelegate].WoodenProductArray objectAtIndex:self.selectedRow];
         self.Product_Outlet.text = [array objectAtIndex:0];
+        
+        self.rowCount = [self sharedAppDelegate].WoodenProductArray.count;
     }
     if (self.selectedSection1 == 2) {
         [self.aluminumOptionsCell.contentView setAlpha:0.6];
         self.For_Aluminum_TextField.enabled = NO;
         self.For_Aluminum_TextField.text = @"";
-        NSArray *array = [[self sharedAppDelegate].MugProductArray objectAtIndex:self.selectedRow];
+        NSArray *array = [[self sharedAppDelegate].TileProductArray objectAtIndex:self.selectedRow];
         self.Product_Outlet.text = [array objectAtIndex:0];
+        self.rowCount = [self sharedAppDelegate].TileProductArray.count;
     }
     if (self.selectedSection1 == 3) {
         [self.aluminumOptionsCell.contentView setAlpha:0.6];
         self.For_Aluminum_TextField.enabled = NO;
         self.For_Aluminum_TextField.text = @"";
-        NSArray *array = [[self sharedAppDelegate].TileProductArray objectAtIndex:self.selectedRow];
+        NSArray *array = [[self sharedAppDelegate].SlateProductArray objectAtIndex:self.selectedRow];
         self.Product_Outlet.text = [array objectAtIndex:0];
+        self.rowCount = [self sharedAppDelegate].SlateProductArray.count;
     }
     [[self Product_Outlet] setTintColor:[UIColor clearColor]];
     self.picker3 = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 50, 100, 200)];
     [self.picker3 setDataSource: self];
     [self.picker3 setDelegate: self];
     self.picker3.showsSelectionIndicator = YES;
-    [self.picker3 selectRow:integer inComponent:0 animated:NO];
+    [self.picker3 selectRow:self.selectedRow inComponent:0 animated:NO];
     self.Product_Outlet.inputView = self.picker3;
     self.Product_Outlet.adjustsFontSizeToFitWidth = YES;
     self.Product_Outlet.textColor = [UIColor blackColor];
-    
     self.Product_Outlet.inputAssistantItem.leadingBarButtonGroups = @[];
     self.Product_Outlet.inputAssistantItem.trailingBarButtonGroups = @[];
+    
+    self.picker4 = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 50, 100, 200)];
+    [self.picker4 setDataSource: self];
+    [self.picker4 setDelegate: self];
+    self.picker4.showsSelectionIndicator = YES;
+    [self.picker4 selectRow:self.selectedSection1 inComponent:0 animated:NO];
+    self.Category_Outlet.inputView = self.picker4;
+    self.Category_Outlet.adjustsFontSizeToFitWidth = YES;
+    self.Category_Outlet.textColor = [UIColor blackColor];
+    self.Category_Outlet.inputAssistantItem.leadingBarButtonGroups = @[];
+    self.Category_Outlet.inputAssistantItem.trailingBarButtonGroups = @[];
+    
     self.keyboardDoneButtonView = [[UIToolbar alloc] init];
     self.keyboardDoneButtonView.barStyle = UIBarStyleDefault;
     self.keyboardDoneButtonView.translucent = YES;
@@ -143,6 +158,8 @@
     self.Quantity_TextField.inputAccessoryView = self.keyboardDoneButtonView;
     self.textView.inputAccessoryView = self.keyboardDoneButtonView;
     self.Product_Outlet.inputAccessoryView = self.keyboardDoneButtonView;
+    self.Category_Outlet.inputAccessoryView = self.keyboardDoneButtonView;
+    
     [[self For_Aluminum_TextField] setTintColor:[UIColor clearColor]];
     self.picker1 = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 50, 100, 200)];
     [self.picker1 setDataSource: self];
@@ -181,22 +198,14 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
         self.Retouching_TextField.text = [self.currentItemToEdit objectAtIndex:3];
         self.For_Aluminum_TextField.text = [self.currentItemToEdit objectAtIndex:4];
         self.textView.text = [self.currentItemToEdit objectAtIndex:5];
-        self.selectedImageURL = [self.currentItemToEdit objectAtIndex:6];
-//        NSData *data = [[NSData alloc]initWithBase64EncodedString:[self.currentItemToEdit objectAtIndex:6] options:NSDataBase64DecodingIgnoreUnknownCharacters];
-//        UIImage *image1 = [UIImage imageWithData:data];
-//        if (self.image.size.width < self.image.size.height) {
-//            NSLog(@"<");
-//            self.imgView = [[UIImageView alloc] initWithFrame:CGRectMake(146, 40, 93.75, 125)];
-//        }
-//        if (self.image.size.width > self.image.size.height) {
-//            NSLog(@">");
-//            self.imgView = [[UIImageView alloc] initWithFrame:CGRectMake(108, 44, 158, 118.5)];
-//        }
-//        if (self.image.size.width == self.image.size.height) {
-//            NSLog(@">");
-//            self.imgView = [[UIImageView alloc] initWithFrame:CGRectMake(125, 41, 124, 124)];
-//        }
+        NSString *selectedRowString = [self.currentItemToEdit objectAtIndex:8];
+        self.selectedRow = [selectedRowString integerValue];
+        [self.picker3 selectRow:self.selectedRow inComponent:0 animated:NO];
         
+        NSString *selectedSectionString = [self.currentItemToEdit objectAtIndex:9];
+        self.selectedSection1 = [selectedSectionString integerValue];
+        
+        [self.picker4 selectRow:self.selectedSection1 inComponent:0 animated:NO];
         ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
         NSURL *newImgURL = [NSURL URLWithString:[self.currentItemToEdit objectAtIndex:6]];
             [library assetForURL:newImgURL
@@ -267,7 +276,12 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
     if (self.startingFromHighlightedImage == YES) {
         NSLog(@"got here");
         self.selectedImageURL = [self.currentImageArray objectAtIndex:0];
-        self.image = [self.currentImageArray objectAtIndex:1];
+        if (self.currentImage) {
+            self.image = self.currentImage;
+        }
+        else{
+            self.image = [self.currentImageArray objectAtIndex:1];
+        }
         NSLog(@"url:%@",self.selectedImageURL);
         NSLog(@"image: %@",self.image);
         //                 if (self.collectionImgView) {
@@ -325,6 +339,9 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
 
 - (void)pickerDoneClicked:(id)sender {
     [self.keyboardDoneButtonView removeFromSuperview];
+    if ([self.Category_Outlet isFirstResponder]) {
+        [self.Category_Outlet  resignFirstResponder];
+    }
     if ([self.Product_Outlet isFirstResponder]) {
         [self.Product_Outlet  resignFirstResponder];
     }
@@ -358,52 +375,210 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
     }
     else{
         NSString *price = @"";
-        NSInteger i = 0;
-        for (NSArray *array in [self sharedAppDelegate].AluminumProductArray) {
-            i++;
-            if ([[array objectAtIndex:0] isEqualToString:self.Product_Outlet.text]) {
-                price = [array objectAtIndex:1];
-                [self sharedAppDelegate].cartTotal = [self sharedAppDelegate].cartTotal + [price integerValue];
-                NSLog(@"%@2",price);
+        NSString *product = @"";
+        NSArray *array;
+        if (self.selectedSection1 == 0) {
+            product = [NSString stringWithFormat:@"%@ %@",self.Product_Outlet.text, @"Aluminum"];
+            NSInteger i = 0;
+            for (NSArray *array in [self sharedAppDelegate].AluminumProductArray) {
+                i++;
+                if ([[array objectAtIndex:0] isEqualToString:self.Product_Outlet.text]) {
+                    price = [array objectAtIndex:1];
+                    [self sharedAppDelegate].cartTotal = [self sharedAppDelegate].cartTotal + ([price integerValue] * [self.Quantity_TextField.text integerValue]);
+                    NSLog(@"%@2",price);
+                }
             }
+            if ([self.Retouching_TextField.text isEqualToString:@"Crop to fit product"]) {
+                array = @[product,
+                          self.Quantity_TextField.text,
+                          price,
+                          self.Retouching_TextField.text,
+                          self.For_Aluminum_TextField.text,
+                          self.textView.text,
+                          [self.selectedImageURL absoluteString],
+                          self.image,
+                          [NSString stringWithFormat:@"%li",(long)self.selectedRow],
+                          [NSString stringWithFormat:@"%li",(long)self.selectedSection1]
+                          ];
+            }
+            else{
+                array = @[product,
+                          self.Quantity_TextField.text,
+                          price,
+                          @"",
+                          self.For_Aluminum_TextField.text,
+                          self.textView.text,
+                          [self.selectedImageURL absoluteString],
+                          self.image,
+                          [NSString stringWithFormat:@"%li",(long)self.selectedRow],
+                          [NSString stringWithFormat:@"%li",(long)self.selectedSection1]
+                          ];
+            }
+
         }
-
-        if ([price isEqualToString:@""]) {
-
+        
+        if (self.selectedSection1 == 1) {
+            product = [NSString stringWithFormat:@"%@ %@",self.Product_Outlet.text, @"Wood"];
+            NSInteger i = 0;
             for (NSArray *array in [self sharedAppDelegate].WoodenProductArray) {
                 i++;
                 if ([[array objectAtIndex:0] isEqualToString:self.Product_Outlet.text]) {
                     price = [array objectAtIndex:1];
-                    [self sharedAppDelegate].cartTotal = [self sharedAppDelegate].cartTotal + [price integerValue];
+                    [self sharedAppDelegate].cartTotal = [self sharedAppDelegate].cartTotal + ([price integerValue] * [self.Quantity_TextField.text integerValue]);
+                    NSLog(@"Price:%li",(long)[price integerValue]);
+                    NSLog(@"Quantity:%li",[self.Quantity_TextField.text integerValue]);
+                    NSLog(@"%@2",price);
                 }
             }
+            if ([self.Retouching_TextField.text isEqualToString:@"Crop to fit product"]) {
+                array = @[product,
+                          self.Quantity_TextField.text,
+                          price,
+                          self.Retouching_TextField.text,
+                          @"",
+                          self.textView.text,
+                          [self.selectedImageURL absoluteString],
+                          self.image,
+                          [NSString stringWithFormat:@"%li",(long)self.selectedRow],
+                          [NSString stringWithFormat:@"%li",(long)self.selectedSection1]
+                          ];
+            }
+            else{
+                array = @[product,
+                          self.Quantity_TextField.text,
+                          price,
+                          @"",
+                          @"",
+                          self.textView.text,
+                          [self.selectedImageURL absoluteString],
+                          self.image,
+                          [NSString stringWithFormat:@"%li",(long)self.selectedRow],
+                          [NSString stringWithFormat:@"%li",(long)self.selectedSection1]
+                          ];
+            }
         }
-        NSString *imageSizeType1;
-        if (self.image.size.width < self.image.size.height) {
-            NSLog(@"<");
-            imageSizeType1 = @"<";
-        }
-        if (self.image.size.width > self.image.size.height) {
-            NSLog(@">");
-            imageSizeType1 = @">";
-        }
-        if (self.image.size.width == self.image.size.height) {
-            NSLog(@"=");
-            imageSizeType1 = @"=";
-        }
-        [self sharedAppDelegate].cartPrintTotal = [self sharedAppDelegate].cartPrintTotal + [self.Quantity_TextField.text integerValue];
-        //[self.image setAccessibilityIdentifier:@"filename"] ;
         
-        //NSString *imgString = [UIImageJPEGRepresentation(self.image, 0.0f) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
-        NSArray *array = @[self.Product_Outlet.text,
-                           self.Quantity_TextField.text,
-                           price,
-                           self.Retouching_TextField.text,
-                           self.For_Aluminum_TextField.text,
-                           self.textView.text,
-                           [self.selectedImageURL absoluteString],
-                           imageSizeType1
-                           ];
+        if (self.selectedSection1 == 2) {
+            product = [NSString stringWithFormat:@"%@ %@",self.Product_Outlet.text, @"Tile"];
+            NSInteger i = 0;
+            for (NSArray *array in [self sharedAppDelegate].TileProductArray) {
+                i++;
+                if ([[array objectAtIndex:0] isEqualToString:self.Product_Outlet.text]) {
+                    price = [array objectAtIndex:1];
+                    [self sharedAppDelegate].cartTotal = [self sharedAppDelegate].cartTotal + ([price integerValue] * [self.Quantity_TextField.text integerValue]);
+                    NSLog(@"%@2",price);
+                }
+            }
+            if ([self.Retouching_TextField.text isEqualToString:@"Crop to fit product"]) {
+                array = @[product,
+                          self.Quantity_TextField.text,
+                          price,
+                          self.Retouching_TextField.text,
+                          @"",
+                          self.textView.text,
+                          [self.selectedImageURL absoluteString],
+                          self.image,
+                          [NSString stringWithFormat:@"%li",(long)self.selectedRow],
+                          [NSString stringWithFormat:@"%li",(long)self.selectedSection1]
+                          ];
+            }
+            else{
+                array = @[product,
+                          self.Quantity_TextField.text,
+                          price,
+                          @"",
+                          @"",
+                          self.textView.text,
+                          [self.selectedImageURL absoluteString],
+                          self.image,
+                          [NSString stringWithFormat:@"%li",(long)self.selectedRow],
+                          [NSString stringWithFormat:@"%li",(long)self.selectedSection1]
+                          ];
+            }
+        }
+        
+        
+        
+        if (self.selectedSection1 == 3) {
+            product = [NSString stringWithFormat:@"%@ %@",self.Product_Outlet.text, @"Slate"];
+            NSInteger i = 0;
+            for (NSArray *array in [self sharedAppDelegate].SlateProductArray) {
+                i++;
+                if ([[array objectAtIndex:0] isEqualToString:self.Product_Outlet.text]) {
+                    price = [array objectAtIndex:1];
+                    [self sharedAppDelegate].cartTotal = [self sharedAppDelegate].cartTotal + ([price integerValue] * [self.Quantity_TextField.text integerValue]);
+                    NSLog(@"%@2",price);
+                }
+            }
+            if ([self.Retouching_TextField.text isEqualToString:@"Crop to fit product"]) {
+                array = @[product,
+                          self.Quantity_TextField.text,
+                          price,
+                          self.Retouching_TextField.text,
+                          @"",
+                          self.textView.text,
+                          [self.selectedImageURL absoluteString],
+                          self.image,
+                          [NSString stringWithFormat:@"%li",(long)self.selectedRow],
+                          [NSString stringWithFormat:@"%li",(long)self.selectedSection1]
+                          ];
+            }
+            else{
+                array = @[product,
+                          self.Quantity_TextField.text,
+                          price,
+                          @"",
+                          @"",
+                          self.textView.text,
+                          [self.selectedImageURL absoluteString],
+                          self.image,
+                          [NSString stringWithFormat:@"%li",(long)self.selectedRow],
+                          [NSString stringWithFormat:@"%li",(long)self.selectedSection1]
+                          ];
+            }
+        }
+        
+        if (self.selectedSection1 == 4) {
+            product = [NSString stringWithFormat:@"%@",self.Product_Outlet.text];
+            NSInteger i = 0;
+            for (NSArray *array in [self sharedAppDelegate].OtherProductArray) {
+                i++;
+                if ([[array objectAtIndex:0] isEqualToString:self.Product_Outlet.text]) {
+                    price = [array objectAtIndex:1];
+                    [self sharedAppDelegate].cartTotal = [self sharedAppDelegate].cartTotal + ([price integerValue] * [self.Quantity_TextField.text integerValue]);
+                    NSLog(@"%@2",price);
+                }
+            }
+            if ([self.Retouching_TextField.text isEqualToString:@"Crop to fit product"]) {
+                array = @[product,
+                          self.Quantity_TextField.text,
+                          price,
+                          self.Retouching_TextField.text,
+                          @"",
+                          self.textView.text,
+                          [self.selectedImageURL absoluteString],
+                          self.image,
+                          [NSString stringWithFormat:@"%li",(long)self.selectedRow],
+                          [NSString stringWithFormat:@"%li",(long)self.selectedSection1]
+                          ];
+            }
+            else{
+                array = @[product,
+                          self.Quantity_TextField.text,
+                          price,
+                          @"",
+                          @"",
+                          self.textView.text,
+                          [self.selectedImageURL absoluteString],
+                          self.image,
+                          [NSString stringWithFormat:@"%li",(long)self.selectedRow],
+                          [NSString stringWithFormat:@"%li",(long)self.selectedSection1]
+                          ];
+            }
+        }
+        
+        [self sharedAppDelegate].cartPrintTotal = [self sharedAppDelegate].cartPrintTotal + [self.Quantity_TextField.text integerValue];
+
         if (self.selectedImageIndex != nil) {
             if (![self sharedAppDelegate].imagesInCartArray) {
                 [self sharedAppDelegate].imagesInCartArray = [[NSMutableArray alloc] init];
@@ -439,7 +614,7 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 6;
+    return 7;
 }
 
 
@@ -478,7 +653,21 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
         
     }
     if (self.Product_Outlet.inputView == pickerView) {
-        rows = [self sharedAppDelegate].AluminumProductArray.count + [self sharedAppDelegate].WoodenProductArray.count + [self sharedAppDelegate].MugProductArray.count + [self sharedAppDelegate].TileProductArray.count;
+        if (self.selectedSection1 == 0) {
+            rows = [self sharedAppDelegate].AluminumProductArray.count;
+        }
+        if (self.selectedSection1 == 1) {
+            rows = [self sharedAppDelegate].WoodenProductArray.count;
+        }
+        if (self.selectedSection1 == 2) {
+            rows = [self sharedAppDelegate].TileProductArray.count;
+        }
+        if (self.selectedSection1 == 3) {
+            rows = [self sharedAppDelegate].SlateProductArray.count;
+        }
+    }
+    if (self.Category_Outlet.inputView == pickerView) {
+        rows = 5;
     }
     return rows;
 }
@@ -487,6 +676,7 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
 // The data to return for the row and component (column) that's being passed in
 - (NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
+    NSLog(@"Title For row");
     NSString *string;
     if (self.For_Aluminum_TextField.inputView == pickerView) {
         
@@ -514,9 +704,30 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
 
     }
     
-    if (pickerView == self.Product_Outlet.inputView) {
-
-        string = [[self sharedAppDelegate].allProductsArray objectAtIndex:row];
+    if (self.Product_Outlet.inputView == pickerView) {
+        if (self.selectedSection1 == 0) {
+            NSArray *array = [[self sharedAppDelegate].AluminumProductArray objectAtIndex:row];
+            string = [array objectAtIndex:0];
+        }
+        if (self.selectedSection1 == 1) {
+            NSArray *array = [[self sharedAppDelegate].WoodenProductArray objectAtIndex:row];
+            string = [array objectAtIndex:0];
+        }
+        if (self.selectedSection1 == 2) {
+            NSArray *array = [[self sharedAppDelegate].TileProductArray objectAtIndex:row];
+            string = [array objectAtIndex:0];
+        }
+        if (self.selectedSection1 == 3) {
+            NSArray *array = [[self sharedAppDelegate].SlateProductArray objectAtIndex:row];
+            string = [array objectAtIndex:0];
+        }
+        
+    }
+    
+    if (pickerView == self.Category_Outlet.inputView) {
+        
+        string = [[self sharedAppDelegate].categoryArray objectAtIndex:row];
+        
     }
     return string;
 }
@@ -524,6 +735,7 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
 // Catpure the picker view selection
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
+    NSLog(@"Selected");
     
     NSString *string;
     if (self.For_Aluminum_TextField.inputView == pickerView) {
@@ -555,13 +767,69 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
     
     if (self.Product_Outlet.inputView == pickerView) {
         
-        if ([[[self sharedAppDelegate].allProductsArray objectAtIndex:row] isEqualToString:@"Aluminum Products"] || [[[self sharedAppDelegate].allProductsArray objectAtIndex:row] isEqualToString:@"Wood Products"] || [[[self sharedAppDelegate].allProductsArray objectAtIndex:row] isEqualToString:@"Mugs"] || [[[self sharedAppDelegate].allProductsArray objectAtIndex:row] isEqualToString:@"Tile Products"]) {
-            string = [[self sharedAppDelegate].allProductsArray objectAtIndex:row++];
+        if (self.selectedSection1 == 0) {
+            NSArray *array = [[self sharedAppDelegate].AluminumProductArray objectAtIndex:row];
+            self.Product_Outlet.text = [array objectAtIndex:0];
         }
-        else{
-            string = [[self sharedAppDelegate].allProductsArray objectAtIndex:row];
+        if (self.selectedSection1 == 1) {
+            NSArray *array = [[self sharedAppDelegate].WoodenProductArray objectAtIndex:row];
+            self.Product_Outlet.text = [array objectAtIndex:0];
         }
-        self.Product_Outlet.text = string;
+        if (self.selectedSection1 == 2) {
+            NSArray *array = [[self sharedAppDelegate].TileProductArray objectAtIndex:row];
+            self.Product_Outlet.text = [array objectAtIndex:0];
+        }
+        if (self.selectedSection1 == 3) {
+            NSArray *array = [[self sharedAppDelegate].SlateProductArray objectAtIndex:row];
+            self.Product_Outlet.text = [array objectAtIndex:0];
+        }
+        
+    }
+    
+    if (self.Category_Outlet.inputView == pickerView) {
+        self.Category_Outlet.text = [[self sharedAppDelegate].categoryArray objectAtIndex:row];
+
+        self.selectedSection1 = row;
+        
+        if (row == 0) {
+            NSArray *prodArray = [[self sharedAppDelegate].AluminumProductArray objectAtIndex:0];
+            self.Product_Outlet.text = [prodArray objectAtIndex:0];
+            if (self.aluminumOptionsCell.contentView.alpha == 0.6) {
+                [self.aluminumOptionsCell.contentView setAlpha:1];
+            }
+        }
+        
+        if (row == 1) {
+            NSArray *prodArray = [[self sharedAppDelegate].WoodenProductArray objectAtIndex:0];
+            self.Product_Outlet.text = [prodArray objectAtIndex:0];
+            if (self.aluminumOptionsCell.contentView.alpha == 1) {
+                [self.aluminumOptionsCell.contentView setAlpha:0.6];
+            }
+        }
+        
+        if (row == 2) {
+            NSArray *prodArray = [[self sharedAppDelegate].TileProductArray objectAtIndex:0];
+            self.Product_Outlet.text = [prodArray objectAtIndex:0];
+            if (self.aluminumOptionsCell.contentView.alpha == 1) {
+                [self.aluminumOptionsCell.contentView setAlpha:0.6];
+            }
+        }
+        
+        if (row == 3) {
+            NSArray *prodArray = [[self sharedAppDelegate].SlateProductArray objectAtIndex:0];
+            self.Product_Outlet.text = [prodArray objectAtIndex:0];
+            if (self.aluminumOptionsCell.contentView.alpha == 1) {
+                [self.aluminumOptionsCell.contentView setAlpha:0.6];
+            }
+        }
+        if (row == 4) {
+            NSArray *prodArray = [[self sharedAppDelegate].OtherProductArray objectAtIndex:0];
+            self.Product_Outlet.text = [prodArray objectAtIndex:0];
+            if (self.aluminumOptionsCell.contentView.alpha == 1) {
+                [self.aluminumOptionsCell.contentView setAlpha:0.6];
+            }
+        }
+        
     }
 }
 

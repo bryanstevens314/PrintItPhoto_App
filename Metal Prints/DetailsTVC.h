@@ -41,6 +41,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *Instructions_TextField;
 @property (weak, nonatomic) IBOutlet NonCopyPasteTextField *For_Aluminum_TextField;
 @property (weak, nonatomic) IBOutlet NonCopyPasteTextField *Product_Outlet;
+@property (weak, nonatomic) IBOutlet NonCopyPasteTextField *Category_Outlet;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet NonCopyPasteTextField *Quantity_TextField;
 @end

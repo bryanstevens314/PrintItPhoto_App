@@ -10,6 +10,8 @@
 #import "OrderTVC.h"
 
 #import "AppDelegate.h"
+#import "LaunchController.h"
+
 @interface Front_EndVC (){
 
 }
@@ -64,8 +66,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"|||" style:UIBarButtonItemStylePlain target:self action:@selector(Settings)];
-    [self.navigationItem setLeftBarButtonItem:leftBarButtonItem];
+
     UIBarButtonItem *rightBarButtonItem3 = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:nil];
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem3];
     [self.navigationItem setTitle:@"Store"];
@@ -74,6 +75,8 @@
 
 }
 
+
+UIImageView *launchImageView;
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
 
@@ -81,6 +84,12 @@
 
     collView.delegate = self;
     [self.view addSubview:collView.collectionView];
+    if ([self sharedAppDelegate].loadingImages == YES) {
+        NSLog(@"Loading Images");
+        LaunchController *launchControl = [LaunchController sharedLaunchController];
+        [[self sharedAppDelegate].window addSubview:launchControl.view];
+        [[self sharedAppDelegate].window bringSubviewToFront:launchControl.view];
+    }
 }
 
 
@@ -88,9 +97,14 @@
 -(void)viewDidAppear:(BOOL)animated{
     [super viewWillAppear:YES];
 
-
 }
-- (void)Settings {
+
+
+- (void)FinishedLoadingImages {
+    NSLog(@"Finished");
+    NSLog(@"%lu",(unsigned long)[self sharedAppDelegate].mutableImageArray.count);
+    [[LaunchController sharedLaunchController].view removeFromSuperview];
+    
 }
 
 
@@ -180,6 +194,7 @@
 }
 
 - (void)selectedCategoryWithSection:(NSInteger)section{
+    
     if (section == 0) {
         NSLog(@"Aluminum");
         
@@ -187,8 +202,9 @@
         productCollectionVC.delegate = self;
         productCollectionVC.currentProductArray = [self sharedAppDelegate].AluminumProductArray;
         productCollectionVC.selectedSection = section;
+        
+        productCollectionVC.collectionView.frame = CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height-60);
         [productCollectionVC.collectionView reloadData];
-        productCollectionVC.collectionView.frame = CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
          [self.view addSubview:productCollectionVC.collectionView];
         [UIView animateWithDuration:0.2f animations:^{
             productCollectionVC.collectionView.frame = CGRectOffset(productCollectionVC.collectionView.frame, -self.view.frame.size.width, 0);
@@ -198,10 +214,11 @@
     }
     if (section == 1) {
         ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
+        productCollectionVC.delegate = self;
         productCollectionVC.currentProductArray = [self sharedAppDelegate].WoodenProductArray;
         productCollectionVC.selectedSection = section;
-        [productCollectionVC.collectionView reloadData];
         productCollectionVC.collectionView.frame = CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
+        [productCollectionVC.collectionView reloadData];
         [self.view addSubview:productCollectionVC.collectionView];
         [UIView animateWithDuration:0.2f animations:^{
             productCollectionVC.collectionView.frame = CGRectOffset(productCollectionVC.collectionView.frame, -self.view.frame.size.width, 0);
@@ -209,10 +226,11 @@
     }
     if (section == 2) {
         ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
-        productCollectionVC.currentProductArray = [self sharedAppDelegate].MugProductArray;
+        productCollectionVC.delegate = self;
+        productCollectionVC.currentProductArray = [self sharedAppDelegate].TileProductArray;
         productCollectionVC.selectedSection = section;
-        [productCollectionVC.collectionView reloadData];
         productCollectionVC.collectionView.frame = CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
+        [productCollectionVC.collectionView reloadData];
         [self.view addSubview:productCollectionVC.collectionView];
         [UIView animateWithDuration:0.2f animations:^{
             productCollectionVC.collectionView.frame = CGRectOffset(productCollectionVC.collectionView.frame, -self.view.frame.size.width, 0);
@@ -220,15 +238,29 @@
     }
     if (section == 3) {
         ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
-        productCollectionVC.currentProductArray = [self sharedAppDelegate].TileProductArray;
+        productCollectionVC.delegate = self;
+        productCollectionVC.currentProductArray = [self sharedAppDelegate].SlateProductArray;
         productCollectionVC.selectedSection = section;
-        [productCollectionVC.collectionView reloadData];
         productCollectionVC.collectionView.frame = CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
+        [productCollectionVC.collectionView reloadData];
         [self.view addSubview:productCollectionVC.collectionView];
         [UIView animateWithDuration:0.2f animations:^{
             productCollectionVC.collectionView.frame = CGRectOffset(productCollectionVC.collectionView.frame, -self.view.frame.size.width, 0);
         }];
     }
+    if (section == 4) {
+        ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
+        productCollectionVC.delegate = self;
+        productCollectionVC.currentProductArray = [self sharedAppDelegate].OtherProductArray;
+        productCollectionVC.selectedSection = section;
+        productCollectionVC.collectionView.frame = CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
+        [productCollectionVC.collectionView reloadData];
+        [self.view addSubview:productCollectionVC.collectionView];
+        [UIView animateWithDuration:0.2f animations:^{
+            productCollectionVC.collectionView.frame = CGRectOffset(productCollectionVC.collectionView.frame, -self.view.frame.size.width, 0);
+        }];
+    }
+    [self.navigationItem setTitle:[[self sharedAppDelegate].categoryArray objectAtIndex:section]];
 }
 
 - (IBAction)PanGesture:(id)sender {
