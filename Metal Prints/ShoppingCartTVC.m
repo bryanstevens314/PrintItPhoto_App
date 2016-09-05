@@ -110,7 +110,7 @@ NSLog(@"ViewWillAppear");
 {
     
     Sendpulse* sendpulse = [[Sendpulse alloc] initWithUserIdandSecret:@"8b5aae1baf276ae0f96b0df3a9199c17" :@"835bcc351243980dc677f602b8b13c5c"];
-    NSDictionary *from = [NSDictionary dictionaryWithObjectsAndKeys:@"Bryan Stevens", @"name", @"btcfaucetfree@gmail.com", @"email", nil];
+    NSDictionary *from = [NSDictionary dictionaryWithObjectsAndKeys:@"Bryan Stevens", @"name", @"bryan_stevens314@yahoo.com", @"email", nil];
     NSMutableArray* to = [[NSMutableArray alloc] initWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:@"Bryan Stevens", @"name", @"btcfaucetfree@gmail.com", @"email", nil], nil];
     NSString *messageBody = @"<html><body><p>This is <b>bold text</b>, this is a <a href=\"http://www.chilkatsoft.com/\">hyperlink</a></p></body></html>";
     NSMutableDictionary *emaildata = [NSMutableDictionary dictionaryWithObjectsAndKeys:messageBody, @"html", @"", @"text",@"BTC Faucet Withdrawal",@"subject",from,@"from",to,@"to", nil];
@@ -323,6 +323,7 @@ NSInteger numberOfPrints;
 //                           ];
                  
                  //all exist
+                 NSLog(@"Textview:%@",[array objectAtIndex:4]);
                  if (![[array objectAtIndex:3] isEqualToString:@""] && ![[array objectAtIndex:4] isEqualToString:@""] && ![[array objectAtIndex:5] isEqualToString:@""]) {
                      cell.instructionsTextView.text = [NSString stringWithFormat:@"%@\n%@\n%@",[array objectAtIndex:5],[array objectAtIndex:3],[array objectAtIndex:4]];
                  }
