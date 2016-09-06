@@ -85,41 +85,27 @@ NSLog(@"ViewWillAppear");
 
 - (void)EnterShipping {
     
-//    if ([self sharedAppDelegate].shoppingCart.count != 0) {
-//        [self performSegueWithIdentifier:@"StartShipping" sender:self];
-//    }
-//    else{
-//        UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"" message:@"You must add items to your cart before proceeding"preferredStyle:UIAlertControllerStyleAlert];
-//        
-//        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"OK"
-//                                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-//                                                                   [alert2 dismissViewControllerAnimated:YES completion:nil];
-//                                                               }]; // 2
-//        
-//        [alert2 addAction:cameraAction];
-//        
-//        [self presentViewController:alert2 animated:YES completion:nil];
-//    }
-//    
+    if ([self sharedAppDelegate].shoppingCart.count != 0) {
+        [self performSegueWithIdentifier:@"StartShipping" sender:self];
+    }
+    else{
+        UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"" message:@"You must add items to your cart before proceeding"preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"OK"
+                                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                   [alert2 dismissViewControllerAnimated:YES completion:nil];
+                                                               }]; // 2
+        
+        [alert2 addAction:cameraAction];
+        
+        [self presentViewController:alert2 animated:YES completion:nil];
+    }
+    
 
-    [self sendEmail];
 }
 
 
--(void)sendEmail
-{
-    
-    Sendpulse* sendpulse = [[Sendpulse alloc] initWithUserIdandSecret:@"8b5aae1baf276ae0f96b0df3a9199c17" :@"835bcc351243980dc677f602b8b13c5c"];
-    NSDictionary *from = [NSDictionary dictionaryWithObjectsAndKeys:@"Bryan Stevens", @"name", @"bryan_stevens314@yahoo.com", @"email", nil];
-    NSMutableArray* to = [[NSMutableArray alloc] initWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:@"Bryan Stevens", @"name", @"btcfaucetfree@gmail.com", @"email", nil], nil];
-    NSString *messageBody = @"<html><body><p>This is <b>bold text</b>, this is a <a href=\"http://www.chilkatsoft.com/\">hyperlink</a></p></body></html>";
-    NSMutableDictionary *emaildata = [NSMutableDictionary dictionaryWithObjectsAndKeys:messageBody, @"html", @"", @"text",@"BTC Faucet Withdrawal",@"subject",from,@"from",to,@"to", nil];
-    [sendpulse smtpSendMail:emaildata];
-    
-    
-    
-    
-}
+
 - (void)pickerDoneClicked1:(id)sender {
     
     CartTVCCell *cell = [self.cellArray objectAtIndex:self.editingImageIndexPath.row];

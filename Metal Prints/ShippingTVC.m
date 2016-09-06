@@ -289,30 +289,8 @@
     
 
     
-                NSString *name = self.name_TextField.text;
-                NSString *email = self.email_TextField.text;
-                NSString *street = self.street_TextField.text;
-                NSString *apt = self.apt_TextField.text;
-                NSString *city = self.city_TextField.text;
-                NSString *state = self.state_TextField.text;
-                NSString *zip = self.zip_TextField.text;
-                NSString *shippingAddress;
-                if ([apt isEqualToString:@""]) {
-                    shippingAddress = [NSString stringWithFormat:@"%@, %@, %@ %@",street,city,state,zip];
-                }
-                else{
-                    shippingAddress = [NSString stringWithFormat:@"%@ %@, %@, %@ %@",street,apt,city,state,zip];
-                }
-                [self sharedAppDelegate].shippingInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                                         name,@"name",
-                                                         email, @"email",
-                                                         street,@"street",
-                                                         apt,@"apt",
-                                                         city,@"city",
-                                                         state,@"state",
-                                                         zip,@"zip",
-                                                         @"US",@"country",
-                                                         shippingAddress,@"shipping_address", nil];
+
+
                 
 
                 [self performSegueWithIdentifier:@"Billing" sender:self];
