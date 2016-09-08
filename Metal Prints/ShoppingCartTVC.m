@@ -85,24 +85,24 @@ NSLog(@"ViewWillAppear");
 
 - (void)EnterShipping {
     
-//    if ([self sharedAppDelegate].shoppingCart.count != 0) {
-//        [self performSegueWithIdentifier:@"StartShipping" sender:self];
-//    }
-//    else{
-//        UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"" message:@"You must add items to your cart before proceeding"preferredStyle:UIAlertControllerStyleAlert];
-//        
-//        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"OK"
-//                                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-//                                                                   [alert2 dismissViewControllerAnimated:YES completion:nil];
-//                                                               }]; // 2
-//        
-//        [alert2 addAction:cameraAction];
-//        
-//        [self presentViewController:alert2 animated:YES completion:nil];
-//    }
-//    
+    if ([self sharedAppDelegate].shoppingCart.count != 0) {
+        [self performSegueWithIdentifier:@"StartShipping" sender:self];
+    }
+    else{
+        UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"" message:@"You must add items to your cart before proceeding"preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"OK"
+                                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                   [alert2 dismissViewControllerAnimated:YES completion:nil];
+                                                               }]; // 2
+        
+        [alert2 addAction:cameraAction];
+        
+        [self presentViewController:alert2 animated:YES completion:nil];
+    }
+    
 
-    [self sendEmail];
+    //[self sendEmail];
 }
 
 

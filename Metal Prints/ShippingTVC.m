@@ -95,6 +95,15 @@
     self.state_TextField.inputAccessoryView = self.keyboardDoneButtonView1;
     
     self.zip_TextField.inputAccessoryView = self.keyboardDoneButtonView1;
+    
+   
+}
+
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:YES];
+    
+     //[self.name_TextField canBecomeFirstResponder];
 }
 
 
@@ -190,23 +199,17 @@
     if ([self.name_TextField isFirstResponder] && stop == NO) {
         NSLog(@"name");
         stop = YES;
-        [self.email_TextField becomeFirstResponder];
-    }
-    
-    if ([self.email_TextField isFirstResponder] && stop == NO) {
-        NSLog(@"email");
-        stop = YES;
         [self.street_TextField becomeFirstResponder];
     }
     
     if ([self.street_TextField isFirstResponder] && stop == NO) {
-        NSLog(@"street");
+        NSLog(@"email");
         stop = YES;
         [self.apt_TextField becomeFirstResponder];
     }
     
     if ([self.apt_TextField isFirstResponder] && stop == NO) {
-        NSLog(@"city");
+        NSLog(@"street");
         stop = YES;
         [self.city_TextField becomeFirstResponder];
     }
@@ -218,16 +221,22 @@
     }
     
     if ([self.state_TextField isFirstResponder] && stop == NO) {
-        NSLog(@"state");
+        NSLog(@"city");
         stop = YES;
         [self.zip_TextField becomeFirstResponder];
-        [self.delegate zipIsFirstResponderMoveViewUp];
     }
     
     if ([self.zip_TextField isFirstResponder] && stop == NO) {
+        NSLog(@"state");
+        stop = YES;
+        [self.country_Textfield becomeFirstResponder];
+        [self.delegate zipIsFirstResponderMoveViewUp];
+    }
+    
+    if ([self.country_Textfield isFirstResponder] && stop == NO) {
         NSLog(@"Zip");
         stop = YES;             
-        [self.zip_TextField resignFirstResponder];
+        [self.country_Textfield resignFirstResponder];
         [self.keyboardDoneButtonView1 removeFromSuperview];
         [self.delegate zipResignedFirstResponderMoveViewDown];
     }
@@ -236,10 +245,6 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     BOOL stop = NO;
     if (textField == self.name_TextField) {
-        stop = YES;
-        [self.email_TextField becomeFirstResponder];
-    }
-    if (textField == self.email_TextField) {
         stop = YES;
         [self.street_TextField becomeFirstResponder];
     }
@@ -261,7 +266,11 @@
     }
     if (textField == self.zip_TextField) {
         stop = YES;
-        [self.zip_TextField resignFirstResponder];
+        [self.country_Textfield becomeFirstResponder];
+    }
+    if (textField == self.country_Textfield) {
+        stop = YES;
+        [self.country_Textfield resignFirstResponder];
     }
     return YES;
 }
@@ -289,30 +298,7 @@
     
 
     
-                NSString *name = self.name_TextField.text;
-                NSString *email = self.email_TextField.text;
-                NSString *street = self.street_TextField.text;
-                NSString *apt = self.apt_TextField.text;
-                NSString *city = self.city_TextField.text;
-                NSString *state = self.state_TextField.text;
-                NSString *zip = self.zip_TextField.text;
-                NSString *shippingAddress;
-                if ([apt isEqualToString:@""]) {
-                    shippingAddress = [NSString stringWithFormat:@"%@, %@, %@ %@",street,city,state,zip];
-                }
-                else{
-                    shippingAddress = [NSString stringWithFormat:@"%@ %@, %@, %@ %@",street,apt,city,state,zip];
-                }
-                [self sharedAppDelegate].shippingInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                                         name,@"name",
-                                                         email, @"email",
-                                                         street,@"street",
-                                                         apt,@"apt",
-                                                         city,@"city",
-                                                         state,@"state",
-                                                         zip,@"zip",
-                                                         @"US",@"country",
-                                                         shippingAddress,@"shipping_address", nil];
+
                 
 
                 [self performSegueWithIdentifier:@"Billing" sender:self];

@@ -10,7 +10,24 @@
 #import <UIKit/UIKit.h>
 #import "Sendpulse.h"
 
+@class PaymentVC;
+
+@protocol PaymentVCDelegate
+
+- (void)CardSuccessFullyCharged;
+- (void)CardFailedToCharged;
+-(void)UploadingImages;
+-(void)ImagesSuccessFullyUploaded;
+-(void)imageUploadFailure;
+
+@end
+
+
 @interface PaymentVC : UIViewController <STPPaymentContextDelegate>
+@property (weak, nonatomic) id<PaymentVCDelegate> delegate;
+
++ (PaymentVC *)sharedPaymentVC;
+- (void)PlaceOrderAndUploadImages;
 
 @property (weak, nonatomic) IBOutlet UIView *tableContentView1;
 @end

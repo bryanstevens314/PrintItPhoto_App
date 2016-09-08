@@ -9,12 +9,13 @@
 #import <Foundation/Foundation.h>
 
 @interface UserShipping : NSObject
-
-@property (retain, nonatomic) NSString *firstName;
-@property (retain, nonatomic) NSString *lastName;
+@property (retain, nonatomic) NSString *email;
+@property (retain, nonatomic) NSString *Name;
 @property (retain, nonatomic) NSString *street;
 @property (retain, nonatomic) NSString *apt;
 @property (retain, nonatomic) NSString *city;
 @property (retain, nonatomic) NSString *state;
 @property (retain, nonatomic) NSString *zip;
+@property (retain, nonatomic) NSString *country;
+@property (retain, nonatomic) NSDictionary *shippingDict;
 @end

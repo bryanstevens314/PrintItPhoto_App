@@ -11,12 +11,7 @@
 #import <Stripe/Stripe.h>
 
 @interface ActualCCTVC ()
-@property (retain, nonatomic) UIPickerView *monthPicker;
-@property (retain, nonatomic) UIPickerView *yearPicker;
-@property (retain, nonatomic) NSMutableArray *yearArray;
-@property (retain, nonatomic) NSMutableArray *monthArray;
-@property (retain, nonatomic) NSString *currentYear;
-@property (retain, nonatomic) NSString *currentMonth;
+
 @property (retain, nonatomic) UIToolbar* keyboardDoneButtonView3;
 @end
 
@@ -66,98 +61,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    NSArray *monArray = [df shortStandaloneMonthSymbols];
-    
-    self.monthArray = [[NSMutableArray alloc] init];
-    NSDateFormatter* formatter2 = [[NSDateFormatter alloc] init];
-    [formatter2 setDateFormat:@"MMM"];
-    for (NSString *mon in monArray) {
-        NSDate *aDate = [formatter2 dateFromString:mon];
-        NSDateComponents *components = [[NSCalendar currentCalendar] components:NSMonthCalendarUnit fromDate:aDate];
-        NSString *astring = [NSString stringWithFormat:@"%li",(long)[components month]];
-        if ([astring length] == 1) {
-            [self.monthArray addObject:[NSString stringWithFormat:@"0%li",(long)[components month]]];
-        }
-        else{
-            [self.monthArray addObject:[NSString stringWithFormat:@"%li",(long)[components month]]];
-        }
-        
-    }
 
-    
-    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitMonth fromDate:[NSDate date]];
-    NSInteger month = [components month];
-
-    self.currentMonth = [self.monthArray objectAtIndex:month-1];
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy"];
-    self.currentYear = [formatter stringFromDate:[NSDate date]];
-    int curYear = [self.currentYear intValue];
-    self.yearArray = [[NSMutableArray alloc] init];
-    for( int year = curYear; year <= 2080; year++ ) {
-        [self.yearArray addObject:[NSString stringWithFormat:@"%d", year]];
-    }
-
-    
-    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Place Order" style:UIBarButtonItemStylePlain target:self action:@selector(PlaceOrder)];
-    [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
-    [self.navigationItem setTitle:@"Billing"];
-    
-    [[self expMonth] setTintColor:[UIColor clearColor]];
-    self.monthPicker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 50, 100, 200)];
-    [self.monthPicker setDataSource: self];
-    [self.monthPicker setDelegate: self];
-    self.monthPicker.showsSelectionIndicator = YES;
-    [self.monthPicker selectRow:0 inComponent:0 animated:NO];
-    self.expMonth.inputView = self.monthPicker;
-    self.expMonth.adjustsFontSizeToFitWidth = YES;
-    self.expMonth.textColor = [UIColor blackColor];
-    
-    self.expMonth.inputView = self.monthPicker;
-    self.expMonth.inputAssistantItem.leadingBarButtonGroups = @[];
-    self.expMonth.inputAssistantItem.trailingBarButtonGroups = @[];
-    NSInteger selectmonth = month--;
-    [self.monthPicker selectRow:selectmonth inComponent:0 animated:NO];
-    self.keyboardDoneButtonView3 = [[UIToolbar alloc] init];
-    self.keyboardDoneButtonView3.barStyle = UIBarStyleDefault;
-    self.keyboardDoneButtonView3.translucent = YES;
-    self.keyboardDoneButtonView3.tintColor = nil;
-    [self.keyboardDoneButtonView3 sizeToFit];
-    UIBarButtonItem *flexSpace11 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    UIBarButtonItem *backButton11 = [[UIBarButtonItem alloc] initWithTitle:@"Back"
-                                                                    style:UIBarButtonItemStyleDone target:self
-                                                                   action:@selector(BackClicked11:)];
-    UIBarButtonItem *nextButton11 = [[UIBarButtonItem alloc] initWithTitle:@"Next"
-                                                                    style:UIBarButtonItemStyleDone target:self
-                                                                   action:@selector(NextClicked11:)];
-    UIBarButtonItem *doneButton11 = [[UIBarButtonItem alloc] initWithTitle:@"Done"
-                                                                    style:UIBarButtonItemStyleDone target:self
-                                                                   action:@selector(DoneClicked11:)];
-    
-    [self.keyboardDoneButtonView3 setItems:[NSArray arrayWithObjects:backButton11,nextButton11,flexSpace11,doneButton11, nil]];
-    
-    
-//    [[self expYear] setTintColor:[UIColor clearColor]];
-//    self.yearPicker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 50, 100, 200)];
-//    [self.yearPicker setDataSource: self];
-//    [self.yearPicker setDelegate: self];
-//    self.yearPicker.showsSelectionIndicator = YES;
-//    [self.yearPicker selectRow:0 inComponent:0 animated:NO];
-//    self.expYear.inputView = self.yearPicker;
-//    self.expYear.adjustsFontSizeToFitWidth = YES;
-//    self.expYear.textColor = [UIColor blackColor];
-//    
-//    self.expYear.inputView = self.yearPicker;
-//    self.expYear.inputAssistantItem.leadingBarButtonGroups = @[];
-//    self.expYear.inputAssistantItem.trailingBarButtonGroups = @[];
-    
-    self.expMonth.inputAccessoryView = self.keyboardDoneButtonView3;
-//    self.expYear.inputAccessoryView = self.keyboardDoneButtonView;
-    self.CCN.inputAccessoryView = self.keyboardDoneButtonView3;
-    self.securityCode.inputAccessoryView = self.keyboardDoneButtonView3;
-    
-    self.expMonth.text = [NSString stringWithFormat:@"%@/%@",self.currentMonth,self.currentYear];
 }
 
 
@@ -258,10 +162,7 @@
 }
 
 
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
-    
-    return 2;
-}
+
 
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
@@ -280,63 +181,7 @@
 }
 
 
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
-    NSInteger rows = 0;
 
-    if (component == 0) {
-        
-        rows = self.monthArray.count;
-        
-    }
-    if (component == 1) {
-        rows = self.yearArray.count;
-    }
-
-    return rows;
-}
-
-
-// The data to return for the row and component (column) that's being passed in
-- (NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    NSString *string;
-    if (component == 1) {
-        
-        string = [self.yearArray objectAtIndex:row];
-    }
-    if (component == 0) {
-        
-        string = [self.monthArray objectAtIndex:row];
-        
-    }
-    
-    return string;
-}
-
-
-// Catpure the picker view selection
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{
-    
-    NSString *string;
-    if (component == 1) {
-        
-        self.currentYear = [self.yearArray objectAtIndex:row];
-        self.expMonth.text = [NSString stringWithFormat:@"%@/%@",self.currentMonth,self.currentYear];
-    }
-    if (component == 0) {
-        
-        self.currentMonth = [self.monthArray objectAtIndex:row];
-        self.expMonth.text = [NSString stringWithFormat:@"%@/%@",self.currentMonth,self.currentYear];
-    }
-    
-}
-
-
-- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
-    
-    return 100;
-}
 
 /*
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

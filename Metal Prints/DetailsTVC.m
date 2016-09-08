@@ -377,6 +377,7 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
         NSString *price = @"";
         NSString *product = @"";
         NSArray *array;
+        NSString *imgString = [UIImageJPEGRepresentation(self.image, 0.0f) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
         if (self.selectedSection1 == 0) {
             product = [NSString stringWithFormat:@"%@ %@",self.Product_Outlet.text, @"Aluminum"];
             NSInteger i = 0;
@@ -396,7 +397,7 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
                           self.For_Aluminum_TextField.text,
                           self.textView.text,
                           [self.selectedImageURL absoluteString],
-                          self.image,
+                          imgString,
                           [NSString stringWithFormat:@"%li",(long)self.selectedRow],
                           [NSString stringWithFormat:@"%li",(long)self.selectedSection1]
                           ];
@@ -409,7 +410,7 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
                           self.For_Aluminum_TextField.text,
                           self.textView.text,
                           [self.selectedImageURL absoluteString],
-                          self.image,
+                          imgString,
                           [NSString stringWithFormat:@"%li",(long)self.selectedRow],
                           [NSString stringWithFormat:@"%li",(long)self.selectedSection1]
                           ];
@@ -438,7 +439,7 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
                           @"",
                           self.textView.text,
                           [self.selectedImageURL absoluteString],
-                          self.image,
+                          imgString,
                           [NSString stringWithFormat:@"%li",(long)self.selectedRow],
                           [NSString stringWithFormat:@"%li",(long)self.selectedSection1]
                           ];
@@ -451,7 +452,7 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
                           @"",
                           self.textView.text,
                           [self.selectedImageURL absoluteString],
-                          self.image,
+                          imgString,
                           [NSString stringWithFormat:@"%li",(long)self.selectedRow],
                           [NSString stringWithFormat:@"%li",(long)self.selectedSection1]
                           ];
@@ -477,7 +478,7 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
                           @"",
                           self.textView.text,
                           [self.selectedImageURL absoluteString],
-                          self.image,
+                          imgString,
                           [NSString stringWithFormat:@"%li",(long)self.selectedRow],
                           [NSString stringWithFormat:@"%li",(long)self.selectedSection1]
                           ];
@@ -490,7 +491,7 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
                           @"",
                           self.textView.text,
                           [self.selectedImageURL absoluteString],
-                          self.image,
+                          imgString,
                           [NSString stringWithFormat:@"%li",(long)self.selectedRow],
                           [NSString stringWithFormat:@"%li",(long)self.selectedSection1]
                           ];
@@ -518,7 +519,7 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
                           @"",
                           self.textView.text,
                           [self.selectedImageURL absoluteString],
-                          self.image,
+                          imgString,
                           [NSString stringWithFormat:@"%li",(long)self.selectedRow],
                           [NSString stringWithFormat:@"%li",(long)self.selectedSection1]
                           ];
@@ -531,7 +532,7 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
                           @"",
                           self.textView.text,
                           [self.selectedImageURL absoluteString],
-                          self.image,
+                          imgString,
                           [NSString stringWithFormat:@"%li",(long)self.selectedRow],
                           [NSString stringWithFormat:@"%li",(long)self.selectedSection1]
                           ];
@@ -557,7 +558,7 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
                           @"",
                           self.textView.text,
                           [self.selectedImageURL absoluteString],
-                          self.image,
+                          imgString,
                           [NSString stringWithFormat:@"%li",(long)self.selectedRow],
                           [NSString stringWithFormat:@"%li",(long)self.selectedSection1]
                           ];
@@ -570,7 +571,7 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
                           @"",
                           self.textView.text,
                           [self.selectedImageURL absoluteString],
-                          self.image,
+                          imgString,
                           [NSString stringWithFormat:@"%li",(long)self.selectedRow],
                           [NSString stringWithFormat:@"%li",(long)self.selectedSection1]
                           ];

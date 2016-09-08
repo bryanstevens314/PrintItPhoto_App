@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "CCTVC.h"
-@interface BillingVC : UIViewController <CCTVCDelegate>
+#import "PaymentVC.h"
+
+@interface BillingVC : UIViewController <CCTVCDelegate,PaymentVCDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *tableContentView;
 @end

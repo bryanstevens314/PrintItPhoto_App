@@ -10,6 +10,11 @@
 #import "AppDelegate.h"
 
 @interface CCTVC ()
+@property (retain, nonatomic) UIPickerView *monthPicker;
+@property (retain, nonatomic) UIPickerView *yearPicker;
+@property (retain, nonatomic) NSMutableArray *yearArray;
+@property (retain, nonatomic) NSMutableArray *monthArray;
+
 @property (retain, nonatomic) UIToolbar* keyboardDoneButtonView2;
 @end
 
@@ -62,6 +67,75 @@
     [self.navigationItem setTitle:@"Billing"];
     self.BillingSameAsShippingOutlet.on  = NO;
     
+
+    
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    NSArray *monArray = [df shortStandaloneMonthSymbols];
+    
+    self.monthArray = [[NSMutableArray alloc] init];
+    NSDateFormatter* formatter2 = [[NSDateFormatter alloc] init];
+    [formatter2 setDateFormat:@"MMM"];
+    for (NSString *mon in monArray) {
+        NSDate *aDate = [formatter2 dateFromString:mon];
+        NSDateComponents *components = [[NSCalendar currentCalendar] components:NSMonthCalendarUnit fromDate:aDate];
+        NSString *astring = [NSString stringWithFormat:@"%li",(long)[components month]];
+        if ([astring length] == 1) {
+            [self.monthArray addObject:[NSString stringWithFormat:@"0%li",(long)[components month]]];
+        }
+        else{
+            [self.monthArray addObject:[NSString stringWithFormat:@"%li",(long)[components month]]];
+        }
+        
+    }
+    
+    
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitMonth fromDate:[NSDate date]];
+    NSInteger month = [components month];
+    
+    self.currentMonth = [self.monthArray objectAtIndex:month-1];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy"];
+    self.currentYear = [formatter stringFromDate:[NSDate date]];
+    int curYear = [self.currentYear intValue];
+    self.yearArray = [[NSMutableArray alloc] init];
+    for( int year = curYear; year <= 2080; year++ ) {
+        [self.yearArray addObject:[NSString stringWithFormat:@"%d", year]];
+    }
+    
+    
+
+    
+    [[self expMonth] setTintColor:[UIColor clearColor]];
+    self.monthPicker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 50, 100, 200)];
+    [self.monthPicker setDataSource: self];
+    [self.monthPicker setDelegate: self];
+    self.monthPicker.showsSelectionIndicator = YES;
+    [self.monthPicker selectRow:0 inComponent:0 animated:NO];
+    self.expMonth.inputView = self.monthPicker;
+    self.expMonth.adjustsFontSizeToFitWidth = YES;
+    self.expMonth.textColor = [UIColor blackColor];
+    
+    self.expMonth.inputView = self.monthPicker;
+    self.expMonth.inputAssistantItem.leadingBarButtonGroups = @[];
+    self.expMonth.inputAssistantItem.trailingBarButtonGroups = @[];
+    NSInteger selectmonth = month- 1;
+    [self.monthPicker selectRow:selectmonth inComponent:0 animated:NO];
+    
+    
+    //    [[self expYear] setTintColor:[UIColor clearColor]];
+    //    self.yearPicker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 50, 100, 200)];
+    //    [self.yearPicker setDataSource: self];
+    //    [self.yearPicker setDelegate: self];
+    //    self.yearPicker.showsSelectionIndicator = YES;
+    //    [self.yearPicker selectRow:0 inComponent:0 animated:NO];
+    //    self.expYear.inputView = self.yearPicker;
+    //    self.expYear.adjustsFontSizeToFitWidth = YES;
+    //    self.expYear.textColor = [UIColor blackColor];
+    //
+    //    self.expYear.inputView = self.yearPicker;
+    //    self.expYear.inputAssistantItem.leadingBarButtonGroups = @[];
+    //    self.expYear.inputAssistantItem.trailingBarButtonGroups = @[];
+    
     self.keyboardDoneButtonView2 = [[UIToolbar alloc] init];
     self.keyboardDoneButtonView2.barStyle = UIBarStyleDefault;
     self.keyboardDoneButtonView2.translucent = YES;
@@ -69,16 +143,24 @@
     [self.keyboardDoneButtonView2 sizeToFit];
     UIBarButtonItem *flexSpace1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem *backButton1 = [[UIBarButtonItem alloc] initWithTitle:@"Back"
-                                                                   style:UIBarButtonItemStyleDone target:self
-                                                                  action:@selector(BackClicked1:)];
+                                                                    style:UIBarButtonItemStyleDone target:self
+                                                                   action:@selector(BackClicked1:)];
     UIBarButtonItem *nextButton1 = [[UIBarButtonItem alloc] initWithTitle:@"Next"
-                                                                   style:UIBarButtonItemStyleDone target:self
-                                                                  action:@selector(NextClicked1:)];
+                                                                    style:UIBarButtonItemStyleDone target:self
+                                                                   action:@selector(NextClicked1:)];
     UIBarButtonItem *doneButton1 = [[UIBarButtonItem alloc] initWithTitle:@"Done"
-                                                                   style:UIBarButtonItemStyleDone target:self
-                                                                  action:@selector(DoneClicked1:)];
+                                                                    style:UIBarButtonItemStyleDone target:self
+                                                                   action:@selector(DoneClicked1:)];
     
     [self.keyboardDoneButtonView2 setItems:[NSArray arrayWithObjects:backButton1,nextButton1,flexSpace1,doneButton1, nil]];
+    
+    self.email.inputAccessoryView = self.keyboardDoneButtonView2;
+    
+    self.expMonth.inputAccessoryView = self.keyboardDoneButtonView2;
+    
+    self.ccn.inputAccessoryView = self.keyboardDoneButtonView2;
+    
+    self.cvc.inputAccessoryView = self.keyboardDoneButtonView2;
     
     self.firstName.inputAccessoryView = self.keyboardDoneButtonView2;
     
@@ -93,26 +175,56 @@
     self.zip.inputAccessoryView = self.keyboardDoneButtonView2;
     
     self.state.inputAccessoryView = self.keyboardDoneButtonView2;
+    
+
+    
+    self.expMonth.text = [NSString stringWithFormat:@"%@/%@",self.currentMonth,self.currentYear];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+    
+    [self.email becomeFirstResponder];
 }
 
 
 - (void)BackClicked1:(id)sender {
     BOOL stop = NO;
+    if ([self.email isFirstResponder] && stop == NO) {
+        NSLog(@"name");
+        stop = YES;
+        
+    }
+    if ([self.ccn isFirstResponder] && stop == NO) {
+        NSLog(@"name");
+        stop = YES;
+        [self.email becomeFirstResponder];
+        
+    }
+    if ([self.expMonth isFirstResponder] && stop == NO) {
+        NSLog(@"name");
+        stop = YES;
+        [self.ccn becomeFirstResponder];
+        
+    }
+    if ([self.cvc isFirstResponder] && stop == NO) {
+        NSLog(@"name");
+        stop = YES;
+        [self.expMonth becomeFirstResponder];
+        
+    }
     if ([self.firstName isFirstResponder] && stop == NO) {
         NSLog(@"name");
         stop = YES;
-    }
-    
-    if ([self.LastName isFirstResponder] && stop == NO) {
-        NSLog(@"email");
-        stop = YES;
-        [self.firstName becomeFirstResponder];
+        [self.delegate moveViewDown];
+        [self.cvc becomeFirstResponder];
+        
     }
     
     if ([self.streetAddress isFirstResponder] && stop == NO) {
         NSLog(@"street");
         stop = YES;
-        [self.LastName becomeFirstResponder];
+        [self.firstName becomeFirstResponder];
     }
     
     if ([self.apt isFirstResponder] && stop == NO) {
@@ -145,14 +257,30 @@
 - (void)DoneClicked1:(id)sender {
     [self.keyboardDoneButtonView2 removeFromSuperview];
     [self.delegate moveViewDown];
+    
+    if ([self.email isFirstResponder]) {
+        NSLog(@"name");
+        [self.email resignFirstResponder];
+    }
+    
+    if ([self.ccn isFirstResponder]) {
+        NSLog(@"name");
+        [self.ccn resignFirstResponder];
+    }
+    
+    if ([self.expMonth isFirstResponder]) {
+        NSLog(@"name");
+        [self.expMonth resignFirstResponder];
+    }
+    
+    if ([self.cvc isFirstResponder]) {
+        NSLog(@"name");
+        [self.cvc resignFirstResponder];
+    }
+    
     if ([self.firstName isFirstResponder]) {
         NSLog(@"name");
         [self.firstName resignFirstResponder];
-    }
-    
-    if ([self.LastName isFirstResponder]) {
-        NSLog(@"email");
-        [self.LastName resignFirstResponder];
     }
     
     if ([self.streetAddress isFirstResponder]) {
@@ -185,15 +313,32 @@
 
 - (void)NextClicked1:(id)sender {
     BOOL stop = NO;
-    if ([self.firstName isFirstResponder] && stop == NO) {
+    if ([self.email isFirstResponder] && stop == NO) {
         NSLog(@"name");
         stop = YES;
-        [self.LastName becomeFirstResponder];
+        [self.ccn becomeFirstResponder];
+    }
+    if ([self.ccn isFirstResponder] && stop == NO) {
+        NSLog(@"name");
+        stop = YES;
+        [self.expMonth becomeFirstResponder];
+    }
+    if ([self.expMonth isFirstResponder] && stop == NO) {
+        NSLog(@"name");
+        stop = YES;
+        [self.cvc becomeFirstResponder];
+    }
+    if ([self.cvc isFirstResponder] && stop == NO) {
+        NSLog(@"name");
+        stop = YES;
+         [self.delegate moveViewUp];
+        [self.firstName becomeFirstResponder];
     }
     
-    if ([self.LastName isFirstResponder] && stop == NO) {
+    if ([self.firstName isFirstResponder] && stop == NO) {
         NSLog(@"email");
         stop = YES;
+       
         [self.streetAddress becomeFirstResponder];
     }
     
@@ -213,7 +358,7 @@
         NSLog(@"city");
         stop = YES;
         [self.state becomeFirstResponder];
-        [self.delegate moveViewUp];
+        
     }
     
     if ([self.state isFirstResponder] && stop == NO) {
@@ -226,9 +371,10 @@
     if ([self.zip isFirstResponder] && stop == NO) {
         NSLog(@"Zip");
         stop = YES;
+        [self.delegate moveViewDown];
         [self.zip resignFirstResponder];
         [self.keyboardDoneButtonView2 removeFromSuperview];
-        [self.delegate moveViewDown];
+        
     }
 }
 
@@ -270,6 +416,16 @@
 }
 
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField{
+    if (textField == self.firstName) {
+        [self.delegate moveViewUp];
+    }
+    
+    if (textField == self.streetAddress) {
+        [self.delegate moveViewUp];
+    }
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -277,7 +433,19 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 8;
+    NSInteger rows = 0;
+    
+    if (section == 0) {
+        rows = 1;
+    }
+    if (section == 1) {
+        rows = 1;
+    }
+    if (section == 2) {
+        rows = 7;
+    }
+    
+    return 12;
 }
 
 /*
@@ -324,6 +492,72 @@
 }
 */
 
+#pragma mark Picker Delegate
+
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
+    
+    return 2;
+}
+
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
+    NSInteger rows = 0;
+    
+    if (component == 0) {
+        
+        rows = self.monthArray.count;
+        
+    }
+    if (component == 1) {
+        rows = self.yearArray.count;
+    }
+    
+    return rows;
+}
+
+
+// The data to return for the row and component (column) that's being passed in
+- (NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    NSString *string;
+    if (component == 1) {
+        
+        string = [self.yearArray objectAtIndex:row];
+    }
+    if (component == 0) {
+        
+        string = [self.monthArray objectAtIndex:row];
+        
+    }
+    
+    return string;
+}
+
+
+// Catpure the picker view selection
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    if (component == 1) {
+        
+        self.currentYear = [self.yearArray objectAtIndex:row];
+        self.expMonth.text = [NSString stringWithFormat:@"%@/%@",self.currentMonth,self.currentYear];
+    }
+    if (component == 0) {
+        
+        self.currentMonth = [self.monthArray objectAtIndex:row];
+        self.expMonth.text = [NSString stringWithFormat:@"%@/%@",self.currentMonth,self.currentYear];
+    }
+    
+}
+
+
+- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
+    
+    return 100;
+}
+
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
@@ -338,9 +572,7 @@
     if (self.BillingSameAsShippingOutlet.on == YES) {
         NSLog(@"State: %@",[self sharedAppDelegate].userSettings.shipping.state);
         NSLog(@"Street: %@",[self sharedAppDelegate].userSettings.shipping.street);
-        self.firstName.text = [self sharedAppDelegate].userSettings.shipping.firstName;
-        
-        self.LastName.text = [self sharedAppDelegate].userSettings.shipping.lastName;
+        self.firstName.text = [self sharedAppDelegate].userSettings.shipping.Name;
         
         self.streetAddress.text = [self sharedAppDelegate].userSettings.shipping.street;
         
