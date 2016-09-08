@@ -14,4 +14,5 @@
 
 @property (retain,nonatomic) UserShipping *shipping;
 @property (retain,nonatomic) UserBilling *billing;
+@property (retain,nonatomic) NSDictionary *shippingDict;
 @end

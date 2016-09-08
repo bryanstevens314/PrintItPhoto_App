@@ -5,7 +5,7 @@
 //  Created by Bryan Stevens on 8/22/16.
 //
 //
-
+#import "Sendpulse.h"
 #import "BillingVC.h"
 #import "AppDelegate.h"
 #import "UserBilling.h"
@@ -138,16 +138,18 @@ UIAlertController *chargingCardAlert;
         [[PaymentVC sharedPaymentVC] PlaceOrderAndUploadImages];
     }
     else{
-        UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"" message:@"Please enter all required information"preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"OK"
-                                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                                                                   [alert2 dismissViewControllerAnimated:YES completion:nil];
-                                                               }]; // 2
-        
-        [alert2 addAction:cameraAction];
-        
-        [self presentViewController:alert2 animated:YES completion:nil];
+//        UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"" message:@"Please enter all required information"preferredStyle:UIAlertControllerStyleAlert];
+//        
+//        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"OK"
+//                                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+//                                                                   [alert2 dismissViewControllerAnimated:YES completion:nil];
+//                                                               }]; // 2
+//        
+//        [alert2 addAction:cameraAction];
+//        
+//        [self presentViewController:alert2 animated:YES completion:nil];
+
+    [self PostData];
     }
 }
 

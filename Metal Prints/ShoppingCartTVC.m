@@ -106,20 +106,7 @@ NSLog(@"ViewWillAppear");
 }
 
 
--(void)sendEmail
-{
-    
-    Sendpulse* sendpulse = [[Sendpulse alloc] initWithUserIdandSecret:@"8b5aae1baf276ae0f96b0df3a9199c17" :@"835bcc351243980dc677f602b8b13c5c"];
-    NSDictionary *from = [NSDictionary dictionaryWithObjectsAndKeys:@"Bryan Stevens", @"name", @"bryan_stevens314@yahoo.com", @"email", nil];
-    NSMutableArray* to = [[NSMutableArray alloc] initWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:@"Bryan Stevens", @"name", @"btcfaucetfree@gmail.com", @"email", nil], nil];
-    NSString *messageBody = @"<html><body><p>This is <b>bold text</b>, this is a <a href=\"http://www.chilkatsoft.com/\">hyperlink</a></p></body></html>";
-    NSMutableDictionary *emaildata = [NSMutableDictionary dictionaryWithObjectsAndKeys:messageBody, @"html", @"", @"text",@"BTC Faucet Withdrawal",@"subject",from,@"from",to,@"to", nil];
-    [sendpulse smtpSendMail:emaildata];
-    
-    
-    
-    
-}
+
 - (void)pickerDoneClicked1:(id)sender {
     
     CartTVCCell *cell = [self.cellArray objectAtIndex:self.editingImageIndexPath.row];

@@ -122,9 +122,9 @@
         }];
     }
     
-    self.loadingImages  = YES;
-    self.reloadImageCollection = NO;
-    [self getAllPhotos];
+//    self.loadingImages  = YES;
+//    self.reloadImageCollection = NO;
+//    [self getAllPhotos];
     
 
     return YES;
