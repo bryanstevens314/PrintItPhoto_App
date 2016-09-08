@@ -102,6 +102,7 @@ NSLog(@"ViewWillAppear");
     }
     
 
+    //[self sendEmail];
 }
 
 

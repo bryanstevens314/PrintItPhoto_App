@@ -75,7 +75,7 @@ UIBarButtonItem *rightBarButtonItem5;
     shippingTable.tableView.frame = CGRectMake(self.orderDataView.frame.origin.x, self.orderDataView.frame.origin.y-125, self.orderDataView.frame.size.width, self.orderDataView.frame.size.height);
     [self.orderDataView addSubview:shippingTable.tableView];
     if ([self sharedAppDelegate].userSettings.shipping != nil) {
-        shippingTable.name_TextField.text = [self sharedAppDelegate].userSettings.shipping.firstName;
+        shippingTable.name_TextField.text = [self sharedAppDelegate].userSettings.shipping.Name;
         
         shippingTable.street_TextField.text = [self sharedAppDelegate].userSettings.shipping.street;
         
@@ -88,6 +88,13 @@ UIBarButtonItem *rightBarButtonItem5;
         shippingTable.zip_TextField.text = [self sharedAppDelegate].userSettings.shipping.zip;
         
     }
+    
+    
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+    
     
 }
 
@@ -135,48 +142,25 @@ UIBarButtonItem *rightBarButtonItem5;
         
     }
     
-    if (![shippingTable.name_TextField.text isEqualToString: @""] && ![shippingTable.street_TextField.text isEqualToString: @""] && ![shippingTable.city_TextField.text isEqualToString: @""] && ![shippingTable.state_TextField.text isEqualToString: @""] && ![shippingTable.zip_TextField.text isEqualToString: @""]) {
+    if (![shippingTable.name_TextField.text isEqualToString: @""] && ![shippingTable.street_TextField.text isEqualToString: @""] && ![shippingTable.city_TextField.text isEqualToString: @""] && ![shippingTable.state_TextField.text isEqualToString: @""] && ![shippingTable.zip_TextField.text isEqualToString: @""] && ![shippingTable.country_Textfield.text isEqualToString: @""]) {
         
         [self sharedAppDelegate].userSettings = [[UserObject alloc] init];
         [self sharedAppDelegate].userSettings.shipping = [[UserShipping alloc] init];
-        NSString *fullName = [NSString stringWithFormat:@"%@ %@",shippingTable.name_TextField.text,shippingTable.name_TextField.text];
-        NSString *email = @"b.stevens.photo@gmail.com";
-        NSString *street = shippingTable.street_TextField.text;
-        NSString *apt = shippingTable.apt_TextField.text;
-        NSString *city = shippingTable.city_TextField.text;
-        NSString *state = shippingTable.state_TextField.text;
-        NSString *zip = shippingTable.zip_TextField.text;
-        NSString *shippingAddress;
-        if ([apt isEqualToString:@""]) {
-            shippingAddress = [NSString stringWithFormat:@"%@, %@, %@ %@",street,city,state,zip];
-        }
-        else{
-            shippingAddress = [NSString stringWithFormat:@"%@ %@, %@, %@ %@",street,apt,city,state,zip];
-        }
-        [self sharedAppDelegate].userSettings.shipping.firstName = fullName;
+        [self sharedAppDelegate].userSettings.shipping.Name = shippingTable.name_TextField.text;
         
-        [self sharedAppDelegate].userSettings.shipping.lastName = fullName;
+        [self sharedAppDelegate].userSettings.shipping.street = shippingTable.street_TextField.text;
         
-        [self sharedAppDelegate].userSettings.shipping.street = street;
+        [self sharedAppDelegate].userSettings.shipping.apt = shippingTable.apt_TextField.text;
         
-        [self sharedAppDelegate].userSettings.shipping.apt = apt;
+        [self sharedAppDelegate].userSettings.shipping.city = shippingTable.city_TextField.text;
         
-        [self sharedAppDelegate].userSettings.shipping.city = city;
+        [self sharedAppDelegate].userSettings.shipping.state = shippingTable.state_TextField.text;
         
-        [self sharedAppDelegate].userSettings.shipping.state = state;
+        [self sharedAppDelegate].userSettings.shipping.zip = shippingTable.zip_TextField.text;
         
-        [self sharedAppDelegate].userSettings.shipping.zip = zip;
+        [self sharedAppDelegate].userSettings.shipping.country = shippingTable.country_Textfield.text;
 
-        [self sharedAppDelegate].userSettings.shippingDict = [NSDictionary dictionaryWithObjectsAndKeys:
-                                                 fullName,@"name",
-                                                 email, @"email",
-                                                 street,@"street",
-                                                 apt,@"apt",
-                                                 city,@"city",
-                                                 state,@"state",
-                                                 zip,@"zip",
-                                                 @"US",@"country",
-                                                 shippingAddress,@"shipping_address", nil];
+
         [self performSegueWithIdentifier:@"Billing" sender:self];
     }
     else{

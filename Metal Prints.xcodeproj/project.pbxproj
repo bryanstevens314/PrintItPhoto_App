@@ -95,6 +95,8 @@
 		FB35D0EE1D5AE3C000BCD6C6 /* ProductCategoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FB35D0ED1D5AE3C000BCD6C6 /* ProductCategoryCell.m */; };
 		FB35D0F11D5BB63100BCD6C6 /* ProductCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB35D0F01D5BB63100BCD6C6 /* ProductCollectionViewController.m */; };
 		FB35D0F41D5BB64200BCD6C6 /* ProductCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FB35D0F31D5BB64200BCD6C6 /* ProductCollectionViewCell.m */; };
+		FB4FE78D1D80EF80004C72E0 /* Main_4_inch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB4FE78C1D80EF80004C72E0 /* Main_4_inch.storyboard */; };
+		FB4FE7901D80EF93004C72E0 /* Main_3.5_inch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB4FE78E1D80EF93004C72E0 /* Main_3.5_inch.storyboard */; };
 		FB5047F21D5D642E00B2E223 /* aluminum-tin-cans.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FB5047F11D5D642E00B2E223 /* aluminum-tin-cans.jpg */; };
 		FB5047F41D5D649C00B2E223 /* wildtextures-old-wood-original-file.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FB5047F31D5D649C00B2E223 /* wildtextures-old-wood-original-file.jpg */; };
 		FB5047F61D5D64D100B2E223 /* broadway-coffee-mug.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FB5047F51D5D64D100B2E223 /* broadway-coffee-mug.jpg */; };
@@ -269,6 +271,8 @@
 		FB35D0F01D5BB63100BCD6C6 /* ProductCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductCollectionViewController.m; sourceTree = "<group>"; };
 		FB35D0F21D5BB64200BCD6C6 /* ProductCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductCollectionViewCell.h; sourceTree = "<group>"; };
 		FB35D0F31D5BB64200BCD6C6 /* ProductCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductCollectionViewCell.m; sourceTree = "<group>"; };
+		FB4FE78C1D80EF80004C72E0 /* Main_4_inch.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main_4_inch.storyboard; sourceTree = "<group>"; };
+		FB4FE78F1D80EF93004C72E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_3.5_inch.storyboard; sourceTree = "<group>"; };
 		FB5047F11D5D642E00B2E223 /* aluminum-tin-cans.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "aluminum-tin-cans.jpg"; sourceTree = "<group>"; };
 		FB5047F31D5D649C00B2E223 /* wildtextures-old-wood-original-file.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "wildtextures-old-wood-original-file.jpg"; sourceTree = "<group>"; };
 		FB5047F51D5D64D100B2E223 /* broadway-coffee-mug.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "broadway-coffee-mug.jpg"; sourceTree = "<group>"; };
@@ -389,6 +393,8 @@
 			children = (
 				932F2EA31CC88BD10050094A /* LaunchScreen.storyboard */,
 				932F2E9E1CC88BD10050094A /* Main.storyboard */,
+				FB4FE78E1D80EF93004C72E0 /* Main_3.5_inch.storyboard */,
+				FB4FE78C1D80EF80004C72E0 /* Main_4_inch.storyboard */,
 				FBF301CB1D6ABBD90076C070 /* User */,
 				FBE8DDE81D79157400693765 /* LaunchController.h */,
 				FBE8DDE91D79157400693765 /* LaunchController.m */,
@@ -824,10 +830,17 @@
 				933E932C1D7E662A002F837D /* 2x3 aluminum.png in Resources */,
 				933E933B1D7E662A002F837D /* 12x18 aluminum.png in Resources */,
 				932F2F111CC988460050094A /* photo icon.png in Resources */,
+				FBA823B91D7BC6CA0028D3A1 /* 8x10 wood.png in Resources */,
+				FB4FE78D1D80EF80004C72E0 /* Main_4_inch.storyboard in Resources */,
 				9369C8CF1D3DC6CC00FCD2CC /* photo-gallery-512.png in Resources */,
 				932F2F101CC988460050094A /* camera.png in Resources */,
 				9369C8C01D3C387D00FCD2CC /* grocery-cart-icon-6.png in Resources */,
-				933E93401D7E6631002F837D /* 4x4 tile.png in Resources */,
+				FB4FE7901D80EF93004C72E0 /* Main_3.5_inch.storyboard in Resources */,
+				FBA8239C1D7BC6B70028D3A1 /* 5x11 aluminum.png in Resources */,
+				FBA823A41D7BC6B70028D3A1 /* 12x12 aluminum.png in Resources */,
+				FBA8239A1D7BC6B70028D3A1 /* 5x7 aluminum.png in Resources */,
+				FBA823B11D7BC6C30028D3A1 /* 6x6 tile.png in Resources */,
+				FBA823A91D7BC6BE0028D3A1 /* 6x6 slate.png in Resources */,
 				932F2F0D1CC96A780050094A /* plainicon.com-54418-512px-51c.png in Resources */,
 				933E93371D7E662A002F837D /* 10x10 aluminum.png in Resources */,
 			);
@@ -954,6 +967,14 @@
 				932F2EA41CC88BD10050094A /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		FB4FE78E1D80EF93004C72E0 /* Main_3.5_inch.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FB4FE78F1D80EF93004C72E0 /* Base */,
+			);
+			name = Main_3.5_inch.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

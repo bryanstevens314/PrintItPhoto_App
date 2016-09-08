@@ -10,9 +10,9 @@
 
 @interface UserPayment : NSObject
 
-@property (weak, nonatomic) NSString *CCN;
-@property (weak, nonatomic) NSString *securityCode;
-@property (weak, nonatomic) NSString *expMonth;
-@property (weak, nonatomic) NSString *expYear;
+@property (retain, nonatomic) NSString *CCN;
+@property (retain, nonatomic) NSString *securityCode;
+@property (retain, nonatomic) NSString *expMonth;
+@property (retain, nonatomic) NSString *expYear;
 
 @end

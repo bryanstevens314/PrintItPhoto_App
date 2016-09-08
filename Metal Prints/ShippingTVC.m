@@ -95,6 +95,15 @@
     self.state_TextField.inputAccessoryView = self.keyboardDoneButtonView1;
     
     self.zip_TextField.inputAccessoryView = self.keyboardDoneButtonView1;
+    
+   
+}
+
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:YES];
+    
+     //[self.name_TextField canBecomeFirstResponder];
 }
 
 
@@ -190,23 +199,17 @@
     if ([self.name_TextField isFirstResponder] && stop == NO) {
         NSLog(@"name");
         stop = YES;
-        [self.email_TextField becomeFirstResponder];
-    }
-    
-    if ([self.email_TextField isFirstResponder] && stop == NO) {
-        NSLog(@"email");
-        stop = YES;
         [self.street_TextField becomeFirstResponder];
     }
     
     if ([self.street_TextField isFirstResponder] && stop == NO) {
-        NSLog(@"street");
+        NSLog(@"email");
         stop = YES;
         [self.apt_TextField becomeFirstResponder];
     }
     
     if ([self.apt_TextField isFirstResponder] && stop == NO) {
-        NSLog(@"city");
+        NSLog(@"street");
         stop = YES;
         [self.city_TextField becomeFirstResponder];
     }
@@ -218,16 +221,22 @@
     }
     
     if ([self.state_TextField isFirstResponder] && stop == NO) {
-        NSLog(@"state");
+        NSLog(@"city");
         stop = YES;
         [self.zip_TextField becomeFirstResponder];
-        [self.delegate zipIsFirstResponderMoveViewUp];
     }
     
     if ([self.zip_TextField isFirstResponder] && stop == NO) {
+        NSLog(@"state");
+        stop = YES;
+        [self.country_Textfield becomeFirstResponder];
+        [self.delegate zipIsFirstResponderMoveViewUp];
+    }
+    
+    if ([self.country_Textfield isFirstResponder] && stop == NO) {
         NSLog(@"Zip");
         stop = YES;             
-        [self.zip_TextField resignFirstResponder];
+        [self.country_Textfield resignFirstResponder];
         [self.keyboardDoneButtonView1 removeFromSuperview];
         [self.delegate zipResignedFirstResponderMoveViewDown];
     }
@@ -236,10 +245,6 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     BOOL stop = NO;
     if (textField == self.name_TextField) {
-        stop = YES;
-        [self.email_TextField becomeFirstResponder];
-    }
-    if (textField == self.email_TextField) {
         stop = YES;
         [self.street_TextField becomeFirstResponder];
     }
@@ -261,7 +266,11 @@
     }
     if (textField == self.zip_TextField) {
         stop = YES;
-        [self.zip_TextField resignFirstResponder];
+        [self.country_Textfield becomeFirstResponder];
+    }
+    if (textField == self.country_Textfield) {
+        stop = YES;
+        [self.country_Textfield resignFirstResponder];
     }
     return YES;
 }
