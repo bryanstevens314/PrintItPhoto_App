@@ -47,33 +47,6 @@
 		932F2F181CC9D6730050094A /* photosonwood4web.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 932F2F171CC9D6730050094A /* photosonwood4web.jpg */; };
 		932F2F1C1CC9DDE40050094A /* shopping cart.png in Resources */ = {isa = PBXBuildFile; fileRef = 932F2F1B1CC9DDE40050094A /* shopping cart.png */; };
 		932FCB651CF4059D00CF8869 /* TestVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 932FCB641CF4059D00CF8869 /* TestVC.m */; };
-		933E93191D7E6622002F837D /* 6x6 slate.png in Resources */ = {isa = PBXBuildFile; fileRef = 933E93161D7E6622002F837D /* 6x6 slate.png */; };
-		933E931A1D7E6622002F837D /* 6x8 slate.png in Resources */ = {isa = PBXBuildFile; fileRef = 933E93171D7E6622002F837D /* 6x8 slate.png */; };
-		933E931B1D7E6622002F837D /* 8x12 slate.png in Resources */ = {isa = PBXBuildFile; fileRef = 933E93181D7E6622002F837D /* 8x12 slate.png */; };
-		933E932C1D7E662A002F837D /* 2x3 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = 933E931C1D7E662A002F837D /* 2x3 aluminum.png */; };
-		933E932D1D7E662A002F837D /* 4x4 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = 933E931D1D7E662A002F837D /* 4x4 aluminum.png */; };
-		933E932E1D7E662A002F837D /* 4x6 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = 933E931E1D7E662A002F837D /* 4x6 aluminum.png */; };
-		933E932F1D7E662A002F837D /* 5x5  aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = 933E931F1D7E662A002F837D /* 5x5  aluminum.png */; };
-		933E93301D7E662A002F837D /* 5x7 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = 933E93201D7E662A002F837D /* 5x7 aluminum.png */; };
-		933E93311D7E662A002F837D /* 5x10 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = 933E93211D7E662A002F837D /* 5x10 aluminum.png */; };
-		933E93321D7E662A002F837D /* 5x11 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = 933E93221D7E662A002F837D /* 5x11 aluminum.png */; };
-		933E93331D7E662A002F837D /* 5x17 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = 933E93231D7E662A002F837D /* 5x17 aluminum.png */; };
-		933E93341D7E662A002F837D /* 8x8 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = 933E93241D7E662A002F837D /* 8x8 aluminum.png */; };
-		933E93351D7E662A002F837D /* 8x10 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = 933E93251D7E662A002F837D /* 8x10 aluminum.png */; };
-		933E93361D7E662A002F837D /* 8x12 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = 933E93261D7E662A002F837D /* 8x12 aluminum.png */; };
-		933E93371D7E662A002F837D /* 10x10 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = 933E93271D7E662A002F837D /* 10x10 aluminum.png */; };
-		933E93381D7E662A002F837D /* 11x14 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = 933E93281D7E662A002F837D /* 11x14 aluminum.png */; };
-		933E93391D7E662A002F837D /* 11x17 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = 933E93291D7E662A002F837D /* 11x17 aluminum.png */; };
-		933E933A1D7E662A002F837D /* 12x12 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = 933E932A1D7E662A002F837D /* 12x12 aluminum.png */; };
-		933E933B1D7E662A002F837D /* 12x18 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = 933E932B1D7E662A002F837D /* 12x18 aluminum.png */; };
-		933E93401D7E6631002F837D /* 4x4 tile.png in Resources */ = {isa = PBXBuildFile; fileRef = 933E933C1D7E6631002F837D /* 4x4 tile.png */; };
-		933E93411D7E6631002F837D /* 6x6 tile.png in Resources */ = {isa = PBXBuildFile; fileRef = 933E933D1D7E6631002F837D /* 6x6 tile.png */; };
-		933E93421D7E6631002F837D /* 6x8 tile.png in Resources */ = {isa = PBXBuildFile; fileRef = 933E933E1D7E6631002F837D /* 6x8 tile.png */; };
-		933E93431D7E6631002F837D /* 8x10 tile.png in Resources */ = {isa = PBXBuildFile; fileRef = 933E933F1D7E6631002F837D /* 8x10 tile.png */; };
-		933E93481D7E6637002F837D /* 8x8 wood.png in Resources */ = {isa = PBXBuildFile; fileRef = 933E93441D7E6637002F837D /* 8x8 wood.png */; };
-		933E93491D7E6637002F837D /* 8x10 wood.png in Resources */ = {isa = PBXBuildFile; fileRef = 933E93451D7E6637002F837D /* 8x10 wood.png */; };
-		933E934A1D7E6637002F837D /* 10x10 wood.png in Resources */ = {isa = PBXBuildFile; fileRef = 933E93461D7E6637002F837D /* 10x10 wood.png */; };
-		933E934B1D7E6637002F837D /* 11x14 wood.png in Resources */ = {isa = PBXBuildFile; fileRef = 933E93471D7E6637002F837D /* 11x14 wood.png */; };
 		934906591CCDAD2C00E69EB4 /* Front_EndVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 934906581CCDAD2C00E69EB4 /* Front_EndVC.m */; };
 		9369C8B61D3C2F0100FCD2CC /* TabController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9369C8B51D3C2F0100FCD2CC /* TabController.m */; };
 		9369C8BE1D3C384900FCD2CC /* thin-363_photo_image_album-512.png in Resources */ = {isa = PBXBuildFile; fileRef = 9369C8BD1D3C384900FCD2CC /* thin-363_photo_image_album-512.png */; };
@@ -102,6 +75,33 @@
 		FB5047F61D5D64D100B2E223 /* broadway-coffee-mug.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FB5047F51D5D64D100B2E223 /* broadway-coffee-mug.jpg */; };
 		FB5047F81D5D64EB00B2E223 /* d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FB5047F71D5D64EB00B2E223 /* d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg */; };
 		FB5047FB1D5E94B500B2E223 /* ShippingInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5047FA1D5E94B500B2E223 /* ShippingInfoVC.m */; };
+		FB5435841D8117A30069BA98 /* 2x3 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FB5435741D8117A30069BA98 /* 2x3 aluminum.png */; };
+		FB5435851D8117A30069BA98 /* 4x4 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FB5435751D8117A30069BA98 /* 4x4 aluminum.png */; };
+		FB5435861D8117A30069BA98 /* 4x6 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FB5435761D8117A30069BA98 /* 4x6 aluminum.png */; };
+		FB5435871D8117A30069BA98 /* 5x5  aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FB5435771D8117A30069BA98 /* 5x5  aluminum.png */; };
+		FB5435881D8117A30069BA98 /* 5x7 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FB5435781D8117A30069BA98 /* 5x7 aluminum.png */; };
+		FB5435891D8117A30069BA98 /* 5x10 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FB5435791D8117A30069BA98 /* 5x10 aluminum.png */; };
+		FB54358A1D8117A30069BA98 /* 5x11 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FB54357A1D8117A30069BA98 /* 5x11 aluminum.png */; };
+		FB54358B1D8117A30069BA98 /* 5x17 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FB54357B1D8117A30069BA98 /* 5x17 aluminum.png */; };
+		FB54358C1D8117A30069BA98 /* 8x8 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FB54357C1D8117A30069BA98 /* 8x8 aluminum.png */; };
+		FB54358D1D8117A30069BA98 /* 8x10 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FB54357D1D8117A30069BA98 /* 8x10 aluminum.png */; };
+		FB54358E1D8117A30069BA98 /* 8x12 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FB54357E1D8117A30069BA98 /* 8x12 aluminum.png */; };
+		FB54358F1D8117A30069BA98 /* 10x10 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FB54357F1D8117A30069BA98 /* 10x10 aluminum.png */; };
+		FB5435901D8117A30069BA98 /* 11x14 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FB5435801D8117A30069BA98 /* 11x14 aluminum.png */; };
+		FB5435911D8117A30069BA98 /* 11x17 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FB5435811D8117A30069BA98 /* 11x17 aluminum.png */; };
+		FB5435921D8117A30069BA98 /* 12x12 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FB5435821D8117A30069BA98 /* 12x12 aluminum.png */; };
+		FB5435931D8117A30069BA98 /* 12x18 aluminum.png in Resources */ = {isa = PBXBuildFile; fileRef = FB5435831D8117A30069BA98 /* 12x18 aluminum.png */; };
+		FB5435971D8117AA0069BA98 /* 6x6 slate.png in Resources */ = {isa = PBXBuildFile; fileRef = FB5435941D8117AA0069BA98 /* 6x6 slate.png */; };
+		FB5435981D8117AA0069BA98 /* 6x8 slate.png in Resources */ = {isa = PBXBuildFile; fileRef = FB5435951D8117AA0069BA98 /* 6x8 slate.png */; };
+		FB5435991D8117AA0069BA98 /* 8x12 slate.png in Resources */ = {isa = PBXBuildFile; fileRef = FB5435961D8117AA0069BA98 /* 8x12 slate.png */; };
+		FB54359E1D8117B00069BA98 /* 4x4 tile.png in Resources */ = {isa = PBXBuildFile; fileRef = FB54359A1D8117B00069BA98 /* 4x4 tile.png */; };
+		FB54359F1D8117B00069BA98 /* 6x6 tile.png in Resources */ = {isa = PBXBuildFile; fileRef = FB54359B1D8117B00069BA98 /* 6x6 tile.png */; };
+		FB5435A01D8117B00069BA98 /* 6x8 tile.png in Resources */ = {isa = PBXBuildFile; fileRef = FB54359C1D8117B00069BA98 /* 6x8 tile.png */; };
+		FB5435A11D8117B00069BA98 /* 8x10 tile.png in Resources */ = {isa = PBXBuildFile; fileRef = FB54359D1D8117B00069BA98 /* 8x10 tile.png */; };
+		FB5435A61D8117B70069BA98 /* 8x8 wood.png in Resources */ = {isa = PBXBuildFile; fileRef = FB5435A21D8117B70069BA98 /* 8x8 wood.png */; };
+		FB5435A71D8117B70069BA98 /* 8x10 wood.png in Resources */ = {isa = PBXBuildFile; fileRef = FB5435A31D8117B70069BA98 /* 8x10 wood.png */; };
+		FB5435A81D8117B70069BA98 /* 10x10 wood.png in Resources */ = {isa = PBXBuildFile; fileRef = FB5435A41D8117B70069BA98 /* 10x10 wood.png */; };
+		FB5435A91D8117B70069BA98 /* 11x14 wood.png in Resources */ = {isa = PBXBuildFile; fileRef = FB5435A51D8117B70069BA98 /* 11x14 wood.png */; };
 		FBA823401D79A5300028D3A1 /* LoveStoryProjectLogo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FBA8233F1D79A5300028D3A1 /* LoveStoryProjectLogo.jpg */; };
 		FBA823421D7A850E0028D3A1 /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA823411D7A850E0028D3A1 /* Stripe.framework */; };
 		FBA823441D7A85200028D3A1 /* Stripe.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FBA823431D7A85200028D3A1 /* Stripe.bundle */; };
@@ -207,33 +207,6 @@
 		932F2F1B1CC9DDE40050094A /* shopping cart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shopping cart.png"; sourceTree = "<group>"; };
 		932FCB631CF4059D00CF8869 /* TestVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestVC.h; sourceTree = "<group>"; };
 		932FCB641CF4059D00CF8869 /* TestVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestVC.m; sourceTree = "<group>"; };
-		933E93161D7E6622002F837D /* 6x6 slate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "6x6 slate.png"; path = "../../../../products/slate/6x6 slate.png"; sourceTree = "<group>"; };
-		933E93171D7E6622002F837D /* 6x8 slate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "6x8 slate.png"; path = "../../../../products/slate/6x8 slate.png"; sourceTree = "<group>"; };
-		933E93181D7E6622002F837D /* 8x12 slate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "8x12 slate.png"; path = "../../../../products/slate/8x12 slate.png"; sourceTree = "<group>"; };
-		933E931C1D7E662A002F837D /* 2x3 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "2x3 aluminum.png"; path = "../../../../products/aluminum/2x3 aluminum.png"; sourceTree = "<group>"; };
-		933E931D1D7E662A002F837D /* 4x4 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "4x4 aluminum.png"; path = "../../../../products/aluminum/4x4 aluminum.png"; sourceTree = "<group>"; };
-		933E931E1D7E662A002F837D /* 4x6 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "4x6 aluminum.png"; path = "../../../../products/aluminum/4x6 aluminum.png"; sourceTree = "<group>"; };
-		933E931F1D7E662A002F837D /* 5x5  aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "5x5  aluminum.png"; path = "../../../../products/aluminum/5x5  aluminum.png"; sourceTree = "<group>"; };
-		933E93201D7E662A002F837D /* 5x7 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "5x7 aluminum.png"; path = "../../../../products/aluminum/5x7 aluminum.png"; sourceTree = "<group>"; };
-		933E93211D7E662A002F837D /* 5x10 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "5x10 aluminum.png"; path = "../../../../products/aluminum/5x10 aluminum.png"; sourceTree = "<group>"; };
-		933E93221D7E662A002F837D /* 5x11 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "5x11 aluminum.png"; path = "../../../../products/aluminum/5x11 aluminum.png"; sourceTree = "<group>"; };
-		933E93231D7E662A002F837D /* 5x17 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "5x17 aluminum.png"; path = "../../../../products/aluminum/5x17 aluminum.png"; sourceTree = "<group>"; };
-		933E93241D7E662A002F837D /* 8x8 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "8x8 aluminum.png"; path = "../../../../products/aluminum/8x8 aluminum.png"; sourceTree = "<group>"; };
-		933E93251D7E662A002F837D /* 8x10 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "8x10 aluminum.png"; path = "../../../../products/aluminum/8x10 aluminum.png"; sourceTree = "<group>"; };
-		933E93261D7E662A002F837D /* 8x12 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "8x12 aluminum.png"; path = "../../../../products/aluminum/8x12 aluminum.png"; sourceTree = "<group>"; };
-		933E93271D7E662A002F837D /* 10x10 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "10x10 aluminum.png"; path = "../../../../products/aluminum/10x10 aluminum.png"; sourceTree = "<group>"; };
-		933E93281D7E662A002F837D /* 11x14 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "11x14 aluminum.png"; path = "../../../../products/aluminum/11x14 aluminum.png"; sourceTree = "<group>"; };
-		933E93291D7E662A002F837D /* 11x17 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "11x17 aluminum.png"; path = "../../../../products/aluminum/11x17 aluminum.png"; sourceTree = "<group>"; };
-		933E932A1D7E662A002F837D /* 12x12 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "12x12 aluminum.png"; path = "../../../../products/aluminum/12x12 aluminum.png"; sourceTree = "<group>"; };
-		933E932B1D7E662A002F837D /* 12x18 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "12x18 aluminum.png"; path = "../../../../products/aluminum/12x18 aluminum.png"; sourceTree = "<group>"; };
-		933E933C1D7E6631002F837D /* 4x4 tile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "4x4 tile.png"; path = "../../../../products/tile/4x4 tile.png"; sourceTree = "<group>"; };
-		933E933D1D7E6631002F837D /* 6x6 tile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "6x6 tile.png"; path = "../../../../products/tile/6x6 tile.png"; sourceTree = "<group>"; };
-		933E933E1D7E6631002F837D /* 6x8 tile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "6x8 tile.png"; path = "../../../../products/tile/6x8 tile.png"; sourceTree = "<group>"; };
-		933E933F1D7E6631002F837D /* 8x10 tile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "8x10 tile.png"; path = "../../../../products/tile/8x10 tile.png"; sourceTree = "<group>"; };
-		933E93441D7E6637002F837D /* 8x8 wood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "8x8 wood.png"; path = "../../../../products/wood/8x8 wood.png"; sourceTree = "<group>"; };
-		933E93451D7E6637002F837D /* 8x10 wood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "8x10 wood.png"; path = "../../../../products/wood/8x10 wood.png"; sourceTree = "<group>"; };
-		933E93461D7E6637002F837D /* 10x10 wood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "10x10 wood.png"; path = "../../../../products/wood/10x10 wood.png"; sourceTree = "<group>"; };
-		933E93471D7E6637002F837D /* 11x14 wood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "11x14 wood.png"; path = "../../../../products/wood/11x14 wood.png"; sourceTree = "<group>"; };
 		934906571CCDAD2B00E69EB4 /* Front_EndVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Front_EndVC.h; path = ../Front_EndVC.h; sourceTree = "<group>"; };
 		934906581CCDAD2C00E69EB4 /* Front_EndVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Front_EndVC.m; path = ../Front_EndVC.m; sourceTree = "<group>"; };
 		9369C8B41D3C2F0100FCD2CC /* TabController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabController.h; sourceTree = "<group>"; };
@@ -279,6 +252,33 @@
 		FB5047F71D5D64EB00B2E223 /* d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg; sourceTree = "<group>"; };
 		FB5047F91D5E94B500B2E223 /* ShippingInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShippingInfoVC.h; sourceTree = "<group>"; };
 		FB5047FA1D5E94B500B2E223 /* ShippingInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShippingInfoVC.m; sourceTree = "<group>"; };
+		FB5435741D8117A30069BA98 /* 2x3 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "2x3 aluminum.png"; sourceTree = "<group>"; };
+		FB5435751D8117A30069BA98 /* 4x4 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "4x4 aluminum.png"; sourceTree = "<group>"; };
+		FB5435761D8117A30069BA98 /* 4x6 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "4x6 aluminum.png"; sourceTree = "<group>"; };
+		FB5435771D8117A30069BA98 /* 5x5  aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "5x5  aluminum.png"; sourceTree = "<group>"; };
+		FB5435781D8117A30069BA98 /* 5x7 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "5x7 aluminum.png"; sourceTree = "<group>"; };
+		FB5435791D8117A30069BA98 /* 5x10 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "5x10 aluminum.png"; sourceTree = "<group>"; };
+		FB54357A1D8117A30069BA98 /* 5x11 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "5x11 aluminum.png"; sourceTree = "<group>"; };
+		FB54357B1D8117A30069BA98 /* 5x17 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "5x17 aluminum.png"; sourceTree = "<group>"; };
+		FB54357C1D8117A30069BA98 /* 8x8 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "8x8 aluminum.png"; sourceTree = "<group>"; };
+		FB54357D1D8117A30069BA98 /* 8x10 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "8x10 aluminum.png"; sourceTree = "<group>"; };
+		FB54357E1D8117A30069BA98 /* 8x12 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "8x12 aluminum.png"; sourceTree = "<group>"; };
+		FB54357F1D8117A30069BA98 /* 10x10 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10x10 aluminum.png"; sourceTree = "<group>"; };
+		FB5435801D8117A30069BA98 /* 11x14 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "11x14 aluminum.png"; sourceTree = "<group>"; };
+		FB5435811D8117A30069BA98 /* 11x17 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "11x17 aluminum.png"; sourceTree = "<group>"; };
+		FB5435821D8117A30069BA98 /* 12x12 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "12x12 aluminum.png"; sourceTree = "<group>"; };
+		FB5435831D8117A30069BA98 /* 12x18 aluminum.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "12x18 aluminum.png"; sourceTree = "<group>"; };
+		FB5435941D8117AA0069BA98 /* 6x6 slate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "6x6 slate.png"; sourceTree = "<group>"; };
+		FB5435951D8117AA0069BA98 /* 6x8 slate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "6x8 slate.png"; sourceTree = "<group>"; };
+		FB5435961D8117AA0069BA98 /* 8x12 slate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "8x12 slate.png"; sourceTree = "<group>"; };
+		FB54359A1D8117B00069BA98 /* 4x4 tile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "4x4 tile.png"; sourceTree = "<group>"; };
+		FB54359B1D8117B00069BA98 /* 6x6 tile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "6x6 tile.png"; sourceTree = "<group>"; };
+		FB54359C1D8117B00069BA98 /* 6x8 tile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "6x8 tile.png"; sourceTree = "<group>"; };
+		FB54359D1D8117B00069BA98 /* 8x10 tile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "8x10 tile.png"; sourceTree = "<group>"; };
+		FB5435A21D8117B70069BA98 /* 8x8 wood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "8x8 wood.png"; sourceTree = "<group>"; };
+		FB5435A31D8117B70069BA98 /* 8x10 wood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "8x10 wood.png"; sourceTree = "<group>"; };
+		FB5435A41D8117B70069BA98 /* 10x10 wood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10x10 wood.png"; sourceTree = "<group>"; };
+		FB5435A51D8117B70069BA98 /* 11x14 wood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "11x14 wood.png"; sourceTree = "<group>"; };
 		FBA8233F1D79A5300028D3A1 /* LoveStoryProjectLogo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LoveStoryProjectLogo.jpg; sourceTree = "<group>"; };
 		FBA823411D7A850E0028D3A1 /* Stripe.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Stripe.framework; sourceTree = "<group>"; };
 		FBA823431D7A85200028D3A1 /* Stripe.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Stripe.bundle; sourceTree = "<group>"; };
@@ -552,22 +552,22 @@
 		FBA8234C1D7BC58F0028D3A1 /* aluminum */ = {
 			isa = PBXGroup;
 			children = (
-				933E931C1D7E662A002F837D /* 2x3 aluminum.png */,
-				933E931D1D7E662A002F837D /* 4x4 aluminum.png */,
-				933E931E1D7E662A002F837D /* 4x6 aluminum.png */,
-				933E931F1D7E662A002F837D /* 5x5  aluminum.png */,
-				933E93201D7E662A002F837D /* 5x7 aluminum.png */,
-				933E93211D7E662A002F837D /* 5x10 aluminum.png */,
-				933E93221D7E662A002F837D /* 5x11 aluminum.png */,
-				933E93231D7E662A002F837D /* 5x17 aluminum.png */,
-				933E93241D7E662A002F837D /* 8x8 aluminum.png */,
-				933E93251D7E662A002F837D /* 8x10 aluminum.png */,
-				933E93261D7E662A002F837D /* 8x12 aluminum.png */,
-				933E93271D7E662A002F837D /* 10x10 aluminum.png */,
-				933E93281D7E662A002F837D /* 11x14 aluminum.png */,
-				933E93291D7E662A002F837D /* 11x17 aluminum.png */,
-				933E932A1D7E662A002F837D /* 12x12 aluminum.png */,
-				933E932B1D7E662A002F837D /* 12x18 aluminum.png */,
+				FB5435741D8117A30069BA98 /* 2x3 aluminum.png */,
+				FB5435751D8117A30069BA98 /* 4x4 aluminum.png */,
+				FB5435761D8117A30069BA98 /* 4x6 aluminum.png */,
+				FB5435771D8117A30069BA98 /* 5x5  aluminum.png */,
+				FB5435781D8117A30069BA98 /* 5x7 aluminum.png */,
+				FB5435791D8117A30069BA98 /* 5x10 aluminum.png */,
+				FB54357A1D8117A30069BA98 /* 5x11 aluminum.png */,
+				FB54357B1D8117A30069BA98 /* 5x17 aluminum.png */,
+				FB54357C1D8117A30069BA98 /* 8x8 aluminum.png */,
+				FB54357D1D8117A30069BA98 /* 8x10 aluminum.png */,
+				FB54357E1D8117A30069BA98 /* 8x12 aluminum.png */,
+				FB54357F1D8117A30069BA98 /* 10x10 aluminum.png */,
+				FB5435801D8117A30069BA98 /* 11x14 aluminum.png */,
+				FB5435811D8117A30069BA98 /* 11x17 aluminum.png */,
+				FB5435821D8117A30069BA98 /* 12x12 aluminum.png */,
+				FB5435831D8117A30069BA98 /* 12x18 aluminum.png */,
 			);
 			name = aluminum;
 			sourceTree = "<group>";
@@ -575,10 +575,10 @@
 		FBA8236D1D7BC5A50028D3A1 /* wood */ = {
 			isa = PBXGroup;
 			children = (
-				933E93441D7E6637002F837D /* 8x8 wood.png */,
-				933E93451D7E6637002F837D /* 8x10 wood.png */,
-				933E93461D7E6637002F837D /* 10x10 wood.png */,
-				933E93471D7E6637002F837D /* 11x14 wood.png */,
+				FB5435A21D8117B70069BA98 /* 8x8 wood.png */,
+				FB5435A31D8117B70069BA98 /* 8x10 wood.png */,
+				FB5435A41D8117B70069BA98 /* 10x10 wood.png */,
+				FB5435A51D8117B70069BA98 /* 11x14 wood.png */,
 			);
 			name = wood;
 			sourceTree = "<group>";
@@ -586,10 +586,10 @@
 		FBA823761D7BC5B60028D3A1 /* tile */ = {
 			isa = PBXGroup;
 			children = (
-				933E933C1D7E6631002F837D /* 4x4 tile.png */,
-				933E933D1D7E6631002F837D /* 6x6 tile.png */,
-				933E933E1D7E6631002F837D /* 6x8 tile.png */,
-				933E933F1D7E6631002F837D /* 8x10 tile.png */,
+				FB54359A1D8117B00069BA98 /* 4x4 tile.png */,
+				FB54359B1D8117B00069BA98 /* 6x6 tile.png */,
+				FB54359C1D8117B00069BA98 /* 6x8 tile.png */,
+				FB54359D1D8117B00069BA98 /* 8x10 tile.png */,
 			);
 			name = tile;
 			sourceTree = "<group>";
@@ -597,9 +597,9 @@
 		FBA8237F1D7BC5CA0028D3A1 /* slate */ = {
 			isa = PBXGroup;
 			children = (
-				933E93161D7E6622002F837D /* 6x6 slate.png */,
-				933E93171D7E6622002F837D /* 6x8 slate.png */,
-				933E93181D7E6622002F837D /* 8x12 slate.png */,
+				FB5435941D8117AA0069BA98 /* 6x6 slate.png */,
+				FB5435951D8117AA0069BA98 /* 6x8 slate.png */,
+				FB5435961D8117AA0069BA98 /* 8x12 slate.png */,
 			);
 			name = slate;
 			sourceTree = "<group>";
@@ -785,64 +785,59 @@
 			buildActionMask = 2147483647;
 			files = (
 				932F2F131CC9A3240050094A /* up-down.png in Resources */,
-				933E93421D7E6631002F837D /* 6x8 tile.png in Resources */,
-				933E93391D7E662A002F837D /* 11x17 aluminum.png in Resources */,
+				FB5435A61D8117B70069BA98 /* 8x8 wood.png in Resources */,
+				FB5435971D8117AA0069BA98 /* 6x6 slate.png in Resources */,
+				FB54358D1D8117A30069BA98 /* 8x10 aluminum.png in Resources */,
+				FB5435871D8117A30069BA98 /* 5x5  aluminum.png in Resources */,
+				FB5435921D8117A30069BA98 /* 12x12 aluminum.png in Resources */,
 				FB5047F41D5D649C00B2E223 /* wildtextures-old-wood-original-file.jpg in Resources */,
 				9369C8BE1D3C384900FCD2CC /* thin-363_photo_image_album-512.png in Resources */,
-				933E93381D7E662A002F837D /* 11x14 aluminum.png in Resources */,
+				FB5435A81D8117B70069BA98 /* 10x10 wood.png in Resources */,
 				FBE5C83F1D74756C00B78EC6 /* Screen Shot 2016-08-29 at 6.50.44 AM.png in Resources */,
-				933E931A1D7E6622002F837D /* 6x8 slate.png in Resources */,
 				932F2F1C1CC9DDE40050094A /* shopping cart.png in Resources */,
 				FB5047F61D5D64D100B2E223 /* broadway-coffee-mug.jpg in Resources */,
+				FB54358F1D8117A30069BA98 /* 10x10 aluminum.png in Resources */,
 				932F2ECF1CC8946E0050094A /* camera icon.png in Resources */,
-				933E93311D7E662A002F837D /* 5x10 aluminum.png in Resources */,
-				933E93411D7E6631002F837D /* 6x6 tile.png in Resources */,
-				933E93341D7E662A002F837D /* 8x8 aluminum.png in Resources */,
 				932F2F181CC9D6730050094A /* photosonwood4web.jpg in Resources */,
+				FB5435A71D8117B70069BA98 /* 8x10 wood.png in Resources */,
 				932F2EA51CC88BD10050094A /* LaunchScreen.storyboard in Resources */,
 				FB5047F21D5D642E00B2E223 /* aluminum-tin-cans.jpg in Resources */,
-				933E93301D7E662A002F837D /* 5x7 aluminum.png in Resources */,
 				9369C8C21D3C389900FCD2CC /* shop-icon.png in Resources */,
 				FBE5C8411D74775A00B78EC6 /* secure-payment.png in Resources */,
+				FB54359F1D8117B00069BA98 /* 6x6 tile.png in Resources */,
+				FB54359E1D8117B00069BA98 /* 4x4 tile.png in Resources */,
+				FB54358B1D8117A30069BA98 /* 5x17 aluminum.png in Resources */,
+				FB54358E1D8117A30069BA98 /* 8x12 aluminum.png in Resources */,
 				FBA823441D7A85200028D3A1 /* Stripe.bundle in Resources */,
-				933E934B1D7E6637002F837D /* 11x14 wood.png in Resources */,
-				933E932F1D7E662A002F837D /* 5x5  aluminum.png in Resources */,
 				FB5047F81D5D64EB00B2E223 /* d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg in Resources */,
+				FB5435931D8117A30069BA98 /* 12x18 aluminum.png in Resources */,
+				FB5435881D8117A30069BA98 /* 5x7 aluminum.png in Resources */,
 				932F2EA21CC88BD10050094A /* Assets.xcassets in Resources */,
+				FB54358A1D8117A30069BA98 /* 5x11 aluminum.png in Resources */,
+				FB5435911D8117A30069BA98 /* 11x17 aluminum.png in Resources */,
 				FBA823401D79A5300028D3A1 /* LoveStoryProjectLogo.jpg in Resources */,
-				933E93321D7E662A002F837D /* 5x11 aluminum.png in Resources */,
-				933E932D1D7E662A002F837D /* 4x4 aluminum.png in Resources */,
-				933E933A1D7E662A002F837D /* 12x12 aluminum.png in Resources */,
-				933E93351D7E662A002F837D /* 8x10 aluminum.png in Resources */,
-				933E931B1D7E6622002F837D /* 8x12 slate.png in Resources */,
-				933E93491D7E6637002F837D /* 8x10 wood.png in Resources */,
 				FBBF087E1D6A1A3900BF5332 /* rounded-512.png in Resources */,
-				933E93431D7E6631002F837D /* 8x10 tile.png in Resources */,
-				933E932E1D7E662A002F837D /* 4x6 aluminum.png in Resources */,
 				932F2EA01CC88BD10050094A /* Main.storyboard in Resources */,
 				932F2F161CC9D5E80050094A /* photos_on_aluminum.jpg in Resources */,
-				933E93361D7E662A002F837D /* 8x12 aluminum.png in Resources */,
-				933E93191D7E6622002F837D /* 6x6 slate.png in Resources */,
-				933E93481D7E6637002F837D /* 8x8 wood.png in Resources */,
+				FB54358C1D8117A30069BA98 /* 8x8 aluminum.png in Resources */,
+				FB5435981D8117AA0069BA98 /* 6x8 slate.png in Resources */,
+				FB5435891D8117A30069BA98 /* 5x10 aluminum.png in Resources */,
+				FB5435991D8117AA0069BA98 /* 8x12 slate.png in Resources */,
+				FB5435901D8117A30069BA98 /* 11x14 aluminum.png in Resources */,
+				FB5435A01D8117B00069BA98 /* 6x8 tile.png in Resources */,
 				9369C8D11D3F250A00FCD2CC /* MW-Icon-CheckMark.svg.png in Resources */,
-				933E93331D7E662A002F837D /* 5x17 aluminum.png in Resources */,
-				933E934A1D7E6637002F837D /* 10x10 wood.png in Resources */,
-				933E932C1D7E662A002F837D /* 2x3 aluminum.png in Resources */,
-				933E933B1D7E662A002F837D /* 12x18 aluminum.png in Resources */,
 				932F2F111CC988460050094A /* photo icon.png in Resources */,
-				FBA823B91D7BC6CA0028D3A1 /* 8x10 wood.png in Resources */,
 				FB4FE78D1D80EF80004C72E0 /* Main_4_inch.storyboard in Resources */,
 				9369C8CF1D3DC6CC00FCD2CC /* photo-gallery-512.png in Resources */,
 				932F2F101CC988460050094A /* camera.png in Resources */,
+				FB5435841D8117A30069BA98 /* 2x3 aluminum.png in Resources */,
+				FB5435A91D8117B70069BA98 /* 11x14 wood.png in Resources */,
 				9369C8C01D3C387D00FCD2CC /* grocery-cart-icon-6.png in Resources */,
+				FB5435A11D8117B00069BA98 /* 8x10 tile.png in Resources */,
 				FB4FE7901D80EF93004C72E0 /* Main_3.5_inch.storyboard in Resources */,
-				FBA8239C1D7BC6B70028D3A1 /* 5x11 aluminum.png in Resources */,
-				FBA823A41D7BC6B70028D3A1 /* 12x12 aluminum.png in Resources */,
-				FBA8239A1D7BC6B70028D3A1 /* 5x7 aluminum.png in Resources */,
-				FBA823B11D7BC6C30028D3A1 /* 6x6 tile.png in Resources */,
-				FBA823A91D7BC6BE0028D3A1 /* 6x6 slate.png in Resources */,
+				FB5435851D8117A30069BA98 /* 4x4 aluminum.png in Resources */,
 				932F2F0D1CC96A780050094A /* plainicon.com-54418-512px-51c.png in Resources */,
-				933E93371D7E662A002F837D /* 10x10 aluminum.png in Resources */,
+				FB5435861D8117A30069BA98 /* 4x6 aluminum.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
