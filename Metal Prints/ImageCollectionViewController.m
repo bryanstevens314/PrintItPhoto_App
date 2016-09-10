@@ -717,14 +717,7 @@ NSIndexPath *iPath;
     // Pass the selected object to the new view controller.
     NSLog(@"Preparing for segue");
     
-    if ([segue.identifier isEqualToString:@"addCartItem"]) {
-NSLog(@"Segueing");
-        
-//        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"Back", returnbuttontitle) style:UIBarButtonItemStyleBordered target:nil action:nil];
-//        self.navigationItem.backBarButtonItem = backButton;
-        DetailsTVC *details = segue.destinationViewController;
 
-    }
     if ([segue.identifier isEqualToString:@"addCartItem"]) {
         UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"Back", returnbuttontitle) style:UIBarButtonItemStyleBordered target:nil action:nil];
         self.navigationItem.backBarButtonItem = backButton;

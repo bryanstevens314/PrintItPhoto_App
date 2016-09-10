@@ -149,7 +149,6 @@ UIAlertController *chargingCardAlert;
 //        
 //        [self presentViewController:alert2 animated:YES completion:nil];
 
-    [self PostData];
     }
 }
 

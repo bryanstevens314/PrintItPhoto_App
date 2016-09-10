@@ -293,6 +293,10 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
         NSIndexPath *indePath = [NSIndexPath indexPathForRow:0 inSection:0];
         UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indePath];
         float division = self.image.size.width/self.image.size.height;
+        if (self.imgView) {
+            [self.imgView removeFromSuperview];
+            self.imgView = nil;
+        }
         self.imgView = [[UIImageView alloc] init];
         if (self.image.size.width < self.image.size.height) {
             NSLog(@"portrait");
@@ -720,6 +724,10 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
         }
         if (self.selectedSection1 == 3) {
             NSArray *array = [[self sharedAppDelegate].SlateProductArray objectAtIndex:row];
+            string = [array objectAtIndex:0];
+        }
+        if (self.selectedSection1 == 4) {
+            NSArray *array = [[self sharedAppDelegate].OtherProductArray objectAtIndex:row];
             string = [array objectAtIndex:0];
         }
         
