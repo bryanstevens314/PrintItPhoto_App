@@ -42,7 +42,7 @@ UIBarButtonItem *rightBarButtonItem6;
     [super viewDidLoad];
     rightBarButtonItem6 = [[UIBarButtonItem alloc] initWithTitle:@"Place Order" style:UIBarButtonItemStylePlain target:self action:@selector(EnterShipping)];
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem6];
-    [self.navigationItem setTitle:@"Shopping Cart"];
+    [self.navigationItem setTitle:@"Cart"];
     
     CGRect rect = self.toolBar.frame;
     rect.origin.y = MIN(0, [[self navigationController] navigationBar].bounds.size.height);
@@ -85,26 +85,559 @@ NSLog(@"ViewWillAppear");
 
 - (void)EnterShipping {
     
-    if ([self sharedAppDelegate].shoppingCart.count != 0) {
-        [self performSegueWithIdentifier:@"StartShipping" sender:self];
-    }
-    else{
-        UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"" message:@"You must add items to your cart before proceeding"preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"OK"
-                                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                                                                   [alert2 dismissViewControllerAnimated:YES completion:nil];
-                                                               }]; // 2
-        
-        [alert2 addAction:cameraAction];
-        
-        [self presentViewController:alert2 animated:YES completion:nil];
-    }
+//    if ([self sharedAppDelegate].shoppingCart.count != 0) {
+//        [self performSegueWithIdentifier:@"StartShipping" sender:self];
+//    }
+//    else{
+//        UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"" message:@"You must add items to your cart before proceeding"preferredStyle:UIAlertControllerStyleAlert];
+//        
+//        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"OK"
+//                                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+//                                                                   [alert2 dismissViewControllerAnimated:YES completion:nil];
+//                                                               }]; // 2
+//        
+//        [alert2 addAction:cameraAction];
+//        
+//        [self presentViewController:alert2 animated:YES completion:nil];
+//    }
     
 
-    //[self sendEmail];
+    [self sendEmail];
 }
 
+-(void)sendEmail
+{
+    
+    Sendpulse* sendpulse = [[Sendpulse alloc] initWithUserIdandSecret:@"8663ca13cd9f05ef1f538f8d6295ff0e" :@"1af4a885aaaa45faa3ee21e763cc5667"];
+    
+    NSString *htmlString = @" \
+    \
+    <!DOCTYPE html> \
+    <html  style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <head> \
+    <meta name=\"viewport\" content=\"width=device-width\" /> \
+    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /> \
+    <title>Billing e.g. invoices and receipts</title> \
+    \
+    \
+    <style type=\"text/css\"> \
+    img { \
+    max-width: 100%; \
+    } \
+    body { \
+    -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6em; \
+    } \
+    body { \
+    background-color: #f6f6f6; \
+    } \
+    @media only screen and (max-width: 640px) { \
+    body { \
+    padding: 0 !important; \
+    } \
+    h1 { \
+    font-weight: 800 !important; margin: 20px 0 5px !important; \
+    } \
+    h2 { \
+    font-weight: 800 !important; margin: 20px 0 5px !important; \
+    } \
+    h3 { \
+    font-weight: 800 !important; margin: 20px 0 5px !important; \
+    } \
+    h4 { \
+    font-weight: 800 !important; margin: 20px 0 5px !important; \
+    } \
+    h1 { \
+    font-size: 22px !important; \
+    } \
+    h2 { \
+    font-size: 18px !important; \
+    } \
+    h3 { \
+    font-size: 16px !important; \
+    } \
+    .container { \
+    padding: 0 !important; width: 100% !important; \
+    } \
+    .content { \
+    padding: 0 !important; \
+    } \
+    .content-wrap { \
+    padding: 10px !important; \
+    } \
+    .invoice { \
+    width: 100% !important; \
+    } \
+    } \
+    </style> \
+    </head> \
+    <style> \
+    p { \
+    margin-left: 10px; \
+    } \
+    </style> \
+    \
+    <body itemscope itemtype=\"EmailIOn\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6em; background-color: #f6f6f6; margin: 0;\" bgcolor=\"#f6f6f6\"> \
+    \
+    <table class=\"body-wrap\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;\" bgcolor=\"#f6f6f6\"> \
+    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;\" valign=\"top\"> \
+    \
+    </td> \
+    <td class=\"container\" width=\"600\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; display: block !important; max-width: 100% !important; clear: both !important; margin: 0 auto;\" valign=\"top\"> \
+    <div class=\"content\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; max-width: 600px; display: block; margin: 0 auto; padding: 20px;\"> \
+				<table class=\"main\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; border-radius: 3px; background-color: #fff; margin: 0; border: 1px solid #e9e9e9;\" bgcolor=\"#fff\"> \
+    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <td class=\"content-wrap aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 20px;\" align=\"center\" valign=\"top\"> \
+    <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> \
+    <h1 class=\"aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif; box-sizing: border-box; font-size: 32px; color: #000; line-height: 1.2em; font-weight: 500; text-align: center; margin: 40px 0 0;\" align=\"center\"> \
+    $73.44 Paid</h1> \
+    </td> \
+    </tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> \
+    <h2 class=\"aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif; box-sizing: border-box; font-size: 24px; color: #000; line-height: 1.2em; font-weight: 400; text-align: center; margin: 40px 0 0;\" align=\"center\"> \
+    Thanks for placing an order!</h2> \
+    </td> \
+    </tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <td class=\"content-block aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;\" align=\"center\" valign=\"top\"> \
+    <table class=\"invoice\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; text-align: left; width: 80%; margin: 40px auto;\"> \
+    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;\" valign=\"top\"> \
+    \
+    <b>Shipping To</b> \
+    <br style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 16px; margin: 0;\" /> \
+    <p> \
+    Bryan Stevens<br> \
+    1930 10th st<br> \
+    Los Osos, CA<br> \
+    </p>  \
+    \
+    </tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\" \
+    ><td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;\" valign=\"top\"> \
+    <table class=\"invoice-items\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; margin: 0;\"> \
+    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\" \
+    ><td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;\" valign=\"top\"> \
+    2x 4x4 Aluminum</td> \
+    <td> \
+    <a href=\"https://love-story-invoice-template-stevens-apps.c9users.io/viewImage.php?imageData=\
+    \
+    \"  \
+    style=\" text-align: center; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;\">View Image</a> \
+    </td> \
+    <td class=\"alignright1\" href=\"viewImage.php\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;\" align=\"right\" valign=\"top\"> \
+    $ 24  </td> \
+    \
+    </tr> \
+    \
+    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\" \
+    ><td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;\" valign=\"top\"> \
+    1x 10x10 Wood</td> \
+    <td class=\"alignright\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;\" align=\"right\" valign=\"top\"> \
+    $ 44  </td> \
+    \
+    </tr> \
+    \
+    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\" \
+    ><td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;\" valign=\"top\"> \
+    Tax</td> \
+    <td class=\"alignright\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;\" align=\"right\" valign=\"top\"> \
+    $ 5.44</td> \
+    </tr> \
+    \
+    <tr class=\"total\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <td class=\"alignright\" width=\"80%\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 2px; border-top-color: #333; border-top-style: solid; border-bottom-color: #333; border-bottom-width: 2px; border-bottom-style: solid; font-weight: 700; margin: 0; padding: 5px 0;\" align=\"right\" valign=\"top\"> \
+    Total</td> \
+    <td class=\"alignright\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 2px; border-top-color: #333; border-top-style: solid; border-bottom-color: #333; border-bottom-width: 2px; border-bottom-style: solid; font-weight: 700; margin: 0; padding: 5px 0;\" align=\"right\" valign=\"top\"> \
+    $ 73.44</td> \
+    </tr> \
+    </table> \
+    </td> \
+    </tr> \
+    </table> \
+    </td> \
+    </tr> \
+    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <td class=\"content-block aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;\" align=\"center\" valign=\"top\"> \
+    <!--<a href=\"http://www.mailgun.com\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; color: #348eda; text-decoration: underline; margin: 0;\">View in browser</a>--> \
+    </td> \
+    </tr> \
+    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <td class=\"content-block aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;\" align=\"center\" valign=\"top\"> \
+    The Love Story Project<br> 734 Main Street, Cambria Ca, 93428 \
+    </td> \
+    </tr> \
+    </table> \
+    </td> \
+    </tr> \
+    </table> \
+    <div class=\"footer\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; clear: both; color: #999; margin: 0; padding: 20px;\"> \
+    <table width=\"100%\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <td class=\"aligncenter content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 12px; vertical-align: top; color: #999; text-align: center; margin: 0; padding: 0 0 20px;\" align=\"center\" valign=\"top\">Questions? Email <a href=\"mailto:\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 12px; color: #999; text-decoration: underline; margin: 0;\">support@acme.inc</a></td> \
+    </tr> \
+    </table> \
+    </div> \
+    </div> \
+    </td> \
+    <td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;\" valign=\"top\"> \
+			 \
+    </td> \
+    </tr> \
+    </table> \
+    </body> \
+    </html> \
+    \
+    ";
+    
+NSString *priceString = @" \
+    \
+    <!DOCTYPE html> \
+    <html  style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <head> \
+    <meta name=\"viewport\" content=\"width=device-width\" /> \
+    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /> \
+    <title>Billing e.g. invoices and receipts</title> \
+    \
+    \
+    <style type=\"text/css\"> \
+    img { \
+    max-width: 100%; \
+    } \
+    body { \
+    -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6em; \
+    } \
+    body { \
+    background-color: #f6f6f6; \
+    } \
+    @media only screen and (max-width: 640px) { \
+    body { \
+    padding: 0 !important; \
+    } \
+    h1 { \
+    font-weight: 800 !important; margin: 20px 0 5px !important; \
+    } \
+    h2 { \
+    font-weight: 800 !important; margin: 20px 0 5px !important; \
+    } \
+    h3 { \
+    font-weight: 800 !important; margin: 20px 0 5px !important; \
+    } \
+    h4 { \
+    font-weight: 800 !important; margin: 20px 0 5px !important; \
+    } \
+    h1 { \
+    font-size: 22px !important; \
+    } \
+    h2 { \
+    font-size: 18px !important; \
+    } \
+    h3 { \
+    font-size: 16px !important; \
+    } \
+    .container { \
+    padding: 0 !important; width: 100% !important; \
+    } \
+    .content { \
+    padding: 0 !important; \
+    } \
+    .content-wrap { \
+    padding: 10px !important; \
+    } \
+    .invoice { \
+    width: 100% !important; \
+    } \
+    } \
+    </style> \
+    </head> \
+    <style> \
+    p { \
+    margin-left: 10px; \
+    } \
+    </style> \
+    \
+    <body itemscope itemtype=\"EmailIOn\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6em; background-color: #f6f6f6; margin: 0;\" bgcolor=\"#f6f6f6\"> \
+    \
+    <table class=\"body-wrap\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;\" bgcolor=\"#f6f6f6\"> \
+    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;\" valign=\"top\"> \
+    \
+    </td> \
+    <td class=\"container\" width=\"600\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; display: block !important; max-width: 100% !important; clear: both !important; margin: 0 auto;\" valign=\"top\"> \
+    <div class=\"content\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; max-width: 600px; display: block; margin: 0 auto; padding: 20px;\"> \
+				<table class=\"main\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; border-radius: 3px; background-color: #fff; margin: 0; border: 1px solid #e9e9e9;\" bgcolor=\"#fff\"> \
+    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <td class=\"content-wrap aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 20px;\" align=\"center\" valign=\"top\"> \
+    <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> \
+    <h1 class=\"aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif; box-sizing: border-box; font-size: 32px; color: #000; line-height: 1.2em; font-weight: 500; text-align: center; margin: 40px 0 0;\" align=\"center\"> \
+    ";
+    
+    NSString *imageDataLength = @" \
+    \
+    <!DOCTYPE html> \
+    <html  style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <head> \
+    <meta name=\"viewport\" content=\"width=device-width\" /> \
+    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /> \
+    <title>Billing e.g. invoices and receipts</title> \
+    \
+    \
+    <style type=\"text/css\"> \
+    img { \
+    max-width: 100%; \
+    } \
+    body { \
+    -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6em; \
+    } \
+    body { \
+    background-color: #f6f6f6; \
+    } \
+    @media only screen and (max-width: 640px) { \
+    body { \
+    padding: 0 !important; \
+    } \
+    h1 { \
+    font-weight: 800 !important; margin: 20px 0 5px !important; \
+    } \
+    h2 { \
+    font-weight: 800 !important; margin: 20px 0 5px !important; \
+    } \
+    h3 { \
+    font-weight: 800 !important; margin: 20px 0 5px !important; \
+    } \
+    h4 { \
+    font-weight: 800 !important; margin: 20px 0 5px !important; \
+    } \
+    h1 { \
+    font-size: 22px !important; \
+    } \
+    h2 { \
+    font-size: 18px !important; \
+    } \
+    h3 { \
+    font-size: 16px !important; \
+    } \
+    .container { \
+    padding: 0 !important; width: 100% !important; \
+    } \
+    .content { \
+    padding: 0 !important; \
+    } \
+    .content-wrap { \
+    padding: 10px !important; \
+    } \
+    .invoice { \
+    width: 100% !important; \
+    } \
+    } \
+    </style> \
+    </head> \
+    <style> \
+    p { \
+    margin-left: 10px; \
+    } \
+    </style> \
+    \
+    <body itemscope itemtype=\"EmailIOn\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6em; background-color: #f6f6f6; margin: 0;\" bgcolor=\"#f6f6f6\"> \
+    \
+    <table class=\"body-wrap\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;\" bgcolor=\"#f6f6f6\"> \
+    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;\" valign=\"top\"> \
+    \
+    </td> \
+    <td class=\"container\" width=\"600\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; display: block !important; max-width: 100% !important; clear: both !important; margin: 0 auto;\" valign=\"top\"> \
+    <div class=\"content\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; max-width: 600px; display: block; margin: 0 auto; padding: 20px;\"> \
+				<table class=\"main\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; border-radius: 3px; background-color: #fff; margin: 0; border: 1px solid #e9e9e9;\" bgcolor=\"#fff\"> \
+    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <td class=\"content-wrap aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 20px;\" align=\"center\" valign=\"top\"> \
+    <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> \
+    <h1 class=\"aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif; box-sizing: border-box; font-size: 32px; color: #000; line-height: 1.2em; font-weight: 500; text-align: center; margin: 40px 0 0;\" align=\"center\"> \
+    $73.44 Paid</h1> \
+    </td> \
+    </tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> \
+    <h2 class=\"aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif; box-sizing: border-box; font-size: 24px; color: #000; line-height: 1.2em; font-weight: 400; text-align: center; margin: 40px 0 0;\" align=\"center\"> \
+    Thanks for placing an order!</h2> \
+    </td> \
+    </tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <td class=\"content-block aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;\" align=\"center\" valign=\"top\"> \
+    <table class=\"invoice\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; text-align: left; width: 80%; margin: 40px auto;\"> \
+    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;\" valign=\"top\"> \
+    \
+    <b>Shipping To</b> \
+    <br style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 16px; margin: 0;\" /> \
+    <p> \
+    Bryan Stevens<br> \
+    1930 10th st<br> \
+    Los Osos, CA<br> \
+    </p>  \
+    \
+    </tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\" \
+    ><td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;\" valign=\"top\"> \
+    <table class=\"invoice-items\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; margin: 0;\"> \
+    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\" \
+    ><td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;\" valign=\"top\"> \
+    2x 4x4 Aluminum</td> \
+    <td> \
+    <a href=\"https://love-story-invoice-template-stevens-apps.c9users.io/invoice.php?imageData=\
+    ";
+    NSMutableString *mutString = [htmlString mutableCopy];
+    //[mutString insertString:[NSString stringWithFormat:@"$%ld",(long)[self sharedAppDelegate].cartTotal] atIndex:[priceString length]];
+NSString *lengthString = @" \
+    \
+    <!DOCTYPE html> \
+    <html  style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <head> \
+    <meta name=\"viewport\" content=\"width=device-width\" /> \
+    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /> \
+    <title>Billing e.g. invoices and receipts</title> \
+    \
+    \
+    <style type=\"text/css\"> \
+    img { \
+    max-width: 100%; \
+    } \
+    body { \
+    -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6em; \
+    } \
+    body { \
+    background-color: #f6f6f6; \
+    } \
+    @media only screen and (max-width: 640px) { \
+    body { \
+    padding: 0 !important; \
+    } \
+    h1 { \
+    font-weight: 800 !important; margin: 20px 0 5px !important; \
+    } \
+    h2 { \
+    font-weight: 800 !important; margin: 20px 0 5px !important; \
+    } \
+    h3 { \
+    font-weight: 800 !important; margin: 20px 0 5px !important; \
+    } \
+    h4 { \
+    font-weight: 800 !important; margin: 20px 0 5px !important; \
+    } \
+    h1 { \
+    font-size: 22px !important; \
+    } \
+    h2 { \
+    font-size: 18px !important; \
+    } \
+    h3 { \
+    font-size: 16px !important; \
+    } \
+    .container { \
+    padding: 0 !important; width: 100% !important; \
+    } \
+    .content { \
+    padding: 0 !important; \
+    } \
+    .content-wrap { \
+    padding: 10px !important; \
+    } \
+    .invoice { \
+    width: 100% !important; \
+    } \
+    } \
+    </style> \
+    </head> \
+    <style> \
+    p { \
+    margin-left: 10px; \
+    } \
+    </style> \
+    \
+    <body itemscope itemtype=\"EmailIOn\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6em; background-color: #f6f6f6; margin: 0;\" bgcolor=\"#f6f6f6\"> \
+    \
+    <table class=\"body-wrap\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;\" bgcolor=\"#f6f6f6\"> \
+    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;\" valign=\"top\"> \
+    \
+    </td> \
+    <td class=\"container\" width=\"600\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; display: block !important; max-width: 100% !important; clear: both !important; margin: 0 auto;\" valign=\"top\"> \
+    <div class=\"content\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; max-width: 600px; display: block; margin: 0 auto; padding: 20px;\"> \
+				<table class=\"main\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; border-radius: 3px; background-color: #fff; margin: 0; border: 1px solid #e9e9e9;\" bgcolor=\"#fff\"> \
+    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <td class=\"content-wrap aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 20px;\" align=\"center\" valign=\"top\"> \
+    <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> \
+    <h1 class=\"aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif; box-sizing: border-box; font-size: 32px; color: #000; line-height: 1.2em; font-weight: 500; text-align: center; margin: 40px 0 0;\" align=\"center\"> \
+    $33.98 Paid</h1> \
+    </td> \
+    </tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> \
+    <h2 class=\"aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif; box-sizing: border-box; font-size: 24px; color: #000; line-height: 1.2em; font-weight: 400; text-align: center; margin: 40px 0 0;\" align=\"center\"> \
+    Thanks for placing an order!</h2> \
+    </td> \
+    </tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <td class=\"content-block aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;\" align=\"center\" valign=\"top\"> \
+    <table class=\"invoice\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; text-align: left; width: 80%; margin: 40px auto;\"> \
+    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
+    <td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;\" valign=\"top\"> \
+    \
+    <b>Shipping To</b> \
+    <br style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 16px; margin: 0;\" /> \
+    <p> \
+    Bryan Stevens<br> \
+    1930 10th st<br> \
+    Los Osos, CA<br> \
+    </p>  \
+    \
+    </tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\" \
+    ><td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;\" valign=\"top\"> \
+    <table class=\"invoice-items\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; margin: 0;\"> \
+    \
+    ";
+    NSDictionary *from = [NSDictionary dictionaryWithObjectsAndKeys:@"Bryan Stevens", @"name", @"b.stevens.photo@gmail.com", @"email", nil];
+    NSMutableArray* to = [[NSMutableArray alloc] initWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:@"Bryan Stevens", @"name", @"stevens_apps@yahoo.com", @"email", nil], nil];
+
+    //NSString *messageBody = [NSString stringWithFormat:@"test Email"];
+    int i = 0;
+    for (NSArray *cartItem in [self sharedAppDelegate].shoppingCart) {
+//    array = @[product,
+//              self.Quantity_TextField.text,
+//              price,
+//              @"",
+//              self.For_Aluminum_TextField.text,
+//              self.textView.text,
+//              [self.selectedImageURL absoluteString],
+//              imgString,
+//              [NSString stringWithFormat:@"%li",(long)self.selectedRow],
+//              [NSString stringWithFormat:@"%li",(long)self.selectedSection1]
+//              ];
+        NSString *product = [cartItem objectAtIndex:0];
+        NSString *quantity = [cartItem objectAtIndex:1];
+        NSString *price = [cartItem objectAtIndex:2];
+        NSString *imageData = [cartItem objectAtIndex:7];
+        [mutString insertString:imageData atIndex:[imageDataLength length]];
+//        NSString *cartItemHtml = [NSString stringWithFormat:@"    \
+//                        <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\" \
+//                        ><td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;\" valign=\"top\"> \
+//        %@x %@</td> \
+//                        <td class=\"alignright\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;\" align=\"right\" valign=\"top\"> \
+//        $ %@</td> \
+//                        </tr> \
+//        ",quantity,product,price];
+//        
+//        [mutString insertString:cartItemHtml atIndex:[lengthString length]+i];
+//        i++;
+    }
+
+    NSMutableDictionary *emaildata = [NSMutableDictionary dictionaryWithObjectsAndKeys:mutString, @"html", @"", @"text",@"The Love Story Project",@"subject",from,@"from",to,@"to", nil];
+    [sendpulse smtpSendMail:emaildata];
+    
+    
+    
+    
+}
 
 
 - (void)pickerDoneClicked1:(id)sender {

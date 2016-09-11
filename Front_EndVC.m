@@ -79,7 +79,7 @@
 UIImageView *launchImageView;
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
-
+[self.navigationItem setTitle:@"Store"];
     ProductCategorySelectionCollection *collView = [ProductCategorySelectionCollection sharedProductCategorySelectionCollection];
 
     collView.delegate = self;
