@@ -24,9 +24,8 @@
 + (ShippingTVC *)sharedShippingTVC;
 
 @property (nonatomic)BOOL ShippingPresenting;
-@property (weak, nonatomic) IBOutlet UITextField *email_TextField;
-
 @property (weak, nonatomic) IBOutlet UITextField *name_TextField;
+
 @property (weak, nonatomic) IBOutlet UITextField *street_TextField;
 @property (weak, nonatomic) IBOutlet UITextField *apt_TextField;
 @property (weak, nonatomic) IBOutlet UITextField *city_TextField;

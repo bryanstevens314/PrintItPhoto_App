@@ -122,7 +122,7 @@ BOOL started1 = NO;
 
 -(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
-    BOOL simultaneous;
+    BOOL simultaneous = false;
     if (started1 == YES) {
         simultaneous = NO;
     }

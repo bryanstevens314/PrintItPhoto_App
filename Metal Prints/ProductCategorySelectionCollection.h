@@ -25,8 +25,6 @@
 
 + (ProductCategorySelectionCollection *)sharedProductCategorySelectionCollection;
 
--(void)PanGestureInitiated;
-
 
 @property (weak, nonatomic) IBOutlet UILabel *label;
 @end

@@ -649,7 +649,7 @@ HighlightedImageCVC *imagevc;
                     imagevc.delegate = self;
                     imagevc.highlightedImageArray = [self sharedAppDelegate].highlightedArray;
                     int offset = [[UIApplication sharedApplication] statusBarFrame].size.height + self.navigationController.navigationBar.frame.size.height;
-                    CGRect newFrame = CGRectOffset(imagevc.collectionView.frame, 0, offset);
+                    CGRect newFrame = CGRectMake(imagevc.collectionView.frame.origin.x, imagevc.collectionView.frame.origin.y+offset, imagevc.collectionView.frame.size.width, imagevc.collectionView.frame.size.height-(self.navigationController.navigationBar.frame.size.height*2));
                     
                     imagevc.collectionView.frame = newFrame;
                     [imagevc.collectionView reloadData];
@@ -659,13 +659,13 @@ HighlightedImageCVC *imagevc;
                 NSLog(@"Displaying view");
                 newSelection = NO;
                 [self.toggleOutlet setTintColor:[UIColor blueColor]];
-                [self.navigationItem setTitle:@"Highlighted Images"];
+                [self.navigationItem setTitle:@"Favorited"];
                 [self.view addSubview:imagevc.collectionView];
                 
             }
             else{
                 displayingHighlightedImages = NO;
-                [self.navigationItem setTitle:@"My Gallery"];
+                [self.navigationItem setTitle:@"Gallery"];
                 [imagevc.collectionView removeFromSuperview];
             }
         }

@@ -49,7 +49,7 @@
     NSLog(@"%@",[self sharedAppDelegate].userSettings.billing);
 }
 
-- (void)PlaceOrderAndUploadImages {
+- (void)retrieveStripeToken {
     
     NSLog(@"CCN: %@",[self sharedAppDelegate].userSettings.billing.payment.CCN);
     STPCardParams *params = [[STPCardParams alloc] init];
@@ -68,8 +68,12 @@
     [[STPAPIClient sharedClient] createTokenWithCard:params completion:^(STPToken *token, NSError *error) {
         if (error) {
             NSLog(@"error %@",error);
+            //[error valueForKey:@"invalid_number"];
+            
         } else {
-            [self createBackendChargeWithToken:token completion:nil];
+            [self sharedAppDelegate].userSettings.billing.payment.stripe_Token = token;
+            [self.delegate retirevedToken];
+            //[self createBackendChargeWithToken:token completion:nil];
         }
     }];
     
@@ -117,7 +121,7 @@ NSTimer *timer2;
         NSLog(@"%@",responseString);
         
         [self.delegate CardSuccessFullyCharged];
-        timer2 = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(PostData) userInfo:nil repeats:NO];
+        timer2 = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(PostData) userInfo:nil repeats:NO];
         
     }
     else{

@@ -32,6 +32,7 @@
 @property (retain, nonatomic) NSArray *currentItemToEdit;
 @property (retain,nonatomic) NSIndexPath *selectedImageIndex;
 @property (retain,nonatomic) UIImage *currentImage;
+@property (retain,nonatomic) NSArray *currentProductArray;
 @property (retain,nonatomic) NSArray *currentImageArray;
 @property (retain,nonatomic) NSArray *currentProductArray1;
 @property (nonatomic) BOOL startingFromHighlightedImage;

@@ -60,9 +60,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(PlaceAndConfirmOrder)];
-    [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
-    [self.navigationItem setTitle:@"Shipping"];
+    
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     self.keyboardDoneButtonView1 = [[UIToolbar alloc] init];
     self.keyboardDoneButtonView1.barStyle = UIBarStyleDefault;
@@ -84,8 +83,6 @@
     
     self.name_TextField.inputAccessoryView = self.keyboardDoneButtonView1;
     
-    self.email_TextField.inputAccessoryView = self.keyboardDoneButtonView1;
-    
     self.street_TextField.inputAccessoryView = self.keyboardDoneButtonView1;
     
     self.apt_TextField.inputAccessoryView = self.keyboardDoneButtonView1;
@@ -96,6 +93,8 @@
     
     self.zip_TextField.inputAccessoryView = self.keyboardDoneButtonView1;
     
+    self.country_Textfield.inputAccessoryView = self.keyboardDoneButtonView1;
+    
    
 }
 
@@ -103,7 +102,7 @@
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:YES];
     
-     //[self.name_TextField canBecomeFirstResponder];
+     
 }
 
 
@@ -114,16 +113,11 @@
         stop = YES;
     }
     
-    if ([self.email_TextField isFirstResponder] && stop == NO) {
-        NSLog(@"email");
-        stop = YES;
-        [self.name_TextField becomeFirstResponder];
-    }
     
     if ([self.street_TextField isFirstResponder] && stop == NO) {
         NSLog(@"street");
         stop = YES;
-        [self.email_TextField becomeFirstResponder];
+        [self.name_TextField becomeFirstResponder];
     }
     
     if ([self.apt_TextField isFirstResponder] && stop == NO) {
@@ -151,20 +145,23 @@
         
 
     }
+    
+    if ([self.country_Textfield isFirstResponder] && stop == NO) {
+        NSLog(@"Zip");
+        stop = YES;
+        [self.zip_TextField becomeFirstResponder];
+        
+        
+    }
 }
 
 - (void)DoneClicked:(id)sender {
     [self.keyboardDoneButtonView1 removeFromSuperview];
-    [self.delegate zipResignedFirstResponderMoveViewDown];
     if ([self.name_TextField isFirstResponder]) {
         NSLog(@"name");
         [self.name_TextField resignFirstResponder];
     }
-    
-    if ([self.email_TextField isFirstResponder]) {
-        NSLog(@"email");
-        [self.email_TextField resignFirstResponder];
-    }
+
     
     if ([self.street_TextField isFirstResponder]) {
         NSLog(@"street");
@@ -191,8 +188,13 @@
         [self.zip_TextField resignFirstResponder];
         
     }
+    
+    if ([self.country_Textfield isFirstResponder]) {
+        NSLog(@"state");
+        [self.country_Textfield resignFirstResponder];
+    }
 }
-        
+
         
 - (void)NextClicked:(id)sender {
     BOOL stop = NO;
@@ -230,7 +232,7 @@
         NSLog(@"state");
         stop = YES;
         [self.country_Textfield becomeFirstResponder];
-        [self.delegate zipIsFirstResponderMoveViewUp];
+        //[self.delegate zipIsFirstResponderMoveViewUp];
     }
     
     if ([self.country_Textfield isFirstResponder] && stop == NO) {
@@ -238,7 +240,7 @@
         stop = YES;             
         [self.country_Textfield resignFirstResponder];
         [self.keyboardDoneButtonView1 removeFromSuperview];
-        [self.delegate zipResignedFirstResponderMoveViewDown];
+        //[self.delegate zipResignedFirstResponderMoveViewDown];
     }
 }
 
@@ -277,7 +279,7 @@
 
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     if (textField == self.zip_TextField) {
-        [self.delegate zipIsFirstResponderMoveViewUp];
+        //[self.delegate zipIsFirstResponderMoveViewUp];
     }
     return YES;
 }

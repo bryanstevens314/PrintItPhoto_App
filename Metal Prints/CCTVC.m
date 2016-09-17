@@ -61,13 +61,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    UIBarButtonItem *rightBarButtonItem1 = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(Next)];
-    [self.navigationItem setRightBarButtonItem:rightBarButtonItem1];
-    [self.navigationItem setTitle:@"Billing"];
+
     self.BillingSameAsShippingOutlet.on  = NO;
     
-
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     NSArray *monArray = [df shortStandaloneMonthSymbols];

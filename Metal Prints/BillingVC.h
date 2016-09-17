@@ -10,7 +10,15 @@
 #import "CCTVC.h"
 #import "PaymentVC.h"
 
-@interface BillingVC : UIViewController <CCTVCDelegate,PaymentVCDelegate>
+@class BillingVC;
 
+@protocol BillingVCDelegate
+
+- (void)FinishedEnteringBillingInformation;
+
+@end
+
+@interface BillingVC : UIViewController <CCTVCDelegate,PaymentVCDelegate>
+@property (weak, nonatomic) id<BillingVCDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UIView *tableContentView;
 @end

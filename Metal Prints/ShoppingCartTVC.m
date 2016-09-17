@@ -40,14 +40,14 @@
 UIBarButtonItem *rightBarButtonItem6;
 - (void)viewDidLoad {
     [super viewDidLoad];
-    rightBarButtonItem6 = [[UIBarButtonItem alloc] initWithTitle:@"Place Order" style:UIBarButtonItemStylePlain target:self action:@selector(EnterShipping)];
+    rightBarButtonItem6 = [[UIBarButtonItem alloc] initWithTitle:@"Check Out" style:UIBarButtonItemStylePlain target:self action:@selector(EnterShipping)];
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem6];
     [self.navigationItem setTitle:@"Cart"];
     
     CGRect rect = self.toolBar.frame;
     rect.origin.y = MIN(0, [[self navigationController] navigationBar].bounds.size.height);
     self.toolBar.frame = rect;
-
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
     
     //[self.navigationController setToolbarHidden:NO animated:YES];
@@ -85,24 +85,24 @@ NSLog(@"ViewWillAppear");
 
 - (void)EnterShipping {
     
-//    if ([self sharedAppDelegate].shoppingCart.count != 0) {
-//        [self performSegueWithIdentifier:@"StartShipping" sender:self];
-//    }
-//    else{
-//        UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"" message:@"You must add items to your cart before proceeding"preferredStyle:UIAlertControllerStyleAlert];
-//        
-//        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"OK"
-//                                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-//                                                                   [alert2 dismissViewControllerAnimated:YES completion:nil];
-//                                                               }]; // 2
-//        
-//        [alert2 addAction:cameraAction];
-//        
-//        [self presentViewController:alert2 animated:YES completion:nil];
-//    }
+    if ([self sharedAppDelegate].shoppingCart.count != 0) {
+        [self performSegueWithIdentifier:@"StartCheckOut" sender:self];
+    }
+    else{
+        UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"" message:@"You must add items to your cart before proceeding"preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"OK"
+                                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                   [alert2 dismissViewControllerAnimated:YES completion:nil];
+                                                               }]; // 2
+        
+        [alert2 addAction:cameraAction];
+        
+        [self presentViewController:alert2 animated:YES completion:nil];
+    }
     
 
-    [self sendEmail];
+    //[self sendEmail];
 }
 
 -(void)sendEmail
@@ -754,14 +754,17 @@ NSInteger numberOfPrints;
     
     [self.keyboardDoneButtonView setItems:[NSArray arrayWithObjects:flexSpace,doneButton, nil]];
 
-//    NSArray *array = @[self.Product_Outlet.text,
-//                       self.Quantity_TextField.text,
-//                       price,
-//                       self.Retouching_TextField.text,
-//                       self.For_Aluminum_TextField.text,
-//                       self.textView.text,
-//                       imgString
-//                       ];
+//    array = @[product,
+//              self.Quantity_TextField.text,
+//              price,
+//              @"",
+//              self.For_Aluminum_TextField.text,
+//              self.textView.text,
+//              [self.selectedImageURL absoluteString],
+//              imgString,
+//              [NSString stringWithFormat:@"%li",(long)self.selectedRow],
+//              [NSString stringWithFormat:@"%li",(long)self.selectedSection1]
+//              ];
     cell.product.text = [array objectAtIndex:0];
     cell.quantity_TextField.text = [array objectAtIndex:1];
     cell.retouch_Outlet.hidden = YES;
@@ -1478,7 +1481,7 @@ NSInteger selectedSection;
         
     }
     
-    if ([segue.identifier isEqualToString:@"StartShipping"]) {
+    if ([segue.identifier isEqualToString:@"StartCheckOut"]) {
         UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"Cancel", returnbuttontitle) style:     UIBarButtonItemStyleBordered target:nil action:nil];
         self.navigationItem.backBarButtonItem = backButton;
     }

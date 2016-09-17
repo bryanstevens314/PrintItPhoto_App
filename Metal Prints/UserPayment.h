@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+@import Stripe;
 
 @interface UserPayment : NSObject
 
@@ -14,5 +15,6 @@
 @property (retain, nonatomic) NSString *securityCode;
 @property (retain, nonatomic) NSString *expMonth;
 @property (retain, nonatomic) NSString *expYear;
+@property (retain, nonatomic) STPToken *stripe_Token;
 
 @end

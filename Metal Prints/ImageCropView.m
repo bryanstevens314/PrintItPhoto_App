@@ -26,6 +26,7 @@ float IMAGE_MIN_WIDTH = 400;
    self =  [super init];
     if (self){
         self.image = [image fixOrientation];
+        //cropView.imageScale = self.ratio;
     }
     
     return self;
@@ -749,7 +750,7 @@ CGRect SquareCGRectAtCenter(CGFloat centerX, CGFloat centerY, CGFloat size) {
     int x, y;
     int scaledImageWidth, scaledImageHeight;
     if (isPortrait) {
-        imageScale = imageHeight / frameHeight;
+        imageScale = imageWidth / frameWidth;
         scaledImageWidth = imageWidth / imageScale;
         scaledImageHeight = frameHeight;
         x = (frameWidth - scaledImageWidth) / 2;

@@ -29,7 +29,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(EnterPayment)];
+    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(EnterPayment)];
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
     [self.navigationItem setTitle:@"Billing"];
     
@@ -46,6 +46,16 @@
 
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+    
+    
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:YES];
+    [CCTable.email becomeFirstResponder];
+}
 UIAlertController *chargingCardAlert;
 - (void)EnterPayment {
     
@@ -85,8 +95,9 @@ UIAlertController *chargingCardAlert;
         
         [self sharedAppDelegate].userSettings.billing.payment = [[UserPayment alloc] init];
         
-        [self sharedAppDelegate].userSettings.billing.payment.CCN = CCTable.ccn.text;
+        NSString *code = [CCTable.ccn.text substringFromIndex: [CCTable.ccn.text length] - 4];
 
+        [self sharedAppDelegate].userSettings.billing.payment.CCN = [NSString stringWithFormat:@"**** **** **** %@",code];
         [self sharedAppDelegate].userSettings.billing.payment.expMonth = CCTable.currentMonth;
         
         [self sharedAppDelegate].userSettings.billing.payment.expYear = CCTable.currentYear;
@@ -110,7 +121,7 @@ UIAlertController *chargingCardAlert;
         [self sharedAppDelegate].userSettings.shipping.email = CCTable.email.text;
         
         chargingCardAlert = [UIAlertController alertControllerWithTitle:@""
-                                                    message:@"Charging Card"
+                                                    message:@""
                                              preferredStyle:UIAlertControllerStyleAlert]; // 1
         
         UIViewController *customVC     = [[UIViewController alloc] init];
@@ -135,7 +146,7 @@ UIAlertController *chargingCardAlert;
         
         [self presentViewController:chargingCardAlert animated:YES completion:nil];
         [PaymentVC sharedPaymentVC].delegate = self;
-        [[PaymentVC sharedPaymentVC] PlaceOrderAndUploadImages];
+        [[PaymentVC sharedPaymentVC] retrieveStripeToken];
     }
     else{
 //        UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"" message:@"Please enter all required information"preferredStyle:UIAlertControllerStyleAlert];
@@ -152,6 +163,11 @@ UIAlertController *chargingCardAlert;
     }
 }
 
+-(void)retirevedToken{
+    [chargingCardAlert dismissViewControllerAnimated:YES completion:nil];
+    [self.delegate FinishedEnteringBillingInformation];
+}
+
 - (void)shippingSameAsBilling{
     
     [self sharedAppDelegate].userSettings.billing.firstName = CCTable.firstName.text;
@@ -166,14 +182,14 @@ UIAlertController *chargingCardAlert;
     
     [self sharedAppDelegate].userSettings.billing.zip = CCTable.zip.text;
     
-    [self performSegueWithIdentifier:@"Payment" sender:self];
+    //[self performSegueWithIdentifier:@"Payment" sender:self];
 }
 
 
 -(void)moveViewUp{
     
     [UIView animateWithDuration:0.25f animations:^{
-        [self.view setFrame:CGRectMake(0,-264,self.view.bounds.size.width,self.view.bounds.size.height+264)];
+        [self.view setFrame:CGRectMake(0,-150,self.view.bounds.size.width,self.view.bounds.size.height+150)];
     }];
     
 }
@@ -181,111 +197,16 @@ UIAlertController *chargingCardAlert;
 -(void)moveViewDown{
     
     [UIView animateWithDuration:0.25f animations:^{
-        [self.view setFrame:CGRectMake(0,0,self.view.bounds.size.width,self.view.bounds.size.height)];
+        int offset = [[UIApplication sharedApplication] statusBarFrame].size.height + self.navigationController.navigationBar.frame.size.height;
+        [self.view setFrame:CGRectMake(0,offset,self.view.bounds.size.width,self.view.bounds.size.height)];
     }];
 }
 
 
-#pragma  mark PaymentDelegate
-
-UIAlertController *alert;
-
-- (void)CardSuccessFullyCharged{
-    NSLog(@"Card Successfully Charged");
-    [chargingCardAlert dismissViewControllerAnimated:YES completion:nil];
-    if (alert) {
-        alert = nil;
-    }
-    alert = [UIAlertController alertControllerWithTitle:@"" message:@"Charged Card"preferredStyle:UIAlertControllerStyleAlert];
-    
-//    UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"OK"
-//                                                           style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-//                                                               [alert dismissViewControllerAnimated:YES completion:nil];
-//                                                           }]; // 2
-//    
-//    [alert addAction:cameraAction];
-    
-    [self presentViewController:alert animated:YES completion:nil];
-}
 
 
-- (void)CardFailedToCharged{
-    NSLog(@"Card Failed To Charge");
-    [chargingCardAlert dismissViewControllerAnimated:YES completion:nil];
-    if (alert) {
-        alert = nil;
-    }
-    alert = [UIAlertController alertControllerWithTitle:@"" message:@"Failed to charge card"preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"OK"
-                                                           style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                                                               [alert dismissViewControllerAnimated:YES completion:nil];
-                                                           }]; // 2
-    
-    [alert addAction:cameraAction];
-    
-    [self presentViewController:alert animated:YES completion:nil];
-}
 
 
-UIAlertController *uploadAlert;
--(void)UploadingImages{
-    NSLog(@"Uploading images");
-    [alert dismissViewControllerAnimated:YES completion:nil];
-    alert = nil;
-    uploadAlert = [UIAlertController alertControllerWithTitle:@""
-                                                message:@"Uploading Images"
-                                         preferredStyle:UIAlertControllerStyleAlert]; // 1
-    
-    UIViewController *customVC     = [[UIViewController alloc] init];
-    [uploadAlert.view setFrame:CGRectMake(0, 300, 320, 275)];
-    
-    UIActivityIndicatorView* spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [spinner startAnimating];
-    [customVC.view addSubview:spinner];
-    [spinner setCenter:CGPointMake(100, 27)];
-    
-    [customVC.view addConstraint:[NSLayoutConstraint
-                                  constraintWithItem: spinner
-                                  attribute:NSLayoutAttributeCenterX
-                                  relatedBy:NSLayoutRelationEqual
-                                  toItem:customVC.view
-                                  attribute:NSLayoutAttributeCenterX
-                                  multiplier:1.0f
-                                  constant:0.0f]];
-    
-    
-    [uploadAlert setValue:customVC forKey:@"contentViewController"];
-    
-    [self presentViewController:uploadAlert animated:YES completion:nil];
-    
-}
-
-
--(void)ImagesSuccessFullyUploaded{
-    
-    NSLog(@"Images successfully upload");
-    [alert dismissViewControllerAnimated:YES completion:nil];
-    alert = nil;
-    [self performSegueWithIdentifier:@"PaymentComplete" sender:self];
-}
-
-
--(void)imageUploadFailure{
-    NSLog(@"Upload Failed");
-    
-    [alert dismissViewControllerAnimated:YES completion:nil];
-    UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"" message:@"There was a problem uploading your images. Please check your internet connection and try again"preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"OK"
-                                                           style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                                                               [alert2 dismissViewControllerAnimated:YES completion:nil];
-                                                           }]; // 2
-    
-    [alert2 addAction:cameraAction];
-    
-    [self presentViewController:alert2 animated:YES completion:nil];
-}
 /*
 #pragma mark - Navigation
 

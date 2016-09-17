@@ -90,6 +90,7 @@
     self.Category_Outlet.text = [[self sharedAppDelegate].categoryArray objectAtIndex:self.selectedSection1];
     if (self.selectedSection1 == 0) {
         NSArray *array = [[self sharedAppDelegate].AluminumProductArray objectAtIndex:self.selectedRow];
+        
         self.Product_Outlet.text = [array objectAtIndex:0];
         
         self.rowCount = [self sharedAppDelegate].AluminumProductArray.count;
@@ -712,22 +713,27 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
     if (self.Product_Outlet.inputView == pickerView) {
         if (self.selectedSection1 == 0) {
             NSArray *array = [[self sharedAppDelegate].AluminumProductArray objectAtIndex:row];
+            self.currentProductArray = array;
             string = [array objectAtIndex:0];
         }
         if (self.selectedSection1 == 1) {
             NSArray *array = [[self sharedAppDelegate].WoodenProductArray objectAtIndex:row];
+            self.currentProductArray = array;
             string = [array objectAtIndex:0];
         }
         if (self.selectedSection1 == 2) {
             NSArray *array = [[self sharedAppDelegate].TileProductArray objectAtIndex:row];
+            self.currentProductArray = array;
             string = [array objectAtIndex:0];
         }
         if (self.selectedSection1 == 3) {
             NSArray *array = [[self sharedAppDelegate].SlateProductArray objectAtIndex:row];
+            self.currentProductArray = array;
             string = [array objectAtIndex:0];
         }
         if (self.selectedSection1 == 4) {
             NSArray *array = [[self sharedAppDelegate].OtherProductArray objectAtIndex:row];
+            self.currentProductArray = array;
             string = [array objectAtIndex:0];
         }
         
@@ -778,18 +784,22 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
         
         if (self.selectedSection1 == 0) {
             NSArray *array = [[self sharedAppDelegate].AluminumProductArray objectAtIndex:row];
+            self.currentProductArray = array;
             self.Product_Outlet.text = [array objectAtIndex:0];
         }
         if (self.selectedSection1 == 1) {
             NSArray *array = [[self sharedAppDelegate].WoodenProductArray objectAtIndex:row];
+            self.currentProductArray = array;
             self.Product_Outlet.text = [array objectAtIndex:0];
         }
         if (self.selectedSection1 == 2) {
             NSArray *array = [[self sharedAppDelegate].TileProductArray objectAtIndex:row];
+            self.currentProductArray = array;
             self.Product_Outlet.text = [array objectAtIndex:0];
         }
         if (self.selectedSection1 == 3) {
             NSArray *array = [[self sharedAppDelegate].SlateProductArray objectAtIndex:row];
+            self.currentProductArray = array;
             self.Product_Outlet.text = [array objectAtIndex:0];
         }
         
@@ -1088,14 +1098,22 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
     ImageCropViewController *controller = [[ImageCropViewController alloc] initWithImage:image];
     controller.delegate = self;
     controller.blurredBackground = YES;
-    [controller setCropArea:CGRectMake(0, 0, image.size.width/2, image.size.height/2)];
+    UIImage *productImage = [self.currentProductArray objectAtIndex:2];
+    float ratio1 = productImage.size.width/productImage.size.height;
+    controller.ratio = ratio1;
+    
+    
+
+    int cropHeight = self.view.frame.size.width*ratio1;
+    [controller setCropArea:CGRectMake(0, 0, self.view.frame.size.width, cropHeight)];
     
     [[self navigationController] pushViewController:controller animated:YES];
 }
 
 
-- (void)ImageCropViewController:(ImageCropViewController *)controller didFinishCroppingImage:(UIImage *)croppedImage{
 
+
+- (void)ImageCropViewControllerSuccess:(UIViewController* )controller didFinishCroppingImage:(UIImage *)croppedImage{
     self.imgView.image = croppedImage;
     [[self navigationController] popViewControllerAnimated:YES];
 }

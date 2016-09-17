@@ -65,7 +65,8 @@
 UIBarButtonItem *rightBarButtonItem5;
 - (void)viewDidLoad {
     [super viewDidLoad];
-    rightBarButtonItem5 = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(EnterBilling)];
+    
+    rightBarButtonItem5 = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(EnterBilling)];
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem5];
     [self.navigationItem setTitle:@"Shipping"];
     
@@ -98,9 +99,9 @@ UIBarButtonItem *rightBarButtonItem5;
     
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:YES];
+    [shippingTable.name_TextField becomeFirstResponder];
 }
 
 
@@ -110,11 +111,7 @@ UIBarButtonItem *rightBarButtonItem5;
         NSLog(@"name");
         [shippingTable.name_TextField resignFirstResponder];
     }
-    
-    if ([shippingTable.email_TextField isFirstResponder]) {
-        NSLog(@"email");
-        [shippingTable.email_TextField resignFirstResponder];
-    }
+
     
     if ([shippingTable.street_TextField isFirstResponder]) {
         NSLog(@"street");
@@ -160,8 +157,85 @@ UIBarButtonItem *rightBarButtonItem5;
         
         [self sharedAppDelegate].userSettings.shipping.country = shippingTable.country_Textfield.text;
 
+        
+//        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://development.avalara.net/1.0/tax/get"]];
+//        
+////        {
+////            "DocDate": "2013-01-16",
+////            "CustomerCode": "CUST1",
+////            "DocCode": "DOC0001",
+////            "DocType": "SalesInvoice",
+////            "Addresses":[{
+////                "AddressCode": "1",
+////                "Line1": "100 Ravine Lane NE",
+////                "City": "Bainbridge Island",
+////                "Region": "WA",
+////                "PostalCode": "98110"
+////            }],
+////            "Lines":[{
+////                "LineNo": "1",
+////                "DestinationCode": "1",
+////                "OriginCode": "1",
+////                "Qty": 1,
+////                "Amount": 10
+////            }]
+//            //    }
+//        
+//        NSDictionary *address = [NSDictionary dictionaryWithObjectsAndKeys:
+//                                 [self sharedAppDelegate].userSettings.shipping.street, @"AddressCode",
+//                                 [self sharedAppDelegate].userSettings.shipping.street, @"Line1",
+//                                 [self sharedAppDelegate].userSettings.shipping.city, @"City",
+//                                 [self sharedAppDelegate].userSettings.shipping.state, @"Region",
+//                                 [self sharedAppDelegate].userSettings.shipping.zip, @"PostalCode",nil];
+//        NSDictionary *lines = [NSDictionary dictionaryWithObjectsAndKeys:
+//                               @"1", @"LineNo",
+//                               @"1", @"DestinationCode",
+//                               @"1", @"OriginCode",
+//                               @"1", @"Qty",
+//                               [self sharedAppDelegate].cartTotal, @"Amount",nil];
+//            NSDictionary *chargeParams = [NSDictionary dictionaryWithObjectsAndKeys:
+//                                          @"2013-01-16", @"DocDate",
+//                                          @"CUST1", @"CustomerCode",
+//                                          @"DOC0001", @"DocCode",
+//                                          @"SalesInvoice", @"DocType",
+//                                          address, @"Addresses",
+//                                          lines, @"Lines",nil];
+//            
+//            NSError *error2;
+//            NSData *finalJSONdata = [NSJSONSerialization dataWithJSONObject:chargeParams options:0 error:&error2];
+//            
+//            
+//            [request setHTTPBody:finalJSONdata];
+//            [request setHTTPMethod:@"POST"];
+//            [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+//            [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+//            [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[finalJSONdata length]] forHTTPHeaderField:@"Content-Length"];
+//            
+//            
+//            NSError *err;
+//            NSURLResponse *response;
+//            
+//            
+//            
+//            NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
+//            NSString *responseString = [[NSString alloc]initWithData:responseData encoding:NSASCIIStringEncoding];
+//            
+//            
+//            if(responseString)
+//            {
+//                NSLog(@"%@",responseString);
+//                
+//                
+//                
+//            }
+//            else{
+//                NSLog(@"Error!");
+//                
+//            }
 
-        [self performSegueWithIdentifier:@"Billing" sender:self];
+            
+[self.delegate FinishedEnteringShippingInformation];
+        
     }
     else{
         UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"" message:@"Please enter all required information"preferredStyle:UIAlertControllerStyleAlert];

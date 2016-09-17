@@ -101,25 +101,36 @@
 
     if ([self InternetConnected]) {
         
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://final-project-order-viewer-stevens-apps.c9users.io/recieve_data.php"]];
+        NSDictionary *cartItem = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  @"1",@"user_Opened_App",nil];
+        NSError *error2;
+        NSData *finalJSONdata = [NSJSONSerialization dataWithJSONObject:cartItem options:0 error:&error2];
         
-        [[KCSClient sharedClient] initializeKinveyServiceForAppKey:@"kid_-JBnJ8W_Z-"
-                                                     withAppSecret:@"4c300297d06541a6920e893f201f5d50"
-                                                      usingOptions:nil];
+        //NSLog(@"%.2f MB",(float)finalJSONdata.length/1024.0f/1024.0f);
         
-        [KCSUser loginWithUsername:@"1" password:@"1" withCompletionBlock:^(KCSUser *user, NSError *errorOrNil, KCSUserActionResult result) {
-            if (errorOrNil ==  nil) {
-                //the log-in was successful and the user is now the active user and credentials saved
-                //hide log-in view and show main app content
-                self.signedIn = YES;
-
-
-            } else {
-                //there was an error with the update save
-                self.signedIn = NO;
-                //NSString* message = [errorOrNil localizedDescription];
-                pingTimer = [NSTimer scheduledTimerWithTimeInterval:4 target:self selector:@selector(InternetConnection) userInfo:nil repeats:YES];
-            }
-        }];
+        [request setHTTPBody:finalJSONdata];
+        [request setHTTPMethod:@"POST"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[finalJSONdata length]] forHTTPHeaderField:@"Content-Length"];
+        
+        
+        NSError *err;
+        NSURLResponse *response;
+        
+        
+        
+        NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
+        NSString *responseString = [[NSString alloc]initWithData:responseData encoding:NSASCIIStringEncoding];
+        
+        
+        if(responseString)
+        {
+            //[self performSegueWithIdentifier:@"OrderPlaced" sender:self];
+            NSLog(@"got response==%@", responseString);
+            
+        }
     }
     
 //    self.loadingImages  = YES;

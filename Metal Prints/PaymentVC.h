@@ -14,6 +14,7 @@
 
 @protocol PaymentVCDelegate
 
+- (void)retirevedToken;
 - (void)CardSuccessFullyCharged;
 - (void)CardFailedToCharged;
 -(void)UploadingImages;
@@ -27,7 +28,8 @@
 @property (weak, nonatomic) id<PaymentVCDelegate> delegate;
 
 + (PaymentVC *)sharedPaymentVC;
-- (void)PlaceOrderAndUploadImages;
+- (void)retrieveStripeToken;
+- (void)createBackendChargeWithToken:(STPToken *)token completion:(void (^)(PKPaymentAuthorizationStatus))completion;
 
 @property (weak, nonatomic) IBOutlet UIView *tableContentView1;
 @end

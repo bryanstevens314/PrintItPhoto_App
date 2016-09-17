@@ -11,8 +11,17 @@
 #import "CCTVC.h"
 #import "ActualCCTVC.h"
 
-@interface ShippingInfoVC : UIViewController <UIPickerViewDelegate,UIPickerViewDataSource,ShippingTVCDelegate>
+@class ShippingInfoVC;
 
+@protocol ShippingInfoVCDelegate
+
+- (void)FinishedEnteringShippingInformation;
+
+@end
+
+
+@interface ShippingInfoVC : UIViewController <UIPickerViewDelegate,UIPickerViewDataSource,ShippingTVCDelegate>
+@property (weak, nonatomic) id<ShippingInfoVCDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UIView *orderDataView;
 //@property (retain, nonatomic) STPPaymentContext *paymentContext;
 - (IBAction)PresentNextView:(id)sender;

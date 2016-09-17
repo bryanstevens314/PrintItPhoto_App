@@ -136,7 +136,7 @@ BOOL started = NO;
 
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-    BOOL simultaneous;
+    BOOL simultaneous = NO;
     if ([_longPressGesture isEqual:gestureRecognizer]) {
         simultaneous = NO;
     }

@@ -263,9 +263,6 @@ UIImageView *launchImageView;
     [self.navigationItem setTitle:[[self sharedAppDelegate].categoryArray objectAtIndex:section]];
 }
 
-- (IBAction)PanGesture:(id)sender {
-    [[ProductCategorySelectionCollection sharedProductCategorySelectionCollection] PanGestureInitiated];
-}
 
 - (IBAction)moveCollectionView:(id)sender {
 }

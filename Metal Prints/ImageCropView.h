@@ -78,7 +78,7 @@ typedef struct {
 @property (nonatomic, retain) UIImage* image;
 @property (nonatomic) CGRect cropAreaInView;
 @property (nonatomic) CGRect cropAreaInImage;
-@property (nonatomic, readonly) CGFloat imageScale;
+@property (nonatomic) CGFloat imageScale;
 @property (nonatomic) CGFloat maskAlpha;
 @property (nonatomic, retain) UIColor* controlColor;
 @property (nonatomic, strong) ShadeView* shadeView;
@@ -101,6 +101,7 @@ typedef struct {
 @property (nonatomic, weak) id<ImageCropViewControllerDelegate> delegate;
 @property (nonatomic) BOOL blurredBackground;
 @property (nonatomic, retain) UIImage* image;
+@property (nonatomic) CGFloat ratio;
 @property (nonatomic, retain) ImageCropView* cropView;
 /**
  *  the crop area in the image

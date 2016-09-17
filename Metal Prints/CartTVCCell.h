@@ -26,7 +26,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *aluminum_textField;
 @property (weak, nonatomic) IBOutlet UITextView *instructionsTextView;
 @property (retain, nonatomic) UITextView *instructions_TextView;
-@property (weak, nonatomic) IBOutlet UILabel *instructionsOutlet;
+@property (retain, nonatomic) UILabel *instructionsOutlet;
 @property (retain, nonatomic) UILabel *instructions_Outlet;
 
 
