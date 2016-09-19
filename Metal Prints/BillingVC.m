@@ -33,6 +33,10 @@
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
     [self.navigationItem setTitle:@"Billing"];
     
+    if ([self sharedAppDelegate].userSettings == nil) {
+        [self sharedAppDelegate].userSettings = [[UserObject alloc] init];
+    }
+    
     if ([self sharedAppDelegate].userSettings.billing == nil) {
         [self sharedAppDelegate].userSettings.billing = [[UserBilling alloc] init];
     }
@@ -56,6 +60,69 @@
     [super viewDidAppear:YES];
     [CCTable.email becomeFirstResponder];
 }
+
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:YES];
+    
+    [CCTable.keyboardDoneButtonView2 removeFromSuperview];
+    [self moveViewDown];
+    
+    if ([CCTable.email isFirstResponder]) {
+        NSLog(@"name");
+        [CCTable.email resignFirstResponder];
+    }
+    
+    if ([CCTable.ccn isFirstResponder]) {
+        NSLog(@"name");
+        [CCTable.ccn resignFirstResponder];
+    }
+    
+    if ([CCTable.expMonth isFirstResponder]) {
+        NSLog(@"name");
+        [CCTable.expMonth resignFirstResponder];
+    }
+    
+    if ([CCTable.cvc isFirstResponder]) {
+        NSLog(@"name");
+        [CCTable.cvc resignFirstResponder];
+    }
+    
+    if ([CCTable.firstName isFirstResponder]) {
+        NSLog(@"name");
+        [CCTable.firstName resignFirstResponder];
+    }
+    
+    if ([CCTable.streetAddress isFirstResponder]) {
+        NSLog(@"street");
+        [CCTable.streetAddress resignFirstResponder];
+    }
+    
+    if ([CCTable.apt isFirstResponder]) {
+        NSLog(@"city");
+        [CCTable.apt resignFirstResponder];
+    }
+    
+    if ([CCTable.City isFirstResponder]) {
+        NSLog(@"city");
+        [CCTable.City resignFirstResponder];
+    }
+    
+    if ([CCTable.state isFirstResponder]) {
+        NSLog(@"state");
+        [CCTable.state resignFirstResponder];
+    }
+    
+    if ([CCTable.zip isFirstResponder]) {
+        NSLog(@"Zip");
+        [CCTable.zip resignFirstResponder];
+        
+    }
+
+    
+}
+
+
 UIAlertController *chargingCardAlert;
 - (void)EnterPayment {
     
@@ -93,11 +160,12 @@ UIAlertController *chargingCardAlert;
             [CCTable.zip resignFirstResponder];
         }
         
-        [self sharedAppDelegate].userSettings.billing.payment = [[UserPayment alloc] init];
+        [self sharedAppDelegate].userSettings.billing = [[UserBilling alloc] init];
         
-        NSString *code = [CCTable.ccn.text substringFromIndex: [CCTable.ccn.text length] - 4];
+        [self sharedAppDelegate].userSettings.billing.payment = [[UserPayment alloc] init];
 
-        [self sharedAppDelegate].userSettings.billing.payment.CCN = [NSString stringWithFormat:@"**** **** **** %@",code];
+        [self sharedAppDelegate].userSettings.billing.payment.CCN = CCTable.ccn.text;
+        NSLog(@"%@",CCTable.ccn.text);
         [self sharedAppDelegate].userSettings.billing.payment.expMonth = CCTable.currentMonth;
         
         [self sharedAppDelegate].userSettings.billing.payment.expYear = CCTable.currentYear;
@@ -145,6 +213,7 @@ UIAlertController *chargingCardAlert;
         [chargingCardAlert setValue:customVC forKey:@"contentViewController"];
         
         [self presentViewController:chargingCardAlert animated:YES completion:nil];
+        [self moveViewDown];
         [PaymentVC sharedPaymentVC].delegate = self;
         [[PaymentVC sharedPaymentVC] retrieveStripeToken];
     }
@@ -168,6 +237,21 @@ UIAlertController *chargingCardAlert;
     [self.delegate FinishedEnteringBillingInformation];
 }
 
+- (void)failedToRetireveToken{
+    [chargingCardAlert dismissViewControllerAnimated:YES completion:^{
+        UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"" message:@"Error validating card" preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"OK"
+                                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                   [alert2 dismissViewControllerAnimated:YES completion:nil];
+                                                               }]; // 2
+        
+        [alert2 addAction:cameraAction];
+        
+        [self presentViewController:alert2 animated:YES completion:nil];
+
+    }];
+}
 - (void)shippingSameAsBilling{
     
     [self sharedAppDelegate].userSettings.billing.firstName = CCTable.firstName.text;

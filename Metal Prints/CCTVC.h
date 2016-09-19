@@ -25,6 +25,8 @@
 - (IBAction)BillingSameAsShipping:(id)sender;
 
 @property (nonatomic)BOOL BillingPresenting;
+
+@property (retain, nonatomic) UIToolbar* keyboardDoneButtonView2;
 @property (retain, nonatomic) NSString *currentYear;
 @property (retain, nonatomic) NSString *currentMonth;
 @property (weak, nonatomic) IBOutlet UISwitch *BillingSameAsShippingOutlet;

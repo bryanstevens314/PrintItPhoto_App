@@ -24,6 +24,8 @@
 + (ShippingTVC *)sharedShippingTVC;
 
 @property (nonatomic)BOOL ShippingPresenting;
+
+@property (retain, nonatomic) UIToolbar* keyboardDoneButtonView1;
 @property (weak, nonatomic) IBOutlet UITextField *name_TextField;
 
 @property (weak, nonatomic) IBOutlet UITextField *street_TextField;

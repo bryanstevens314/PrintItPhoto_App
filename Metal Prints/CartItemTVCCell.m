@@ -50,19 +50,19 @@ UIViewController *imageController;
     imageController = [[UIViewController alloc] init];
     imageController.view.frame = [self sharedAppDelegate].window.frame;
     imageController.view.backgroundColor = [UIColor blackColor];
-    
+
     
     NSIndexPath *iPath = [NSIndexPath indexPathForRow:self.view_Image_Outlet.tag inSection:1];
     NSLog(@"%li",(long)self.view_Image_Outlet.tag);
     NSArray *array = [[self sharedAppDelegate].shoppingCart objectAtIndex:iPath.row];
         NSData *data = [[NSData alloc]initWithBase64EncodedString:[array objectAtIndex:7] options:NSDataBase64DecodingIgnoreUnknownCharacters];
         UIImage *image1 = [UIImage imageWithData:data];
-    int ratio = image1.size.width  /image1.size.height;
+    float ratio = image1.size.width  /image1.size.height;
     if (image1.size.width < image1.size.height) {
         NSLog(@"portrait");
-        float newWidth = [self sharedAppDelegate].window.frame.size.height-20 * ratio;
-        
-        UIImageView *imageImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, newWidth, [self sharedAppDelegate].window.frame.size.height-20)];
+        int xy = [self sharedAppDelegate].window.frame.size.width-60;
+        float newHeight =  xy / ratio;
+        UIImageView *imageImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, [self sharedAppDelegate].window.frame.size.width-60, newHeight)];
         imageImageView.center = CGPointMake([self sharedAppDelegate].window.bounds.size.width/2, [self sharedAppDelegate].window.bounds.size.height/2);
         imageImageView.image = image1;
         NSLog(@"Image:%@",image1);
@@ -70,8 +70,8 @@ UIViewController *imageController;
     }
     if (image1.size.width > image1.size.height) {
         NSLog(@"landscape");
-        float newWidth = [self sharedAppDelegate].window.frame.size.height-20 * ratio;
-        UIImageView *imageImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, newWidth, [self sharedAppDelegate].window.frame.size.height-20)];
+        float newWidth = [self sharedAppDelegate].window.frame.size.height-150 * ratio;
+        UIImageView *imageImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, newWidth, [self sharedAppDelegate].window.frame.size.height-150)];
         imageImageView.center = CGPointMake([self sharedAppDelegate].window.bounds.size.width/2, [self sharedAppDelegate].window.bounds.size.height/2);
         imageImageView.image = image1;
         NSLog(@"Image:%@",image1);
@@ -79,7 +79,7 @@ UIViewController *imageController;
     }
     if (image1.size.width == image1.size.height) {
         NSLog(@"square");
-        UIImageView *imageImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, [self sharedAppDelegate].window.frame.size.width, [self sharedAppDelegate].window.frame.size.width)];
+        UIImageView *imageImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, [self sharedAppDelegate].window.frame.size.width-75, [self sharedAppDelegate].window.frame.size.width-75)];
         imageImageView.center = CGPointMake([self sharedAppDelegate].window.bounds.size.width/2, [self sharedAppDelegate].window.bounds.size.height/2);
         imageImageView.image = image1;
         NSLog(@"Image:%@",image1);

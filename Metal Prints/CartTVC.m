@@ -30,6 +30,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    NSInteger scrollable = [self sharedAppDelegate].shoppingCart.count + 3;
+    if (scrollable > 8) {
+        self.tableView.scrollEnabled = YES;
+    }
+    else{
+        self.tableView.scrollEnabled = NO;
+    }
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     

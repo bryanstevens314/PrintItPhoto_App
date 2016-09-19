@@ -51,7 +51,6 @@
 
 - (void)retrieveStripeToken {
     
-    NSLog(@"CCN: %@",[self sharedAppDelegate].userSettings.billing.payment.CCN);
     STPCardParams *params = [[STPCardParams alloc] init];
     params.number = [self sharedAppDelegate].userSettings.billing.payment.CCN;
     params.expMonth = [[self sharedAppDelegate].userSettings.billing.payment.expMonth integerValue];
@@ -68,6 +67,7 @@
     [[STPAPIClient sharedClient] createTokenWithCard:params completion:^(STPToken *token, NSError *error) {
         if (error) {
             NSLog(@"error %@",error);
+            [self.delegate failedToRetireveToken];
             //[error valueForKey:@"invalid_number"];
             
         } else {
@@ -225,7 +225,7 @@ NSTimer *timer2;
     {
         //[self performSegueWithIdentifier:@"OrderPlaced" sender:self];
         NSLog(@"got response==%@", responseString);
-        [self sendEmail];
+        //[self sendEmail];
         [self.delegate ImagesSuccessFullyUploaded];
 
     }

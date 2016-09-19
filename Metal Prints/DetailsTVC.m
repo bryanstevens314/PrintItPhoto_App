@@ -23,7 +23,9 @@
 @property (nonatomic) NSInteger rowCount;
 @end
 
-@implementation DetailsTVC
+@implementation DetailsTVC{
+    BOOL croppingImage;
+}
 
 - (NSString*)archivePathShoppingCart{
     NSArray *documentDirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -94,6 +96,7 @@
         self.Product_Outlet.text = [array objectAtIndex:0];
         
         self.rowCount = [self sharedAppDelegate].AluminumProductArray.count;
+        self.currentProductArray = array;
     }
     if (self.selectedSection1 == 1) {
         [self.aluminumOptionsCell.contentView setAlpha:0.6];
@@ -191,24 +194,25 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
-    NSLog(@"will appear");
-    if (self.currentItemToEdit != nil) {
-        NSLog(@"current Item");
-        self.Product_Outlet.text = [self.currentItemToEdit objectAtIndex:0];
-        self.Quantity_TextField.text = [self.currentItemToEdit objectAtIndex:1];
-        self.Retouching_TextField.text = [self.currentItemToEdit objectAtIndex:3];
-        self.For_Aluminum_TextField.text = [self.currentItemToEdit objectAtIndex:4];
-        self.textView.text = [self.currentItemToEdit objectAtIndex:5];
-        NSString *selectedRowString = [self.currentItemToEdit objectAtIndex:8];
-        self.selectedRow = [selectedRowString integerValue];
-        [self.picker3 selectRow:self.selectedRow inComponent:0 animated:NO];
-        
-        NSString *selectedSectionString = [self.currentItemToEdit objectAtIndex:9];
-        self.selectedSection1 = [selectedSectionString integerValue];
-        
-        [self.picker4 selectRow:self.selectedSection1 inComponent:0 animated:NO];
-        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-        NSURL *newImgURL = [NSURL URLWithString:[self.currentItemToEdit objectAtIndex:6]];
+    if (croppingImage == NO) {
+        NSLog(@"will appear");
+        if (self.currentItemToEdit != nil) {
+            NSLog(@"current Item");
+            self.Product_Outlet.text = [self.currentItemToEdit objectAtIndex:0];
+            self.Quantity_TextField.text = [self.currentItemToEdit objectAtIndex:1];
+            self.Retouching_TextField.text = [self.currentItemToEdit objectAtIndex:3];
+            self.For_Aluminum_TextField.text = [self.currentItemToEdit objectAtIndex:4];
+            self.textView.text = [self.currentItemToEdit objectAtIndex:5];
+            NSString *selectedRowString = [self.currentItemToEdit objectAtIndex:8];
+            self.selectedRow = [selectedRowString integerValue];
+            [self.picker3 selectRow:self.selectedRow inComponent:0 animated:NO];
+            
+            NSString *selectedSectionString = [self.currentItemToEdit objectAtIndex:9];
+            self.selectedSection1 = [selectedSectionString integerValue];
+            
+            [self.picker4 selectRow:self.selectedSection1 inComponent:0 animated:NO];
+            ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+            NSURL *newImgURL = [NSURL URLWithString:[self.currentItemToEdit objectAtIndex:6]];
             [library assetForURL:newImgURL
                      resultBlock:^(ALAsset *asset) {
                          UIImage *thumbImg = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
@@ -262,81 +266,84 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
                      }
              
                     failureBlock:^(NSError *error){ NSLog(@"operation was not successfull!"); } ];
+            
+            //
+            //        NSArray *array = @[self.Product_Outlet.text,
+            //                           self.Quantity_TextField.text,
+            //                           price,
+            //                           self.Retouching_TextField.text,
+            //                           self.For_Aluminum_TextField.text,
+            //                           self.textView.text,
+            //                           imgString,
+            //                           imageSizeType1
+            //                           ];
+        }
+        if (self.startingFromHighlightedImage == YES) {
+            NSLog(@"got here");
+            self.selectedImageURL = [self.currentImageArray objectAtIndex:0];
+            if (self.currentImage) {
+                self.image = self.currentImage;
+            }
+            else{
+                self.image = [self.currentImageArray objectAtIndex:1];
+            }
+            NSLog(@"url:%@",self.selectedImageURL);
+            NSLog(@"image: %@",self.image);
+            //                 if (self.collectionImgView) {
+            //                     self.collectionImgView = nil;
+            //                 }
+            if (self.imgView) {
+                self.imgView = nil;
+            }
+            NSIndexPath *indePath = [NSIndexPath indexPathForRow:0 inSection:0];
+            UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indePath];
+            float division = self.image.size.width/self.image.size.height;
+            if (self.imgView) {
+                [self.imgView removeFromSuperview];
+                self.imgView = nil;
+            }
+            self.imgView = [[UIImageView alloc] init];
+            if (self.image.size.width < self.image.size.height) {
+                NSLog(@"portrait");
+                
+                float newWidth = (cell.bounds.size.height - 39) * division;
+                [self.imgView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 39)];
+                int centerY = cell.bounds.size.height/2 + 10;
+                [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,centerY)];
+                self.imgView.image = self.image;
+            }
+            if (self.image.size.width > self.image.size.height) {
+                NSLog(@"landscape");
+                float newWidth = (cell.bounds.size.height - 65) * division;
+                [self.imgView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 65)];
+                int centerY = cell.bounds.size.height/2 + 10;
+                [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,centerY)];
+                self.imgView.image = self.image;
+            }
+            if (self.image.size.width == self.image.size.height) {
+                NSLog(@"square");
+                [self.imgView setFrame:CGRectMake(0, 0, cell.bounds.size.height - 65, cell.bounds.size.height - 65)];
+                [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2 + 7)];
+                self.imgView.image = self.image;
+            }
+            [self.view addSubview:self.imgView];
+            NSLog(@"ImageView %@",self.imgView);
+            self.camera_outlet.hidden = YES;
+            
+            if (self.imgView.gestureRecognizers == 0) {
+                UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+                
+                
+                tapGesture.numberOfTapsRequired = 1;
+                tapGesture.cancelsTouchesInView = NO;
+                self.imgView.userInteractionEnabled = YES;
+                [self.imgView addGestureRecognizer:tapGesture];
+            }
+            
+        }
 
-        //
-        //        NSArray *array = @[self.Product_Outlet.text,
-        //                           self.Quantity_TextField.text,
-        //                           price,
-        //                           self.Retouching_TextField.text,
-        //                           self.For_Aluminum_TextField.text,
-        //                           self.textView.text,
-        //                           imgString,
-        //                           imageSizeType1
-        //                           ];
     }
-    if (self.startingFromHighlightedImage == YES) {
-        NSLog(@"got here");
-        self.selectedImageURL = [self.currentImageArray objectAtIndex:0];
-        if (self.currentImage) {
-            self.image = self.currentImage;
-        }
-        else{
-            self.image = [self.currentImageArray objectAtIndex:1];
-        }
-        NSLog(@"url:%@",self.selectedImageURL);
-        NSLog(@"image: %@",self.image);
-        //                 if (self.collectionImgView) {
-        //                     self.collectionImgView = nil;
-        //                 }
-        if (self.imgView) {
-            self.imgView = nil;
-        }
-        NSIndexPath *indePath = [NSIndexPath indexPathForRow:0 inSection:0];
-        UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indePath];
-        float division = self.image.size.width/self.image.size.height;
-        if (self.imgView) {
-            [self.imgView removeFromSuperview];
-            self.imgView = nil;
-        }
-        self.imgView = [[UIImageView alloc] init];
-        if (self.image.size.width < self.image.size.height) {
-            NSLog(@"portrait");
-            
-            float newWidth = (cell.bounds.size.height - 39) * division;
-            [self.imgView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 39)];
-            int centerY = cell.bounds.size.height/2 + 10;
-            [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,centerY)];
-            self.imgView.image = self.image;
-        }
-        if (self.image.size.width > self.image.size.height) {
-            NSLog(@"landscape");
-            float newWidth = (cell.bounds.size.height - 65) * division;
-            [self.imgView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 65)];
-            int centerY = cell.bounds.size.height/2 + 10;
-            [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,centerY)];
-            self.imgView.image = self.image;
-        }
-        if (self.image.size.width == self.image.size.height) {
-            NSLog(@"square");
-            [self.imgView setFrame:CGRectMake(0, 0, cell.bounds.size.height - 65, cell.bounds.size.height - 65)];
-            [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2 + 7)];
-            self.imgView.image = self.image;
-        }
-        [self.view addSubview:self.imgView];
-        NSLog(@"ImageView %@",self.imgView);
-        self.camera_outlet.hidden = YES;
-        
-        if (self.imgView.gestureRecognizers == 0) {
-            UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
-            
-            
-            tapGesture.numberOfTapsRequired = 1;
-            tapGesture.cancelsTouchesInView = NO;
-            self.imgView.userInteractionEnabled = YES;
-            [self.imgView addGestureRecognizer:tapGesture];
-        }
-
-    }
+    croppingImage = NO;
 }
 
 
@@ -382,7 +389,7 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
         NSString *price = @"";
         NSString *product = @"";
         NSArray *array;
-        NSString *imgString = [UIImageJPEGRepresentation(self.image, 0.0f) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
+        NSString *imgString = [UIImageJPEGRepresentation(self.imgView.image, 1.0f) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
         if (self.selectedSection1 == 0) {
             product = [NSString stringWithFormat:@"%@ %@",self.Product_Outlet.text, @"Aluminum"];
             NSInteger i = 0;
@@ -1099,14 +1106,16 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
     controller.delegate = self;
     controller.blurredBackground = YES;
     UIImage *productImage = [self.currentProductArray objectAtIndex:2];
+    NSLog(@"%@",[self.currentProductArray objectAtIndex:1]);
     float ratio1 = productImage.size.width/productImage.size.height;
     controller.ratio = ratio1;
     
     
 
-    int cropHeight = self.view.frame.size.width*ratio1;
-    [controller setCropArea:CGRectMake(0, 0, self.view.frame.size.width, cropHeight)];
+    int cropWidth = self.image.size.height*ratio1;
+    [controller setCropArea:CGRectMake(0, 0, cropWidth,  self.image.size.height)];
     
+
     [[self navigationController] pushViewController:controller animated:YES];
 }
 
@@ -1114,8 +1123,55 @@ self.Retouching_TextField.inputAccessoryView = self.keyboardDoneButtonView;
 
 
 - (void)ImageCropViewControllerSuccess:(UIViewController* )controller didFinishCroppingImage:(UIImage *)croppedImage{
-    self.imgView.image = croppedImage;
+    croppingImage = YES;
     [[self navigationController] popViewControllerAnimated:YES];
+    
+    if (self.imgView) {
+        NSLog(@"Here");
+        [self.imgView removeFromSuperview];
+        self.imgView = nil;
+    }
+    self.image = nil;
+    self.image = croppedImage;
+    NSIndexPath *indePath = [NSIndexPath indexPathForRow:0 inSection:0];
+    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indePath];
+    float division = self.image.size.width/self.image.size.height;
+    self.imgView = [[UIImageView alloc] init];
+    if (self.image.size.width < self.image.size.height) {
+        NSLog(@"portrait");
+        
+        float newWidth = (cell.bounds.size.height - 39) * division;
+        [self.imgView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 39)];
+        int centerY = cell.bounds.size.height/2 + 10;
+        [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,centerY)];
+        self.imgView.image = self.image;
+    }
+    if (self.image.size.width > self.image.size.height) {
+        NSLog(@"landscape");
+        float newWidth = (cell.bounds.size.height - 65) * division;
+        [self.imgView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 65)];
+        int centerY = cell.bounds.size.height/2 + 10;
+        [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,centerY)];
+        self.imgView.image = self.image;
+    }
+    if (self.image.size.width == self.image.size.height) {
+        NSLog(@"square");
+        [self.imgView setFrame:CGRectMake(0, 0, cell.bounds.size.height - 65, cell.bounds.size.height - 65)];
+        [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2 + 7)];
+        self.imgView.image = self.image;
+    }
+    [self.view addSubview:self.imgView];
+    if (self.imgView.gestureRecognizers == 0) {
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+        
+        
+        tapGesture.numberOfTapsRequired = 1;
+        tapGesture.cancelsTouchesInView = NO;
+        self.imgView.userInteractionEnabled = YES;
+        [self.imgView addGestureRecognizer:tapGesture];
+    }
+    
+    
 }
 
 

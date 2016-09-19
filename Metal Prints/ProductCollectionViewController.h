@@ -17,7 +17,7 @@
 @protocol ProductCollectionDelegate <UIGestureRecognizerDelegate>
 
 - (void)ProductSelectedWithRow:(NSInteger)row Section:(NSInteger)section andArray:(NSArray*)curArray;
-
+-(void)userSlideViewAway;
 @end
 
 @interface ProductCollectionViewController : UICollectionViewController <UIGestureRecognizerDelegate>

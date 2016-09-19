@@ -104,6 +104,48 @@ UIBarButtonItem *rightBarButtonItem5;
     [shippingTable.name_TextField becomeFirstResponder];
 }
 
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:YES];
+    
+    [shippingTable.keyboardDoneButtonView1 removeFromSuperview];
+    if ([shippingTable.name_TextField isFirstResponder]) {
+        NSLog(@"name");
+        [shippingTable.name_TextField resignFirstResponder];
+    }
+    
+    
+    if ([shippingTable.street_TextField isFirstResponder]) {
+        NSLog(@"street");
+        [shippingTable.street_TextField resignFirstResponder];
+    }
+    
+    if ([shippingTable.apt_TextField isFirstResponder]) {
+        NSLog(@"city");
+        [shippingTable.apt_TextField resignFirstResponder];
+    }
+    
+    if ([shippingTable.city_TextField isFirstResponder]) {
+        NSLog(@"city");
+        [shippingTable.city_TextField resignFirstResponder];
+    }
+    
+    if ([shippingTable.state_TextField isFirstResponder]) {
+        NSLog(@"state");
+        [shippingTable.state_TextField resignFirstResponder];
+    }
+    
+    if ([shippingTable.zip_TextField isFirstResponder]) {
+        NSLog(@"Zip");
+        [shippingTable.zip_TextField resignFirstResponder];
+        
+    }
+    
+    if ([shippingTable.country_Textfield isFirstResponder]) {
+        NSLog(@"state");
+        [shippingTable.country_Textfield resignFirstResponder];
+    }
+
+}
 
 -(void)EnterBilling{
     

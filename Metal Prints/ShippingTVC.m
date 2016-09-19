@@ -11,7 +11,7 @@
 #import "Order.h"
 
 @interface ShippingTVC ()
-@property (retain, nonatomic) UIToolbar* keyboardDoneButtonView1;
+
 
 @end
 
@@ -104,6 +104,8 @@
     
      
 }
+
+
 
 
 - (void)BackClicked:(id)sender {
