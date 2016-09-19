@@ -15,7 +15,7 @@
 @property (retain, nonatomic) NSMutableArray *yearArray;
 @property (retain, nonatomic) NSMutableArray *monthArray;
 
-@property (retain, nonatomic) UIToolbar* keyboardDoneButtonView2;
+
 @end
 
 @implementation CCTVC
@@ -175,7 +175,7 @@
     
 
     
-    self.expMonth.text = [NSString stringWithFormat:@"%@/%@",self.currentMonth,self.currentYear];
+    //self.expMonth.text = [NSString stringWithFormat:@"%@/%@",self.currentMonth,self.currentYear];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -319,6 +319,9 @@
         NSLog(@"name");
         stop = YES;
         [self.expMonth becomeFirstResponder];
+        
+        self.expMonth.text = [NSString stringWithFormat:@"%@/%@",self.currentMonth,self.currentYear];
+        
     }
     if ([self.expMonth isFirstResponder] && stop == NO) {
         NSLog(@"name");
@@ -566,36 +569,41 @@
 }
 
 - (IBAction)BillingSameAsShipping:(id)sender {
-    if (self.BillingSameAsShippingOutlet.on == YES) {
-        NSLog(@"State: %@",[self sharedAppDelegate].userSettings.shipping.state);
-        NSLog(@"Street: %@",[self sharedAppDelegate].userSettings.shipping.street);
-        self.firstName.text = [self sharedAppDelegate].userSettings.shipping.Name;
-        
-        self.streetAddress.text = [self sharedAppDelegate].userSettings.shipping.street;
-        
-        self.apt.text = [self sharedAppDelegate].userSettings.shipping.apt;
-        
-        self.City.text = [self sharedAppDelegate].userSettings.shipping.city;
-        
-        self.state.text = [self sharedAppDelegate].userSettings.shipping.state;
-        
-        self.zip.text = [self sharedAppDelegate].userSettings.shipping.zip;
-        
+    if ([self sharedAppDelegate].userSettings.shipping != nil) {
+        if (self.BillingSameAsShippingOutlet.on == YES) {
+            NSLog(@"State: %@",[self sharedAppDelegate].userSettings.shipping.state);
+            NSLog(@"Street: %@",[self sharedAppDelegate].userSettings.shipping.street);
+            self.firstName.text = [self sharedAppDelegate].userSettings.shipping.Name;
+            
+            self.streetAddress.text = [self sharedAppDelegate].userSettings.shipping.street;
+            
+            self.apt.text = [self sharedAppDelegate].userSettings.shipping.apt;
+            
+            self.City.text = [self sharedAppDelegate].userSettings.shipping.city;
+            
+            self.state.text = [self sharedAppDelegate].userSettings.shipping.state;
+            
+            self.zip.text = [self sharedAppDelegate].userSettings.shipping.zip;
+            
+        }
+        else{
+            self.firstName.text = @"";
+            
+            self.LastName.text = @"";
+            
+            self.streetAddress.text = @"";
+            
+            self.apt.text = @"";
+            
+            self.City.text = @"";
+            
+            self.state.text = @"";
+            
+            self.zip.text = @"";
+        }
     }
     else{
-        self.firstName.text = @"";
-        
-        self.LastName.text = @"";
-        
-        self.streetAddress.text = @"";
-        
-        self.apt.text = @"";
-        
-        self.City.text = @"";
-        
-        self.state.text = @"";
-        
-        self.zip.text = @"";
+        self.BillingSameAsShippingOutlet.on = NO;
     }
 
 }

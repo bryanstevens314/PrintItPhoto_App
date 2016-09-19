@@ -98,7 +98,7 @@ BOOL started1 = NO;
                 [UIView animateWithDuration:0.2 animations:^{
                     
                     self.collectionView.frame = CGRectMake(self.view.bounds.size.width, self.collectionView.frame.origin.y, self.collectionView.frame.size.width, self.collectionView.frame.size.height);
-                    
+                    [self.delegate userSlideViewAway];
                 }completion:^(BOOL finished) {
                     [self.collectionView removeFromSuperview];
                     started1 = NO;

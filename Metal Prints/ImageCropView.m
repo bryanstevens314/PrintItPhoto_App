@@ -26,11 +26,12 @@ float IMAGE_MIN_WIDTH = 400;
    self =  [super init];
     if (self){
         self.image = [image fixOrientation];
-        //cropView.imageScale = self.ratio;
+
     }
     
     return self;
 }
+
 
 - (void)loadView
 {
@@ -46,6 +47,10 @@ float IMAGE_MIN_WIDTH = 400;
         contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         contentView.backgroundColor = [UIColor whiteColor];
         
+        
+
+        
+        
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
                                                  initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                  target:self
@@ -58,6 +63,7 @@ float IMAGE_MIN_WIDTH = 400;
         CGSize statusBarSize = [[UIApplication sharedApplication] statusBarFrame].size;
         CGRect view = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height - [[self navigationController] navigationBar].bounds.size.height - statusBarSize.height);
         self.cropView  = [[ImageCropView alloc] initWithFrame:view blurOn:self.blurredBackground];
+        self.cropView.cropRatio = self.ratio;
         contentView.backgroundColor = [UIColor grayColor];
         self.view = contentView;
         [contentView addSubview:cropView];
@@ -66,7 +72,40 @@ float IMAGE_MIN_WIDTH = 400;
         if (_cropArea.size.width > 0) {
             self.cropView.cropAreaInImage = _cropArea;
         }
+        
+        self.navigationController.toolbarHidden = NO;
+        UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Rotate"
+                                                                       style:UIBarButtonItemStyleDone target:self
+                                                                      action:@selector(rotateCrop)];
+
+        self.toolbarItems = [NSArray arrayWithObjects:flexSpace,doneButton, nil];
     }
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:YES];
+    self.navigationController.toolbarHidden = YES;
+}
+
+BOOL rotated;
+-(void)rotateCrop{
+    
+    //[cropView changeCropRotation];
+    if (rotated == NO) {
+        if (self.cropView) {
+            self.cropView.cropAreaInImage = CGRectMake(0, 0, _cropArea.size.height, _cropArea.size.width);
+            rotated = YES;
+        }
+    }
+    else{
+        if (self.cropView) {
+            self.cropView.cropAreaInImage = CGRectMake(0, 0, _cropArea.size.width, _cropArea.size.height);
+            rotated = NO;
+        }
+    }
+
 }
 
 - (IBAction)cancel:(id)sender
@@ -101,7 +140,9 @@ float IMAGE_MIN_WIDTH = 400;
     if (self.cropView) {
         self.cropView.cropAreaInImage = _cropArea;
     }
+
 }
+
 
 - (CGRect)cropArea {
     if (self.cropView) {
@@ -226,6 +267,13 @@ CGRect SquareCGRectAtCenter(CGFloat centerX, CGFloat centerY, CGFloat size) {
 @synthesize cropAreaInImage;
 @synthesize imageScale;
 
+
+-(void)changeCropRotation{
+    
+    
+}
+
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -259,8 +307,8 @@ CGRect SquareCGRectAtCenter(CGFloat centerX, CGFloat centerY, CGFloat size) {
     self.shadeView = [[ShadeView alloc] initWithFrame:subviewFrame];
     
     //the image
-    imageView = [[UIImageView alloc] initWithFrame:subviewFrame];
-    imageView.contentMode = UIViewContentModeScaleAspectFill;
+    _imageView = [[UIImageView alloc] initWithFrame:subviewFrame];
+    _imageView.contentMode = UIViewContentModeScaleAspectFill;
 
 
     //control points
@@ -292,7 +340,7 @@ CGRect SquareCGRectAtCenter(CGFloat centerX, CGFloat centerY, CGFloat size) {
     dragRecognizer.maximumNumberOfTouches = 2;
     [self.viewForBaselineLayout addGestureRecognizer:dragRecognizer];
     
-    [self addSubview:imageView];
+    [self addSubview:_imageView];
     [self addSubview:self.shadeView];
     [self addSubview:self.shadeView.blurredImageView];
     [self addSubview:cropAreaView];
@@ -306,7 +354,7 @@ CGRect SquareCGRectAtCenter(CGFloat centerX, CGFloat centerY, CGFloat size) {
     self.maskAlpha = DEFAULT_MASK_ALPHA;
     
     imageFrameInView = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-    imageView.frame = imageFrameInView;
+    _imageView.frame = imageFrameInView;
 
 }
 
@@ -443,6 +491,7 @@ CGRect SquareCGRectAtCenter(CGFloat centerX, CGFloat centerY, CGFloat size) {
     // Create offset to make frame within imageView
     cropArea.origin.y = cropArea.origin.y - imageFrameInView.origin.y;
     cropArea.origin.x = cropArea.origin.x - imageFrameInView.origin.x;
+    
     [self.shadeView setCropArea:cropArea];
 }
 
@@ -514,26 +563,26 @@ CGRect SquareCGRectAtCenter(CGFloat centerX, CGFloat centerY, CGFloat size) {
     CGPoint topRight = CGPointMake(dragPoint.topRightCenter.x, dragPoint.topLeftCenter.y + disp.height);
     CGPoint bottomLeft = CGPointMake(dragPoint.bottomLeftCenter.x + disp.width, dragPoint.bottomLeftCenter.y);
     
-    // Make sure that the new cropping area will not be smaller than the minimum image size
-    CGFloat width = topRight.x - topLeft.x;
-    CGFloat height = bottomLeft.y - topLeft.y;
-    width = width * self.imageScale;
-    height = height * self.imageScale;
+//    // Make sure that the new cropping area will not be smaller than the minimum image size
+//    CGFloat width = topRight.x - topLeft.x;
+//    CGFloat height = bottomLeft.y - topLeft.y;
+//    width = width * self.imageScale;
+//    height = height * self.imageScale;
     
-    // If the crop area is too small, set the points at the minimum spacing.
-    CGRect cropArea = [self cropAreaFromControlPoints];
-    if (width >= IMAGE_MIN_WIDTH && height < IMAGE_MIN_HEIGHT) {
-        topLeft.y = cropArea.origin.y + (((cropArea.size.height * self.imageScale) - IMAGE_MIN_HEIGHT) / self.imageScale);
-        topRight.y = topLeft.y;
-    } else if (width < IMAGE_MIN_WIDTH && height >= IMAGE_MIN_HEIGHT) {
-        topLeft.x = cropArea.origin.x + (((cropArea.size.width * self.imageScale) - IMAGE_MIN_WIDTH) / self.imageScale);
-        bottomLeft.x = topLeft.x;
-    } else if (width < IMAGE_MIN_WIDTH && height < IMAGE_MIN_HEIGHT) {
-        topLeft.x = cropArea.origin.x + (((cropArea.size.width * self.imageScale) - IMAGE_MIN_WIDTH) / self.imageScale);
-        topLeft.y = cropArea.origin.y + (((cropArea.size.height * self.imageScale) - IMAGE_MIN_HEIGHT) / self.imageScale);
-        topRight.y = topLeft.y;
-        bottomLeft.x = topLeft.x;
-    }
+//    // If the crop area is too small, set the points at the minimum spacing.
+//    CGRect cropArea = [self cropAreaFromControlPoints];
+//    if (width >= IMAGE_MIN_WIDTH && height < IMAGE_MIN_HEIGHT) {
+//        topLeft.y = cropArea.origin.y + (((cropArea.size.height * self.imageScale) - IMAGE_MIN_HEIGHT) / self.imageScale);
+//        topRight.y = topLeft.y;
+//    } else if (width < IMAGE_MIN_WIDTH && height >= IMAGE_MIN_HEIGHT) {
+//        topLeft.x = cropArea.origin.x + (((cropArea.size.width * self.imageScale) - IMAGE_MIN_WIDTH) / self.imageScale);
+//        bottomLeft.x = topLeft.x;
+//    } else if (width < IMAGE_MIN_WIDTH && height < IMAGE_MIN_HEIGHT) {
+//        topLeft.x = cropArea.origin.x + (((cropArea.size.width * self.imageScale) - IMAGE_MIN_WIDTH) / self.imageScale);
+//        topLeft.y = cropArea.origin.y + (((cropArea.size.height * self.imageScale) - IMAGE_MIN_HEIGHT) / self.imageScale);
+//        topRight.y = topLeft.y;
+//        bottomLeft.x = topLeft.x;
+//    }
     
     [self boundingBoxForTopLeft:topLeft bottomLeft:bottomLeft bottomRight:dragPoint.bottomRightCenter topRight:topRight];
 }
@@ -543,56 +592,56 @@ CGRect SquareCGRectAtCenter(CGFloat centerX, CGFloat centerY, CGFloat size) {
     CGPoint topLeft = CGPointMake(dragPoint.topLeftCenter.x + disp.width, dragPoint.topLeftCenter.y);
     CGPoint bottomRight = CGPointMake(dragPoint.bottomRightCenter.x, dragPoint.bottomRightCenter.y + disp.height);
     
-    // Make sure that the new cropping area will not be smaller than the minimum image size
-    CGFloat width = bottomRight.x - bottomLeft.x;
-    CGFloat height = bottomLeft.y - topLeft.y;
-    width = width * self.imageScale;
-    height = height * self.imageScale;
+//    // Make sure that the new cropping area will not be smaller than the minimum image size
+//    CGFloat width = bottomRight.x - bottomLeft.x;
+//    CGFloat height = bottomLeft.y - topLeft.y;
+//    width = width * self.imageScale;
+//    height = height * self.imageScale;
     
-    // If the crop area is too small, set the points at the minimum spacing.
-    CGRect cropArea = [self cropAreaFromControlPoints];
-    if (width >= IMAGE_MIN_WIDTH && height < IMAGE_MIN_HEIGHT) {
-        bottomLeft.y = cropArea.origin.y + (IMAGE_MIN_HEIGHT / self.imageScale);
-        bottomRight.y = bottomLeft.y;
-    } else if (width < IMAGE_MIN_WIDTH && height >= IMAGE_MIN_HEIGHT) {
-        bottomLeft.x = cropArea.origin.x + (((cropArea.size.width * self.imageScale) - IMAGE_MIN_WIDTH) / self.imageScale);
-        topLeft.x = bottomLeft.x;
-    } else if (width < IMAGE_MIN_WIDTH && height < IMAGE_MIN_HEIGHT) {
-        bottomLeft.x = cropArea.origin.x + (((cropArea.size.width * self.imageScale) - IMAGE_MIN_WIDTH) / self.imageScale);
-        bottomLeft.y = cropArea.origin.y + (IMAGE_MIN_HEIGHT / self.imageScale);
-        topLeft.x = bottomLeft.x;
-        bottomRight.y = bottomLeft.y;
-    }
+//    // If the crop area is too small, set the points at the minimum spacing.
+//    CGRect cropArea = [self cropAreaFromControlPoints];
+//    if (width >= IMAGE_MIN_WIDTH && height < IMAGE_MIN_HEIGHT) {
+//        bottomLeft.y = cropArea.origin.y + (IMAGE_MIN_HEIGHT / self.imageScale);
+//        bottomRight.y = bottomLeft.y;
+//    } else if (width < IMAGE_MIN_WIDTH && height >= IMAGE_MIN_HEIGHT) {
+//        bottomLeft.x = cropArea.origin.x + (((cropArea.size.width * self.imageScale) - IMAGE_MIN_WIDTH) / self.imageScale);
+//        topLeft.x = bottomLeft.x;
+//    } else if (width < IMAGE_MIN_WIDTH && height < IMAGE_MIN_HEIGHT) {
+//        bottomLeft.x = cropArea.origin.x + (((cropArea.size.width * self.imageScale) - IMAGE_MIN_WIDTH) / self.imageScale);
+//        bottomLeft.y = cropArea.origin.y + (IMAGE_MIN_HEIGHT / self.imageScale);
+//        topLeft.x = bottomLeft.x;
+//        bottomRight.y = bottomLeft.y;
+//    }
     
     [self boundingBoxForTopLeft:topLeft bottomLeft:bottomLeft bottomRight:bottomRight topRight:dragPoint.topRightCenter];
 }
 
 - (void)handleDragBottomRight:(CGPoint)dragLocation {
     CGSize disp = [self deriveDisplacementFromDragLocation:dragLocation draggedPoint:dragPoint.bottomRightCenter oppositePoint:dragPoint.topLeftCenter];
-    CGPoint bottomRight = CGPointMake(dragPoint.bottomRightCenter.x + disp.width, dragPoint.bottomRightCenter.y + disp.height);
-    CGPoint topRight = CGPointMake(dragPoint.topRightCenter.x + disp.width, dragPoint.topRightCenter.y);
-    CGPoint bottomLeft = CGPointMake(dragPoint.bottomLeftCenter.x, dragPoint.bottomLeftCenter.y + disp.height);
-    
-    // Make sure that the new cropping area will not be smaller than the minimum image size
-    CGFloat width = bottomRight.x - bottomLeft.x;
-    CGFloat height = bottomRight.y - topRight.y;
-    width = width * self.imageScale;
-    height = height * self.imageScale;
-    
-    // If the crop area is too small, set the points at the minimum spacing.
-    CGRect cropArea = [self cropAreaFromControlPoints];
-    if (width >= IMAGE_MIN_WIDTH && height < IMAGE_MIN_HEIGHT) {
-        bottomRight.y = cropArea.origin.y + (IMAGE_MIN_HEIGHT / self.imageScale);
-        bottomLeft.y = bottomRight.y;
-    } else if (width < IMAGE_MIN_WIDTH && height >= IMAGE_MIN_HEIGHT) {
-        bottomRight.x = cropArea.origin.x + (IMAGE_MIN_WIDTH / self.imageScale);
-        topRight.x = bottomRight.x;
-    } else if (width < IMAGE_MIN_WIDTH && height < IMAGE_MIN_HEIGHT) {
-        bottomRight.x = cropArea.origin.x + (IMAGE_MIN_WIDTH / self.imageScale);
-        bottomRight.y = cropArea.origin.y + (IMAGE_MIN_HEIGHT / self.imageScale);
-        topRight.x = bottomRight.x;
-        bottomLeft.y = bottomRight.y;
-    }
+    CGPoint bottomRight = CGPointMake(dragPoint.bottomRightCenter.x + disp.width, (dragPoint.bottomRightCenter.x + disp.width)/self.cropRatio);
+    CGPoint topRight = CGPointMake(bottomRight.x, dragPoint.topRightCenter.y);
+    CGPoint bottomLeft = CGPointMake(dragPoint.bottomLeftCenter.x, bottomRight.y);
+    NSLog(@"Ratio: %f",self.cropRatio);
+//    // Make sure that the new cropping area will not be smaller than the minimum image size
+//    CGFloat width = bottomRight.x - bottomLeft.x;
+//    CGFloat height = bottomRight.y - topRight.y;
+//    width = width * self.imageScale;
+//    height = height * self.imageScale;
+//    
+//    // If the crop area is too small, set the points at the minimum spacing.
+//    CGRect cropArea = [self cropAreaFromControlPoints];
+//    if (width >= IMAGE_MIN_WIDTH && height < IMAGE_MIN_HEIGHT) {
+//        bottomRight.y = cropArea.origin.y + (IMAGE_MIN_HEIGHT / self.imageScale);
+//        bottomLeft.y = bottomRight.y;
+//    } else if (width < IMAGE_MIN_WIDTH && height >= IMAGE_MIN_HEIGHT) {
+//        bottomRight.x = cropArea.origin.x + (IMAGE_MIN_WIDTH / self.imageScale);
+//        topRight.x = bottomRight.x;
+//    } else if (width < IMAGE_MIN_WIDTH && height < IMAGE_MIN_HEIGHT) {
+//        bottomRight.x = cropArea.origin.x + (IMAGE_MIN_WIDTH / self.imageScale);
+//        bottomRight.y = cropArea.origin.y + (IMAGE_MIN_HEIGHT / self.imageScale);
+//        topRight.x = bottomRight.x;
+//        bottomLeft.y = bottomRight.y;
+//    }
 
     [self boundingBoxForTopLeft:dragPoint.topLeftCenter bottomLeft:bottomLeft bottomRight:bottomRight topRight:topRight];
 }
@@ -603,26 +652,26 @@ CGRect SquareCGRectAtCenter(CGFloat centerX, CGFloat centerY, CGFloat size) {
     CGPoint topLeft = CGPointMake(dragPoint.topLeftCenter.x, dragPoint.topLeftCenter.y + disp.height);
     CGPoint bottomRight = CGPointMake(dragPoint.bottomRightCenter.x + disp.width, dragPoint.bottomRightCenter.y);
     
-    // Make sure that the new cropping area will not be smaller than the minimum image size
-    CGFloat width = topRight.x - topLeft.x;
-    CGFloat height = bottomRight.y - topRight.y;
-    width = width * self.imageScale;
-    height = height * self.imageScale;
-    
-    // If the crop area is too small, set the points at the minimum spacing.
-    CGRect cropArea = [self cropAreaFromControlPoints];
-    if (width >= IMAGE_MIN_WIDTH && height < IMAGE_MIN_HEIGHT) {
-        topRight.y = cropArea.origin.y + (((cropArea.size.height * self.imageScale) - IMAGE_MIN_HEIGHT) / self.imageScale);
-        topLeft.y = topRight.y;
-    } else if (width < IMAGE_MIN_WIDTH && height >= IMAGE_MIN_HEIGHT) {
-        topRight.x = cropArea.origin.x + (IMAGE_MIN_WIDTH / self.imageScale);
-        bottomRight.x = topRight.x;
-    } else if (width < IMAGE_MIN_WIDTH && height < IMAGE_MIN_HEIGHT) {
-        topRight.x = cropArea.origin.x + (IMAGE_MIN_WIDTH / self.imageScale);
-        topRight.y = cropArea.origin.y + (((cropArea.size.height * self.imageScale) - IMAGE_MIN_HEIGHT) / self.imageScale);
-        topLeft.y = topRight.y;
-        bottomRight.x = topRight.x;
-    }
+//    // Make sure that the new cropping area will not be smaller than the minimum image size
+//    CGFloat width = topRight.x - topLeft.x;
+//    CGFloat height = bottomRight.y - topRight.y;
+//    width = width * self.imageScale;
+//    height = height * self.imageScale;
+//    
+//    // If the crop area is too small, set the points at the minimum spacing.
+//    CGRect cropArea = [self cropAreaFromControlPoints];
+//    if (width >= IMAGE_MIN_WIDTH && height < IMAGE_MIN_HEIGHT) {
+//        topRight.y = cropArea.origin.y + (((cropArea.size.height * self.imageScale) - IMAGE_MIN_HEIGHT) / self.imageScale);
+//        topLeft.y = topRight.y;
+//    } else if (width < IMAGE_MIN_WIDTH && height >= IMAGE_MIN_HEIGHT) {
+//        topRight.x = cropArea.origin.x + (IMAGE_MIN_WIDTH / self.imageScale);
+//        bottomRight.x = topRight.x;
+//    } else if (width < IMAGE_MIN_WIDTH && height < IMAGE_MIN_HEIGHT) {
+//        topRight.x = cropArea.origin.x + (IMAGE_MIN_WIDTH / self.imageScale);
+//        topRight.y = cropArea.origin.y + (((cropArea.size.height * self.imageScale) - IMAGE_MIN_HEIGHT) / self.imageScale);
+//        topLeft.y = topRight.y;
+//        bottomRight.x = topRight.x;
+//    }
 
     [self boundingBoxForTopLeft:topLeft bottomLeft:dragPoint.bottomLeftCenter bottomRight:bottomRight topRight:topRight];
 }
@@ -764,13 +813,13 @@ CGRect SquareCGRectAtCenter(CGFloat centerX, CGFloat centerY, CGFloat size) {
         y = (frameHeight - scaledImageHeight) / 2;
     }
     imageFrameInView = CGRectMake(x, y, scaledImageWidth, scaledImageHeight);
-    imageView.frame = imageFrameInView;
-    imageView.image = image;
+    _imageView.frame = imageFrameInView;
+    _imageView.image = image;
     
     /* prepare imageviews and their frame */
     self.shadeView.blurredImageView.contentMode = UIViewContentModeScaleAspectFill;
-    imageView.contentMode = UIViewContentModeScaleAspectFill;
-    imageView.clipsToBounds = YES;
+    _imageView.contentMode = UIViewContentModeScaleAspectFill;
+    _imageView.clipsToBounds = YES;
     self.shadeView.blurredImageView.clipsToBounds = YES;
     
     CGRect blurFrame;
@@ -779,7 +828,7 @@ CGRect SquareCGRectAtCenter(CGFloat centerX, CGFloat centerY, CGFloat size) {
     } else {
         blurFrame = imageFrameInView;
     }
-    imageView.frame = imageFrameInView;
+    _imageView.frame = imageFrameInView;
     
     // blurredimageview is on top of shadeview so shadeview needs the same frame as imageView.
     self.shadeView.frame = imageFrameInView;

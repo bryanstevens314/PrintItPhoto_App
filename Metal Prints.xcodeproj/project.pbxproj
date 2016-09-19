@@ -68,7 +68,6 @@
 		FB35D0EE1D5AE3C000BCD6C6 /* ProductCategoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FB35D0ED1D5AE3C000BCD6C6 /* ProductCategoryCell.m */; };
 		FB35D0F11D5BB63100BCD6C6 /* ProductCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB35D0F01D5BB63100BCD6C6 /* ProductCollectionViewController.m */; };
 		FB35D0F41D5BB64200BCD6C6 /* ProductCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FB35D0F31D5BB64200BCD6C6 /* ProductCollectionViewCell.m */; };
-		FB4529CA1D8C445700D395E7 /* check-unmarked.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FB4529C91D8C445700D395E7 /* check-unmarked.jpg */; };
 		FB4FE78D1D80EF80004C72E0 /* Main_4_inch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB4FE78C1D80EF80004C72E0 /* Main_4_inch.storyboard */; };
 		FB4FE7901D80EF93004C72E0 /* Main_3.5_inch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB4FE78E1D80EF93004C72E0 /* Main_3.5_inch.storyboard */; };
 		FB5047F21D5D642E00B2E223 /* aluminum-tin-cans.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FB5047F11D5D642E00B2E223 /* aluminum-tin-cans.jpg */; };
@@ -108,6 +107,7 @@
 		FB5435B51D8BA4FC0069BA98 /* TaxTVCCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5435B41D8BA4FC0069BA98 /* TaxTVCCell.m */; };
 		FB5435B81D8BA50E0069BA98 /* TotalTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5435B71D8BA50E0069BA98 /* TotalTVCell.m */; };
 		FB5435BB1D8BA62A0069BA98 /* CartTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5435BA1D8BA62A0069BA98 /* CartTVC.m */; };
+		FB5611651D8DBEA7000BDB06 /* check-unmarked.png in Resources */ = {isa = PBXBuildFile; fileRef = FB5611641D8DBEA7000BDB06 /* check-unmarked.png */; };
 		FBA823401D79A5300028D3A1 /* LoveStoryProjectLogo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FBA8233F1D79A5300028D3A1 /* LoveStoryProjectLogo.jpg */; };
 		FBA823421D7A850E0028D3A1 /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA823411D7A850E0028D3A1 /* Stripe.framework */; };
 		FBA823441D7A85200028D3A1 /* Stripe.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FBA823431D7A85200028D3A1 /* Stripe.bundle */; };
@@ -250,7 +250,6 @@
 		FB35D0F01D5BB63100BCD6C6 /* ProductCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductCollectionViewController.m; sourceTree = "<group>"; };
 		FB35D0F21D5BB64200BCD6C6 /* ProductCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductCollectionViewCell.h; sourceTree = "<group>"; };
 		FB35D0F31D5BB64200BCD6C6 /* ProductCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductCollectionViewCell.m; sourceTree = "<group>"; };
-		FB4529C91D8C445700D395E7 /* check-unmarked.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "check-unmarked.jpg"; sourceTree = "<group>"; };
 		FB4FE78C1D80EF80004C72E0 /* Main_4_inch.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main_4_inch.storyboard; sourceTree = "<group>"; };
 		FB4FE78F1D80EF93004C72E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_3.5_inch.storyboard; sourceTree = "<group>"; };
 		FB5047F11D5D642E00B2E223 /* aluminum-tin-cans.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "aluminum-tin-cans.jpg"; sourceTree = "<group>"; };
@@ -296,6 +295,7 @@
 		FB5435B71D8BA50E0069BA98 /* TotalTVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TotalTVCell.m; sourceTree = "<group>"; };
 		FB5435B91D8BA62A0069BA98 /* CartTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CartTVC.h; sourceTree = "<group>"; };
 		FB5435BA1D8BA62A0069BA98 /* CartTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CartTVC.m; sourceTree = "<group>"; };
+		FB5611641D8DBEA7000BDB06 /* check-unmarked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check-unmarked.png"; sourceTree = "<group>"; };
 		FBA8233F1D79A5300028D3A1 /* LoveStoryProjectLogo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LoveStoryProjectLogo.jpg; sourceTree = "<group>"; };
 		FBA823411D7A850E0028D3A1 /* Stripe.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Stripe.framework; sourceTree = "<group>"; };
 		FBA823431D7A85200028D3A1 /* Stripe.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Stripe.bundle; sourceTree = "<group>"; };
@@ -486,7 +486,7 @@
 				FB5047F31D5D649C00B2E223 /* wildtextures-old-wood-original-file.jpg */,
 				FB5047F11D5D642E00B2E223 /* aluminum-tin-cans.jpg */,
 				9369C8D01D3F250A00FCD2CC /* MW-Icon-CheckMark.svg.png */,
-				FB4529C91D8C445700D395E7 /* check-unmarked.jpg */,
+				FB5611641D8DBEA7000BDB06 /* check-unmarked.png */,
 				9369C8CE1D3DC6CC00FCD2CC /* photo-gallery-512.png */,
 				9369C8C61D3C951B00FCD2CC /* FXBlurView.h */,
 				9369C8C71D3C951B00FCD2CC /* FXBlurView.m */,
@@ -868,7 +868,7 @@
 				932F2F101CC988460050094A /* camera.png in Resources */,
 				FB5435841D8117A30069BA98 /* 2x3 aluminum.png in Resources */,
 				FB5435A91D8117B70069BA98 /* 11x14 wood.png in Resources */,
-				FB4529CA1D8C445700D395E7 /* check-unmarked.jpg in Resources */,
+				FB5611651D8DBEA7000BDB06 /* check-unmarked.png in Resources */,
 				9369C8C01D3C387D00FCD2CC /* grocery-cart-icon-6.png in Resources */,
 				FB5435A11D8117B00069BA98 /* 8x10 tile.png in Resources */,
 				FB4FE7901D80EF93004C72E0 /* Main_3.5_inch.storyboard in Resources */,

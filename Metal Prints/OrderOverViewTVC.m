@@ -285,7 +285,10 @@ UIAlertController *uploadAlert;
 
 - (void)FinishedEnteringBillingInformation{
     [self.navigationController popViewControllerAnimated:YES];
-    self.billing_Card.text = [self sharedAppDelegate].userSettings.billing.payment.CCN;
+    NSString *code = [[self sharedAppDelegate].userSettings.billing.payment.CCN substringFromIndex: [[self sharedAppDelegate].userSettings.billing.payment.CCN length] - 4];
+    
+    [self sharedAppDelegate].userSettings.billing.payment.CCN = [NSString stringWithFormat:@"**** **** **** %@",code];
+    self.billing_Card.text = [NSString stringWithFormat:@"**** **** **** %@",code] ;
     self.billing_Exp.text = [NSString stringWithFormat:@"%@/%@",[self sharedAppDelegate].userSettings.billing.payment.expMonth, [self sharedAppDelegate].userSettings.billing.payment.expYear];
     [self.billing_Entered setImage:[UIImage imageNamed:@"MW-Icon-CheckMark.svg.png"]];
     

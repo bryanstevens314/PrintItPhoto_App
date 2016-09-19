@@ -52,7 +52,7 @@ typedef struct {
 #pragma mark ImageCropView interface
 
 @interface ImageCropView : UIView {
-    UIImageView* imageView;
+    
     CGRect imageFrameInView;
     CGFloat imageScale;
     
@@ -73,12 +73,14 @@ typedef struct {
 }
 - (id)initWithFrame:(CGRect)frame blurOn:(BOOL)blurOn;
 - (void)setImage:(UIImage*)image;
-
+-(void)changeCropRotation;
+@property (retain, nonatomic) UIImageView* imageView;
 @property (nonatomic) CGFloat controlPointSize;
 @property (nonatomic, retain) UIImage* image;
 @property (nonatomic) CGRect cropAreaInView;
 @property (nonatomic) CGRect cropAreaInImage;
 @property (nonatomic) CGFloat imageScale;
+@property (nonatomic) CGFloat cropRatio;
 @property (nonatomic) CGFloat maskAlpha;
 @property (nonatomic, retain) UIColor* controlColor;
 @property (nonatomic, strong) ShadeView* shadeView;
