@@ -71,6 +71,8 @@
             //[error valueForKey:@"invalid_number"];
             
         } else {
+            NSString *code = [[self sharedAppDelegate].userSettings.billing.payment.CCN substringFromIndex: [[self sharedAppDelegate].userSettings.billing.payment.CCN length] - 4];
+            [self sharedAppDelegate].userSettings.billing.payment.CCN = [NSString stringWithFormat:@"**** **** **** %@",code];
             [self sharedAppDelegate].userSettings.billing.payment.stripe_Token = token;
             [self.delegate retirevedToken];
             //[self createBackendChargeWithToken:token completion:nil];

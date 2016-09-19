@@ -95,9 +95,8 @@ UIAlertController *chargingCardAlert;
         
         [self sharedAppDelegate].userSettings.billing.payment = [[UserPayment alloc] init];
         
-        NSString *code = [CCTable.ccn.text substringFromIndex: [CCTable.ccn.text length] - 4];
 
-        [self sharedAppDelegate].userSettings.billing.payment.CCN = [NSString stringWithFormat:@"**** **** **** %@",code];
+        [self sharedAppDelegate].userSettings.billing.payment.CCN = CCTable.ccn.text;
         [self sharedAppDelegate].userSettings.billing.payment.expMonth = CCTable.currentMonth;
         
         [self sharedAppDelegate].userSettings.billing.payment.expYear = CCTable.currentYear;
