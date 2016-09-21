@@ -75,19 +75,9 @@ UIBarButtonItem *rightBarButtonItem5;
     shippingTable.ShippingPresenting = YES;
     shippingTable.tableView.frame = CGRectMake(self.orderDataView.frame.origin.x, self.orderDataView.frame.origin.y-125, self.orderDataView.frame.size.width, self.orderDataView.frame.size.height);
     [self.orderDataView addSubview:shippingTable.tableView];
-    if ([self sharedAppDelegate].userSettings.shipping != nil) {
-        shippingTable.name_TextField.text = [self sharedAppDelegate].userSettings.shipping.Name;
-        
-        shippingTable.street_TextField.text = [self sharedAppDelegate].userSettings.shipping.street;
-        
-        shippingTable.apt_TextField.text = [self sharedAppDelegate].userSettings.shipping.apt;
-        
-        shippingTable.city_TextField.text = [self sharedAppDelegate].userSettings.shipping.city;
-        
-        shippingTable.state_TextField.text = [self sharedAppDelegate].userSettings.shipping.state;
-        
-        shippingTable.zip_TextField.text = [self sharedAppDelegate].userSettings.shipping.zip;
-        
+    if ([self sharedAppDelegate].userSettings == nil) {
+        [self sharedAppDelegate].userSettings = [[UserObject alloc] init];
+        [self sharedAppDelegate].userSettings.shipping = [[UserShipping alloc] init];
     }
     
     
@@ -183,8 +173,8 @@ UIBarButtonItem *rightBarButtonItem5;
     
     if (![shippingTable.name_TextField.text isEqualToString: @""] && ![shippingTable.street_TextField.text isEqualToString: @""] && ![shippingTable.city_TextField.text isEqualToString: @""] && ![shippingTable.state_TextField.text isEqualToString: @""] && ![shippingTable.zip_TextField.text isEqualToString: @""] && ![shippingTable.country_Textfield.text isEqualToString: @""]) {
         
-        [self sharedAppDelegate].userSettings = [[UserObject alloc] init];
-        [self sharedAppDelegate].userSettings.shipping = [[UserShipping alloc] init];
+//        [self sharedAppDelegate].userSettings = [[UserObject alloc] init];
+//        [self sharedAppDelegate].userSettings.shipping = [[UserShipping alloc] init];
         [self sharedAppDelegate].userSettings.shipping.Name = shippingTable.name_TextField.text;
         
         [self sharedAppDelegate].userSettings.shipping.street = shippingTable.street_TextField.text;

@@ -140,7 +140,7 @@ NSTimer *timer2;
     
     NSMutableDictionary *mutDict = [[NSMutableDictionary alloc] init];
     NSString *name = [self sharedAppDelegate].userSettings.shipping.Name;
-    NSString *email = [self sharedAppDelegate].userSettings.shipping.email;
+    NSString *email = [self sharedAppDelegate].userSettings.billing.email;
     NSString *street = [self sharedAppDelegate].userSettings.shipping.street;
     NSString *apt = [self sharedAppDelegate].userSettings.shipping.apt;
     NSString *city = [self sharedAppDelegate].userSettings.shipping.city;
@@ -408,7 +408,7 @@ NSTimer *timer2;
     \
     ";
     NSDictionary *from = [NSDictionary dictionaryWithObjectsAndKeys:@"Bryan Stevens", @"name", @"b.stevens.photo@gmail.com", @"email", nil];
-    NSMutableArray* to = [[NSMutableArray alloc] initWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:[self sharedAppDelegate].userSettings.shipping.Name, @"name", [self sharedAppDelegate].userSettings.shipping.email, @"email", nil], nil];
+    NSMutableArray* to = [[NSMutableArray alloc] initWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:[self sharedAppDelegate].userSettings.shipping.Name, @"name", [self sharedAppDelegate].userSettings.billing.email, @"email", nil], nil];
     //NSString *messageBody = [NSString stringWithFormat:@"test Email"];
     NSMutableDictionary *emaildata = [NSMutableDictionary dictionaryWithObjectsAndKeys:htmlString, @"html", @"", @"text",@"The Love Story Project",@"subject",from,@"from",to,@"to", nil];
     [sendpulse smtpSendMail:emaildata];

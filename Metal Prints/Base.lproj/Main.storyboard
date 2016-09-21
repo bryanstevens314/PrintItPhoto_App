@@ -404,14 +404,7 @@
                         </connections>
                     </collectionView>
                     <tabBarItem key="tabBarItem" title="My Photos" image="thin-363_photo_image_album-512.png" id="seX-jX-VhS"/>
-                    <navigationItem key="navigationItem" title="My Photos" id="230-n0-A0n">
-                        <barButtonItem key="rightBarButtonItem" image="photo-gallery-512.png" id="VxY-dV-JPh">
-                            <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                            <connections>
-                                <action selector="ToggleSelectedImages:" destination="7wh-Ja-u5E" id="2n6-6f-Gdq"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="My Photos" id="230-n0-A0n"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="667"/>
@@ -475,7 +468,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Aai-Da-7gK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-410.5" y="1244.5"/>
+            <point key="canvasLocation" x="-379.5" y="1269.5"/>
         </scene>
         <!--CCTVC-->
         <scene sceneID="36J-XG-Zvl">
@@ -1958,7 +1951,6 @@
         <image name="camera icon.png" width="720" height="720"/>
         <image name="check-unmarked.png" width="30" height="30"/>
         <image name="grocery-cart-icon-6.png" width="30" height="30"/>
-        <image name="photo-gallery-512.png" width="30" height="30"/>
         <image name="plainicon.com-54418-512px-51c.png" width="512" height="512"/>
         <image name="secure-payment.png" width="365" height="329"/>
         <image name="shop-icon.png" width="30" height="30"/>
@@ -1966,10 +1958,10 @@
         <image name="up-down.png" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="dAG-3T-7Pm"/>
+        <segue reference="Moj-sf-Chp"/>
+        <segue reference="12A-Rm-UHr"/>
         <segue reference="hzr-hg-fBG"/>
         <segue reference="EOW-Cd-xxO"/>
         <segue reference="TlZ-9v-aZH"/>
-        <segue reference="fFN-Vc-uve"/>
     </inferredMetricsTieBreakers>
 </document>

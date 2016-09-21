@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface UserShipping : NSObject
-@property (retain, nonatomic) NSString *email;
+
 @property (retain, nonatomic) NSString *Name;
 @property (retain, nonatomic) NSString *street;
 @property (retain, nonatomic) NSString *apt;

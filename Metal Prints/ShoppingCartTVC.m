@@ -802,6 +802,7 @@ NSInteger numberOfPrints;
     if (thumbImg.size.width > thumbImg.size.height) {
         NSLog(@"landscape");
         float newWidth = 80 * division;
+        NSLog(@"%f",newWidth);
         [cell.img_View setFrame:CGRectMake(0, 0, newWidth, 80)];
         [cell.img_View setCenter:CGPointMake(cell.img_View.bounds.size.width/2 + 10 ,centerY/2)];
         cell.img_View.image = thumbImg;

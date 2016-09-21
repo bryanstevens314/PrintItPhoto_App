@@ -186,7 +186,7 @@ UIAlertController *chargingCardAlert;
         
         [self sharedAppDelegate].userSettings.billing.zip = CCTable.zip.text;
         
-        [self sharedAppDelegate].userSettings.shipping.email = CCTable.email.text;
+        [self sharedAppDelegate].userSettings.billing.email = CCTable.email.text;
         
         chargingCardAlert = [UIAlertController alertControllerWithTitle:@""
                                                     message:@""

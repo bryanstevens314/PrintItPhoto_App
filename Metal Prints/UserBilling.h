@@ -10,7 +10,7 @@
 #import "UserPayment.h"
 
 @interface UserBilling : NSObject
-
+@property (retain, nonatomic) NSString *email;
 @property (retain, nonatomic) NSString *firstName;
 @property (retain, nonatomic) NSString *street;
 @property (retain, nonatomic) NSString *apt;
