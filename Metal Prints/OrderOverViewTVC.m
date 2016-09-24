@@ -8,8 +8,13 @@
 
 #import "OrderOverViewTVC.h"
 #import "AppDelegate.h"
+#import "CartTVC.h"
 
 @interface OrderOverViewTVC ()
+{
+    BOOL shippingOK;
+    BOOL billingOK;
+}
 
 @end
 
@@ -30,45 +35,87 @@
     
     UIBarButtonItem *rightBarButtonItem7 = [[UIBarButtonItem alloc] initWithTitle:@"Place Order" style:UIBarButtonItemStylePlain target:self action:@selector(PlaceOrder)];
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem7];
+
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    displayIt = YES;
+}
+
+BOOL displayIt;
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+
 }
 
 
+BOOL displayedIt;
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:YES];
+    if (displayedIt == YES) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:0];
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+        [cell setSelected:NO animated:NO];
+        displayedIt = NO;
+    }
+    if (displayIt == YES) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:0];
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+        [cell setSelected:YES animated:NO];
+        [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
+        displayIt = NO;
+        displayedIt = YES;
+    }
+
+}
 UIAlertController *chargingCardAlert1;
 -(void)PlaceOrder{
-    chargingCardAlert1 = [UIAlertController alertControllerWithTitle:@""
-                                                            message:@"Charging Card"
-                                                     preferredStyle:UIAlertControllerStyleAlert]; // 1
-    
-    UIViewController *customVC     = [[UIViewController alloc] init];
-    [chargingCardAlert1.view setFrame:CGRectMake(0, 300, 320, 275)];
-    
-    UIActivityIndicatorView* spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [spinner startAnimating];
-    [customVC.view addSubview:spinner];
-    [spinner setCenter:CGPointMake(100, 27)];
-    
-    [customVC.view addConstraint:[NSLayoutConstraint
-                                  constraintWithItem: spinner
-                                  attribute:NSLayoutAttributeCenterX
-                                  relatedBy:NSLayoutRelationEqual
-                                  toItem:customVC.view
-                                  attribute:NSLayoutAttributeCenterX
-                                  multiplier:1.0f
-                                  constant:0.0f]];
-    
-    
-    [chargingCardAlert1 setValue:customVC forKey:@"contentViewController"];
-    
-    [self presentViewController:chargingCardAlert1 animated:YES completion:^{
-        [PaymentVC sharedPaymentVC].delegate = self;
-        [[PaymentVC sharedPaymentVC] createBackendChargeWithToken:[self sharedAppDelegate].userSettings.billing.payment.stripe_Token completion:nil];
-    }];
+    if (shippingOK == YES && billingOK == YES) {
+        chargingCardAlert1 = [UIAlertController alertControllerWithTitle:@""
+                                                                 message:@""
+                                                          preferredStyle:UIAlertControllerStyleAlert]; // 1
+        
+        UIViewController *customVC     = [[UIViewController alloc] init];
+        [chargingCardAlert1.view setFrame:CGRectMake(0, 300, 320, 275)];
+        
+        UIActivityIndicatorView* spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [spinner startAnimating];
+        [customVC.view addSubview:spinner];
+        [spinner setCenter:CGPointMake(100, 27)];
+        
+        [customVC.view addConstraint:[NSLayoutConstraint
+                                      constraintWithItem: spinner
+                                      attribute:NSLayoutAttributeCenterX
+                                      relatedBy:NSLayoutRelationEqual
+                                      toItem:customVC.view
+                                      attribute:NSLayoutAttributeCenterX
+                                      multiplier:1.0f
+                                      constant:0.0f]];
+        
+        
+        [chargingCardAlert1 setValue:customVC forKey:@"contentViewController"];
+        
+        [self presentViewController:chargingCardAlert1 animated:YES completion:^{
+            [PaymentVC sharedPaymentVC].delegate = nil;
+            [PaymentVC sharedPaymentVC].delegate = self;
+            [[PaymentVC sharedPaymentVC] createBackendChargeWithToken:[self sharedAppDelegate].userSettings.billing.payment.stripe_Token completion:nil];
+        }];
 
+    }
+    else{
+        UIAlertController *alertC = [UIAlertController alertControllerWithTitle:@"" message:@"Please enter all required information"preferredStyle:UIAlertControllerStyleAlert];
+        
+            UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"OK"
+                                                                   style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                       [alertC dismissViewControllerAnimated:YES completion:nil];
+                                                                   }]; // 2
+        
+            [alertC addAction:cameraAction];
+        
+        [self presentViewController:alertC animated:YES completion:nil];
+    }
 }
 
 #pragma  mark PaymentDelegate
@@ -77,21 +124,21 @@ UIAlertController *alert;
 
 - (void)CardSuccessFullyCharged{
     NSLog(@"Card Successfully Charged");
-    [chargingCardAlert1 dismissViewControllerAnimated:YES completion:^{
-        if (alert) {
-            alert = nil;
-        }
-        alert = [UIAlertController alertControllerWithTitle:@"" message:@"Card Charged"preferredStyle:UIAlertControllerStyleAlert];
-        
-        //    UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"OK"
-        //                                                           style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-        //                                                               [alert dismissViewControllerAnimated:YES completion:nil];
-        //                                                           }]; // 2
-        //
-        //    [alert addAction:cameraAction];
-        
-        [self presentViewController:alert animated:YES completion:nil];
-    }];
+//    [chargingCardAlert1 dismissViewControllerAnimated:YES completion:^{
+//        if (alert) {
+//            alert = nil;
+//        }
+//        alert = [UIAlertController alertControllerWithTitle:@"" message:@"Card Charged"preferredStyle:UIAlertControllerStyleAlert];
+//        
+//        //    UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"OK"
+//        //                                                           style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+//        //                                                               [alert dismissViewControllerAnimated:YES completion:nil];
+//        //                                                           }]; // 2
+//        //
+//        //    [alert addAction:cameraAction];
+//        
+//        [self presentViewController:alert animated:YES completion:nil];
+//    }];
 
 }
 
@@ -121,34 +168,34 @@ UIAlertController *alert;
 UIAlertController *uploadAlert;
 -(void)UploadingImages{
     NSLog(@"Uploading images");
-    [alert dismissViewControllerAnimated:YES completion:^{
-        alert = nil;
-        uploadAlert = [UIAlertController alertControllerWithTitle:@""
-                                                          message:@"Uploading Images"
-                                                   preferredStyle:UIAlertControllerStyleAlert]; // 1
-        
-        UIViewController *customVC     = [[UIViewController alloc] init];
-        [uploadAlert.view setFrame:CGRectMake(0, 300, 320, 275)];
-        
-        UIActivityIndicatorView* spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        [spinner startAnimating];
-        [customVC.view addSubview:spinner];
-        [spinner setCenter:CGPointMake(100, 27)];
-        
-        [customVC.view addConstraint:[NSLayoutConstraint
-                                      constraintWithItem: spinner
-                                      attribute:NSLayoutAttributeCenterX
-                                      relatedBy:NSLayoutRelationEqual
-                                      toItem:customVC.view
-                                      attribute:NSLayoutAttributeCenterX
-                                      multiplier:1.0f
-                                      constant:0.0f]];
-        
-        
-        [uploadAlert setValue:customVC forKey:@"contentViewController"];
-        
-        [self presentViewController:uploadAlert animated:YES completion:nil];
-    }];
+//    [alert dismissViewControllerAnimated:YES completion:^{
+//        alert = nil;
+//        uploadAlert = [UIAlertController alertControllerWithTitle:@""
+//                                                          message:@"Uploading Images"
+//                                                   preferredStyle:UIAlertControllerStyleAlert]; // 1
+//        
+//        UIViewController *customVC     = [[UIViewController alloc] init];
+//        [uploadAlert.view setFrame:CGRectMake(0, 300, 320, 275)];
+//        
+//        UIActivityIndicatorView* spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+//        [spinner startAnimating];
+//        [customVC.view addSubview:spinner];
+//        [spinner setCenter:CGPointMake(100, 27)];
+//        
+//        [customVC.view addConstraint:[NSLayoutConstraint
+//                                      constraintWithItem: spinner
+//                                      attribute:NSLayoutAttributeCenterX
+//                                      relatedBy:NSLayoutRelationEqual
+//                                      toItem:customVC.view
+//                                      attribute:NSLayoutAttributeCenterX
+//                                      multiplier:1.0f
+//                                      constant:0.0f]];
+//        
+//        
+//        [uploadAlert setValue:customVC forKey:@"contentViewController"];
+//        
+//        [self presentViewController:uploadAlert animated:YES completion:nil];
+//    }];
 
     
 }
@@ -157,7 +204,7 @@ UIAlertController *uploadAlert;
 -(void)ImagesSuccessFullyUploaded{
     
     NSLog(@"Images successfully upload");
-    [uploadAlert dismissViewControllerAnimated:YES completion:^{
+    [chargingCardAlert1 dismissViewControllerAnimated:YES completion:^{
         uploadAlert = nil;
         [self performSegueWithIdentifier:@"PaymentComplete" sender:self];
     }];
@@ -168,7 +215,7 @@ UIAlertController *uploadAlert;
 -(void)imageUploadFailure{
     NSLog(@"Upload Failed");
     
-    [uploadAlert dismissViewControllerAnimated:YES completion:^{
+    [chargingCardAlert1 dismissViewControllerAnimated:YES completion:^{
         UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"" message:@"There was a problem uploading your images. Please check your internet connection and try again"preferredStyle:UIAlertControllerStyleAlert];
         
         UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"OK"
@@ -184,15 +231,6 @@ UIAlertController *uploadAlert;
 }
 
 
--(void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:YES];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -200,20 +238,22 @@ UIAlertController *uploadAlert;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 4;
+    return 3;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if (indexPath.row == 2) {
+    if (indexPath.row == 1) {
         [self performSegueWithIdentifier:@"showShipping" sender:self];
     }
     
-    if (indexPath.row == 3) {
+    if (indexPath.row == 2) {
         [self performSegueWithIdentifier:@"showBilling" sender:self];
     }
 }
+
+
 
 
 
@@ -278,16 +318,21 @@ UIAlertController *uploadAlert;
 
 - (void)FinishedEnteringShippingInformation{
     NSLog(@"!!!");
+    shippingOK = YES;
     [self.navigationController popViewControllerAnimated:YES];
-    self.shipping_Address.text = [NSString stringWithFormat:@"%@, %@ %@",[self sharedAppDelegate].userSettings.shipping.street, [self sharedAppDelegate].userSettings.shipping.city, [self sharedAppDelegate].userSettings.shipping.state];
+    self.shipping_Address.text = [NSString stringWithFormat:@"%@",[self sharedAppDelegate].userSettings.shipping.street];
+    self.shipping_City.text = [NSString stringWithFormat:@"%@",[self sharedAppDelegate].userSettings.shipping.city];
+    self.shipping_ZIP.text = [NSString stringWithFormat:@"%@",[self sharedAppDelegate].userSettings.shipping.street];
     [self.shipping_Entered setImage:[UIImage imageNamed:@"MW-Icon-CheckMark.svg.png"]];
 }
 
 - (void)FinishedEnteringBillingInformation{
     [self.navigationController popViewControllerAnimated:YES];
+    billingOK = YES;
     NSString *code = [[self sharedAppDelegate].userSettings.billing.payment.CCN substringFromIndex: [[self sharedAppDelegate].userSettings.billing.payment.CCN length] - 4];
     
     [self sharedAppDelegate].userSettings.billing.payment.CCN = [NSString stringWithFormat:@"**** **** **** %@",code];
+    self.billing_Name.text = [NSString stringWithFormat:@"%@",[self sharedAppDelegate].userSettings.billing.firstName];
     self.billing_Card.text = [NSString stringWithFormat:@"**** **** **** %@",code] ;
     self.billing_Exp.text = [NSString stringWithFormat:@"%@/%@",[self sharedAppDelegate].userSettings.billing.payment.expMonth, [self sharedAppDelegate].userSettings.billing.payment.expYear];
     [self.billing_Entered setImage:[UIImage imageNamed:@"MW-Icon-CheckMark.svg.png"]];

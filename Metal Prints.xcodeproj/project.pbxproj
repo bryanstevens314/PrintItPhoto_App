@@ -108,6 +108,7 @@
 		FB5435B81D8BA50E0069BA98 /* TotalTVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5435B71D8BA50E0069BA98 /* TotalTVCell.m */; };
 		FB5435BB1D8BA62A0069BA98 /* CartTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5435BA1D8BA62A0069BA98 /* CartTVC.m */; };
 		FB5611651D8DBEA7000BDB06 /* check-unmarked.png in Resources */ = {isa = PBXBuildFile; fileRef = FB5611641D8DBEA7000BDB06 /* check-unmarked.png */; };
+		FB9A67441D9253D100731152 /* back-forward-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = FB9A67431D9253D100731152 /* back-forward-arrow.png */; };
 		FBA823401D79A5300028D3A1 /* LoveStoryProjectLogo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FBA8233F1D79A5300028D3A1 /* LoveStoryProjectLogo.jpg */; };
 		FBA823421D7A850E0028D3A1 /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA823411D7A850E0028D3A1 /* Stripe.framework */; };
 		FBA823441D7A85200028D3A1 /* Stripe.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FBA823431D7A85200028D3A1 /* Stripe.bundle */; };
@@ -296,6 +297,7 @@
 		FB5435B91D8BA62A0069BA98 /* CartTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CartTVC.h; sourceTree = "<group>"; };
 		FB5435BA1D8BA62A0069BA98 /* CartTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CartTVC.m; sourceTree = "<group>"; };
 		FB5611641D8DBEA7000BDB06 /* check-unmarked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "check-unmarked.png"; sourceTree = "<group>"; };
+		FB9A67431D9253D100731152 /* back-forward-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back-forward-arrow.png"; sourceTree = "<group>"; };
 		FBA8233F1D79A5300028D3A1 /* LoveStoryProjectLogo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LoveStoryProjectLogo.jpg; sourceTree = "<group>"; };
 		FBA823411D7A850E0028D3A1 /* Stripe.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Stripe.framework; sourceTree = "<group>"; };
 		FBA823431D7A85200028D3A1 /* Stripe.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Stripe.bundle; sourceTree = "<group>"; };
@@ -704,6 +706,7 @@
 		FBF301D01D6B2F730076C070 /* Order VCs */ = {
 			isa = PBXGroup;
 			children = (
+				FB9A67431D9253D100731152 /* back-forward-arrow.png */,
 				FB5047F91D5E94B500B2E223 /* ShippingInfoVC.h */,
 				FB5047FA1D5E94B500B2E223 /* ShippingInfoVC.m */,
 				FBF301CC1D6B2F460076C070 /* BillingVC.h */,
@@ -832,6 +835,7 @@
 				FBE5C83F1D74756C00B78EC6 /* Screen Shot 2016-08-29 at 6.50.44 AM.png in Resources */,
 				932F2F1C1CC9DDE40050094A /* shopping cart.png in Resources */,
 				FB5047F61D5D64D100B2E223 /* broadway-coffee-mug.jpg in Resources */,
+				FB9A67441D9253D100731152 /* back-forward-arrow.png in Resources */,
 				FB54358F1D8117A30069BA98 /* 10x10 aluminum.png in Resources */,
 				932F2ECF1CC8946E0050094A /* camera icon.png in Resources */,
 				932F2F181CC9D6730050094A /* photosonwood4web.jpg in Resources */,

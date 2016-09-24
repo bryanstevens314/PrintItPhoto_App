@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface CartTVC : UITableViewController 
-
++ (CartTVC *)sharedCartTVC;
 @end

@@ -618,7 +618,8 @@ CGRect SquareCGRectAtCenter(CGFloat centerX, CGFloat centerY, CGFloat size) {
 
 - (void)handleDragBottomRight:(CGPoint)dragLocation {
     CGSize disp = [self deriveDisplacementFromDragLocation:dragLocation draggedPoint:dragPoint.bottomRightCenter oppositePoint:dragPoint.topLeftCenter];
-    CGPoint bottomRight = CGPointMake(dragPoint.bottomRightCenter.x + disp.width, (dragPoint.bottomRightCenter.x + disp.width)/self.cropRatio);
+    NSInteger sum = dragPoint.bottomRightCenter.x  + disp.width ;
+    CGPoint bottomRight = CGPointMake(dragPoint.bottomRightCenter.x + disp.width, sum/ self.cropRatio);
     CGPoint topRight = CGPointMake(bottomRight.x, dragPoint.topRightCenter.y);
     CGPoint bottomLeft = CGPointMake(dragPoint.bottomLeftCenter.x, bottomRight.y);
     NSLog(@"Ratio: %f",self.cropRatio);

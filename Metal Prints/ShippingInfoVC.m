@@ -73,7 +73,7 @@ UIBarButtonItem *rightBarButtonItem5;
     shippingTable = [ShippingTVC sharedShippingTVC];
     shippingTable.delegate = self;
     shippingTable.ShippingPresenting = YES;
-    shippingTable.tableView.frame = CGRectMake(self.orderDataView.frame.origin.x, self.orderDataView.frame.origin.y-125, self.orderDataView.frame.size.width, self.orderDataView.frame.size.height);
+    shippingTable.tableView.frame = CGRectMake(self.orderDataView.frame.origin.x, self.orderDataView.frame.origin.y-142, self.orderDataView.frame.size.width, self.orderDataView.frame.size.height);
     [self.orderDataView addSubview:shippingTable.tableView];
     if ([self sharedAppDelegate].userSettings == nil) {
         [self sharedAppDelegate].userSettings = [[UserObject alloc] init];

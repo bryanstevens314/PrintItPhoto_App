@@ -69,9 +69,17 @@
     self.keyboardDoneButtonView1.tintColor = nil;
     [self.keyboardDoneButtonView1 sizeToFit];
     UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back"
-                                                                   style:UIBarButtonItemStyleDone target:self
-                                                                  action:@selector(BackClicked:)];
+    
+    UIImage* image3 = [UIImage imageNamed:@"back-forward-arrow.png"];
+    CGRect frameimg = CGRectMake(0, 0, 33, 25);
+    UIButton *someButton = [[UIButton alloc] initWithFrame:frameimg];
+    [someButton setBackgroundImage:image3 forState:UIControlStateNormal];
+    [someButton addTarget:self action:@selector(BackClicked:)
+         forControlEvents:UIControlEventTouchUpInside];
+    [someButton setShowsTouchWhenHighlighted:YES];
+    
+    UIBarButtonItem *backButton =[[UIBarButtonItem alloc] initWithCustomView:someButton];
+    
     UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:@"Next"
                                                                    style:UIBarButtonItemStyleDone target:self
                                                                   action:@selector(NextClicked:)];

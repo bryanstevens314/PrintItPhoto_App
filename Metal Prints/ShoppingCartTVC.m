@@ -40,7 +40,7 @@
 UIBarButtonItem *rightBarButtonItem6;
 - (void)viewDidLoad {
     [super viewDidLoad];
-    rightBarButtonItem6 = [[UIBarButtonItem alloc] initWithTitle:@"Check Out" style:UIBarButtonItemStylePlain target:self action:@selector(EnterShipping)];
+    rightBarButtonItem6 = [[UIBarButtonItem alloc] initWithTitle:@"Place Order" style:UIBarButtonItemStylePlain target:self action:@selector(EnterShipping)];
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem6];
     [self.navigationItem setTitle:@"Cart"];
     
@@ -792,19 +792,20 @@ NSInteger numberOfPrints;
     
     if (thumbImg.size.width < thumbImg.size.height) {
         NSLog(@"portrait");
-        float newWidth = 120 * division;
+        float newWidth = cell.imgView.frame.size.height * division;
         cell.img_View.frame  = CGRectMake(0, 0, newWidth, 120);
-        cell.img_View.center = CGPointMake(cell.img_View.bounds.size.width/2 + 10 ,centerY/2);
+        cell.img_View.center = CGPointMake(cell.imgView.center.x ,cell.imgView.center.y);
         cell.img_View.image = thumbImg;
         [cell.contentView addSubview:cell.img_View];
         cell.imgViewURL = [cartArray objectAtIndex:6];
     }
     if (thumbImg.size.width > thumbImg.size.height) {
         NSLog(@"landscape");
-        float newWidth = 80 * division;
-        NSLog(@"%f",newWidth);
-        [cell.img_View setFrame:CGRectMake(0, 0, newWidth, 80)];
-        [cell.img_View setCenter:CGPointMake(cell.img_View.bounds.size.width/2 + 10 ,centerY/2)];
+        int maxImageWidth = cell.product.frame.origin.x-20;
+        float newHeight = maxImageWidth / division;
+        NSLog(@"%f",newHeight);
+        [cell.img_View setFrame:CGRectMake(0, 0, maxImageWidth, newHeight)];
+        [cell.img_View setCenter:CGPointMake(cell.imgView.center.x ,cell.imgView.center.y)];
         cell.img_View.image = thumbImg;
         [cell.contentView addSubview:cell.img_View];
         cell.imgViewURL = [cartArray objectAtIndex:6];
@@ -812,7 +813,7 @@ NSInteger numberOfPrints;
     if (thumbImg.size.width == thumbImg.size.height) {
         NSLog(@"square");
         [cell.img_View setFrame:CGRectMake(0, 0, 102, 102)];
-        [cell.img_View setCenter:CGPointMake(cell.img_View.bounds.size.width/2 + 10 ,centerY/2)];
+        [cell.img_View setCenter:CGPointMake(cell.imgView.center.x ,cell.imgView.center.y)];
         cell.img_View.image = thumbImg;
         [cell.contentView addSubview:cell.img_View];
         cell.imgViewURL = [cartArray objectAtIndex:6];
@@ -1133,7 +1134,7 @@ NSInteger selectedSection;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
 
-    return 178;
+    return 142;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath

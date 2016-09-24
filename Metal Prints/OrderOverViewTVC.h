@@ -13,8 +13,11 @@
 
 @interface OrderOverViewTVC : UITableViewController <ShippingInfoVCDelegate, BillingVCDelegate,PaymentVCDelegate>
 
-@property (weak, nonatomic) IBOutlet UITableView *CartOverviewTable;
+@property (weak, nonatomic) IBOutlet UIView *cartOverViewTalbe;
 @property (weak, nonatomic) IBOutlet UILabel *shipping_Address;
+@property (weak, nonatomic) IBOutlet UILabel *shipping_City;
+@property (weak, nonatomic) IBOutlet UILabel *shipping_ZIP;
+@property (weak, nonatomic) IBOutlet UILabel *billing_Name;
 @property (weak, nonatomic) IBOutlet UILabel *billing_Card;
 @property (weak, nonatomic) IBOutlet UILabel *billing_Exp;
 @property (weak, nonatomic) IBOutlet UIImageView *shipping_Entered;

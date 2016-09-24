@@ -119,9 +119,9 @@ NSTimer *timer2;
     if(responseString)
     {
         NSLog(@"%@",responseString);
-        
+        timer2 = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(PostData) userInfo:nil repeats:NO];
         [self.delegate CardSuccessFullyCharged];
-        timer2 = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(PostData) userInfo:nil repeats:NO];
+        
         
     }
     else{

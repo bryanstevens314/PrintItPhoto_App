@@ -273,7 +273,7 @@ UIAlertController *chargingCardAlert;
 -(void)moveViewUp{
     
     [UIView animateWithDuration:0.25f animations:^{
-        [self.view setFrame:CGRectMake(0,-150,self.view.bounds.size.width,self.view.bounds.size.height+150)];
+        [self.view setFrame:CGRectMake(0,-50,self.view.bounds.size.width,self.view.bounds.size.height+50)];
     }];
     
 }
