@@ -14,7 +14,7 @@
 
 -(void)moveViewUp;
 -(void)moveViewDown;
-
+-(void)displayStateController1;
 @end
 
 
@@ -40,5 +40,5 @@
 @property (weak, nonatomic) IBOutlet UITextField *apt;
 @property (weak, nonatomic) IBOutlet UITextField *City;
 @property (weak, nonatomic) IBOutlet UITextField *zip;
-@property (weak, nonatomic) IBOutlet UITextField *state;
+@property (weak, nonatomic) IBOutlet UITextField *stateText;
 @end

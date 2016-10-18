@@ -22,4 +22,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *billing_Exp;
 @property (weak, nonatomic) IBOutlet UIImageView *shipping_Entered;
 @property (weak, nonatomic) IBOutlet UIImageView *billing_Entered;
+@property (weak, nonatomic) IBOutlet UILabel *cartTotal_Outlet;
+@property (weak, nonatomic) IBOutlet UILabel *tax_Outlet;
+@property (weak, nonatomic) IBOutlet UILabel *shipping_Outlet;
+@property (weak, nonatomic) IBOutlet UILabel *totalPrice_Outlet;
+- (IBAction)PlaceTheOrder:(id)sender;
 @end

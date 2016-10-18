@@ -67,32 +67,32 @@
 -(void)reloadTheCollectionView{
     NSLog(@"Reloading collectionView");
     
-    if ([self sharedAppDelegate].theNewImageArray.count != 0) {
+    if ([self sharedAppDelegate].phoneImageArray.count != 0) {
         loadingImages = YES;
         int x = 0;
-        for (NSArray *imgArray1 in [self sharedAppDelegate].theNewImageArray) {
+        for (NSArray *imgArray1 in [self sharedAppDelegate].phoneImageArray) {
             x++;
             ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
             [library assetForURL:[imgArray1 objectAtIndex:0]
                      resultBlock:^(ALAsset *asset) {
                          
-                         if (x < [self sharedAppDelegate].theNewImageArray.count) {
+                         if (x < [self sharedAppDelegate].phoneImageArray.count) {
                              NSLog(@"Less than: %i",x);
                              
                              UIImage *thumbImg = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
                              if (thumbImg == nil || thumbImg == NULL) {
                                  [[self sharedAppDelegate].phoneImageArray removeObjectAtIndex:x];
                              }else{
-                                 [[self sharedAppDelegate].mutableImageArray insertObject:thumbImg atIndex:0];
+                                 [[self sharedAppDelegate].phoneImageArray insertObject:thumbImg atIndex:0];
                              }
                          }
-                         if (x == [self sharedAppDelegate].theNewImageArray.count) {
+                         if (x == [self sharedAppDelegate].phoneImageArray.count) {
                              NSLog(@"Equal to");
                              UIImage *thumbImg = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
                              if (thumbImg == nil || thumbImg == NULL) {
                                  [[self sharedAppDelegate].phoneImageArray removeObjectAtIndex:x];
                              }else{
-                                 [[self sharedAppDelegate].mutableImageArray insertObject:thumbImg atIndex:0];
+                                 [[self sharedAppDelegate].phoneImageArray insertObject:thumbImg atIndex:0];
                              }
                              
                              loadingImages = NO;
@@ -123,14 +123,10 @@ UIAlertController *loadingAlert;
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSLog(@"Image View did load");
-    // Uncomment the following line to preserve selection between presentations
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Register cell classes
-    
-    //[self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
-
-    //[self.navigationItem setTitle:@"My Gallery"];
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:41.0/255.0 green:127.0/255.0 blue:184.0/255.0 alpha:0.6];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.tabBarController.tabBar.alpha = 0.93;
     self.collectionView.backgroundColor = [UIColor whiteColor];
     loadingImages = YES;
     
@@ -153,11 +149,11 @@ UIAlertController *loadingAlert;
     singleTap.numberOfTapsRequired = 1;
     [self.collectionView  addGestureRecognizer:singleTap];
     
-    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTap:)];
-    doubleTap.numberOfTapsRequired = 2;
-    [self.collectionView  addGestureRecognizer:doubleTap];
-    
-    [singleTap requireGestureRecognizerToFail:doubleTap];
+//    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTap:)];
+//    doubleTap.numberOfTapsRequired = 2;
+//    [self.collectionView  addGestureRecognizer:doubleTap];
+//    
+//    [singleTap requireGestureRecognizerToFail:doubleTap];
 
 }
 
@@ -166,9 +162,9 @@ UIAlertController *loadingAlert;
     CGPoint location = [gesture locationInView:self.collectionView];
     NSIndexPath *tappedIndexPath = [self.collectionView indexPathForItemAtPoint:location];
     ImageCollectionViewCell* cell = [self.collectionView  cellForItemAtIndexPath:tappedIndexPath];
-    currentTempArray = [[self sharedAppDelegate].phoneImageArray objectAtIndex:tappedIndexPath.row];
     iPath = tappedIndexPath;
-    tempImage = [[self sharedAppDelegate].mutableImageArray objectAtIndex:tappedIndexPath.row];
+    currentTempURL = cell.imgURL;
+    tempThumbImg = cell.imageViewCell.image;
     [self performSegueWithIdentifier:@"addCartItem" sender:self];
 }
 
@@ -188,7 +184,7 @@ UIAlertController *loadingAlert;
         
         NSLog(@"Indec: %ld",(long)cell.highlightedArrayIndex);
         NSArray *cellArray = [[self sharedAppDelegate].phoneImageArray objectAtIndex:tappedIndexPath.row];
-        NSArray *highlightedImageArray = @[[cellArray objectAtIndex:0],@""];
+        NSArray *highlightedImageArray = @[[cellArray objectAtIndex:0],@"",[cellArray objectAtIndex:2]];
         [[self sharedAppDelegate].highlightedArray removeObjectAtIndex:cell.highlightedArrayIndex];
         [[self sharedAppDelegate].phoneImageArray replaceObjectAtIndex:tappedIndexPath.row withObject:highlightedImageArray];
         cell.highlightedArrayIndex = 0;
@@ -202,8 +198,8 @@ UIAlertController *loadingAlert;
         cell.highlightedArrayIndex = [self sharedAppDelegate].highlightedArray.count;
         
         NSArray *cellArray = [[self sharedAppDelegate].phoneImageArray objectAtIndex:tappedIndexPath.row];
-        NSArray *highlightedImageArray = @[[cellArray objectAtIndex:0],@"YES"];
-        NSArray *highlightedImageArray1 = @[[cellArray objectAtIndex:0],[[self sharedAppDelegate].mutableImageArray objectAtIndex:tappedIndexPath.row]];
+        NSArray *highlightedImageArray = @[[cellArray objectAtIndex:0],@"YES",[cellArray objectAtIndex:2]];
+        NSArray *highlightedImageArray1 = @[[cellArray objectAtIndex:0],[[self sharedAppDelegate].phoneImageArray objectAtIndex:tappedIndexPath.row]];
         [[self sharedAppDelegate].highlightedArray insertObject:highlightedImageArray1 atIndex:0];
         [[self sharedAppDelegate].phoneImageArray replaceObjectAtIndex:tappedIndexPath.row withObject:highlightedImageArray];
         
@@ -232,7 +228,7 @@ NSIndexPath *firstSelectedIndexPath;
                      UIImage *fullImg = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
                      NSLog(@"Image:%@",fullImg);
                     initialRect = cell.imageViewCell.frame;
-                     float division = cell.imageViewCell.frame.size.width/cell.imageViewCell.frame.size.height;
+                     float division = cell.imageViewCell.image.size.width/cell.imageViewCell.image.size.height;
                      
                      if (fullImg.size.width < fullImg.size.height) {
                          NSLog(@"portrait");
@@ -525,16 +521,21 @@ NSInteger numberOfCells = 0;
     }
     cell.imageViewCell = [[UIImageView alloc] init];
     
-    UIImage  *thumbImg = [[self sharedAppDelegate].mutableImageArray objectAtIndex:indexPath.row];
+    
     NSArray *urlImageArray = [[self sharedAppDelegate].phoneImageArray objectAtIndex:indexPath.row];
     cell.imgURL = [urlImageArray objectAtIndex:0];
-    NSLog(@"%lu",(unsigned long)[self sharedAppDelegate].mutableImageArray.count);
-    NSLog(@"%lu",(unsigned long)[self sharedAppDelegate].phoneImageArray.count);
     NSString *highlighted = [urlImageArray objectAtIndex:1];
+    UIImage  *thumbImg = [urlImageArray objectAtIndex:2];
     //cell.cellImage = thumbImg;
 
     
-    //cell.cellImageView.contentMode = UIViewContentModeScaleAspectFit;
+//    //cell.cellImageView.contentMode = UIViewContentModeScaleAspectFit;
+//    cell.imageViewCell.contentMode = UIViewContentModeScaleAspectFill;
+//    cell.imageViewCell.clipsToBounds = YES;
+//    cell.imageViewCell.frame  = CGRectMake(0, 0, cell.bounds.size.width-2, cell.bounds.size.width - 2);
+//    cell.imageViewCell.center = CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2);
+//    cell.imageViewCell.image = thumbImg;
+//    [cell.contentView addSubview:cell.imageViewCell];
     
     float division = thumbImg.size.width/thumbImg.size.height;
     
@@ -686,6 +687,8 @@ HighlightedImageCVC *imagevc;
 
 
 NSArray *currentTempArray;
+NSURL *currentTempURL;
+UIImage *tempThumbImg;
 NSIndexPath *iPath;
 - (void)imageSelectedWithArray:(NSArray*)array andIndexPath:(NSIndexPath*)path{
     NSLog(@"Selected Image got here");
@@ -719,16 +722,17 @@ NSIndexPath *iPath;
     
 
     if ([segue.identifier isEqualToString:@"addCartItem"]) {
-        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"Back", returnbuttontitle) style:UIBarButtonItemStyleBordered target:nil action:nil];
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"", returnbuttontitle) style:UIBarButtonItemStyleBordered target:nil action:nil];
         self.navigationItem.backBarButtonItem = backButton;
         DetailsTVC *details = segue.destinationViewController;
         details.delegate = self;
         details.selectedImageIndex = iPath;
         details.startingFromHighlightedImage = YES;
-        details.currentImageArray = currentTempArray;
-        details.currentImage = tempImage;
-        NSLog(@"temp Array: %@",currentTempArray);
-        NSLog(@"temp Array: %@",details.currentImageArray);
+        details.selectedImageURL = currentTempURL;
+        details.thumbImg = tempThumbImg;
+//        details.currentImage = tempImage;
+//        NSLog(@"temp Array: %@",currentTempArray);
+//        NSLog(@"temp Array: %@",details.currentImageArray);
     }
 }
 

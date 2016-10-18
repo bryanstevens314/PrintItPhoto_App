@@ -78,6 +78,13 @@ UIBarButtonItem *rightBarButtonItem5;
     if ([self sharedAppDelegate].userSettings == nil) {
         [self sharedAppDelegate].userSettings = [[UserObject alloc] init];
         [self sharedAppDelegate].userSettings.shipping = [[UserShipping alloc] init];
+        [self sharedAppDelegate].userSettings.shipping.Name = @"";
+        [self sharedAppDelegate].userSettings.shipping.street = @"";
+        [self sharedAppDelegate].userSettings.shipping.apt = @"";
+        [self sharedAppDelegate].userSettings.shipping.city = @"";
+        [self sharedAppDelegate].userSettings.shipping.zip = @"";
+        [self sharedAppDelegate].userSettings.shipping.state = @"";
+        [self sharedAppDelegate].userSettings.shipping.country = @"";
     }
     
     
@@ -85,13 +92,24 @@ UIBarButtonItem *rightBarButtonItem5;
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
-    
+    if (stateSelected == NO) {
+        shippingTable.name_TextField.text = [self sharedAppDelegate].userSettings.shipping.Name;
+        shippingTable.street_TextField.text = [self sharedAppDelegate].userSettings.shipping.street;
+        shippingTable.apt_TextField.text = [self sharedAppDelegate].userSettings.shipping.apt;
+        shippingTable.city_TextField.text = [self sharedAppDelegate].userSettings.shipping.city;
+        shippingTable.zip_TextField.text = [self sharedAppDelegate].userSettings.shipping.zip;
+        shippingTable.state_TextField.text = [self sharedAppDelegate].userSettings.shipping.state;
+        shippingTable.country_Textfield.text = [self sharedAppDelegate].userSettings.shipping.country;
+    }
     
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:YES];
-    [shippingTable.name_TextField becomeFirstResponder];
+    if (stateSelected == NO) {
+        [shippingTable.name_TextField becomeFirstResponder];
+    }
+    stateSelected = NO;
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -137,6 +155,7 @@ UIBarButtonItem *rightBarButtonItem5;
 
 }
 
+UIAlertController *calculatingTax1;
 -(void)EnterBilling{
     
     if ([shippingTable.name_TextField isFirstResponder]) {
@@ -170,6 +189,11 @@ UIBarButtonItem *rightBarButtonItem5;
         [shippingTable.zip_TextField resignFirstResponder];
         
     }
+    if ([shippingTable.country_Textfield isFirstResponder]) {
+        NSLog(@"Zip");
+        [shippingTable.country_Textfield resignFirstResponder];
+        
+    }
     
     if (![shippingTable.name_TextField.text isEqualToString: @""] && ![shippingTable.street_TextField.text isEqualToString: @""] && ![shippingTable.city_TextField.text isEqualToString: @""] && ![shippingTable.state_TextField.text isEqualToString: @""] && ![shippingTable.zip_TextField.text isEqualToString: @""] && ![shippingTable.country_Textfield.text isEqualToString: @""]) {
         
@@ -189,84 +213,34 @@ UIBarButtonItem *rightBarButtonItem5;
         
         [self sharedAppDelegate].userSettings.shipping.country = shippingTable.country_Textfield.text;
 
+        calculatingTax1 = [UIAlertController alertControllerWithTitle:@""
+                                                                message:@"Calculating Tax"
+                                                         preferredStyle:UIAlertControllerStyleAlert]; // 1
         
-//        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://development.avalara.net/1.0/tax/get"]];
-//        
-////        {
-////            "DocDate": "2013-01-16",
-////            "CustomerCode": "CUST1",
-////            "DocCode": "DOC0001",
-////            "DocType": "SalesInvoice",
-////            "Addresses":[{
-////                "AddressCode": "1",
-////                "Line1": "100 Ravine Lane NE",
-////                "City": "Bainbridge Island",
-////                "Region": "WA",
-////                "PostalCode": "98110"
-////            }],
-////            "Lines":[{
-////                "LineNo": "1",
-////                "DestinationCode": "1",
-////                "OriginCode": "1",
-////                "Qty": 1,
-////                "Amount": 10
-////            }]
-//            //    }
-//        
-//        NSDictionary *address = [NSDictionary dictionaryWithObjectsAndKeys:
-//                                 [self sharedAppDelegate].userSettings.shipping.street, @"AddressCode",
-//                                 [self sharedAppDelegate].userSettings.shipping.street, @"Line1",
-//                                 [self sharedAppDelegate].userSettings.shipping.city, @"City",
-//                                 [self sharedAppDelegate].userSettings.shipping.state, @"Region",
-//                                 [self sharedAppDelegate].userSettings.shipping.zip, @"PostalCode",nil];
-//        NSDictionary *lines = [NSDictionary dictionaryWithObjectsAndKeys:
-//                               @"1", @"LineNo",
-//                               @"1", @"DestinationCode",
-//                               @"1", @"OriginCode",
-//                               @"1", @"Qty",
-//                               [self sharedAppDelegate].cartTotal, @"Amount",nil];
-//            NSDictionary *chargeParams = [NSDictionary dictionaryWithObjectsAndKeys:
-//                                          @"2013-01-16", @"DocDate",
-//                                          @"CUST1", @"CustomerCode",
-//                                          @"DOC0001", @"DocCode",
-//                                          @"SalesInvoice", @"DocType",
-//                                          address, @"Addresses",
-//                                          lines, @"Lines",nil];
-//            
-//            NSError *error2;
-//            NSData *finalJSONdata = [NSJSONSerialization dataWithJSONObject:chargeParams options:0 error:&error2];
-//            
-//            
-//            [request setHTTPBody:finalJSONdata];
-//            [request setHTTPMethod:@"POST"];
-//            [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-//            [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-//            [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[finalJSONdata length]] forHTTPHeaderField:@"Content-Length"];
-//            
-//            
-//            NSError *err;
-//            NSURLResponse *response;
-//            
-//            
-//            
-//            NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
-//            NSString *responseString = [[NSString alloc]initWithData:responseData encoding:NSASCIIStringEncoding];
-//            
-//            
-//            if(responseString)
-//            {
-//                NSLog(@"%@",responseString);
-//                
-//                
-//                
-//            }
-//            else{
-//                NSLog(@"Error!");
-//                
-//            }
-
-            
-[self.delegate FinishedEnteringShippingInformation];
+        UIViewController *customVC     = [[UIViewController alloc] init];
+        [calculatingTax1.view setFrame:CGRectMake(0, 300, 320, 275)];
+        
+        UIActivityIndicatorView* spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [spinner startAnimating];
+        [customVC.view addSubview:spinner];
+        [spinner setCenter:CGPointMake(100, 27)];
+        
+        [customVC.view addConstraint:[NSLayoutConstraint
+                                      constraintWithItem: spinner
+                                      attribute:NSLayoutAttributeCenterX
+                                      relatedBy:NSLayoutRelationEqual
+                                      toItem:customVC.view
+                                      attribute:NSLayoutAttributeCenterX
+                                      multiplier:1.0f
+                                      constant:0.0f]];
+        
+        
+        [calculatingTax1 setValue:customVC forKey:@"contentViewController"];
+        
+        [self presentViewController:calculatingTax1 animated:YES completion:nil];
+        NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(waiting) userInfo:nil repeats:NO];
+        
+        
         
     }
     else{
@@ -282,6 +256,35 @@ UIBarButtonItem *rightBarButtonItem5;
         [self presentViewController:alert2 animated:YES completion:nil];
     }
     
+}
+
+-(void)waiting{
+    NSString *requestString = [NSString stringWithFormat:@"https://api.zip-tax.com/request/v20?key=XT8Q3U3QHXJ3&postalcode=%@&state=%@&format=JSON",[self sharedAppDelegate].userSettings.shipping.zip,[self sharedAppDelegate].userSettings.shipping.state];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:requestString]];
+    [request setHTTPMethod:@"Get"];
+    
+    NSError *err;
+    NSURLResponse *response;
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
+    NSString *responseString = [[NSString alloc]initWithData:responseData encoding:NSASCIIStringEncoding];
+    
+    if(responseString)
+    {
+        //NSLog(@"%@",responseString);
+        NSData *data = [responseString dataUsingEncoding:NSUTF8StringEncoding];
+        id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+        NSInteger success = [[json objectForKey:@"rCode"] integerValue];
+        if (success == 100) {
+            id resultArray = [json objectForKey:@"results"];
+            id resultDict = [resultArray objectAtIndex:0];
+            float taxPercent = [[resultDict objectForKey:@"taxSales"] floatValue];
+            [calculatingTax1 dismissViewControllerAnimated:YES completion:^{
+                [self.delegate FinishedEnteringShippingInformationWithTaxPercent:taxPercent];
+            }];
+            
+            
+        }
+    }
 }
 
 /*
@@ -305,5 +308,39 @@ UIBarButtonItem *rightBarButtonItem5;
     }];
 }
 
+-(void)displayStateController{
+    [self performSegueWithIdentifier:@"showStates" sender:self];
+}
+
+
+BOOL stateSelected;
+- (void)pickedState:(NSString*)state{
+    stateSelected = YES;
+    [self.navigationController popViewControllerAnimated:YES];
+    shippingTable.state_TextField.text = state;
+    [shippingTable.country_Textfield becomeFirstResponder];
+}
+
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+    if ([segue.identifier isEqualToString:@"showStates"]) {
+        StateTableViewController *states = segue.destinationViewController;
+        states.delegate = self;
+        
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"Back", returnbuttontitle) style:     UIBarButtonItemStyleBordered target:nil action:nil];
+        self.navigationItem.backBarButtonItem = backButton;
+    }
+    if ([segue.identifier isEqualToString:@"showStates1"]) {
+        StateTableViewController *states = segue.destinationViewController;
+        states.delegate = self;
+        
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"Back", returnbuttontitle) style:     UIBarButtonItemStyleBordered target:nil action:nil];
+        self.navigationItem.backBarButtonItem = backButton;
+    }
+}
 
 @end

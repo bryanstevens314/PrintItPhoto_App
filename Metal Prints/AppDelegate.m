@@ -33,45 +33,46 @@
     
     // Override point for customization after application launch.
      [[STPPaymentConfiguration sharedConfiguration] setPublishableKey:@"pk_test_ksluG61goDFXFGzyXZiRriat"];
-    self.AluminumProductArray = @[@[@"2x3",@"6",[UIImage imageNamed:@"2x3 aluminum.png"]],
-                                @[@"4x4",@"12",[UIImage imageNamed:@"4x4 aluminum.png"]],
-                                 @[@"5x5",@"15",[UIImage imageNamed:@"5x5  aluminum.png"]],
-                                  @[@"4x6",@"15",[UIImage imageNamed:@"4x6 aluminum.png"]],
-                                 @[@"5x7",@"18",[UIImage imageNamed:@"5x7 aluminum.png"]],
-                                 @[@"5x10",@"22",[UIImage imageNamed:@"5x10 aluminum.png"]],
-                                  @[@"5x11",@"25",[UIImage imageNamed:@"5x11 aluminum.png"]],
-                                  @[@"8x8",@"22",[UIImage imageNamed:@"8x8 aluminum.png"]],
-                                 @[@"5x17",@"32",[UIImage imageNamed:@"5x17 aluminum.png"]],
-                                  @[@"8x10",@"24",[UIImage imageNamed:@"8x10 aluminum.png"]],
-                                 @[@"8x12",@"28",[UIImage imageNamed:@"8x12 aluminum.png"]],
-                                  @[@"10x10",@"28",[UIImage imageNamed:@"10x10 aluminum.png"]],
-                                 @[@"11x14",@"40",[UIImage imageNamed:@"11x14 aluminum.png"]],
-                                  @[@"12x12",@"40",[UIImage imageNamed:@"12x12 aluminum.png"]],
-                                 @[@"11x17",@"48",[UIImage imageNamed:@"11x17 aluminum.png"]],
-                                 @[@"12x18",@"54",[UIImage imageNamed:@"12x18 aluminum.png"]],];
+    self.AluminumProductArray = @[@[@"2x3",@"6",[UIImage imageNamed:@"2x3 aluminum.png"], @"00000", @"A2x3"],
+                                @[@"4x4",@"12",[UIImage imageNamed:@"4x4 aluminum.png"], @"00000", @"A4x4"],
+                                  @[@"4x6",@"15",[UIImage imageNamed:@"4x6 aluminum.png"], @"00000", @"A4x6"],
+                                 @[@"5x5",@"15",[UIImage imageNamed:@"5x5  aluminum.png"], @"00000", @"A5x5"],
+                                  
+                                 @[@"5x7",@"18",[UIImage imageNamed:@"5x7 aluminum.png"], @"00000", @"A5x7"],
+                                 @[@"5x10",@"22",[UIImage imageNamed:@"5x10 aluminum.png"], @"00000", @"A5x10"],
+                                  @[@"5x11",@"25",[UIImage imageNamed:@"5x11 aluminum.png"], @"00000", @"A5x11"],
+                                  @[@"5x17",@"32",[UIImage imageNamed:@"5x17 aluminum.png"], @"00000", @"A5x17"],
+                                  @[@"8x8",@"22",[UIImage imageNamed:@"8x8 aluminum.png"], @"00000", @"A8x8"],
+                                  @[@"8x10",@"24",[UIImage imageNamed:@"8x10 aluminum.png"], @"00000", @"A8x10"],
+                                 @[@"8x12",@"28",[UIImage imageNamed:@"8x12 aluminum.png"], @"00000", @"A8x12"],
+                                  @[@"10x10",@"28",[UIImage imageNamed:@"10x10 aluminum.png"], @"00000", @"A10x10"],
+                                  @[@"11x14",@"40",[UIImage imageNamed:@"11x14 aluminum.png"], @"00000", @"A11x14"],
+                                  @[@"11x17",@"48",[UIImage imageNamed:@"11x17 aluminum.png"], @"00000", @"A11x17"],
+                                  @[@"12x12",@"40",[UIImage imageNamed:@"12x12 aluminum.png"], @"00000", @"A12x12"],
+                                 @[@"12x18",@"54",[UIImage imageNamed:@"12x18 aluminum.png"], @"00000", @"A12x18"],];
     
-    self.WoodenProductArray = @[@[@"8x8",@"36",[UIImage imageNamed:@"8x8 wood.png"]],
-                               @[@"8x10",@"40",[UIImage imageNamed:@"8x10 wood.png"]],
-                               @[@"10x10",@"44",[UIImage imageNamed:@"10x10 wood.png"]],
-                               @[@"11x14",@"48",[UIImage imageNamed:@"11x14 wood.png"]],];
+    self.WoodenProductArray = @[@[@"8x8",@"36",[UIImage imageNamed:@"8x8 wood.png"], @"00000", @"W8x8"],
+                               @[@"8x10",@"40",[UIImage imageNamed:@"8x10 wood.png"], @"00000", @"W8x10"],
+                               @[@"10x10",@"44",[UIImage imageNamed:@"10x10 wood.png"], @"00000", @"W10x10"],
+                               @[@"11x14",@"48",[UIImage imageNamed:@"11x14 wood.png"], @"00000", @"W11x14"],];
     
-    self.TileProductArray = @[@[@"4x4",@"14",[UIImage imageNamed:@"4x4 tile.png"]],
-                             @[@"6x6",@"18",[UIImage imageNamed:@"6x6 tile.png"]],
-                              @[@"6x8",@"22",[UIImage imageNamed:@"6x8 tile.png"]],
-                              @[@"8x10",@"30",[UIImage imageNamed:@"8x10 tile.png"]],];
+    self.TileProductArray = @[@[@"4x4",@"14",[UIImage imageNamed:@"4x4 tile.png"], @"00000", @"T4x4"],
+                             @[@"6x6",@"18",[UIImage imageNamed:@"6x6 tile.png"], @"00000", @"T6x6"],
+                              @[@"6x8",@"22",[UIImage imageNamed:@"6x8 tile.png"], @"00000", @"T6x8"],
+                              @[@"8x10",@"30",[UIImage imageNamed:@"8x10 tile.png"], @"00000", @"T8x10"],];
     
-    self.SlateProductArray = @[@[@"6x6",@"24",[UIImage imageNamed:@"6x6 slate.png"]],
-                               @[@"6x8",@"30",[UIImage imageNamed:@"6x8 slate.png"]],
-                               @[@"8x12",@"36",[UIImage imageNamed:@"8x12 slate.png"]],];
+    self.SlateProductArray = @[@[@"6x6",@"24",[UIImage imageNamed:@"6x6 slate.png"], @"00000", @"S6x6"],
+                               @[@"6x8",@"30",[UIImage imageNamed:@"6x8 slate.png"], @"00000", @"S6x8"],
+                               @[@"8x12",@"36",[UIImage imageNamed:@"8x12 slate.png"], @"00000", @"S8x12"],];
     
-    self.OtherProductArray = @[@[@"Square Keychain",@"12",[UIImage imageNamed:@"8x12 slate.png"]],
-                              @[@"Rectangle Keychain",@"12",[UIImage imageNamed:@"8x12 slate.png"]],
-                              @[@"Long Keychaing",@"12",[UIImage imageNamed:@"8x12 slate.png"]],
-                              @[@"Dog Tag",@"12",[UIImage imageNamed:@"8x12 slate.png"]],
-                              @[@"Square Pendant",@"16",[UIImage imageNamed:@"8x12 slate.png"]],
-                              @[@"Round Pendant",@"16",[UIImage imageNamed:@"8x12 slate.png"]],
-                              @[@"Long Pendant",@"18",[UIImage imageNamed:@"8x12 slate.png"]],
-                              @[@"Clock",@"36",[UIImage imageNamed:@"8x12 slate.png"]],];
+    self.OtherProductArray = @[@[@"Square Keychain",@"12",[UIImage imageNamed:@"8x12 slate.png"], @"00000", @"O-SKey"],
+                              @[@"Rectangle Keychain",@"12",[UIImage imageNamed:@"8x12 slate.png"], @"00000", @"O-RKey"],
+                              @[@"Long Keychaing",@"12",[UIImage imageNamed:@"8x12 slate.png"], @"00000", @"O-LKey"],
+                              @[@"Dog Tag",@"12",[UIImage imageNamed:@"8x12 slate.png"], @"00000", @"0-DTag"],
+                              @[@"Square Pendant",@"16",[UIImage imageNamed:@"8x12 slate.png"], @"00000", @"O-SPen"],
+                              @[@"Round Pendant",@"16",[UIImage imageNamed:@"8x12 slate.png"], @"00000", @"O-RPen"],
+                              @[@"Long Pendant",@"18",[UIImage imageNamed:@"8x12 slate.png"], @"00000", @"O-LPen"],
+                              @[@"Clock",@"36",[UIImage imageNamed:@"8x12 slate.png"], @"00000", @"O-Clock"],];
     
     self.categoryArray = @[@"Aluminum",@"Wood",@"Tile",@"Slate",@"Other Goodies",];
     
@@ -93,6 +94,7 @@
         self.cartTotal = [[array objectAtIndex:0] integerValue];
         self.cartPrintTotal = [[array objectAtIndex:1] integerValue];
     }
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     // Initialize Reachability
     Reachability *reachability = [Reachability reachabilityWithHostName:@"https://www.google.com"];
     
@@ -154,7 +156,7 @@ NSInteger x = 0;
     
 
     void (^assetEnumerator)( ALAsset *, NSUInteger, BOOL *) = ^(ALAsset *result, NSUInteger index, BOOL *stop) {
-        NSLog(@"%@",result);
+        NSLog(@"%lu",(unsigned long)index);
         
 
         if(result != nil && result != NULL) {
@@ -164,97 +166,46 @@ NSInteger x = 0;
                 
                 NSURL *url= (NSURL*) [[result defaultRepresentation]url];
                 UIImage *thumbImg = [UIImage imageWithCGImage: [result aspectRatioThumbnail]];
-                NSArray *array;
-                if (self.tempPhoneImageArray != nil) {
-                    if (x >= 0) {
-                        if ([self.tempPhoneImageArray objectAtIndex:x] != nil) {
-                            NSArray *array1 = [self.tempPhoneImageArray objectAtIndex:x];
-                            array = @[url, [array1 objectAtIndex:1]];
-                            x--;
-                        }
-
-                    }
-                    else{
-                        
-                        array = @[url, @""];
-                        [self.theNewImageArray addObject:array];
-                    }
-                }
-                else{
-                    array = @[url, @""];
-                }
+                
+                NSArray *array = @[url, @"", thumbImg];
+                
 
                 self.totalImageCount++;
                 
                 [self.phoneImageArray insertObject:array atIndex:0];
-                //NSLog(@"Array:%@",self.phoneImageArray);
-                
-                
-                //                if (counting == 25) {
-                //                    counting = 0;
-                //                    [self allPhotosCollected:mutableArray];
-                //                    *stop = YES;
-                //                }
-                
-                //                                 [mutableArray addObject:[UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]]];
-                //                if (counting == 5) {
-                //                    NSLog(@"found 5 images");
-                //                    [self allPhotosCollected:mutableArray];
-                //                    *stop = YES;
-                //                }
-                
-                
+   
+
+  
             }
         }
         else{
-            int x = 0;
-            for (NSArray *imgArray1 in self.phoneImageArray) {
-                x++;
-                ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-                [library assetForURL:[imgArray1 objectAtIndex:0]
-                         resultBlock:^(ALAsset *asset) {
-                             
-                             if (x < self.phoneImageArray.count) {
-                                 NSLog(@"Less than: %i",x);
-                                 
-                                 UIImage *thumbImg = [UIImage imageWithCGImage: [asset aspectRatioThumbnail]];
-                                 
-                                 if (thumbImg == nil || thumbImg == NULL) {
-                                     [self.phoneImageArray removeObjectAtIndex:x];
-                                 }else{
-                                     [self.mutableImageArray addObject:thumbImg];
-                                 }
-                             }
-                             if (x == self.phoneImageArray.count) {
-                                 NSLog(@"Equal to");
-                                 UIImage *thumbImg = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
-                                 if (thumbImg == nil || thumbImg == NULL) {
-                                     [self.phoneImageArray removeObjectAtIndex:x];
-                                 }else{
-                                     [self.mutableImageArray addObject:thumbImg];
-                                 }
-                                
-                                 
-                                 self.loadingImages = NO;
-                                 [[Front_EndVC sharedFrontEnd_VC] FinishedLoadingImages];
-                                 
-                                 
-                             }
-                                 
-
-                         }
-                 
-                        failureBlock:^(NSError *error){
-                            NSLog(@"operation was not successfull!");
-                        }];
-                
-            }
-            
-
-//            if (self.reloadImageCollection == YES) {
-//                [[ImageCollectionViewController sharedImageCollectionViewController] reloadTheCollectionView];
-//            }
+            self.loadingImages = NO;
+            [[Front_EndVC sharedFrontEnd_VC] FinishedLoadingImages];
         }
+//        else{
+//            int x = 0;
+//            for (NSArray *imgArray1 in self.phoneImageArray) {
+//                x++;
+//                ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+//                [library assetForURL:[imgArray1 objectAtIndex:0]
+//                         resultBlock:^(ALAsset *asset) {
+//                             
+//
+//                                 
+//
+//                         }
+//                 
+//                        failureBlock:^(NSError *error){
+//                            NSLog(@"operation was not successfull!");
+//                        }];
+//                
+//            }
+//            
+//
+////            if (self.reloadImageCollection == YES) {
+////                [[ImageCollectionViewController sharedImageCollectionViewController] reloadTheCollectionView];
+////            }
+//        }
     };
     
     NSMutableArray *assetGroups = [[NSMutableArray alloc] init];
@@ -265,45 +216,36 @@ NSInteger x = 0;
             [assetGroups addObject:group];
             //NSLog(@"AssetGroup%@",assetGroups);
             count = [group numberOfAssets];
-            if (self.phoneImageArray.count != 0) {
-                if (count != self.phoneImageArray.count) {
-                    NSLog(@"");
-                    self.tempPhoneImageArray = self.phoneImageArray;
-                    if (self.phoneImageArray != nil) {
-                        self.phoneImageArray = nil;
-                    }
-                    self.phoneImageArray = [[NSMutableArray alloc] init];
-                    self.theNewImageArray = [[NSMutableArray alloc] init];
-                    self.mutableImageArray = [[NSMutableArray alloc] init];
-                    if (self.tempPhoneImageArray != nil) {
-                        x = self.tempPhoneImageArray.count - 1;
-                    }
+            if (count != 0) {
+                if (self.phoneImageArray != nil) {
+                    self.phoneImageArray = nil;
+                }
+                self.phoneImageArray = [[NSMutableArray alloc] init];
 
-                    [group enumerateAssetsUsingBlock:assetEnumerator];
-                }
+                [group enumerateAssetsUsingBlock:assetEnumerator];
             }
-            else{
-                if ([[NSFileManager defaultManager] fileExistsAtPath:[self archiveImageArray]]) {
-                    self.tempPhoneImageArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archiveImageArray]];
-                    if (count != self.tempPhoneImageArray.count) {
-                        if (self.phoneImageArray != nil) {
-                            self.phoneImageArray = nil;
-                        }
-                        self.phoneImageArray = [[NSMutableArray alloc] init];
-                        self.theNewImageArray = [[NSMutableArray alloc] init];
-                        self.mutableImageArray = [[NSMutableArray alloc] init];
-                        if (self.tempPhoneImageArray != nil) {
-                            x = self.tempPhoneImageArray.count - 1;
-                        }
-                        [group enumerateAssetsUsingBlock:assetEnumerator];
-                    }
-                }
-                else{
-                    self.phoneImageArray = [[NSMutableArray alloc] init];
-                    self.mutableImageArray = [[NSMutableArray alloc] init];
-                    [group enumerateAssetsUsingBlock:assetEnumerator];
-                }
-            }
+//            else{
+//                if ([[NSFileManager defaultManager] fileExistsAtPath:[self archiveImageArray]]) {
+//                    self.tempPhoneImageArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archiveImageArray]];
+//                    if (count != self.tempPhoneImageArray.count) {
+//                        if (self.phoneImageArray != nil) {
+//                            self.phoneImageArray = nil;
+//                        }
+//                        self.phoneImageArray = [[NSMutableArray alloc] init];
+//                        self.theNewImageArray = [[NSMutableArray alloc] init];
+//                        self.mutableImageArray = [[NSMutableArray alloc] init];
+//                        if (self.tempPhoneImageArray != nil) {
+//                            x = self.tempPhoneImageArray.count - 1;
+//                        }
+//                        [group enumerateAssetsUsingBlock:assetEnumerator];
+//                    }
+//                }
+//                else{
+//                    self.phoneImageArray = [[NSMutableArray alloc] init];
+//                    self.mutableImageArray = [[NSMutableArray alloc] init];
+//                    [group enumerateAssetsUsingBlock:assetEnumerator];
+//                }
+//            }
             
         }
     };
@@ -361,12 +303,8 @@ NSInteger x = 0;
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     NSLog(@"Got To Here");
-    [NSKeyedArchiver archiveRootObject:self.phoneImageArray toFile:[self archiveImageArray]];
-    [NSKeyedArchiver archiveRootObject:self.imagesInCartArray toFile:[self archiveImagesInCart]];
-    [NSKeyedArchiver archiveRootObject:self.highlightedArray toFile:[self archivehighlightedImages]];
-    NSArray *array = @[[NSString stringWithFormat:@"%ld",(long)self.cartTotal], [NSString stringWithFormat:@"%ld",(long)self.cartPrintTotal]];
-    [NSKeyedArchiver archiveRootObject:array toFile:[self archiveCartTotals]];
-    NSLog(@"got here");
+
+
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
@@ -412,6 +350,13 @@ NSInteger x = 0;
     NSArray *documentDirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docDir = documentDirs[0];
     return [docDir stringByAppendingPathComponent:@"cartTotals"];
+}
+
+
+- (NSString*)archiveOrderAttemp{
+    NSArray *documentDirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docDir = documentDirs[0];
+    return [docDir stringByAppendingPathComponent:@"orderAttempt"];
 }
 
 @end

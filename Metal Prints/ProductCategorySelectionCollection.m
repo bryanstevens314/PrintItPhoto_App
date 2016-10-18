@@ -131,24 +131,29 @@ static NSString * const reuseIdentifier = @"Cell";
 //    cell.contentView.layer.borderWidth = 1.0;
 //    cell.contentView.layer.borderColor = [[UIColor blackColor] CGColor];
     if (indexPath.row == 0) {
-        cell.label.text = @"";
-        cell.productImage.image = [UIImage imageNamed:@"aluminum-tin-cans.jpg"];
+        cell.label.text = @"Aluminum";
+        cell.backgroundColor = [UIColor grayColor];
+        //cell.productImage.image = [UIImage imageNamed:@"aluminum-tin-cans.jpg"];
     }
     if (indexPath.row == 1) {
-        cell.label.text = @"";
-        cell.productImage.image = [UIImage imageNamed:@"wildtextures-old-wood-original-file.jpg"];
+        cell.label.text = @"Wood";
+        cell.backgroundColor = [UIColor grayColor];
+        //cell.productImage.image = [UIImage imageNamed:@"wildtextures-old-wood-original-file.jpg"];
     }
     if (indexPath.row == 2) {
-        cell.label.text = @"";
-        cell.productImage.image = [UIImage imageNamed:@"broadway-coffee-mug.jpg"];
+        cell.label.text = @"Tile";
+        cell.backgroundColor = [UIColor grayColor];
+        //cell.productImage.image = [UIImage imageNamed:@"broadway-coffee-mug.jpg"];
     }
     if (indexPath.row == 3) {
-        cell.label.text = @"";
-        cell.productImage.image = [UIImage imageNamed:@"d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg"];
+        cell.label.text = @"Slate";
+        cell.backgroundColor = [UIColor grayColor];
+        //cell.productImage.image = [UIImage imageNamed:@"d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg"];
     }
     if (indexPath.row == 4) {
-        cell.label.text = @"";
-        cell.productImage.image = [UIImage imageNamed:@"d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg"];
+        cell.label.text = @"Other Goodies";
+        cell.backgroundColor = [UIColor grayColor];
+        //cell.productImage.image = [UIImage imageNamed:@"d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg"];
     }
     
     return cell;

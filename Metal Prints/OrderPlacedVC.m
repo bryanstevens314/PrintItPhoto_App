@@ -7,6 +7,7 @@
 //
 
 #import "OrderPlacedVC.h"
+#import "TabController.h"
 
 @interface OrderPlacedVC ()
 
@@ -18,11 +19,13 @@
     [super viewDidLoad];
     UIBarButtonItem *rightBarButtonItem4 = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(Done)];
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem4];
-    [self.navigationItem setTitle:@""];
+    [self.navigationItem setTitle:@"Thank You!"];
+    [self.navigationItem setHidesBackButton:YES];
 }
 
 - (void)Done {
-    [self performSegueWithIdentifier:@"Done" sender:self];
+    TabController *tController = [TabController sharedTabController];
+    [self presentViewController:tController animated:YES completion:nil];
 }
 
 /*

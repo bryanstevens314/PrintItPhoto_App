@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "Order.h"
 
+
 @interface ShippingTVC ()
 
 
@@ -50,10 +51,7 @@
         storyboard = [UIStoryboard storyboardWithName:@"Main_5.5_inch" bundle:nil];
         // NSLog(@"Device has a 4inch Display.");
     }
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedInstance = (ShippingTVC*)[storyboard instantiateViewControllerWithIdentifier: @"shipping"];
-    });
+    sharedInstance = (ShippingTVC*)[storyboard instantiateViewControllerWithIdentifier: @"shipping"];
     return sharedInstance;
 }
 
@@ -106,6 +104,13 @@
    
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+
+    
+    
+}
+
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:YES];
@@ -142,24 +147,25 @@
         [self.apt_TextField becomeFirstResponder];
     }
     
-    if ([self.state_TextField isFirstResponder] && stop == NO) {
-        NSLog(@"state");
-        stop = YES;
-        [self.city_TextField becomeFirstResponder];
-    }
+
     
     if ([self.zip_TextField isFirstResponder] && stop == NO) {
         NSLog(@"Zip");
         stop = YES;
-        [self.state_TextField becomeFirstResponder];
+        [self.city_TextField becomeFirstResponder];
         
 
     }
     
+    if ([self.state_TextField isFirstResponder] && stop == NO) {
+        NSLog(@"state");
+        stop = YES;
+        [self.zip_TextField becomeFirstResponder];
+    }
     if ([self.country_Textfield isFirstResponder] && stop == NO) {
         NSLog(@"Zip");
         stop = YES;
-        [self.zip_TextField becomeFirstResponder];
+        [self.delegate displayStateController];
         
         
     }
@@ -188,16 +194,18 @@
         [self.city_TextField resignFirstResponder];
     }
     
-    if ([self.state_TextField isFirstResponder]) {
-        NSLog(@"state");
-        [self.state_TextField resignFirstResponder];
-    }
-    
     if ([self.zip_TextField isFirstResponder]) {
         NSLog(@"Zip");
         [self.zip_TextField resignFirstResponder];
         
     }
+    
+    if ([self.state_TextField isFirstResponder]) {
+        NSLog(@"state");
+        [self.state_TextField resignFirstResponder];
+    }
+    
+
     
     if ([self.country_Textfield isFirstResponder]) {
         NSLog(@"state");
@@ -209,43 +217,50 @@
 - (void)NextClicked:(id)sender {
     BOOL stop = NO;
     if ([self.name_TextField isFirstResponder] && stop == NO) {
+        [self sharedAppDelegate].userSettings.shipping.Name = self.name_TextField.text;
         NSLog(@"name");
         stop = YES;
         [self.street_TextField becomeFirstResponder];
     }
     
     if ([self.street_TextField isFirstResponder] && stop == NO) {
+        [self sharedAppDelegate].userSettings.shipping.street = self.street_TextField.text;
         NSLog(@"email");
         stop = YES;
         [self.apt_TextField becomeFirstResponder];
     }
     
     if ([self.apt_TextField isFirstResponder] && stop == NO) {
+        [self sharedAppDelegate].userSettings.shipping.apt = self.apt_TextField.text;
         NSLog(@"street");
         stop = YES;
         [self.city_TextField becomeFirstResponder];
     }
     
     if ([self.city_TextField isFirstResponder] && stop == NO) {
-        NSLog(@"city");
-        stop = YES;
-        [self.state_TextField becomeFirstResponder];
-    }
-    
-    if ([self.state_TextField isFirstResponder] && stop == NO) {
+        [self sharedAppDelegate].userSettings.shipping.city = self.city_TextField.text;
         NSLog(@"city");
         stop = YES;
         [self.zip_TextField becomeFirstResponder];
     }
-    
     if ([self.zip_TextField isFirstResponder] && stop == NO) {
+        [self sharedAppDelegate].userSettings.shipping.zip = self.zip_TextField.text;
         NSLog(@"state");
         stop = YES;
-        [self.country_Textfield becomeFirstResponder];
-        //[self.delegate zipIsFirstResponderMoveViewUp];
+        [self.delegate displayStateController];
     }
     
+    if ([self.state_TextField isFirstResponder] && stop == NO) {
+        [self sharedAppDelegate].userSettings.shipping.state = self.state_TextField.text;
+        NSLog(@"city");
+        stop = YES;
+        [self.country_Textfield becomeFirstResponder];
+    }
+    
+
+    
     if ([self.country_Textfield isFirstResponder] && stop == NO) {
+        [self sharedAppDelegate].userSettings.shipping.country = self.country_Textfield.text;
         NSLog(@"Zip");
         stop = YES;             
         [self.country_Textfield resignFirstResponder];
@@ -270,16 +285,19 @@
     }
     if (textField == self.city_TextField) {
         stop = YES;
-        [self.state_TextField becomeFirstResponder];
-    }
-    if (textField == self.state_TextField) {
-        stop = YES;
         [self.zip_TextField becomeFirstResponder];
+        
     }
     if (textField == self.zip_TextField) {
         stop = YES;
+        [self.state_TextField becomeFirstResponder];
+        
+    }
+    if (textField == self.state_TextField) {
+        stop = YES;
         [self.country_Textfield becomeFirstResponder];
     }
+
     if (textField == self.country_Textfield) {
         stop = YES;
         [self.country_Textfield resignFirstResponder];
@@ -291,8 +309,15 @@
     if (textField == self.zip_TextField) {
         //[self.delegate zipIsFirstResponderMoveViewUp];
     }
+    if (textField == self.state_TextField) {
+        [self.delegate displayStateController];
+    }
     return YES;
 }
+
+
+
+
 
 #pragma mark - Table view data source
 
@@ -391,14 +416,15 @@
 }
 */
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+
 }
-*/
+
 
 @end

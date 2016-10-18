@@ -69,40 +69,49 @@
 
     UIBarButtonItem *rightBarButtonItem3 = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:nil];
     [self.navigationItem setRightBarButtonItem:rightBarButtonItem3];
-    [self.navigationItem setTitle:@"Store"];
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:41.0/255.0 green:127.0/255.0 blue:184.0/255.0 alpha:0.6];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.tabBarController.tabBar.alpha = 0.9;
+    //[self.tabBarController.tabBar setBarTintColor:[UIColor clearColor]];
+    //[self.tabBarController.tabBar setBackgroundImage:[UIImage new]];
+    collView = [ProductCategorySelectionCollection sharedProductCategorySelectionCollection];
     
-    
+    collView.delegate = self;
+    [self.view addSubview:collView.collectionView];
 
 }
 
 
 UIImageView *launchImageView;
+ProductCategorySelectionCollection *collView;
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
-[self.navigationItem setTitle:@"Store"];
-    ProductCategorySelectionCollection *collView = [ProductCategorySelectionCollection sharedProductCategorySelectionCollection];
-
-    collView.delegate = self;
-    [self.view addSubview:collView.collectionView];
+//    if (collView == nil) {
+//
+//    }
+//    else{
+//       [self.view addSubview:collView.collectionView];
+//    }
+    [self.navigationItem setTitle:@"Store"];
     if ([self sharedAppDelegate].loadingImages == YES) {
         NSLog(@"Loading Images");
         LaunchController *launchControl = [LaunchController sharedLaunchController];
         [[self sharedAppDelegate].window addSubview:launchControl.view];
         [[self sharedAppDelegate].window bringSubviewToFront:launchControl.view];
     }
+
 }
 
 
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewWillAppear:YES];
-
 }
 
 
 - (void)FinishedLoadingImages {
     NSLog(@"Finished");
-    NSLog(@"%lu",(unsigned long)[self sharedAppDelegate].mutableImageArray.count);
     [[LaunchController sharedLaunchController].view removeFromSuperview];
     
 }
@@ -123,7 +132,7 @@ UIImageView *launchImageView;
         order.selectedSection1 = self.selectedProductSection;
         order.currentProductArray1 = self.currentArray1;
         order.delegate = self;
-        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"Cancel", returnbuttontitle) style:     UIBarButtonItemStyleBordered target:nil action:nil];
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"", returnbuttontitle) style:     UIBarButtonItemStyleBordered target:nil action:nil];
         self.navigationItem.backBarButtonItem = backButton;
         
         NSLog(@"initiating segue");
@@ -219,88 +228,57 @@ UIImageView *launchImageView;
         productCollectionVC.delegate = self;
         productCollectionVC.currentProductArray = [self sharedAppDelegate].AluminumProductArray;
         productCollectionVC.selectedSection = section;
-        
-        productCollectionVC.collectionView.frame = CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height-60);
-        [productCollectionVC.collectionView reloadData];
-         [self.view addSubview:productCollectionVC.collectionView];
-        [UIView animateWithDuration:0.2f animations:^{
-            productCollectionVC.collectionView.frame = CGRectOffset(productCollectionVC.collectionView.frame, -self.view.frame.size.width, 0);
-            
+        productCollectionVC.navigationItem.title = @"Aluminum";
+        UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:nil action:nil];
+        [[self navigationItem] setBackBarButtonItem:newBackButton];
+        [self.navigationController pushViewController:productCollectionVC animated:YES];
 
-        }];
-
-        UIBarButtonItem *rightBarButtonItem9 = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backClicked)];
-        [self.navigationItem setLeftBarButtonItem:rightBarButtonItem9];
-        //[self.collectionContainer bringSubviewToFront:productCollectionVC.collectionView];
     }
     if (section == 1) {
         ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
         productCollectionVC.delegate = self;
         productCollectionVC.currentProductArray = [self sharedAppDelegate].WoodenProductArray;
         productCollectionVC.selectedSection = section;
-        productCollectionVC.collectionView.frame = CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
-        [productCollectionVC.collectionView reloadData];
-        [self.view addSubview:productCollectionVC.collectionView];
-        [UIView animateWithDuration:0.2f animations:^{
-            productCollectionVC.collectionView.frame = CGRectOffset(productCollectionVC.collectionView.frame, -self.view.frame.size.width, 0);
-            
+        productCollectionVC.navigationItem.title = @"Wood";
+        UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:nil action:nil];
+        [[self navigationItem] setBackBarButtonItem:newBackButton];
+        [self.navigationController pushViewController:productCollectionVC animated:YES];
 
-        }];
-        
-        UIBarButtonItem *rightBarButtonItem9 = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backClicked)];
-        [self.navigationItem setLeftBarButtonItem:rightBarButtonItem9];
     }
     if (section == 2) {
         ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
         productCollectionVC.delegate = self;
         productCollectionVC.currentProductArray = [self sharedAppDelegate].TileProductArray;
         productCollectionVC.selectedSection = section;
-        productCollectionVC.collectionView.frame = CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
-        [productCollectionVC.collectionView reloadData];
-        [self.view addSubview:productCollectionVC.collectionView];
-        [UIView animateWithDuration:0.2f animations:^{
-            productCollectionVC.collectionView.frame = CGRectOffset(productCollectionVC.collectionView.frame, -self.view.frame.size.width, 0);
-            
+        productCollectionVC.navigationItem.title = @"Tile";
+        UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:nil action:nil];
+        [[self navigationItem] setBackBarButtonItem:newBackButton];
+        [self.navigationController pushViewController:productCollectionVC animated:YES];
 
-        }];
-        
-        UIBarButtonItem *rightBarButtonItem9 = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backClicked)];
-        [self.navigationItem setLeftBarButtonItem:rightBarButtonItem9];
     }
     if (section == 3) {
         ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
         productCollectionVC.delegate = self;
         productCollectionVC.currentProductArray = [self sharedAppDelegate].SlateProductArray;
         productCollectionVC.selectedSection = section;
-        productCollectionVC.collectionView.frame = CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
-        [productCollectionVC.collectionView reloadData];
-        [self.view addSubview:productCollectionVC.collectionView];
-        [UIView animateWithDuration:0.2f animations:^{
-            productCollectionVC.collectionView.frame = CGRectOffset(productCollectionVC.collectionView.frame, -self.view.frame.size.width, 0);
-            
+        productCollectionVC.navigationItem.title = @"Slate";
+        UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:nil action:nil];
+        [[self navigationItem] setBackBarButtonItem:newBackButton];
+        [self.navigationController pushViewController:productCollectionVC animated:YES];
 
-        }];
-        
-        UIBarButtonItem *rightBarButtonItem9 = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backClicked)];
-        [self.navigationItem setLeftBarButtonItem:rightBarButtonItem9];
     }
     if (section == 4) {
         ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
         productCollectionVC.delegate = self;
         productCollectionVC.currentProductArray = [self sharedAppDelegate].OtherProductArray;
         productCollectionVC.selectedSection = section;
-        productCollectionVC.collectionView.frame = CGRectMake(self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height);
-        [productCollectionVC.collectionView reloadData];
-        [self.view addSubview:productCollectionVC.collectionView];
-        [UIView animateWithDuration:0.2f animations:^{
-            productCollectionVC.collectionView.frame = CGRectOffset(productCollectionVC.collectionView.frame, -self.view.frame.size.width, 0);
-            
+        productCollectionVC.navigationItem.title = @"Other Goodies";
+        UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:nil action:nil];
+        [[self navigationItem] setBackBarButtonItem:newBackButton];
+        [self.navigationController pushViewController:productCollectionVC animated:YES];
 
-        }];
-        
-        UIBarButtonItem *rightBarButtonItem9 = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(backClicked)];
-        [self.navigationItem setLeftBarButtonItem:rightBarButtonItem9];
     }
+    
     [self.navigationItem setTitle:[[self sharedAppDelegate].categoryArray objectAtIndex:section]];
 }
 

@@ -33,10 +33,14 @@
 
 @property (retain, nonatomic)NSDictionary *billingInfo;
 @property ( nonatomic)NSInteger cartTotal;
+@property ( nonatomic) BOOL shippingOK;
+@property ( nonatomic) BOOL billingOK;
 @property (nonatomic)NSInteger cartPrintTotal;
 @property (retain, nonatomic) KCSAppdataStore *store;
 @property (retain, nonatomic) TabController *TheTabController;
 @property (retain, nonatomic) UserObject *userSettings;
+@property (retain, nonatomic)NSString *taxPercentString;
+@property (retain, nonatomic)NSString *total_TaxCharged;
 @property (nonatomic) BOOL signedIn;
 @property (nonatomic) BOOL newCartItem;
 @property (nonatomic) BOOL reloadImageCollection;
@@ -44,10 +48,7 @@
 @property (nonatomic) NSInteger totalImageCount;
 
 @property (retain, nonatomic) NSMutableArray *phoneImageArray;
-@property (retain, nonatomic) NSMutableArray *mutableImageArray;
-@property (retain, nonatomic) NSMutableArray *tempPhoneImageArray;
 @property (retain, nonatomic) NSMutableArray *highlightedArray;
-@property (retain, nonatomic) NSMutableArray *imagesInCartArray;
-@property (retain, nonatomic) NSMutableArray *theNewImageArray;
+
 @end
 

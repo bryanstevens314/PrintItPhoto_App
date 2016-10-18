@@ -17,6 +17,8 @@
 @property (retain, nonatomic) NSString *city;
 @property (retain, nonatomic) NSString *state;
 @property (retain, nonatomic) NSString *zip;
+@property (retain, nonatomic) NSString *tax_Percent;
+@property (retain, nonatomic) NSString *tax_TotalCharged;
 
 @property (retain, nonatomic) UserPayment *payment;
 
