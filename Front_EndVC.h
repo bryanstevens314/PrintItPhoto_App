@@ -12,7 +12,7 @@
 #import "ProductCategorySelectionCollection.h"
 #import "DetailsTVC.h"
 
-@interface Front_EndVC : UIViewController <DetailsTVCDelegate, ProductCategoryDelegate,ProductCollectionDelegate,UICollectionViewDelegate,UICollectionViewDataSource>
+@interface Front_EndVC : UIViewController <ProductDelegate,DetailsTVCDelegate, ProductCategoryDelegate,ProductCollectionDelegate,UICollectionViewDelegate,UICollectionViewDataSource>
 
 
 + (Front_EndVC *)sharedFrontEnd_VC;

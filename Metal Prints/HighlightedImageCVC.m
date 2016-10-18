@@ -252,18 +252,18 @@ NSIndexPath *initialSelection;
                      }
 
     
-                     if ([self sharedAppDelegate].imagesInCartArray.count != 0) {
-                         NSURL *highlightedImageURL = [[self sharedAppDelegate].highlightedArray objectAtIndex:indexPath.row];
-                         NSURL *cartImageURL = [[self sharedAppDelegate].imagesInCartArray objectAtIndex:indexPath.row];
-                         if ([[cartImageURL absoluteString] isEqualToString:[highlightedImageURL absoluteString]]) {
-                             [cell.inCartCheck setFrame:CGRectMake(0, 0, 30, 30)];
-                             [cell.inCartCheck setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
-                             UIImage *img = [UIImage imageNamed:@"MW-Icon-CheckMark.svg.png"];
-                             cell.inCartCheck.image = img;
-                         }
-
-                     }
-                     
+//                     if ([self sharedAppDelegate].imagesInCartArray.count != 0) {
+//                         NSURL *highlightedImageURL = [[self sharedAppDelegate].highlightedArray objectAtIndex:indexPath.row];
+//                         NSURL *cartImageURL = [[self sharedAppDelegate].imagesInCartArray objectAtIndex:indexPath.row];
+//                         if ([[cartImageURL absoluteString] isEqualToString:[highlightedImageURL absoluteString]]) {
+//                             [cell.inCartCheck setFrame:CGRectMake(0, 0, 30, 30)];
+//                             [cell.inCartCheck setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
+//                             UIImage *img = [UIImage imageNamed:@"MW-Icon-CheckMark.svg.png"];
+//                             cell.inCartCheck.image = img;
+//                         }
+//
+//                     }
+    
                  
 
 

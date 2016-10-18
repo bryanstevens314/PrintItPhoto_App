@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "CCTVC.h"
 #import "PaymentVC.h"
-
+#import "StateTableViewController.h"
 @class BillingVC;
 
 @protocol BillingVCDelegate
@@ -18,7 +18,7 @@
 
 @end
 
-@interface BillingVC : UIViewController <CCTVCDelegate,PaymentVCDelegate>
+@interface BillingVC : UIViewController <CCTVCDelegate,PaymentVCDelegate,StateTableViewControllerDelegate>
 @property (weak, nonatomic) id<BillingVCDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UIView *tableContentView;
 @end

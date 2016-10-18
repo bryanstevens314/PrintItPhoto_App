@@ -41,6 +41,7 @@ float IMAGE_MIN_WIDTH = 400;
 
 - (void)viewDidLoad
 {
+    NSLog(@"Image crop controller did load");
     [super viewDidLoad];
     if (self){
         UIView *contentView = [[UIView alloc] init];
@@ -61,13 +62,37 @@ float IMAGE_MIN_WIDTH = 400;
                                                   target:self
                                                   action:@selector(done:)];
         CGSize statusBarSize = [[UIApplication sharedApplication] statusBarFrame].size;
-        CGRect view = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height - [[self navigationController] navigationBar].bounds.size.height - statusBarSize.height);
+        CGRect view;
+        float imageRatio = self.image.size.width/self.image.size.height;
+        if (self.image.size.width < self.image.size.height) {
+            NSLog(@"portrait");
+            
+            float newWidth = (self.view.bounds.size.height -
+                              [[UIApplication sharedApplication] statusBarFrame].size.height -
+                              self.navigationController.navigationBar.bounds.size.height -
+                              self.navigationController.toolbar.bounds.size.height) * imageRatio;
+            
+            view = CGRectMake(0, (self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height), newWidth , (self.view.bounds.size.height -
+                                            [[UIApplication sharedApplication] statusBarFrame].size.height -
+                                            self.navigationController.navigationBar.bounds.size.height -
+                                            self.navigationController.toolbar.bounds.size.height));
+        }
+        if (self.image.size.width > self.image.size.height) {
+            NSLog(@"landscape");
+            float newHeight = self.view.bounds.size.width / imageRatio;
+            view = CGRectMake(0, 0, self.view.bounds.size.width , newHeight);
+        }
+        if (self.image.size.width == self.image.size.height) {
+            NSLog(@"square");
+            view = CGRectMake(0, 0, self.view.bounds.size.width , self.view.bounds.size.width);
+        }
+        
         self.cropView  = [[ImageCropView alloc] initWithFrame:view blurOn:self.blurredBackground];
         self.cropView.cropRatio = self.ratio;
-        contentView.backgroundColor = [UIColor grayColor];
+        contentView.backgroundColor = [UIColor blackColor];
         self.view = contentView;
         [contentView addSubview:cropView];
-        [self.cropView setCenter:CGPointMake([UIScreen mainScreen].bounds.size.width/2,[UIScreen mainScreen].bounds.size.height/2 + [[self navigationController] navigationBar].bounds.size.height - statusBarSize.height)];
+        [self.cropView setCenter:CGPointMake([UIScreen mainScreen].bounds.size.width/2,[UIScreen mainScreen].bounds.size.height/2)];
         [cropView setImage:self.image];
         if (_cropArea.size.width > 0) {
             self.cropView.cropAreaInImage = _cropArea;
@@ -76,7 +101,7 @@ float IMAGE_MIN_WIDTH = 400;
         self.navigationController.toolbarHidden = NO;
         UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
         
-        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Rotate"
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Rotate Crop"
                                                                        style:UIBarButtonItemStyleDone target:self
                                                                       action:@selector(rotateCrop)];
 
@@ -96,12 +121,14 @@ BOOL rotated;
     if (rotated == NO) {
         if (self.cropView) {
             self.cropView.cropAreaInImage = CGRectMake(0, 0, _cropArea.size.height, _cropArea.size.width);
+            self.cropView.rotatedCrop = YES;
             rotated = YES;
         }
     }
     else{
         if (self.cropView) {
             self.cropView.cropAreaInImage = CGRectMake(0, 0, _cropArea.size.width, _cropArea.size.height);
+            self.cropView.rotatedCrop = NO;
             rotated = NO;
         }
     }
@@ -559,10 +586,22 @@ CGRect SquareCGRectAtCenter(CGFloat centerX, CGFloat centerY, CGFloat size) {
 
 - (void)handleDragTopLeft:(CGPoint)dragLocation {
     CGSize disp = [self deriveDisplacementFromDragLocation:dragLocation draggedPoint:dragPoint.topLeftCenter oppositePoint:dragPoint.bottomRightCenter];
-    CGPoint topLeft = CGPointMake(dragPoint.topLeftCenter.x + disp.width, dragPoint.topLeftCenter.y + disp.height);
-    CGPoint topRight = CGPointMake(dragPoint.topRightCenter.x, dragPoint.topLeftCenter.y + disp.height);
-    CGPoint bottomLeft = CGPointMake(dragPoint.bottomLeftCenter.x + disp.width, dragPoint.bottomLeftCenter.y);
+    float sum = dragPoint.topLeftCenter.x + disp.width;
+    float this;
+    if (self.rotatedCrop == NO) {
+        this = sum/ self.cropRatio;
+    }
+    else{
+        this = sum* self.cropRatio;
+    }
     
+    CGPoint topLeft = CGPointMake(dragPoint.topLeftCenter.x + disp.width, this);
+    CGPoint topRight = CGPointMake(dragPoint.topRightCenter.x, topLeft.y);
+    CGPoint bottomLeft = CGPointMake(topLeft.x, dragPoint.bottomLeftCenter.y);
+    
+    NSLog(@"%f",self.cropRatio);
+    float afloat = topLeft.x / topLeft.y;
+    NSLog(@"%f",afloat);
 //    // Make sure that the new cropping area will not be smaller than the minimum image size
 //    CGFloat width = topRight.x - topLeft.x;
 //    CGFloat height = bottomLeft.y - topLeft.y;
@@ -588,9 +627,18 @@ CGRect SquareCGRectAtCenter(CGFloat centerX, CGFloat centerY, CGFloat size) {
 }
 - (void)handleDragBottomLeft:(CGPoint)dragLocation {
     CGSize disp = [self deriveDisplacementFromDragLocation:dragLocation draggedPoint:dragPoint.bottomLeftCenter oppositePoint:dragPoint.topRightCenter];
-    CGPoint bottomLeft = CGPointMake(dragPoint.bottomLeftCenter.x + disp.width, dragPoint.bottomLeftCenter.y + disp.height);
-    CGPoint topLeft = CGPointMake(dragPoint.topLeftCenter.x + disp.width, dragPoint.topLeftCenter.y);
-    CGPoint bottomRight = CGPointMake(dragPoint.bottomRightCenter.x, dragPoint.bottomRightCenter.y + disp.height);
+    
+    float sum = dragPoint.bottomLeftCenter.x + disp.width;
+    float this;
+    if (self.rotatedCrop == NO) {
+        this = sum/ self.cropRatio;
+    }
+    else{
+        this = sum* self.cropRatio;
+    }
+    CGPoint bottomLeft = CGPointMake(dragPoint.bottomLeftCenter.x + disp.width, this);
+    CGPoint topLeft = CGPointMake(bottomLeft.x, dragPoint.topLeftCenter.y);
+    CGPoint bottomRight = CGPointMake(dragPoint.bottomRightCenter.x, bottomLeft.y);
     
 //    // Make sure that the new cropping area will not be smaller than the minimum image size
 //    CGFloat width = bottomRight.x - bottomLeft.x;
@@ -617,41 +665,114 @@ CGRect SquareCGRectAtCenter(CGFloat centerX, CGFloat centerY, CGFloat size) {
 }
 
 - (void)handleDragBottomRight:(CGPoint)dragLocation {
-    CGSize disp = [self deriveDisplacementFromDragLocation:dragLocation draggedPoint:dragPoint.bottomRightCenter oppositePoint:dragPoint.topLeftCenter];
-    CGPoint bottomRight = CGPointMake(dragPoint.bottomRightCenter.x + disp.width, (dragPoint.bottomRightCenter.x + disp.width)/self.cropRatio);
-    CGPoint topRight = CGPointMake(bottomRight.x, dragPoint.topRightCenter.y);
-    CGPoint bottomLeft = CGPointMake(dragPoint.bottomLeftCenter.x, bottomRight.y);
-    NSLog(@"Ratio: %f",self.cropRatio);
-//    // Make sure that the new cropping area will not be smaller than the minimum image size
-//    CGFloat width = bottomRight.x - bottomLeft.x;
-//    CGFloat height = bottomRight.y - topRight.y;
-//    width = width * self.imageScale;
-//    height = height * self.imageScale;
-//    
-//    // If the crop area is too small, set the points at the minimum spacing.
-//    CGRect cropArea = [self cropAreaFromControlPoints];
-//    if (width >= IMAGE_MIN_WIDTH && height < IMAGE_MIN_HEIGHT) {
-//        bottomRight.y = cropArea.origin.y + (IMAGE_MIN_HEIGHT / self.imageScale);
-//        bottomLeft.y = bottomRight.y;
-//    } else if (width < IMAGE_MIN_WIDTH && height >= IMAGE_MIN_HEIGHT) {
-//        bottomRight.x = cropArea.origin.x + (IMAGE_MIN_WIDTH / self.imageScale);
-//        topRight.x = bottomRight.x;
-//    } else if (width < IMAGE_MIN_WIDTH && height < IMAGE_MIN_HEIGHT) {
-//        bottomRight.x = cropArea.origin.x + (IMAGE_MIN_WIDTH / self.imageScale);
-//        bottomRight.y = cropArea.origin.y + (IMAGE_MIN_HEIGHT / self.imageScale);
-//        topRight.x = bottomRight.x;
-//        bottomLeft.y = bottomRight.y;
-//    }
 
-    [self boundingBoxForTopLeft:dragPoint.topLeftCenter bottomLeft:bottomLeft bottomRight:bottomRight topRight:topRight];
+    CGSize disp = [self deriveDisplacementFromDragLocation:dragLocation draggedPoint:dragPoint.bottomRightCenter oppositePoint:dragPoint.topLeftCenter];
+
+    float sum = dragPoint.bottomRightCenter.x  + disp.width ;
+    float this;
+    if (self.rotatedCrop == NO) {
+        this = sum/ self.cropRatio;
+        
+            CGPoint bottomRight = CGPointMake(dragPoint.bottomRightCenter.x + disp.width, this);
+            CGPoint topRight = CGPointMake(bottomRight.x, dragPoint.topRightCenter.y);
+            CGPoint bottomLeft = CGPointMake(dragPoint.bottomLeftCenter.x, bottomRight.y);
+            
+            // Make sure that the new cropping area will not be smaller than the minimum image size
+            CGFloat width = bottomRight.x - bottomLeft.x;
+            CGFloat height = bottomRight.y - topRight.y;
+        if (height <= self.imageView.frame.size.height && width <= self.imageView.frame.size.width) {
+            NSLog(@"%f",self.imageView.frame.size.height);
+            NSLog(@"Crop Height: %f",height);
+            NSLog(@"crop Ration Height:%f",this);
+            [self boundingBoxForTopLeft:dragPoint.topLeftCenter bottomLeft:bottomLeft bottomRight:bottomRight topRight:topRight];
+        }
+
+        
+            
+        
+    }
+    else{
+        this = sum* self.cropRatio;
+        CGPoint bottomRight = CGPointMake(dragPoint.bottomRightCenter.x + disp.width, this);
+        CGPoint topRight = CGPointMake(bottomRight.x, dragPoint.topRightCenter.y);
+        CGPoint bottomLeft = CGPointMake(dragPoint.bottomLeftCenter.x + disp.width, bottomRight.y);
+        
+        // Make sure that the new cropping area will not be smaller than the minimum image size
+        CGFloat width = bottomRight.x - bottomLeft.x;
+        CGFloat height = bottomRight.y - topRight.y;
+        if (bottomRight.y <= self.imageView.frame.size.height && bottomRight.x <= self.imageView.frame.size.width) {
+            NSLog(@"%f",self.imageView.frame.size.height);
+            NSLog(@"Crop Height: %f",height);
+            NSLog(@"crop Ration Height:%f",this);
+            [self boundingBoxForTopLeft:dragPoint.topLeftCenter bottomLeft:bottomLeft bottomRight:bottomRight topRight:topRight];
+        }
+    }
+
+
+
+
+    
 }
 
 - (void)handleDragTopRight:(CGPoint)dragLocation {
     CGSize disp = [self deriveDisplacementFromDragLocation:dragLocation draggedPoint:dragPoint.topRightCenter oppositePoint:dragPoint.bottomLeftCenter];
-    CGPoint topRight = CGPointMake(dragPoint.topRightCenter.x + disp.width, dragPoint.topRightCenter.y + disp.height);
-    CGPoint topLeft = CGPointMake(dragPoint.topLeftCenter.x, dragPoint.topLeftCenter.y + disp.height);
-    CGPoint bottomRight = CGPointMake(dragPoint.bottomRightCenter.x + disp.width, dragPoint.bottomRightCenter.y);
     
+    float sum = dragPoint.topRightCenter.x  + disp.width ;
+    float this;
+    if (self.rotatedCrop == NO) {
+        this = sum/ self.cropRatio;
+        
+        CGPoint topRight = CGPointMake(dragPoint.topRightCenter.x + disp.width, this);
+        CGPoint topLeft = CGPointMake(dragPoint.topLeftCenter.x + disp.width, topRight.y);
+        CGPoint bottomRight = CGPointMake(topRight.x, dragPoint.bottomRightCenter.y + disp.height);
+
+        // Make sure that the new cropping area will not be smaller than the minimum image size
+        CGFloat width = bottomRight.x - dragPoint.bottomLeftCenter.x;
+        CGFloat height = bottomRight.y - topRight.y;
+        if (height <= self.imageView.frame.size.height && width <= self.imageView.frame.size.width) {
+            NSLog(@"%f",self.imageView.frame.size.height);
+            NSLog(@"Crop Height: %f",height);
+            NSLog(@"crop Ration Height:%f",this);
+            [self boundingBoxForTopLeft:topLeft bottomLeft:dragPoint.bottomLeftCenter bottomRight:bottomRight topRight:topRight];
+        }
+        
+        
+        
+        
+    }
+    else{
+        this = sum* self.cropRatio;
+        CGPoint topRight = CGPointMake(dragPoint.topRightCenter.x + disp.width, this);
+        CGPoint topLeft = CGPointMake(dragPoint.topLeftCenter.x + disp.width, topRight.y);
+        CGPoint bottomRight = CGPointMake(topRight.x, dragPoint.bottomRightCenter.y + disp.height);
+        
+        // Make sure that the new cropping area will not be smaller than the minimum image size
+        CGFloat width = bottomRight.x - dragPoint.bottomLeftCenter.x;
+        CGFloat height = bottomRight.y - topRight.y;
+        if (height <= self.imageView.frame.size.height && width <= self.imageView.frame.size.width) {
+            NSLog(@"%f",self.imageView.frame.size.height);
+            NSLog(@"Crop Height: %f",height);
+            NSLog(@"crop Ration Height:%f",this);
+            [self boundingBoxForTopLeft:topLeft bottomLeft:dragPoint.bottomLeftCenter bottomRight:bottomRight topRight:topRight];
+        }
+    }
+    
+//    float sum = dragPoint.topRightCenter.x + disp.width ;
+//    float this;
+//    if (self.rotatedCrop == NO) {
+//        this = sum/ self.cropRatio;
+//    }
+//    else{
+//        this = sum* self.cropRatio;
+//    }
+//    CGPoint topRight = CGPointMake(dragPoint.topRightCenter.x + disp.width, this);
+//    CGPoint topLeft = CGPointMake(dragPoint.topLeftCenter.x, topRight.y);
+//    CGPoint bottomRight = CGPointMake(topRight.x, dragPoint.bottomRightCenter.y);
+
+    
+    
+    
+
 //    // Make sure that the new cropping area will not be smaller than the minimum image size
 //    CGFloat width = topRight.x - topLeft.x;
 //    CGFloat height = bottomRight.y - topRight.y;
@@ -673,7 +794,7 @@ CGRect SquareCGRectAtCenter(CGFloat centerX, CGFloat centerY, CGFloat size) {
 //        bottomRight.x = topRight.x;
 //    }
 
-    [self boundingBoxForTopLeft:topLeft bottomLeft:dragPoint.bottomLeftCenter bottomRight:bottomRight topRight:topRight];
+    //[self boundingBoxForTopLeft:topLeft bottomLeft:dragPoint.bottomLeftCenter bottomRight:bottomRight topRight:topRight];
 }
 
 - (void)handleDragCropArea:(CGPoint)dragLocation {

@@ -10,17 +10,18 @@
 #import "ShippingTVC.h"
 #import "CCTVC.h"
 #import "ActualCCTVC.h"
+#import "StateTableViewController.h"
 
 @class ShippingInfoVC;
 
 @protocol ShippingInfoVCDelegate
 
-- (void)FinishedEnteringShippingInformation;
+- (void)FinishedEnteringShippingInformationWithTaxPercent:(float)percent;
 
 @end
 
 
-@interface ShippingInfoVC : UIViewController <UIPickerViewDelegate,UIPickerViewDataSource,ShippingTVCDelegate>
+@interface ShippingInfoVC : UIViewController <UIPickerViewDelegate,UIPickerViewDataSource,ShippingTVCDelegate,StateTableViewControllerDelegate>
 @property (weak, nonatomic) id<ShippingInfoVCDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UIView *orderDataView;
 //@property (retain, nonatomic) STPPaymentContext *paymentContext;

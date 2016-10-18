@@ -60,4 +60,73 @@
         self.instructionsOutlet.frame = newframe3;
     }
 }
+
+
+- (IBAction)addToQuantity:(id)sender {
+    int quan = [self.quantity_TextField.text intValue];
+    [self sharedAppDelegate].cartPrintTotal = [self sharedAppDelegate].cartPrintTotal - quan;
+    quan++;
+    [self sharedAppDelegate].cartPrintTotal = [self sharedAppDelegate].cartPrintTotal + quan;
+    self.quantity_TextField.text = [NSString stringWithFormat:@"%i",quan];
+    
+    NSArray *array = [[self sharedAppDelegate].shoppingCart objectAtIndex:self.addOutlet.tag];
+    int price = [[array objectAtIndex:2] intValue];
+    int total = price * quan;
+    NSString *stringWithoutSpaces = [self.total_Price.text stringByReplacingOccurrencesOfString:@"$" withString:@""];
+    NSInteger tempTotal = [self sharedAppDelegate].cartTotal - [stringWithoutSpaces integerValue];
+    [self sharedAppDelegate].cartTotal = tempTotal + total;
+    
+    self.total_Price.text = [NSString stringWithFormat:@"$%i",total];
+    
+    NSArray *newArray = @[[array objectAtIndex:0],
+                          self.quantity_TextField.text,
+                          [array objectAtIndex:2],
+                          [array objectAtIndex:3],
+                          [array objectAtIndex:4],
+                          [array objectAtIndex:5],
+                          [array objectAtIndex:6],
+                          [array objectAtIndex:7],
+                          [array objectAtIndex:8],
+                          [array objectAtIndex:9],
+                          [array objectAtIndex:10],
+                          [array objectAtIndex:11]];
+    
+    [[self sharedAppDelegate].shoppingCart replaceObjectAtIndex:self.addOutlet.tag withObject:newArray];
+    [self.delegate addedQuantity];
+}
+
+- (IBAction)subtractFromQuantity:(id)sender {
+    int quan = [self.quantity_TextField.text intValue];
+    if (quan != 1) {
+        [self sharedAppDelegate].cartPrintTotal = [self sharedAppDelegate].cartPrintTotal - quan;
+        quan--;
+        [self sharedAppDelegate].cartPrintTotal = [self sharedAppDelegate].cartPrintTotal + quan;
+        self.quantity_TextField.text = [NSString stringWithFormat:@"%i",quan];
+        
+        NSArray *array = [[self sharedAppDelegate].shoppingCart objectAtIndex:self.addOutlet.tag];
+        int price = [[array objectAtIndex:2] intValue];
+        int total = price * quan;
+        NSString *stringWithoutSpaces = [self.total_Price.text stringByReplacingOccurrencesOfString:@"$" withString:@""];
+        NSInteger tempTotal = [self sharedAppDelegate].cartTotal - [stringWithoutSpaces integerValue];
+        [self sharedAppDelegate].cartTotal = tempTotal + total;
+        
+        self.total_Price.text = [NSString stringWithFormat:@"$%i",total];
+        
+        NSArray *newArray = @[[array objectAtIndex:0],
+                              self.quantity_TextField.text,
+                              [array objectAtIndex:2],
+                              [array objectAtIndex:3],
+                              [array objectAtIndex:4],
+                              [array objectAtIndex:5],
+                              [array objectAtIndex:6],
+                              [array objectAtIndex:7],
+                              [array objectAtIndex:8],
+                              [array objectAtIndex:9],
+                              [array objectAtIndex:10],
+                              [array objectAtIndex:11]];
+        
+        [[self sharedAppDelegate].shoppingCart replaceObjectAtIndex:self.addOutlet.tag withObject:newArray];
+        [self.delegate addedQuantity];
+    }
+}
 @end

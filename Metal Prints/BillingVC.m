@@ -39,6 +39,16 @@
     
     if ([self sharedAppDelegate].userSettings.billing == nil) {
         [self sharedAppDelegate].userSettings.billing = [[UserBilling alloc] init];
+        [self sharedAppDelegate].userSettings.billing.payment = [[UserPayment alloc] init];
+        [self sharedAppDelegate].userSettings.billing.email = @"";
+        [self sharedAppDelegate].userSettings.billing.payment.CCN = @"";
+        [self sharedAppDelegate].userSettings.billing.payment.securityCode = @"";
+        [self sharedAppDelegate].userSettings.billing.firstName = @"";
+        [self sharedAppDelegate].userSettings.billing.street = @"";
+        [self sharedAppDelegate].userSettings.billing.apt = @"";
+        [self sharedAppDelegate].userSettings.billing.city = @"";
+        [self sharedAppDelegate].userSettings.billing.zip = @"";
+        [self sharedAppDelegate].userSettings.billing.state = @"";
     }
     CCTable = [CCTVC sharedCCTVC];
     CCTable.delegate = self;
@@ -53,12 +63,28 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     
+        CCTable.email.text = [self sharedAppDelegate].userSettings.billing.email;
+        CCTable.ccn.text = [self sharedAppDelegate].userSettings.billing.payment.CCN;
+        if ([self sharedAppDelegate].userSettings.billing.payment.expMonth != NULL) {
+            CCTable.expMonth.text = [NSString stringWithFormat:@"%@/%@",[self sharedAppDelegate].userSettings.billing.payment.expMonth,[self sharedAppDelegate].userSettings.billing.payment.expYear];
+        }
+
+        CCTable.cvc.text = [self sharedAppDelegate].userSettings.billing.payment.securityCode;
+        CCTable.firstName.text = [self sharedAppDelegate].userSettings.billing.firstName;
+        CCTable.streetAddress.text = [self sharedAppDelegate].userSettings.billing.street;
+        CCTable.apt.text = [self sharedAppDelegate].userSettings.billing.apt;
+        CCTable.City.text = [self sharedAppDelegate].userSettings.billing.city;
+        CCTable.zip.text = [self sharedAppDelegate].userSettings.billing.zip;
+        CCTable.stateText.text = [self sharedAppDelegate].userSettings.billing.state;
     
 }
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:YES];
-    [CCTable.email becomeFirstResponder];
+    if (stateSelected1 == NO) {
+        [CCTable.email becomeFirstResponder];
+    }
+    stateSelected1 = NO;
 }
 
 
@@ -108,9 +134,9 @@
         [CCTable.City resignFirstResponder];
     }
     
-    if ([CCTable.state isFirstResponder]) {
+    if ([CCTable.stateText isFirstResponder]) {
         NSLog(@"state");
-        [CCTable.state resignFirstResponder];
+        [CCTable.stateText resignFirstResponder];
     }
     
     if ([CCTable.zip isFirstResponder]) {
@@ -127,7 +153,7 @@ UIAlertController *chargingCardAlert;
 - (void)EnterPayment {
     
     
-    if (![CCTable.email.text isEqualToString:@""] &&![CCTable.ccn.text isEqualToString:@""] && ![CCTable.cvc.text isEqualToString:@""] && ![CCTable.firstName.text isEqualToString:@""] && ![CCTable.streetAddress.text isEqualToString:@""] && ![CCTable.City.text isEqualToString:@""] && ![CCTable.state.text isEqualToString:@""] && ![CCTable.zip.text isEqualToString:@""]) {
+    if (![CCTable.email.text isEqualToString:@""] &&![CCTable.ccn.text isEqualToString:@""] && ![CCTable.cvc.text isEqualToString:@""] && ![CCTable.firstName.text isEqualToString:@""] && ![CCTable.streetAddress.text isEqualToString:@""] && ![CCTable.City.text isEqualToString:@""] && ![CCTable.stateText.text isEqualToString:@""] && ![CCTable.zip.text isEqualToString:@""]) {
         if ([CCTable.email isFirstResponder]) {
             [CCTable.email resignFirstResponder];
         }
@@ -180,11 +206,11 @@ UIAlertController *chargingCardAlert;
         
         [self sharedAppDelegate].userSettings.billing.city = CCTable.City.text;
         
-        [self sharedAppDelegate].userSettings.billing.state = CCTable.state.text;
+        [self sharedAppDelegate].userSettings.billing.state = CCTable.stateText.text;
         
         [self sharedAppDelegate].userSettings.billing.zip = CCTable.zip.text;
         
-        [self sharedAppDelegate].userSettings.shipping.email = CCTable.email.text;
+        [self sharedAppDelegate].userSettings.billing.email = CCTable.email.text;
         
         chargingCardAlert = [UIAlertController alertControllerWithTitle:@""
                                                     message:@""
@@ -231,8 +257,10 @@ UIAlertController *chargingCardAlert;
 }
 
 -(void)retirevedToken{
-    [chargingCardAlert dismissViewControllerAnimated:YES completion:nil];
-    [self.delegate FinishedEnteringBillingInformation];
+    [chargingCardAlert dismissViewControllerAnimated:YES completion:^{
+        [self.delegate FinishedEnteringBillingInformation];
+    }];
+    
 }
 
 - (void)failedToRetireveToken{
@@ -260,7 +288,7 @@ UIAlertController *chargingCardAlert;
     
     [self sharedAppDelegate].userSettings.billing.city = CCTable.City.text;
     
-    [self sharedAppDelegate].userSettings.billing.state = CCTable.state.text;
+    [self sharedAppDelegate].userSettings.billing.state = CCTable.stateText.text;
     
     [self sharedAppDelegate].userSettings.billing.zip = CCTable.zip.text;
     
@@ -271,7 +299,7 @@ UIAlertController *chargingCardAlert;
 -(void)moveViewUp{
     
     [UIView animateWithDuration:0.25f animations:^{
-        [self.view setFrame:CGRectMake(0,-150,self.view.bounds.size.width,self.view.bounds.size.height+150)];
+        [self.view setFrame:CGRectMake(0,-75,self.view.bounds.size.width,self.view.bounds.size.height+75)];
     }];
     
 }
@@ -287,16 +315,30 @@ UIAlertController *chargingCardAlert;
 
 
 
+-(void)displayStateController1{
+    [self performSegueWithIdentifier:@"showStates1" sender:self];
+}
 
+BOOL stateSelected1;
+- (void)pickedState:(NSString*)state{
+    
+    [self.navigationController popViewControllerAnimated:YES];
+    CCTable.stateText.text = state;
+    stateSelected1 = YES;
+}
 
-/*
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+
+    if ([segue.identifier isEqualToString:@"showStates1"]) {
+        StateTableViewController *states = segue.destinationViewController;
+        states.delegate = self;
+        
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"Back", returnbuttontitle) style:     UIBarButtonItemStyleBordered target:nil action:nil];
+        self.navigationItem.backBarButtonItem = backButton;
+    }
 }
-*/
 
 @end

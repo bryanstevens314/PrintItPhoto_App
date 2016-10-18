@@ -70,7 +70,9 @@ typedef struct {
     
     UIView* dragViewOne;
     UIView* dragViewTwo;
+    
 }
+@property(nonatomic)BOOL rotatedCrop;
 - (id)initWithFrame:(CGRect)frame blurOn:(BOOL)blurOn;
 - (void)setImage:(UIImage*)image;
 -(void)changeCropRotation;

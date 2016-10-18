@@ -9,6 +9,7 @@
 @import Stripe;
 #import <UIKit/UIKit.h>
 
+
 @interface StripeViewController : UIViewController <STPPaymentContextDelegate>
 
 @property (retain, nonatomic) STPPaymentContext *paymentContext;

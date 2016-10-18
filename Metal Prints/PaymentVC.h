@@ -21,11 +21,12 @@
 -(void)UploadingImages;
 -(void)ImagesSuccessFullyUploaded;
 -(void)imageUploadFailure;
+-(void)imageUploadPercent:(float)uploadPercent;
 
 @end
 
 
-@interface PaymentVC : UIViewController <STPPaymentContextDelegate>
+@interface PaymentVC : UIViewController <STPPaymentContextDelegate,NSURLConnectionDataDelegate>
 @property (weak, nonatomic) id<PaymentVCDelegate> delegate;
 
 + (PaymentVC *)sharedPaymentVC;
@@ -33,4 +34,6 @@
 - (void)createBackendChargeWithToken:(STPToken *)token completion:(void (^)(PKPaymentAuthorizationStatus))completion;
 
 @property (weak, nonatomic) IBOutlet UIView *tableContentView1;
+
+@property ( nonatomic)float totalPlusTax;
 @end

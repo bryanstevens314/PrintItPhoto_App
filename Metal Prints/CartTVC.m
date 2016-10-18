@@ -27,6 +27,39 @@
 }
 
 
++ (CartTVC *)sharedCartTVC
+{
+    static CartTVC *sharedInstance = nil;
+    
+    UIStoryboard *storyboard;
+    
+    // detect the height of our screen
+    int height = [UIScreen mainScreen].bounds.size.height;
+    
+    if (height == 480) {
+        storyboard = [UIStoryboard storyboardWithName:@"Main_3.5_inch" bundle:nil];
+        // NSLog(@"Device has a 3.5inch Display.");
+    }
+    if (height == 568) {
+        storyboard = [UIStoryboard storyboardWithName:@"Main_4_inch" bundle:nil];
+        // NSLog(@"Device has a 4inch Display.");
+    }
+    if (height == 667) {
+        storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        // NSLog(@"Device has a 4inch Display.");
+    }
+    if (height == 736) {
+        storyboard = [UIStoryboard storyboardWithName:@"Main_5.5_inch" bundle:nil];
+        // NSLog(@"Device has a 4inch Display.");
+    }
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedInstance = (CartTVC*)[storyboard instantiateViewControllerWithIdentifier: @"details"];
+    });
+    return sharedInstance;
+}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -131,6 +164,8 @@
     
     return cell;
 }
+
+
 
 
 /*

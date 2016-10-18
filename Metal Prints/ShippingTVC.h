@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <KinveyKit/KinveyKit.h>
+#import "StateTableViewController.h"
 
 @class ShippingTVC;
 
@@ -15,11 +16,11 @@
 
 - (void) zipIsFirstResponderMoveViewUp;
 - (void) zipResignedFirstResponderMoveViewDown;
-
+-(void)displayStateController;
 @end
 
 
-@interface ShippingTVC : UITableViewController
+@interface ShippingTVC : UITableViewController <StateTableViewControllerDelegate>
 @property (weak, nonatomic) id<ShippingTVCDelegate> delegate;
 + (ShippingTVC *)sharedShippingTVC;
 

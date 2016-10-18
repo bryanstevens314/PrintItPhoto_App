@@ -8,8 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CartTVCCell : UITableViewCell
+@class CartTVCCell;
 
+@protocol CartTVCCellDelegate
+
+- (void)addedQuantity;
+
+@end
+
+
+@interface CartTVCCell : UITableViewCell
+@property (weak, nonatomic) id<CartTVCCellDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UITextField *product_textField;
 @property (weak, nonatomic) IBOutlet UILabel *product;
 @property (weak, nonatomic) IBOutlet UILabel *retouch_Outlet;
@@ -25,6 +34,10 @@
 @property (weak, nonatomic) IBOutlet UITextField *retouch_textField;
 @property (weak, nonatomic) IBOutlet UITextField *aluminum_textField;
 @property (weak, nonatomic) IBOutlet UITextView *instructionsTextView;
+- (IBAction)addToQuantity:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *addOutlet;
+- (IBAction)subtractFromQuantity:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *subtractOutlet;
 @property (retain, nonatomic) UITextView *instructions_TextView;
 @property (retain, nonatomic) UILabel *instructionsOutlet;
 @property (retain, nonatomic) UILabel *instructions_Outlet;

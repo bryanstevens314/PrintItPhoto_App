@@ -51,10 +51,7 @@
         storyboard = [UIStoryboard storyboardWithName:@"Main_5.5_inch" bundle:nil];
         // NSLog(@"Device has a 4inch Display.");
     }
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedInstance = (CCTVC*)[storyboard instantiateViewControllerWithIdentifier: @"cctvc"];
-    });
+    sharedInstance = (CCTVC*)[storyboard instantiateViewControllerWithIdentifier: @"cctvc"];
     return sharedInstance;
 }
 
@@ -171,7 +168,7 @@
     
     self.zip.inputAccessoryView = self.keyboardDoneButtonView2;
     
-    self.state.inputAccessoryView = self.keyboardDoneButtonView2;
+    self.stateText.inputAccessoryView = self.keyboardDoneButtonView2;
     
 
     
@@ -182,6 +179,8 @@
     [super viewWillAppear:YES];
     
     [self.email becomeFirstResponder];
+    
+
 }
 
 
@@ -236,18 +235,20 @@
         [self.apt becomeFirstResponder];
     }
     
-    if ([self.state isFirstResponder] && stop == NO) {
-        NSLog(@"state");
-        stop = YES;
-        [self.City becomeFirstResponder];
-    }
+
     
     if ([self.zip isFirstResponder] && stop == NO) {
         NSLog(@"Zip");
         stop = YES;
-        [self.state becomeFirstResponder];
+        [self.City becomeFirstResponder];
         
         
+    }
+    
+    if ([self.stateText isFirstResponder] && stop == NO) {
+        NSLog(@"state");
+        stop = YES;
+        [self.zip becomeFirstResponder];
     }
 }
 
@@ -295,9 +296,9 @@
         [self.City resignFirstResponder];
     }
     
-    if ([self.state isFirstResponder]) {
+    if ([self.stateText isFirstResponder]) {
         NSLog(@"state");
-        [self.state resignFirstResponder];
+        [self.stateText resignFirstResponder];
     }
     
     if ([self.zip isFirstResponder]) {
@@ -311,11 +312,13 @@
 - (void)NextClicked1:(id)sender {
     BOOL stop = NO;
     if ([self.email isFirstResponder] && stop == NO) {
+        [self sharedAppDelegate].userSettings.billing.email = self.email.text;
         NSLog(@"name");
         stop = YES;
         [self.ccn becomeFirstResponder];
     }
     if ([self.ccn isFirstResponder] && stop == NO) {
+        [self sharedAppDelegate].userSettings.billing.payment.CCN = self.ccn.text;
         NSLog(@"name");
         stop = YES;
         [self.expMonth becomeFirstResponder];
@@ -324,11 +327,14 @@
         
     }
     if ([self.expMonth isFirstResponder] && stop == NO) {
+        [self sharedAppDelegate].userSettings.billing.payment.expMonth = self.currentMonth;
+        [self sharedAppDelegate].userSettings.billing.payment.expYear = self.currentYear;
         NSLog(@"name");
         stop = YES;
         [self.cvc becomeFirstResponder];
     }
     if ([self.cvc isFirstResponder] && stop == NO) {
+        [self sharedAppDelegate].userSettings.billing.payment.securityCode = self.cvc.text;
         NSLog(@"name");
         stop = YES;
          [self.delegate moveViewUp];
@@ -336,6 +342,7 @@
     }
     
     if ([self.firstName isFirstResponder] && stop == NO) {
+        [self sharedAppDelegate].userSettings.billing.firstName = self.firstName.text;
         NSLog(@"email");
         stop = YES;
        
@@ -343,39 +350,45 @@
     }
     
     if ([self.streetAddress isFirstResponder] && stop == NO) {
+        [self sharedAppDelegate].userSettings.billing.street = self.streetAddress.text;
         NSLog(@"street");
         stop = YES;
         [self.apt becomeFirstResponder];
     }
     
     if ([self.apt isFirstResponder] && stop == NO) {
+        [self sharedAppDelegate].userSettings.billing.apt = self.apt.text;
         NSLog(@"city");
         stop = YES;
         [self.City becomeFirstResponder];
     }
     
     if ([self.City isFirstResponder] && stop == NO) {
+        [self sharedAppDelegate].userSettings.billing.city = self.City.text;
         NSLog(@"city");
-        stop = YES;
-        [self.state becomeFirstResponder];
-        
-    }
-    
-    if ([self.state isFirstResponder] && stop == NO) {
-        NSLog(@"state");
         stop = YES;
         [self.zip becomeFirstResponder];
         
     }
     
     if ([self.zip isFirstResponder] && stop == NO) {
+        [self sharedAppDelegate].userSettings.billing.zip = self.zip.text;
         NSLog(@"Zip");
         stop = YES;
-        [self.delegate moveViewDown];
-        [self.zip resignFirstResponder];
-        [self.keyboardDoneButtonView2 removeFromSuperview];
-        
+        //[self.stateText becomeFirstResponder];
+        [self.delegate displayStateController1];
     }
+    
+    if ([self.stateText isFirstResponder] && stop == NO) {
+        [self sharedAppDelegate].userSettings.billing.state = self.stateText.text;
+        NSLog(@"state");
+        stop = YES;
+        [self.delegate moveViewDown];
+        [self.stateText resignFirstResponder];
+        [self.keyboardDoneButtonView2 removeFromSuperview];
+    }
+    
+
 }
 
 
@@ -398,32 +411,89 @@
     }
     
     if (textField == self.City) {
-        [self.state becomeFirstResponder];
+        [self.zip becomeFirstResponder];
         [self.delegate moveViewUp];
     }
     
-    if (textField == self.state) {
-        [self.zip becomeFirstResponder];
+    if (textField == self.zip) {
+        [self.stateText becomeFirstResponder];
     }
     
-    if (textField == self.zip) {
+    if (textField == self.stateText) {
+        
         [self.keyboardDoneButtonView2 removeFromSuperview];
-        [self.zip resignFirstResponder];
+        [self.stateText resignFirstResponder];
         [self.delegate moveViewDown];
     }
+    
+
     
     return YES;
 }
 
-
+BOOL viewMovedUp;
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
-    if (textField == self.firstName) {
-        [self.delegate moveViewUp];
+    BOOL stop = NO;
+    if (viewMovedUp == YES && textField == self.firstName) {
+        stop = YES;
+        viewMovedUp = NO;
+        [self.delegate moveViewDown];
     }
+    if (stop == NO) {
+        if (textField == self.firstName || textField == self.streetAddress || textField == self.apt ||textField == self.City || textField == self.zip || textField == self.stateText) {
+            viewMovedUp = YES;
+            [self.delegate moveViewUp];
+        }
+    }
+    if (textField == self.stateText) {
+        [self.delegate displayStateController1];
+    }
+
     
-    if (textField == self.streetAddress) {
-        [self.delegate moveViewUp];
+}
+
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    NSLog(@"!!!");
+    
+    if (textField  == self.ccn) {
+        // All digits entered
+        if (range.location == 19) {
+            [self sharedAppDelegate].userSettings.billing.payment.CCN = self.ccn.text;
+            return NO;
+        }
+        
+        // Reject appending non-digit characters
+        if (range.length == 0 &&
+            ![[NSCharacterSet decimalDigitCharacterSet] characterIsMember:[string characterAtIndex:0]]) {
+            return NO;
+        }
+        
+        // Auto-add hyphen before appending
+        if (range.length == 0 && (range.location == 4 || range.location == 9 || range.location == 14)) {
+            textField.text = [NSString stringWithFormat:@"%@ %@", textField.text, string];
+            return NO;
+        }
+        
+        // Delete hyphen when deleting its trailing digit
+        if (range.length == 1 &&
+            (range.location == 5 || range.location == 10 || range.location == 15))  {
+            range.location--;
+            range.length = 2;
+            textField.text = [textField.text stringByReplacingCharactersInRange:range withString:@""];
+            return NO;
+        }
+        
+        return YES;
+        
     }
+    if (textField == self.cvc) {
+        if (range.location == 3) {
+            [self sharedAppDelegate].userSettings.billing.payment.securityCode = self.cvc.text;
+            return NO;
+        }
+    }
+    return YES;
 }
 
 #pragma mark - Table view data source
@@ -569,7 +639,7 @@
 }
 
 - (IBAction)BillingSameAsShipping:(id)sender {
-    if ([self sharedAppDelegate].userSettings.shipping != nil) {
+    if ([self sharedAppDelegate].userSettings.shipping.state != nil) {
         if (self.BillingSameAsShippingOutlet.on == YES) {
             NSLog(@"State: %@",[self sharedAppDelegate].userSettings.shipping.state);
             NSLog(@"Street: %@",[self sharedAppDelegate].userSettings.shipping.street);
@@ -581,7 +651,7 @@
             
             self.City.text = [self sharedAppDelegate].userSettings.shipping.city;
             
-            self.state.text = [self sharedAppDelegate].userSettings.shipping.state;
+            self.stateText.text = [self sharedAppDelegate].userSettings.shipping.state;
             
             self.zip.text = [self sharedAppDelegate].userSettings.shipping.zip;
             
@@ -597,7 +667,7 @@
             
             self.City.text = @"";
             
-            self.state.text = @"";
+            self.stateText.text = @"";
             
             self.zip.text = @"";
         }

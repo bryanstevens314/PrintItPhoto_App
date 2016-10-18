@@ -13,6 +13,7 @@
 
 @interface PaymentVC (){
     ActualCCTVC *paymentTable;
+    NSURLConnection *connectionManager;
 }
 
 @end
@@ -83,10 +84,12 @@
 
 NSTimer *timer2;
 - (void)createBackendChargeWithToken:(STPToken *)token completion:(void (^)(PKPaymentAuthorizationStatus))completion {
+    NSArray *orderAttemptArray = @[@"charge attempted",@"upload not attempted"];
+    [NSKeyedArchiver archiveRootObject:orderAttemptArray toFile:[self archiveOrderAttemp]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://final-project-order-viewer-stevens-apps.c9users.io/stripeStuff.php"]];
 
-    NSInteger totalAmount = [self sharedAppDelegate].cartTotal * 100;
+    NSInteger totalAmount = self.totalPlusTax * 100;
     NSInteger fee = totalAmount * 0.3;
     NSString *stringAmount = [NSString stringWithFormat:@"%li",(long)totalAmount];
     NSString *feeAmount = [NSString stringWithFormat:@"%li",(long)fee];
@@ -96,7 +99,9 @@ NSTimer *timer2;
                                   @"example charge", @"description",
                                   @"incrementing ID", @"orderID",
                                   [self sharedAppDelegate].userSettings.billing.firstName, @"name",
-                                  feeAmount, @"fee",nil];
+                                  feeAmount, @"fee",
+                                  [self sharedAppDelegate].taxPercentString, @"tax_Percent",
+                                  [self sharedAppDelegate].total_TaxCharged, @"tax_TotalCharged",nil];
     
     NSError *error2;
     NSData *finalJSONdata = [NSJSONSerialization dataWithJSONObject:chargeParams options:0 error:&error2];
@@ -121,9 +126,21 @@ NSTimer *timer2;
     if(responseString)
     {
         NSLog(@"%@",responseString);
+        id json = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+        NSString *successString = [json objectForKey:@"status"];
+        if ([successString isEqualToString:@"succeeded"]) {
+            NSArray *orderAttemptArray = @[@"charge successful",@"upload not attempted"];
+            [NSKeyedArchiver archiveRootObject:orderAttemptArray toFile:[self archiveOrderAttemp]];
+            timer2 = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(PostData) userInfo:nil repeats:NO];
+            [self.delegate CardSuccessFullyCharged];
+        }
+        else{
+            NSError *error;
+            [[NSFileManager defaultManager] removeItemAtPath:[self archiveOrderAttemp] error:&error];
+            [self.delegate CardFailedToCharged];
+        }
+
         
-        [self.delegate CardSuccessFullyCharged];
-        timer2 = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(PostData) userInfo:nil repeats:NO];
         
     }
     else{
@@ -135,14 +152,19 @@ NSTimer *timer2;
 -(void)PostData{
     [timer2 invalidate];
     timer2 = nil;
+    
     [self.delegate UploadingImages];
+    
+    NSArray *orderAttemptArray = @[@"charge successful",@"upload attempted"];
+    [NSKeyedArchiver archiveRootObject:orderAttemptArray toFile:[self archiveOrderAttemp]];
+    
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://final-project-order-viewer-stevens-apps.c9users.io/recieve_data.php"]];
     
     
     
     NSMutableDictionary *mutDict = [[NSMutableDictionary alloc] init];
     NSString *name = [self sharedAppDelegate].userSettings.shipping.Name;
-    NSString *email = [self sharedAppDelegate].userSettings.shipping.email;
+    NSString *email = [self sharedAppDelegate].userSettings.billing.email;
     NSString *street = [self sharedAppDelegate].userSettings.shipping.street;
     NSString *apt = [self sharedAppDelegate].userSettings.shipping.apt;
     NSString *city = [self sharedAppDelegate].userSettings.shipping.city;
@@ -153,7 +175,7 @@ NSTimer *timer2;
         shippingAddress = [NSString stringWithFormat:@"%@, %@, %@ %@",street,city,state,zip];
     }
     else{
-        shippingAddress = [NSString stringWithFormat:@"%@ %@, %@, %@ %@",street,apt,city,state,zip];
+        shippingAddress = [NSString stringWithFormat:@"%@ %@, %@ %@ %@",street,apt,city,state,zip];
     }
     [self sharedAppDelegate].userSettings.shipping.shippingDict = [NSDictionary dictionaryWithObjectsAndKeys:
                                                                    name,@"name",
@@ -186,7 +208,7 @@ NSTimer *timer2;
         NSString *alum = [array1 objectAtIndex:4];
         NSString *instructions = [array1 objectAtIndex:5];
         NSString *imgString = [array1 objectAtIndex:7];
-        //            NSLog(@"%@",imgString);
+
         NSDictionary *cartItem = [NSDictionary dictionaryWithObjectsAndKeys:
                                   prod,@"product",
                                   
@@ -218,201 +240,66 @@ NSTimer *timer2;
     NSURLResponse *response;
     
     
+    connectionManager = [[NSURLConnection alloc] initWithRequest:request
+                                                             delegate:self];
+//    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
+//    NSLog(@"File size is : %.2f MB",(float)responseData.length/1024.0f/1024.0f);
+//    NSString *responseString = [[NSString alloc]initWithData:responseData encoding:NSASCIIStringEncoding];
+//    
+//    
+//    if(responseString)
+//    {
+//        //[self performSegueWithIdentifier:@"OrderPlaced" sender:self];
+//        NSLog(@"got response==%@", responseString);
+//        //[self sendEmail];
+//        [self.delegate ImagesSuccessFullyUploaded];
+//
+//    }
+//    else
+//    {
+//        NSLog(@"faield to connect");
+//        [self.delegate imageUploadFailure];
+//        
+//    }
     
-    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
-    NSString *responseString = [[NSString alloc]initWithData:responseData encoding:NSASCIIStringEncoding];
-    
-    
-    if(responseString)
+}
+-(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    NSLog(@"%lld", response.expectedContentLength);
+    if(response)
     {
-        //[self performSegueWithIdentifier:@"OrderPlaced" sender:self];
-        NSLog(@"got response==%@", responseString);
-        //[self sendEmail];
+        NSError *error;
+        [[NSFileManager defaultManager] removeItemAtPath:[self archiveOrderAttemp] error:&error];
+        [self sendEmail];
         [self.delegate ImagesSuccessFullyUploaded];
-
+        
     }
     else
     {
+        NSArray *orderAttemptArray = @[@"charge successful",@"upload failed"];
+        [NSKeyedArchiver archiveRootObject:orderAttemptArray toFile:[self archiveOrderAttemp]];
         NSLog(@"faield to connect");
         [self.delegate imageUploadFailure];
         
     }
-    
 }
 
+- (void)connection:(NSURLConnection *)connection  didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
+{
+    float prog = (totalBytesWritten / (totalBytesExpectedToWrite * 1.0f) * 100);
+    NSLog(@"%f",prog);
+    [self.delegate imageUploadPercent:prog];
+}
 
 -(void)sendEmail
 {
     
     Sendpulse* sendpulse = [[Sendpulse alloc] initWithUserIdandSecret:@"8663ca13cd9f05ef1f538f8d6295ff0e" :@"1af4a885aaaa45faa3ee21e763cc5667"];
     
-    NSString *htmlString = @" \
-    \
-    <!DOCTYPE html> \
-    <html  style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
-    <head> \
-    <meta name=\"viewport\" content=\"width=device-width\" /> \
-    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /> \
-    <title>Billing e.g. invoices and receipts</title> \
-    \
-    \
-    <style type=\"text/css\"> \
-    img { \
-    max-width: 100%; \
-    } \
-    body { \
-    -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6em; \
-    } \
-    body { \
-    background-color: #f6f6f6; \
-    } \
-    @media only screen and (max-width: 640px) { \
-    body { \
-    padding: 0 !important; \
-    } \
-    h1 { \
-    font-weight: 800 !important; margin: 20px 0 5px !important; \
-    } \
-    h2 { \
-    font-weight: 800 !important; margin: 20px 0 5px !important; \
-    } \
-    h3 { \
-    font-weight: 800 !important; margin: 20px 0 5px !important; \
-    } \
-    h4 { \
-    font-weight: 800 !important; margin: 20px 0 5px !important; \
-    } \
-    h1 { \
-    font-size: 22px !important; \
-    } \
-    h2 { \
-    font-size: 18px !important; \
-    } \
-    h3 { \
-    font-size: 16px !important; \
-    } \
-    .container { \
-    padding: 0 !important; width: 100% !important; \
-    } \
-    .content { \
-    padding: 0 !important; \
-    } \
-    .content-wrap { \
-    padding: 10px !important; \
-    } \
-    .invoice { \
-    width: 100% !important; \
-    } \
-    } \
-    </style> \
-    </head> \
-    <style> \
-    p { \
-    margin-left: 10px; \
-    } \
-    </style> \
-    \
-    <body itemscope itemtype=\"EmailIOn\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6em; background-color: #f6f6f6; margin: 0;\" bgcolor=\"#f6f6f6\"> \
-    \
-    <table class=\"body-wrap\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;\" bgcolor=\"#f6f6f6\"> \
-    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
-    <td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;\" valign=\"top\"> \
-    \
-    </td> \
-    <td class=\"container\" width=\"600\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; display: block !important; max-width: 100% !important; clear: both !important; margin: 0 auto;\" valign=\"top\"> \
-    <div class=\"content\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; max-width: 600px; display: block; margin: 0 auto; padding: 20px;\"> \
-				<table class=\"main\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; border-radius: 3px; background-color: #fff; margin: 0; border: 1px solid #e9e9e9;\" bgcolor=\"#fff\"> \
-    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
-    <td class=\"content-wrap aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 20px;\" align=\"center\" valign=\"top\"> \
-    <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
-    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
-    <td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> \
-    <h1 class=\"aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif; box-sizing: border-box; font-size: 32px; color: #000; line-height: 1.2em; font-weight: 500; text-align: center; margin: 40px 0 0;\" align=\"center\"> \
-    $33.98 Paid</h1> \
-    </td> \
-    </tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
-    <td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\"> \
-    <h2 class=\"aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif; box-sizing: border-box; font-size: 24px; color: #000; line-height: 1.2em; font-weight: 400; text-align: center; margin: 40px 0 0;\" align=\"center\"> \
-    Thanks for placing an order!</h2> \
-    </td> \
-    </tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
-    <td class=\"content-block aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;\" align=\"center\" valign=\"top\"> \
-    <table class=\"invoice\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; text-align: left; width: 80%; margin: 40px auto;\"> \
-    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
-    <td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;\" valign=\"top\"> \
-    \
-    <b>Shipping To</b> \
-    <br style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 16px; margin: 0;\" /> \
-    <p> \
-    Bryan Stevens<br> \
-    1930 10th st<br> \
-    Los Osos, CA<br> \
-    </p>  \
-    \
-    </tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\" \
-    ><td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;\" valign=\"top\"> \
-    <table class=\"invoice-items\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; margin: 0;\"> \
-    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\" \
-    ><td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;\" valign=\"top\"> \
-    Service 2</td> \
-    <td class=\"alignright\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;\" align=\"right\" valign=\"top\"> \
-    $ 9.99</td> \
-    </tr> \
-    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\" \
-    ><td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;\" valign=\"top\"> \
-    Service 2</td> \
-    <td class=\"alignright\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;\" align=\"right\" valign=\"top\"> \
-    $ 9.99</td> \
-    </tr> \
-    \
-    <tr class=\"total\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
-    <td class=\"alignright\" width=\"80%\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 2px; border-top-color: #333; border-top-style: solid; border-bottom-color: #333; border-bottom-width: 2px; border-bottom-style: solid; font-weight: 700; margin: 0; padding: 5px 0;\" align=\"right\" valign=\"top\"> \
-    Total</td> \
-    <td class=\"alignright\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 2px; border-top-color: #333; border-top-style: solid; border-bottom-color: #333; border-bottom-width: 2px; border-bottom-style: solid; font-weight: 700; margin: 0; padding: 5px 0;\" align=\"right\" valign=\"top\"> \
-    $ 33.98</td> \
-    </tr> \
-    </table> \
-    </td> \
-    </tr> \
-    </table> \
-    </td> \
-    </tr> \
-    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
-    <td class=\"content-block aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;\" align=\"center\" valign=\"top\"> \
-    <!--<a href=\"http://www.mailgun.com\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; color: #348eda; text-decoration: underline; margin: 0;\">View in browser</a>--> \
-    </td> \
-    </tr> \
-    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
-    <td class=\"content-block aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;\" align=\"center\" valign=\"top\"> \
-    The Love Story Project<br> 734 Main Street, Cambria Ca, 93428 \
-    </td> \
-    </tr> \
-    </table> \
-    </td> \
-    </tr> \
-    </table> \
-    <div class=\"footer\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; clear: both; color: #999; margin: 0; padding: 20px;\"> \
-    <table width=\"100%\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
-    <tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"> \
-    <td class=\"aligncenter content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 12px; vertical-align: top; color: #999; text-align: center; margin: 0; padding: 0 0 20px;\" align=\"center\" valign=\"top\">Questions? Email <a href=\"mailto:\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 12px; color: #999; text-decoration: underline; margin: 0;\">support@acme.inc</a></td> \
-    </tr> \
-    </table> \
-    </div> \
-    </div> \
-    </td> \
-    <td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;\" valign=\"top\"> \
-			 \
-    </td> \
-    </tr> \
-    </table> \
-    </body> \
-    </html> \
-    \
-    ";
-    NSDictionary *from = [NSDictionary dictionaryWithObjectsAndKeys:@"Bryan Stevens", @"name", @"b.stevens.photo@gmail.com", @"email", nil];
-    NSMutableArray* to = [[NSMutableArray alloc] initWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:[self sharedAppDelegate].userSettings.shipping.Name, @"name", [self sharedAppDelegate].userSettings.shipping.email, @"email", nil], nil];
+    NSDictionary *from = [NSDictionary dictionaryWithObjectsAndKeys:@"PrintItPhotot", @"name", @"b.stevens.photo@gmail.com", @"email", nil];
+    NSMutableArray* to = [[NSMutableArray alloc] initWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:@"Alan Fraser", @"name", @"b.stevens.photo", @"email", nil], nil];
     //NSString *messageBody = [NSString stringWithFormat:@"test Email"];
-    NSMutableDictionary *emaildata = [NSMutableDictionary dictionaryWithObjectsAndKeys:htmlString, @"html", @"", @"text",@"The Love Story Project",@"subject",from,@"from",to,@"to", nil];
+    NSMutableDictionary *emaildata = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"", @"html", @"Congratulations!", @"text",@"You got an order!",@"subject",from,@"from",to,@"to", nil];
     [sendpulse smtpSendMail:emaildata];
     
     
@@ -475,5 +362,15 @@ NSTimer *timer2;
     // Pass the selected object to the new view controller.
 }
 */
+
+
+- (NSString*)archiveOrderAttemp{
+    NSArray *documentDirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docDir = documentDirs[0];
+    return [docDir stringByAppendingPathComponent:@"orderAttempt"];
+}
+
+
+
 
 @end

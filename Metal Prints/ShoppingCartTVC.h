@@ -11,9 +11,10 @@
 #import "ShippingTVC.h"
 #import "ShippingInfoVC.h"
 #import "Sendpulse.h"
+#import "CartTVCCell.h"
 
-@interface ShoppingCartTVC : UITableViewController <DetailsTVCDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate>
-
+@interface ShoppingCartTVC : UITableViewController <DetailsTVCDelegate,CartTVCCellDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UIImagePickerControllerDelegate, UINavigationControllerDelegate>
++ (ShoppingCartTVC *)sharedShoppingCartTVC;
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *total_Outlet;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *totalPrints;
