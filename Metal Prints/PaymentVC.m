@@ -8,11 +8,9 @@
 
 #import "PaymentVC.h"
 #import "AppDelegate.h"
-#import "ActualCCTVC.h"
 #import <Stripe/Stripe.h>
 
 @interface PaymentVC (){
-    ActualCCTVC *paymentTable;
     NSURLConnection *connectionManager;
 }
 
@@ -39,15 +37,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(PlaceOrderAndUploadImages)];
-    [self.navigationItem setRightBarButtonItem:rightBarButtonItem];
-    [self.navigationItem setTitle:@"Payment"];
-    
-    paymentTable = [ActualCCTVC sharedActualCCTVC];
-    paymentTable.tableView.frame = CGRectMake(self.tableContentView1.frame.origin.x, self.tableContentView1.frame.origin.y-125, self.tableContentView1.frame.size.width, self.tableContentView1.frame.size.height);
-    [self.tableContentView1 addSubview:paymentTable.tableView];
-    
-    NSLog(@"%@",[self sharedAppDelegate].userSettings.billing);
+
 }
 
 - (void)retrieveStripeToken {
@@ -236,8 +226,8 @@ NSTimer *timer2;
     [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[finalJSONdata length]] forHTTPHeaderField:@"Content-Length"];
     
     
-    NSError *err;
-    NSURLResponse *response;
+//    NSError *err;
+//    NSURLResponse *response;
     
     
     connectionManager = [[NSURLConnection alloc] initWithRequest:request

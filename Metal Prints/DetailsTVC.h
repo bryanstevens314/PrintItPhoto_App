@@ -14,6 +14,7 @@
 
 @protocol DetailsTVCDelegate
 
+@optional
 - (void)editedCartItem;
 -(void)addedCartItem;
 
@@ -24,6 +25,8 @@
 
 + (DetailsTVC *)sharedDetailsTVCInstance;
 - (IBAction)camera:(id)sender;
+- (IBAction)addQuantity:(id)sender;
+- (IBAction)subtractQuantity:(id)sender;
 @property (weak, nonatomic) IBOutlet UITableViewCell *aluminumOptionsCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *instructionsCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *cell;

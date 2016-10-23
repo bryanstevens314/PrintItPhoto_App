@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		930CA6971D1CBE29003C6864 /* UserAccountTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 930CA6961D1CBE29003C6864 /* UserAccountTVC.m */; };
 		932F2E971CC88BD10050094A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 932F2E961CC88BD10050094A /* main.m */; };
 		932F2E9A1CC88BD10050094A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 932F2E991CC88BD10050094A /* AppDelegate.m */; };
 		932F2E9D1CC88BD10050094A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 932F2E9C1CC88BD10050094A /* ViewController.m */; };
@@ -16,7 +15,6 @@
 		932F2EA51CC88BD10050094A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 932F2EA31CC88BD10050094A /* LaunchScreen.storyboard */; };
 		932F2EB01CC88BD10050094A /* Metal_PrintsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 932F2EAF1CC88BD10050094A /* Metal_PrintsTests.m */; };
 		932F2EBB1CC88BD10050094A /* Metal_PrintsUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 932F2EBA1CC88BD10050094A /* Metal_PrintsUITests.m */; };
-		932F2ECA1CC88C860050094A /* OrderTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 932F2EC91CC88C860050094A /* OrderTVC.m */; };
 		932F2ECF1CC8946E0050094A /* camera icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 932F2ECE1CC8946E0050094A /* camera icon.png */; };
 		932F2ED21CC894C70050094A /* DetailsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 932F2ED11CC894C70050094A /* DetailsTVC.m */; };
 		932F2ED51CC897ED0050094A /* CCTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 932F2ED41CC897ED0050094A /* CCTVC.m */; };
@@ -57,8 +55,10 @@
 		9369C8CB1D3DC21900FCD2CC /* ImageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9369C8CA1D3DC21800FCD2CC /* ImageCollectionViewCell.m */; };
 		9369C8CF1D3DC6CC00FCD2CC /* photo-gallery-512.png in Resources */ = {isa = PBXBuildFile; fileRef = 9369C8CE1D3DC6CC00FCD2CC /* photo-gallery-512.png */; };
 		9369C8D11D3F250A00FCD2CC /* MW-Icon-CheckMark.svg.png in Resources */ = {isa = PBXBuildFile; fileRef = 9369C8D01D3F250A00FCD2CC /* MW-Icon-CheckMark.svg.png */; };
+		937E48801DB5AD0E00CD1024 /* Add Button_3x copy.png in Resources */ = {isa = PBXBuildFile; fileRef = 937E487E1DB5AD0E00CD1024 /* Add Button_3x copy.png */; };
+		937E48811DB5AD0E00CD1024 /* Remove Button_2x copy.png in Resources */ = {isa = PBXBuildFile; fileRef = 937E487F1DB5AD0E00CD1024 /* Remove Button_2x copy.png */; };
+		937E48831DB5AE9E00CD1024 /* PrintlogoG.png in Resources */ = {isa = PBXBuildFile; fileRef = 937E48821DB5AE9E00CD1024 /* PrintlogoG.png */; };
 		9386601F1CDEC7B300C1F208 /* NonCopyPasteTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 9386601E1CDEC7B200C1F208 /* NonCopyPasteTextField.m */; };
-		938660221CDFD7A100C1F208 /* ActualCCTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 938660211CDFD7A100C1F208 /* ActualCCTVC.m */; };
 		9399C4871CF8CBDD00818E10 /* DetailsTVCCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9399C4861CF8CBDD00818E10 /* DetailsTVCCell.m */; };
 		93B4DECE1CCF259700C6E07A /* ShoppingCartTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 93B4DECD1CCF259700C6E07A /* ShoppingCartTVC.m */; };
 		93B4DED11CCF25B900C6E07A /* CartTVCCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 93B4DED01CCF25B900C6E07A /* CartTVCCell.m */; };
@@ -67,15 +67,11 @@
 		FB164B3C1DB2B85500A7331C /* Cart Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FB164B391DB2B85500A7331C /* Cart Icon.png */; };
 		FB164B3D1DB2B85500A7331C /* Home Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FB164B3A1DB2B85500A7331C /* Home Icon.png */; };
 		FB164B3E1DB2B85500A7331C /* My Photos Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FB164B3B1DB2B85500A7331C /* My Photos Icon.png */; };
-		FB164B421DB2C5C900A7331C /* Add Button_3x copy.png in Resources */ = {isa = PBXBuildFile; fileRef = FB164B411DB2C5C900A7331C /* Add Button_3x copy.png */; };
-		FB164B441DB2C65C00A7331C /* Remove Button_2x copy.png in Resources */ = {isa = PBXBuildFile; fileRef = FB164B431DB2C65C00A7331C /* Remove Button_2x copy.png */; };
 		FB35D0EB1D5AE03100BCD6C6 /* ProductCategorySelectionCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = FB35D0EA1D5AE03100BCD6C6 /* ProductCategorySelectionCollection.m */; };
 		FB35D0EE1D5AE3C000BCD6C6 /* ProductCategoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FB35D0ED1D5AE3C000BCD6C6 /* ProductCategoryCell.m */; };
 		FB35D0F11D5BB63100BCD6C6 /* ProductCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB35D0F01D5BB63100BCD6C6 /* ProductCollectionViewController.m */; };
 		FB35D0F41D5BB64200BCD6C6 /* ProductCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FB35D0F31D5BB64200BCD6C6 /* ProductCollectionViewCell.m */; };
 		FB4CB1BB1DA48EA900A9A982 /* StateTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB4CB1BA1DA48EA900A9A982 /* StateTableViewController.m */; };
-		FB4FE78D1D80EF80004C72E0 /* Main_4_inch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB4FE78C1D80EF80004C72E0 /* Main_4_inch.storyboard */; };
-		FB4FE7901D80EF93004C72E0 /* Main_3.5_inch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB4FE78E1D80EF93004C72E0 /* Main_3.5_inch.storyboard */; };
 		FB5047F21D5D642E00B2E223 /* aluminum-tin-cans.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FB5047F11D5D642E00B2E223 /* aluminum-tin-cans.jpg */; };
 		FB5047F41D5D649C00B2E223 /* wildtextures-old-wood-original-file.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FB5047F31D5D649C00B2E223 /* wildtextures-old-wood-original-file.jpg */; };
 		FB5047F61D5D64D100B2E223 /* broadway-coffee-mug.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FB5047F51D5D64D100B2E223 /* broadway-coffee-mug.jpg */; };
@@ -118,7 +114,6 @@
 		FBA823401D79A5300028D3A1 /* LoveStoryProjectLogo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FBA8233F1D79A5300028D3A1 /* LoveStoryProjectLogo.jpg */; };
 		FBA823421D7A850E0028D3A1 /* Stripe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA823411D7A850E0028D3A1 /* Stripe.framework */; };
 		FBA823441D7A85200028D3A1 /* Stripe.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FBA823431D7A85200028D3A1 /* Stripe.bundle */; };
-		FBA823471D7A87430028D3A1 /* StripeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA823461D7A87430028D3A1 /* StripeViewController.m */; };
 		FBA823BE1D7CB1140028D3A1 /* RTSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA823BD1D7CB1140028D3A1 /* RTSerializer.m */; };
 		FBA823C11D7CB11F0028D3A1 /* Sendpulse.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA823C01D7CB11F0028D3A1 /* Sendpulse.m */; };
 		FBA823D71D7CB1280028D3A1 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA823C41D7CB1280028D3A1 /* SBJsonParser.m */; };
@@ -161,8 +156,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		930CA6951D1CBE29003C6864 /* UserAccountTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserAccountTVC.h; sourceTree = "<group>"; };
-		930CA6961D1CBE29003C6864 /* UserAccountTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserAccountTVC.m; sourceTree = "<group>"; };
 		932F2E921CC88BCD0050094A /* Metal Prints.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Metal Prints.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		932F2E961CC88BD10050094A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		932F2E981CC88BD10050094A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -179,8 +172,6 @@
 		932F2EB61CC88BD10050094A /* Metal PrintsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Metal PrintsUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		932F2EBA1CC88BD10050094A /* Metal_PrintsUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Metal_PrintsUITests.m; sourceTree = "<group>"; };
 		932F2EBC1CC88BD10050094A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		932F2EC81CC88C860050094A /* OrderTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderTVC.h; sourceTree = "<group>"; };
-		932F2EC91CC88C860050094A /* OrderTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderTVC.m; sourceTree = "<group>"; };
 		932F2ECE1CC8946E0050094A /* camera icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "camera icon.png"; sourceTree = "<group>"; };
 		932F2ED01CC894C70050094A /* DetailsTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsTVC.h; sourceTree = "<group>"; };
 		932F2ED11CC894C70050094A /* DetailsTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsTVC.m; sourceTree = "<group>"; };
@@ -235,10 +226,11 @@
 		9369C8CA1D3DC21800FCD2CC /* ImageCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCollectionViewCell.m; sourceTree = "<group>"; };
 		9369C8CE1D3DC6CC00FCD2CC /* photo-gallery-512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "photo-gallery-512.png"; sourceTree = "<group>"; };
 		9369C8D01D3F250A00FCD2CC /* MW-Icon-CheckMark.svg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MW-Icon-CheckMark.svg.png"; sourceTree = "<group>"; };
+		937E487E1DB5AD0E00CD1024 /* Add Button_3x copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Add Button_3x copy.png"; sourceTree = "<group>"; };
+		937E487F1DB5AD0E00CD1024 /* Remove Button_2x copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Remove Button_2x copy.png"; sourceTree = "<group>"; };
+		937E48821DB5AE9E00CD1024 /* PrintlogoG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PrintlogoG.png; sourceTree = "<group>"; };
 		9386601D1CDEC7B200C1F208 /* NonCopyPasteTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NonCopyPasteTextField.h; sourceTree = "<group>"; };
 		9386601E1CDEC7B200C1F208 /* NonCopyPasteTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NonCopyPasteTextField.m; sourceTree = "<group>"; };
-		938660201CDFD7A100C1F208 /* ActualCCTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActualCCTVC.h; sourceTree = "<group>"; };
-		938660211CDFD7A100C1F208 /* ActualCCTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActualCCTVC.m; sourceTree = "<group>"; };
 		9399C4851CF8CBDD00818E10 /* DetailsTVCCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsTVCCell.h; sourceTree = "<group>"; };
 		9399C4861CF8CBDD00818E10 /* DetailsTVCCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsTVCCell.m; sourceTree = "<group>"; };
 		93B4DECC1CCF259700C6E07A /* ShoppingCartTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShoppingCartTVC.h; sourceTree = "<group>"; };
@@ -252,8 +244,6 @@
 		FB164B391DB2B85500A7331C /* Cart Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Cart Icon.png"; sourceTree = "<group>"; };
 		FB164B3A1DB2B85500A7331C /* Home Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Home Icon.png"; sourceTree = "<group>"; };
 		FB164B3B1DB2B85500A7331C /* My Photos Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "My Photos Icon.png"; sourceTree = "<group>"; };
-		FB164B411DB2C5C900A7331C /* Add Button_3x copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Add Button_3x copy.png"; path = "../../Add Button_3x copy.png"; sourceTree = "<group>"; };
-		FB164B431DB2C65C00A7331C /* Remove Button_2x copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Remove Button_2x copy.png"; path = "../../Remove Button_2x copy.png"; sourceTree = "<group>"; };
 		FB35D0E91D5AE03100BCD6C6 /* ProductCategorySelectionCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductCategorySelectionCollection.h; sourceTree = "<group>"; };
 		FB35D0EA1D5AE03100BCD6C6 /* ProductCategorySelectionCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductCategorySelectionCollection.m; sourceTree = "<group>"; };
 		FB35D0EC1D5AE3C000BCD6C6 /* ProductCategoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductCategoryCell.h; sourceTree = "<group>"; };
@@ -264,8 +254,6 @@
 		FB35D0F31D5BB64200BCD6C6 /* ProductCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductCollectionViewCell.m; sourceTree = "<group>"; };
 		FB4CB1B91DA48EA900A9A982 /* StateTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StateTableViewController.h; sourceTree = "<group>"; };
 		FB4CB1BA1DA48EA900A9A982 /* StateTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StateTableViewController.m; sourceTree = "<group>"; };
-		FB4FE78C1D80EF80004C72E0 /* Main_4_inch.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main_4_inch.storyboard; sourceTree = "<group>"; };
-		FB4FE78F1D80EF93004C72E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_3.5_inch.storyboard; sourceTree = "<group>"; };
 		FB5047F11D5D642E00B2E223 /* aluminum-tin-cans.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "aluminum-tin-cans.jpg"; sourceTree = "<group>"; };
 		FB5047F31D5D649C00B2E223 /* wildtextures-old-wood-original-file.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "wildtextures-old-wood-original-file.jpg"; sourceTree = "<group>"; };
 		FB5047F51D5D64D100B2E223 /* broadway-coffee-mug.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "broadway-coffee-mug.jpg"; sourceTree = "<group>"; };
@@ -314,8 +302,6 @@
 		FBA8233F1D79A5300028D3A1 /* LoveStoryProjectLogo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LoveStoryProjectLogo.jpg; sourceTree = "<group>"; };
 		FBA823411D7A850E0028D3A1 /* Stripe.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Stripe.framework; sourceTree = "<group>"; };
 		FBA823431D7A85200028D3A1 /* Stripe.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Stripe.bundle; sourceTree = "<group>"; };
-		FBA823451D7A87430028D3A1 /* StripeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StripeViewController.h; sourceTree = "<group>"; };
-		FBA823461D7A87430028D3A1 /* StripeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StripeViewController.m; sourceTree = "<group>"; };
 		FBA823BC1D7CB1140028D3A1 /* RTSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTSerializer.h; sourceTree = "<group>"; };
 		FBA823BD1D7CB1140028D3A1 /* RTSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSerializer.m; sourceTree = "<group>"; };
 		FBA823BF1D7CB11F0028D3A1 /* Sendpulse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sendpulse.h; sourceTree = "<group>"; };
@@ -425,8 +411,6 @@
 			children = (
 				932F2EA31CC88BD10050094A /* LaunchScreen.storyboard */,
 				932F2E9E1CC88BD10050094A /* Main.storyboard */,
-				FB4FE78E1D80EF93004C72E0 /* Main_3.5_inch.storyboard */,
-				FB4FE78C1D80EF80004C72E0 /* Main_4_inch.storyboard */,
 				FBF301CB1D6ABBD90076C070 /* User */,
 				FBE8DDE81D79157400693765 /* LaunchController.h */,
 				FBE8DDE91D79157400693765 /* LaunchController.m */,
@@ -471,12 +455,8 @@
 				FBF301CF1D6B2F580076C070 /* Order TableViews */,
 				932F2ED91CC898100050094A /* OrderPlacedVC.h */,
 				932F2EDA1CC898100050094A /* OrderPlacedVC.m */,
-				930CA6951D1CBE29003C6864 /* UserAccountTVC.h */,
-				930CA6961D1CBE29003C6864 /* UserAccountTVC.m */,
 				932F2E9B1CC88BD10050094A /* ViewController.h */,
 				932F2E9C1CC88BD10050094A /* ViewController.m */,
-				932F2EC81CC88C860050094A /* OrderTVC.h */,
-				932F2EC91CC88C860050094A /* OrderTVC.m */,
 				9399C4841CF8CAA400818E10 /* Cells */,
 				932F2F031CC962920050094A /* Reachability.h */,
 				932F2F041CC962920050094A /* Reachability.m */,
@@ -494,13 +474,14 @@
 		932F2E951CC88BD10050094A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				937E48821DB5AE9E00CD1024 /* PrintlogoG.png */,
+				937E487E1DB5AD0E00CD1024 /* Add Button_3x copy.png */,
+				937E487F1DB5AD0E00CD1024 /* Remove Button_2x copy.png */,
 				FBA8237F1D7BC5CA0028D3A1 /* slate */,
 				FBA823761D7BC5B60028D3A1 /* tile */,
 				FBA8236D1D7BC5A50028D3A1 /* wood */,
 				FBA8234C1D7BC58F0028D3A1 /* aluminum */,
 				FBA8233F1D79A5300028D3A1 /* LoveStoryProjectLogo.jpg */,
-				FB164B411DB2C5C900A7331C /* Add Button_3x copy.png */,
-				FB164B431DB2C65C00A7331C /* Remove Button_2x copy.png */,
 				FB164B391DB2B85500A7331C /* Cart Icon.png */,
 				FB164B3A1DB2B85500A7331C /* Home Icon.png */,
 				FB164B3B1DB2B85500A7331C /* My Photos Icon.png */,
@@ -715,8 +696,6 @@
 				932F2ED71CC897FC0050094A /* ShippingTVC.m */,
 				932F2ED31CC897ED0050094A /* CCTVC.h */,
 				932F2ED41CC897ED0050094A /* CCTVC.m */,
-				938660201CDFD7A100C1F208 /* ActualCCTVC.h */,
-				938660211CDFD7A100C1F208 /* ActualCCTVC.m */,
 				FB4CB1B91DA48EA900A9A982 /* StateTableViewController.h */,
 				FB4CB1BA1DA48EA900A9A982 /* StateTableViewController.m */,
 			);
@@ -733,8 +712,6 @@
 				FBF301CD1D6B2F460076C070 /* BillingVC.m */,
 				FBF301D11D6B2FCE0076C070 /* PaymentVC.h */,
 				FBF301D21D6B2FCE0076C070 /* PaymentVC.m */,
-				FBA823451D7A87430028D3A1 /* StripeViewController.h */,
-				FBA823461D7A87430028D3A1 /* StripeViewController.m */,
 			);
 			name = "Order VCs";
 			sourceTree = "<group>";
@@ -846,11 +823,12 @@
 				932F2F131CC9A3240050094A /* up-down.png in Resources */,
 				FB5435A61D8117B70069BA98 /* 8x8 wood.png in Resources */,
 				FB5435971D8117AA0069BA98 /* 6x6 slate.png in Resources */,
+				937E48811DB5AD0E00CD1024 /* Remove Button_2x copy.png in Resources */,
 				FB54358D1D8117A30069BA98 /* 8x10 aluminum.png in Resources */,
 				FB5435871D8117A30069BA98 /* 5x5  aluminum.png in Resources */,
+				937E48831DB5AE9E00CD1024 /* PrintlogoG.png in Resources */,
 				FB5435921D8117A30069BA98 /* 12x12 aluminum.png in Resources */,
 				FB5047F41D5D649C00B2E223 /* wildtextures-old-wood-original-file.jpg in Resources */,
-				FB164B421DB2C5C900A7331C /* Add Button_3x copy.png in Resources */,
 				9369C8BE1D3C384900FCD2CC /* thin-363_photo_image_album-512.png in Resources */,
 				FB5435A81D8117B70069BA98 /* 10x10 wood.png in Resources */,
 				FBE5C83F1D74756C00B78EC6 /* Screen Shot 2016-08-29 at 6.50.44 AM.png in Resources */,
@@ -872,7 +850,6 @@
 				FB54358B1D8117A30069BA98 /* 5x17 aluminum.png in Resources */,
 				FB54358E1D8117A30069BA98 /* 8x12 aluminum.png in Resources */,
 				FBA823441D7A85200028D3A1 /* Stripe.bundle in Resources */,
-				FB164B441DB2C65C00A7331C /* Remove Button_2x copy.png in Resources */,
 				FB5047F81D5D64EB00B2E223 /* d4e7cb05ecf41db9a0b4cafccae2c4a0.jpg in Resources */,
 				FB5435931D8117A30069BA98 /* 12x18 aluminum.png in Resources */,
 				FB5435881D8117A30069BA98 /* 5x7 aluminum.png in Resources */,
@@ -880,6 +857,7 @@
 				FB164B3E1DB2B85500A7331C /* My Photos Icon.png in Resources */,
 				FB54358A1D8117A30069BA98 /* 5x11 aluminum.png in Resources */,
 				FB5435911D8117A30069BA98 /* 11x17 aluminum.png in Resources */,
+				937E48801DB5AD0E00CD1024 /* Add Button_3x copy.png in Resources */,
 				FBA823401D79A5300028D3A1 /* LoveStoryProjectLogo.jpg in Resources */,
 				FBBF087E1D6A1A3900BF5332 /* rounded-512.png in Resources */,
 				932F2EA01CC88BD10050094A /* Main.storyboard in Resources */,
@@ -892,7 +870,6 @@
 				FB5435A01D8117B00069BA98 /* 6x8 tile.png in Resources */,
 				9369C8D11D3F250A00FCD2CC /* MW-Icon-CheckMark.svg.png in Resources */,
 				932F2F111CC988460050094A /* photo icon.png in Resources */,
-				FB4FE78D1D80EF80004C72E0 /* Main_4_inch.storyboard in Resources */,
 				9369C8CF1D3DC6CC00FCD2CC /* photo-gallery-512.png in Resources */,
 				932F2F101CC988460050094A /* camera.png in Resources */,
 				FB5435841D8117A30069BA98 /* 2x3 aluminum.png in Resources */,
@@ -900,7 +877,6 @@
 				FB5611651D8DBEA7000BDB06 /* check-unmarked.png in Resources */,
 				9369C8C01D3C387D00FCD2CC /* grocery-cart-icon-6.png in Resources */,
 				FB5435A11D8117B00069BA98 /* 8x10 tile.png in Resources */,
-				FB4FE7901D80EF93004C72E0 /* Main_3.5_inch.storyboard in Resources */,
 				FB5435851D8117A30069BA98 /* 4x4 aluminum.png in Resources */,
 				932F2F0D1CC96A780050094A /* plainicon.com-54418-512px-51c.png in Resources */,
 				FB5435861D8117A30069BA98 /* 4x6 aluminum.png in Resources */,
@@ -943,14 +919,11 @@
 				FB35D0EB1D5AE03100BCD6C6 /* ProductCategorySelectionCollection.m in Sources */,
 				932F2E9D1CC88BD10050094A /* ViewController.m in Sources */,
 				9369C8C81D3C951B00FCD2CC /* FXBlurView.m in Sources */,
-				FBA823471D7A87430028D3A1 /* StripeViewController.m in Sources */,
 				93B4DED11CCF25B900C6E07A /* CartTVCCell.m in Sources */,
-				938660221CDFD7A100C1F208 /* ActualCCTVC.m in Sources */,
 				FBA823E01D7CB1280028D3A1 /* SBJsonWriter.m in Sources */,
 				932F2F071CC962920050094A /* Reachability.m in Sources */,
 				FBA823C11D7CB11F0028D3A1 /* Sendpulse.m in Sources */,
 				FB5435B81D8BA50E0069BA98 /* TotalTVCell.m in Sources */,
-				930CA6971D1CBE29003C6864 /* UserAccountTVC.m in Sources */,
 				FBA823DB1D7CB1280028D3A1 /* SBJsonStreamParserState.m in Sources */,
 				9369C8B61D3C2F0100FCD2CC /* TabController.m in Sources */,
 				932F2E9A1CC88BD10050094A /* AppDelegate.m in Sources */,
@@ -967,7 +940,6 @@
 				FB5435BB1D8BA62A0069BA98 /* CartTVC.m in Sources */,
 				934906591CCDAD2C00E69EB4 /* Front_EndVC.m in Sources */,
 				FBF301D31D6B2FCE0076C070 /* PaymentVC.m in Sources */,
-				932F2ECA1CC88C860050094A /* OrderTVC.m in Sources */,
 				93C8CBDD1D1EFECB00EA4C5A /* ImageCollectionViewController.m in Sources */,
 				932FCB651CF4059D00CF8869 /* TestVC.m in Sources */,
 				932F2EE11CC89B4F0050094A /* ProductTVCCell.m in Sources */,
@@ -1034,14 +1006,6 @@
 				932F2EA41CC88BD10050094A /* Base */,
 			);
 			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		FB4FE78E1D80EF93004C72E0 /* Main_3.5_inch.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				FB4FE78F1D80EF93004C72E0 /* Base */,
-			);
-			name = Main_3.5_inch.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

@@ -13,10 +13,20 @@
 #import "DetailsTVC.h"
 #import "HighlightedImageCVC.h"
 
+@class ImageCollectionViewController;
+
+@protocol ImageCollectionViewControllerDelegate
+
+- (void)SelectedImageWithData:(NSArray*)data;
+
+@end
+
+
 @interface ImageCollectionViewController : UICollectionViewController <HighlightedImageCVCDelegate,DetailsTVCDelegate,UIGestureRecognizerDelegate>{
     BOOL reloadView;
     BOOL loadingImages;
 }
+@property (weak, nonatomic) id<ImageCollectionViewControllerDelegate> delegate;
 + (ImageCollectionViewController *)sharedImageCollectionViewController;
 -(void)reloadTheCollectionView;
 -(void)removeHighlightedImagesFromView;

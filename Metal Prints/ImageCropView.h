@@ -98,9 +98,9 @@ typedef struct {
 
 @end
 
-@interface ImageCropViewController : UIViewController  <UIActionSheetDelegate > {
+@interface ImageCropViewController : UIViewController  <UIActionSheetDelegate,UIGestureRecognizerDelegate> {
     ImageCropView * cropView;
-    UIActionSheet * actionSheet;
+    UIAlertController * actionSheet;
 }
 @property (nonatomic, weak) id<ImageCropViewControllerDelegate> delegate;
 @property (nonatomic) BOOL blurredBackground;

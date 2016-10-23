@@ -73,6 +73,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
+    //self.tabBarController.tabBar.alpha = 0.9;
     [self.collectionView reloadData];
 }
 

@@ -7,7 +7,6 @@
 //
 
 #import "Front_EndVC.h"
-#import "OrderTVC.h"
 
 #import "AppDelegate.h"
 #import "LaunchController.h"
@@ -67,18 +66,19 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
-    UIBarButtonItem *rightBarButtonItem3 = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:nil];
-    [self.navigationItem setRightBarButtonItem:rightBarButtonItem3];
+//    UIBarButtonItem *rightBarButtonItem3 = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:nil];
+//    [self.navigationItem setRightBarButtonItem:rightBarButtonItem3];
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:41.0/255.0 green:127.0/255.0 blue:184.0/255.0 alpha:0.6];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    self.tabBarController.tabBar.alpha = 0.9;
+    
     //[self.tabBarController.tabBar setBarTintColor:[UIColor clearColor]];
     //[self.tabBarController.tabBar setBackgroundImage:[UIImage new]];
     collView = [ProductCategorySelectionCollection sharedProductCategorySelectionCollection];
     
     collView.delegate = self;
     [self.view addSubview:collView.collectionView];
+
 
 }
 
@@ -87,12 +87,8 @@ UIImageView *launchImageView;
 ProductCategorySelectionCollection *collView;
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
-//    if (collView == nil) {
-//
-//    }
-//    else{
-//       [self.view addSubview:collView.collectionView];
-//    }
+    //self.tabBarController.tabBar.alpha = 0.9;
+
     [self.navigationItem setTitle:@"Store"];
     if ([self sharedAppDelegate].loadingImages == YES) {
         NSLog(@"Loading Images");
@@ -126,17 +122,36 @@ ProductCategorySelectionCollection *collView;
         tvc.delegate = self;
     }
     if ([segue.identifier isEqualToString:@"StartOrder"]) {
-        NSLog(@"preparing segue");
-        DetailsTVC *order = segue.destinationViewController;
-        order.selectedRow = self.selectedProduct;
-        order.selectedSection1 = self.selectedProductSection;
-        order.currentProductArray1 = self.currentArray1;
-        order.delegate = self;
-        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"", returnbuttontitle) style:     UIBarButtonItemStyleBordered target:nil action:nil];
-        self.navigationItem.backBarButtonItem = backButton;
-        
-        NSLog(@"initiating segue");
+        if (imageSelectionData == nil) {
+            NSLog(@"preparing segue");
+            DetailsTVC *order = segue.destinationViewController;
+            order.selectedRow = self.selectedProduct;
+            order.selectedSection1 = self.selectedProductSection;
+            order.currentProductArray1 = self.currentArray1;
+            order.delegate = self;
+            UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"", returnbuttontitle) style:     UIBarButtonItemStylePlain target:nil action:nil];
+            self.navigationItem.backBarButtonItem = backButton;
+            
+            NSLog(@"initiating segue");
+        }
+        else{
+            UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"", returnbuttontitle) style:UIBarButtonItemStylePlain target:nil action:nil];
+            self.navigationItem.backBarButtonItem = backButton;
+            DetailsTVC *details = segue.destinationViewController;
+            details.delegate = self;
+            
+            details.selectedImageIndex = [imageSelectionData objectAtIndex:0];
+            details.startingFromHighlightedImage = YES;
+            details.selectedImageURL = [imageSelectionData objectAtIndex:1];
+            details.thumbImg = [imageSelectionData objectAtIndex:2];
+            imageSelectionData = nil;
+        }
     }
+    if ([segue.identifier isEqualToString:@"presentPhotos"]) {
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"", returnbuttontitle) style:     UIBarButtonItemStylePlain target:nil action:nil];
+        self.navigationItem.backBarButtonItem = backButton;
+    }
+    
 }
 
 
@@ -197,7 +212,7 @@ ProductCategorySelectionCollection *collView;
 
 -(void)cellClickedWithRow:(NSInteger)clickedCell{
     NSLog(@"CellClicked");
-    ProductCategorySelectionCollection *collView = [ProductCategorySelectionCollection sharedProductCategorySelectionCollection];
+    //ProductCategorySelectionCollection *collView = [ProductCategorySelectionCollection sharedProductCategorySelectionCollection];
     //[collView.collectionView removeFromSuperview];
 
 }
@@ -229,7 +244,7 @@ ProductCategorySelectionCollection *collView;
         productCollectionVC.currentProductArray = [self sharedAppDelegate].AluminumProductArray;
         productCollectionVC.selectedSection = section;
         productCollectionVC.navigationItem.title = @"Aluminum";
-        UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:nil action:nil];
+        UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         [[self navigationItem] setBackBarButtonItem:newBackButton];
         [self.navigationController pushViewController:productCollectionVC animated:YES];
 
@@ -240,7 +255,7 @@ ProductCategorySelectionCollection *collView;
         productCollectionVC.currentProductArray = [self sharedAppDelegate].WoodenProductArray;
         productCollectionVC.selectedSection = section;
         productCollectionVC.navigationItem.title = @"Wood";
-        UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:nil action:nil];
+        UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         [[self navigationItem] setBackBarButtonItem:newBackButton];
         [self.navigationController pushViewController:productCollectionVC animated:YES];
 
@@ -251,7 +266,7 @@ ProductCategorySelectionCollection *collView;
         productCollectionVC.currentProductArray = [self sharedAppDelegate].TileProductArray;
         productCollectionVC.selectedSection = section;
         productCollectionVC.navigationItem.title = @"Tile";
-        UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:nil action:nil];
+        UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         [[self navigationItem] setBackBarButtonItem:newBackButton];
         [self.navigationController pushViewController:productCollectionVC animated:YES];
 
@@ -262,7 +277,7 @@ ProductCategorySelectionCollection *collView;
         productCollectionVC.currentProductArray = [self sharedAppDelegate].SlateProductArray;
         productCollectionVC.selectedSection = section;
         productCollectionVC.navigationItem.title = @"Slate";
-        UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:nil action:nil];
+        UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         [[self navigationItem] setBackBarButtonItem:newBackButton];
         [self.navigationController pushViewController:productCollectionVC animated:YES];
 
@@ -273,7 +288,7 @@ ProductCategorySelectionCollection *collView;
         productCollectionVC.currentProductArray = [self sharedAppDelegate].OtherProductArray;
         productCollectionVC.selectedSection = section;
         productCollectionVC.navigationItem.title = @"Other Goodies";
-        UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:nil action:nil];
+        UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         [[self navigationItem] setBackBarButtonItem:newBackButton];
         [self.navigationController pushViewController:productCollectionVC animated:YES];
 
@@ -306,5 +321,38 @@ ProductCategorySelectionCollection *collView;
 }
 
 
+ImageCollectionViewController *imageVC;
+BOOL imagesPresenting;
+- (IBAction)SwitchViews:(id)sender {
+    
+    if (imageVC) {
+        if (imagesPresenting == NO) {
+            imagesPresenting = YES;
+            [self.navigationItem setTitle:@"My Photos"];
+            [self.view addSubview:imageVC.view];
+        }
+        else{
+            imagesPresenting = NO;
+            [self.navigationItem setTitle:@"Store"];
+            [imageVC.view removeFromSuperview];
+        }
+    }
+    else{
+        imagesPresenting = YES;
+        [self.navigationItem setTitle:@"My Photos"];
+        imageVC = [ImageCollectionViewController sharedImageCollectionViewController];
+        imageVC.delegate = self;
+        [self.view addSubview:imageVC.view];
+    }
+    
+    
+}
 
+
+NSArray *imageSelectionData;
+- (void)SelectedImageWithData:(NSArray*)data{
+    imageSelectionData = data;
+    [self performSegueWithIdentifier:@"StartOrder" sender:self];
+    
+}
 @end

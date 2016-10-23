@@ -13,6 +13,7 @@
 
 @protocol ProductCategoryDelegate
 
+@optional
 - (void)selectedCategoryWithSection:(NSInteger)section;
 
 @end

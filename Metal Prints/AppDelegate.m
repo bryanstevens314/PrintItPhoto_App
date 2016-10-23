@@ -30,7 +30,7 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     // Override point for customization after application launch.
      [[STPPaymentConfiguration sharedConfiguration] setPublishableKey:@"pk_test_ksluG61goDFXFGzyXZiRriat"];
     self.AluminumProductArray = @[@[@"2x3",@"6",[UIImage imageNamed:@"2x3 aluminum.png"], @"00000", @"A2x3"],
@@ -94,7 +94,7 @@
         self.cartTotal = [[array objectAtIndex:0] integerValue];
         self.cartPrintTotal = [[array objectAtIndex:1] integerValue];
     }
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
     // Initialize Reachability
     Reachability *reachability = [Reachability reachabilityWithHostName:@"https://www.google.com"];
     
@@ -151,8 +151,6 @@ NSInteger x = 0;
     NSMutableArray* assetURLDictionaries = [[NSMutableArray alloc] init];
     
     ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-    
-    NSMutableArray *tempMutArray = [[NSMutableArray alloc] init];
     
 
     void (^assetEnumerator)( ALAsset *, NSUInteger, BOOL *) = ^(ALAsset *result, NSUInteger index, BOOL *stop) {

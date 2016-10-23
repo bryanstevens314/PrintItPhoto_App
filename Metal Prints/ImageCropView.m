@@ -61,7 +61,7 @@ float IMAGE_MIN_WIDTH = 400;
                                                   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                   target:self
                                                   action:@selector(done:)];
-        CGSize statusBarSize = [[UIApplication sharedApplication] statusBarFrame].size;
+        //CGSize statusBarSize = [[UIApplication sharedApplication] statusBarFrame].size;
         CGRect view;
         float imageRatio = self.image.size.width/self.image.size.height;
         if (self.image.size.width < self.image.size.height) {
@@ -70,12 +70,12 @@ float IMAGE_MIN_WIDTH = 400;
             float newWidth = (self.view.bounds.size.height -
                               [[UIApplication sharedApplication] statusBarFrame].size.height -
                               self.navigationController.navigationBar.bounds.size.height -
-                              self.navigationController.toolbar.bounds.size.height) * imageRatio;
+                              self.navigationController.toolbar.bounds.size.height-150) * imageRatio;
             
-            view = CGRectMake(0, (self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height), newWidth , (self.view.bounds.size.height -
-                                            [[UIApplication sharedApplication] statusBarFrame].size.height -
-                                            self.navigationController.navigationBar.bounds.size.height -
-                                            self.navigationController.toolbar.bounds.size.height));
+            view = CGRectMake(0, (self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height), newWidth , self.view.bounds.size.height -
+                              [[UIApplication sharedApplication] statusBarFrame].size.height -
+                              self.navigationController.navigationBar.bounds.size.height -
+                              self.navigationController.toolbar.bounds.size.height-150   );
         }
         if (self.image.size.width > self.image.size.height) {
             NSLog(@"landscape");
@@ -88,8 +88,14 @@ float IMAGE_MIN_WIDTH = 400;
         }
         
         self.cropView  = [[ImageCropView alloc] initWithFrame:view blurOn:self.blurredBackground];
+        UIPanGestureRecognizer* dragRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleDrag1:)];
+        dragRecognizer.view.multipleTouchEnabled = YES;
+        dragRecognizer.minimumNumberOfTouches = 1;
+        dragRecognizer.maximumNumberOfTouches = 2;
+        [self.cropView addGestureRecognizer:dragRecognizer];
+
         self.cropView.cropRatio = self.ratio;
-        contentView.backgroundColor = [UIColor blackColor];
+        contentView.backgroundColor = [UIColor whiteColor];
         self.view = contentView;
         [contentView addSubview:cropView];
         [self.cropView setCenter:CGPointMake([UIScreen mainScreen].bounds.size.width/2,[UIScreen mainScreen].bounds.size.height/2)];
@@ -97,7 +103,10 @@ float IMAGE_MIN_WIDTH = 400;
         if (_cropArea.size.width > 0) {
             self.cropView.cropAreaInImage = _cropArea;
         }
-        
+        UIPinchGestureRecognizer *pgr = [[UIPinchGestureRecognizer alloc]
+                                         initWithTarget:self action:@selector(handlePinchGesture:)];
+        pgr.delegate = self;
+        [self.cropView addGestureRecognizer:pgr];
         self.navigationController.toolbarHidden = NO;
         UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
         
@@ -107,6 +116,65 @@ float IMAGE_MIN_WIDTH = 400;
 
         self.toolbarItems = [NSArray arrayWithObjects:flexSpace,doneButton, nil];
     }
+}
+
+
+- (void)handleDrag1:(UIPanGestureRecognizer*)recognizer
+{
+    UIPanGestureRecognizer *panRecognizer = (UIPanGestureRecognizer *)recognizer;
+    if (panRecognizer.state == UIGestureRecognizerStateBegan ||
+        panRecognizer.state == UIGestureRecognizerStateChanged)
+    {
+        if (self.cropView.imageView.frame.origin.x < self.cropView.cropAreaInView.origin.x ) {
+            CGPoint currentPoint = self.cropView.imageView.center;
+            CGPoint translation = [panRecognizer translationInView: self.cropView.imageView];
+            self.cropView.imageView.center = CGPointMake(currentPoint.x + translation.x, currentPoint.y + translation.y);
+            [panRecognizer setTranslation: CGPointZero inView: self.cropView.imageView];
+        }
+        else{
+            CGPoint currentPoint = self.cropView.imageView.center;
+            CGPoint translation = [panRecognizer translationInView: self.cropView.imageView];
+            self.cropView.imageView.center = CGPointMake(self.cropView.imageView.center.x, currentPoint.y + translation.y);
+            [panRecognizer setTranslation: CGPointZero inView: self.cropView.imageView];
+        }
+    }
+}
+
+
+CGFloat lastScale ;
+- (void)handlePinchGesture:(UIPinchGestureRecognizer *)gestureRecognizer {
+    
+    if([gestureRecognizer state] == UIGestureRecognizerStateBegan) {
+        // Reset the last scale, necessary if there are multiple objects with different scales
+        lastScale = [gestureRecognizer scale];
+    }
+    
+    if ([gestureRecognizer state] == UIGestureRecognizerStateBegan ||
+        [gestureRecognizer state] == UIGestureRecognizerStateChanged) {
+        
+        CGFloat currentScale = [[self.cropView.imageView.layer valueForKeyPath:@"transform.scale"] floatValue];
+        
+        // Constants to adjust the max/min values of zoom
+        const CGFloat kMaxScale = 2.0;
+        const CGFloat kMinScale = 1.0;
+        
+        CGFloat newScale = 1 -  (lastScale - [gestureRecognizer scale]); // new scale is in the range (0-1)
+        newScale = MIN(newScale, kMaxScale / currentScale);
+        newScale = MAX(newScale, kMinScale / currentScale);
+        CGAffineTransform transform = CGAffineTransformScale([self.cropView.imageView transform], newScale, newScale);
+        self.cropView.imageView.transform = transform;
+        
+        lastScale = [gestureRecognizer scale];  // Store the previous scale factor for the next pinch gesture call
+        NSLog(@"!!! %f",lastScale);
+    }
+//        CGRect frame = [self.cropView.imageView frame];
+//        NSInteger nnewWidth = frame.size.width * lastScale;
+//        NSInteger nnewHeight = frame.size.height * lastScale;
+//        CGRect newFrame = CGRectMake(0, 0, nnewWidth, nnewHeight);
+//        
+//        [self.cropView.imageView setFrame:newFrame];
+//        self.cropView.imageView.center = CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height/2);
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -145,18 +213,19 @@ BOOL rotated;
     
 }
 
-- (IBAction)done:(id)sender
+- (void)done:(id)sender
 {
     
     if ([self.delegate respondsToSelector:@selector(ImageCropViewControllerSuccess:didFinishCroppingImage:)])
     {
         UIImage *cropped;
         if (self.image != nil){
-            CGRect CropRect = self.cropView.cropAreaInImage;
+            CGRect CropRect = self.cropView.cropAreaInView;
             CGImageRef imageRef = CGImageCreateWithImageInRect([self.image CGImage], CropRect) ;
             cropped = [UIImage imageWithCGImage:imageRef];
             CGImageRelease(imageRef);
         }
+        NSLog(@"%f",cropped.size.height);
         [self.delegate ImageCropViewControllerSuccess:self didFinishCroppingImage:cropped];
     }
     
@@ -166,6 +235,7 @@ BOOL rotated;
     _cropArea = cropArea;
     if (self.cropView) {
         self.cropView.cropAreaInImage = _cropArea;
+        self.cropView.center = CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height/2);
     }
 
 }
@@ -340,7 +410,7 @@ CGRect SquareCGRectAtCenter(CGFloat centerX, CGFloat centerY, CGFloat size) {
 
     //control points
     controlPointSize = DEFAULT_CONTROL_POINT_SIZE;
-    int initialCropAreaSize = self.frame.size.width / 5;
+    int initialCropAreaSize = self.imageView.frame.size.width/2;
     CGPoint centerInView = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
     topLeftPoint = [self createControlPointAt:SquareCGRectAtCenter(centerInView.x - initialCropAreaSize,
                                                                    centerInView.y - initialCropAreaSize, 
@@ -361,11 +431,11 @@ CGRect SquareCGRectAtCenter(CGFloat centerX, CGFloat centerY, CGFloat size) {
     cropAreaView = [[UIView alloc] initWithFrame:cropArea];
     cropAreaView.opaque = NO;
     cropAreaView.backgroundColor = [UIColor clearColor];
-    UIPanGestureRecognizer* dragRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleDrag:)];
-    dragRecognizer.view.multipleTouchEnabled = YES;
-    dragRecognizer.minimumNumberOfTouches = 1;
-    dragRecognizer.maximumNumberOfTouches = 2;
-    [self.viewForBaselineLayout addGestureRecognizer:dragRecognizer];
+//    UIPanGestureRecognizer* dragRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleDrag:)];
+//    dragRecognizer.view.multipleTouchEnabled = YES;
+//    dragRecognizer.minimumNumberOfTouches = 1;
+//    dragRecognizer.maximumNumberOfTouches = 2;
+//    [self.viewForBaselineLayout addGestureRecognizer:dragRecognizer];
     
     [self addSubview:_imageView];
     [self addSubview:self.shadeView];
@@ -382,8 +452,12 @@ CGRect SquareCGRectAtCenter(CGFloat centerX, CGFloat centerY, CGFloat size) {
     
     imageFrameInView = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     _imageView.frame = imageFrameInView;
+    
+
 
 }
+
+
 
 - (ControlPointView*)createControlPointAt:(CGRect)frame {
     ControlPointView* point = [[ControlPointView alloc] initWithFrame:frame];
@@ -391,8 +465,9 @@ CGRect SquareCGRectAtCenter(CGFloat centerX, CGFloat centerY, CGFloat size) {
 }
 
 - (CGRect)cropAreaFromControlPoints {
-    CGFloat width = topRightPoint.center.x - topLeftPoint.center.x;
+    
     CGFloat height = bottomRightPoint.center.y - topRightPoint.center.y;
+    CGFloat width = height * self.cropRatio;
     CGRect hole = CGRectMake(topLeftPoint.center.x, topLeftPoint.center.y, width, height);
     return hole;
 }
@@ -524,20 +599,20 @@ CGRect SquareCGRectAtCenter(CGFloat centerX, CGFloat centerY, CGFloat size) {
 
 - (void)beginCropBoxTransformForPoint:(CGPoint)location atView:(UIView*)view
 {
-    if (view == topLeftPoint) {
-        [self handleDragTopLeft:location];
-    } else if (view == bottomLeftPoint) {
-        [self handleDragBottomLeft:location];
-    } else if (view == bottomRightPoint) {
-        [self handleDragBottomRight:location];
-    } else if (view == topRightPoint) {
-        [self handleDragTopRight:location];
-    } else if (view == cropAreaView) {
-        [self handleDragCropArea:location];
-    }
-    
-    CGRect cropArea = [self cropAreaFromControlPoints];
-    [self setCropAreaForViews:cropArea];
+//    if (view == topLeftPoint) {
+//        [self handleDragTopLeft:location];
+//    } else if (view == bottomLeftPoint) {
+//        [self handleDragBottomLeft:location];
+//    } else if (view == bottomRightPoint) {
+//        [self handleDragBottomRight:location];
+//    } else if (view == topRightPoint) {
+//        [self handleDragTopRight:location];
+//    } else if (view == cropAreaView) {
+//        [self handleDragCropArea:location];
+//    }
+//    
+//    CGRect cropArea = [self cropAreaFromControlPoints];
+//    [self setCropAreaForViews:cropArea];
 }
 
 - (CGSize)deriveDisplacementFromDragLocation:(CGPoint)dragLocation draggedPoint:(CGPoint)draggedPoint oppositePoint:(CGPoint)oppositePoint {
@@ -877,18 +952,20 @@ CGRect SquareCGRectAtCenter(CGFloat centerX, CGFloat centerY, CGFloat size) {
 
 - (CGRect)cropAreaInImage {
     CGRect _cropArea = self.cropAreaInView;
-    CGRect r = CGRectMake((int)((_cropArea.origin.x - imageFrameInView.origin.x) * self.imageScale),
-                          (int)((_cropArea.origin.y - imageFrameInView.origin.y) * self.imageScale),
-                          (int)(_cropArea.size.width * self.imageScale),
-                          (int)(_cropArea.size.height * self.imageScale));
+    CGRect r = CGRectMake((int)((_cropArea.origin.x - imageFrameInView.origin.x) * self.cropRatio),
+                          (int)((_cropArea.origin.y - imageFrameInView.origin.y) * self.cropRatio),
+                          (int)(_cropArea.size.width * self.cropRatio),
+                          (int)(_cropArea.size.height * self.cropRatio));
     return r;
 }
 
 - (void)setCropAreaInImage:(CGRect)_cropAreaInImage {
-    CGRect r = CGRectMake(_cropAreaInImage.origin.x/self.imageScale + imageFrameInView.origin.x,
-                          _cropAreaInImage.origin.y/self.imageScale + imageFrameInView.origin.y,
-                          _cropAreaInImage.size.width/self.imageScale,
-                          _cropAreaInImage.size.height/self.imageScale);
+    CGFloat newHeight = imageFrameInView.size.width *self.cropRatio;
+    CGRect r = CGRectMake(imageFrameInView.origin.x,
+                          imageFrameInView.origin.y,
+                          imageFrameInView.size.width,
+                          imageFrameInView.size.height);
+    
     [self setCropAreaInView:r];
 }
 
@@ -983,10 +1060,10 @@ CGRect SquareCGRectAtCenter(CGFloat centerX, CGFloat centerY, CGFloat size) {
 - (void)setControlColor:(UIColor *)_color {
     controlColor = _color;
     self.shadeView.cropBorderColor = _color;
-    topLeftPoint.color = _color;
-    bottomLeftPoint.color = _color;
-    bottomRightPoint.color = _color;
-    topRightPoint.color = _color;
+    topLeftPoint.color = [UIColor clearColor];
+    bottomLeftPoint.color = [UIColor clearColor];
+    bottomRightPoint.color = [UIColor clearColor];
+    topRightPoint.color = [UIColor clearColor];
 }
 
 - (void)setUserInteractionEnabled:(BOOL)_userInteractionEnabled {

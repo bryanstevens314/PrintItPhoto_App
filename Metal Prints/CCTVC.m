@@ -71,7 +71,7 @@
     [formatter2 setDateFormat:@"MMM"];
     for (NSString *mon in monArray) {
         NSDate *aDate = [formatter2 dateFromString:mon];
-        NSDateComponents *components = [[NSCalendar currentCalendar] components:NSMonthCalendarUnit fromDate:aDate];
+        NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitMonth fromDate:aDate];
         NSString *astring = [NSString stringWithFormat:@"%li",(long)[components month]];
         if ([astring length] == 1) {
             [self.monthArray addObject:[NSString stringWithFormat:@"0%li",(long)[components month]]];
@@ -633,7 +633,7 @@ BOOL viewMovedUp;
     // Pass the selected object to the new view controller.
     
     if ([segue.identifier isEqualToString:@"shipping"]) {
-        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"Back", returnbuttontitle) style:     UIBarButtonItemStyleBordered target:nil action:nil];
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"Back", returnbuttontitle) style:     UIBarButtonItemStylePlain target:nil action:nil];
         self.navigationItem.backBarButtonItem = backButton;
     }
 }

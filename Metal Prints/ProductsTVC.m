@@ -7,7 +7,6 @@
 //
 
 #import "ProductsTVC.h"
-#import "OrderTVC.h"
 #import "ProductTVCCell.h"
 #import "AppDelegate.h"
 
@@ -140,7 +139,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
     if ([segue.identifier isEqualToString:@"StartOrder"]) {
-        OrderTVC *order = segue.destinationViewController;
+        //OrderTVC *order = segue.destinationViewController;
 
     }
 }

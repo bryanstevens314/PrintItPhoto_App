@@ -15,6 +15,7 @@
 @implementation LaunchController
 
 
+
 + (LaunchController *)sharedLaunchController
 {
     static LaunchController *sharedInstance = nil;

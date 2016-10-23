@@ -56,6 +56,10 @@ float totalPlusTaxToCharge;
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     self.cartTotal_Outlet.text = [NSString stringWithFormat:@"$%ld.00",(long)[self sharedAppDelegate].cartTotal];
+    if ([self sharedAppDelegate].cartTotal < 50)
+    {
+        self.shipping_Outlet.text = @"Free";
+    }
     if ([self sharedAppDelegate].shippingOK == YES) {
 
         if ([self sharedAppDelegate].shippingOK == YES) {
@@ -325,13 +329,13 @@ UIAlertController *uploadAlert;
     if ([segue.identifier isEqualToString:@"showShipping"]) {
         ShippingInfoVC *shipVC = segue.destinationViewController;
         shipVC.delegate = self;
-        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"", returnbuttontitle) style:UIBarButtonItemStyleBordered target:nil action:nil];
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"", returnbuttontitle) style:UIBarButtonItemStylePlain target:nil action:nil];
         self.navigationItem.backBarButtonItem = backButton;
     }
     if ([segue.identifier isEqualToString:@"showBilling"]) {
         BillingVC *billVC = segue.destinationViewController;
         billVC.delegate = self;
-        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"", returnbuttontitle) style:UIBarButtonItemStyleBordered target:nil action:nil];
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"", returnbuttontitle) style:UIBarButtonItemStylePlain target:nil action:nil];
         self.navigationItem.backBarButtonItem = backButton;
     }
     if ([segue.identifier isEqualToString:@"OrderPlaced"]) {

@@ -14,6 +14,7 @@
 
 @protocol PaymentVCDelegate
 
+@optional
 - (void)retirevedToken;
 - (void)failedToRetireveToken;
 - (void)CardSuccessFullyCharged;

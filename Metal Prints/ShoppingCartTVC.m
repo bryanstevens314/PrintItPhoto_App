@@ -106,7 +106,7 @@ UIButton *proceedButton;
 }
 -(void)viewWillAppear{
 NSLog(@"ViewWillAppear");
-
+//self.tabBarController.tabBar.alpha = 0.9;
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -760,12 +760,12 @@ int beginningQuantity;
         NSIndexPath *path = [NSIndexPath indexPathForRow:selectedRow inSection:0];
         VC.selectedImageIndex = path;
         
-        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"", returnbuttontitle) style:     UIBarButtonItemStyleBordered target:nil action:nil];
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"", returnbuttontitle) style:     UIBarButtonItemStylePlain target:nil action:nil];
         self.navigationItem.backBarButtonItem = backButton;
     }
     
     if ([segue.identifier isEqualToString:@"StartCheckOut"]) {
-        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"", returnbuttontitle) style:     UIBarButtonItemStyleBordered target:nil action:nil];
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"", returnbuttontitle) style:     UIBarButtonItemStylePlain target:nil action:nil];
         self.navigationItem.backBarButtonItem = backButton;
     }
 }

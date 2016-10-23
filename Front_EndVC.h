@@ -11,8 +11,9 @@
 #import "ProductCollectionViewController.h"
 #import "ProductCategorySelectionCollection.h"
 #import "DetailsTVC.h"
+#import "ImageCollectionViewController.h"
 
-@interface Front_EndVC : UIViewController <ProductDelegate,DetailsTVCDelegate, ProductCategoryDelegate,ProductCollectionDelegate,UICollectionViewDelegate,UICollectionViewDataSource>
+@interface Front_EndVC : UIViewController <ImageCollectionViewControllerDelegate,ProductDelegate,DetailsTVCDelegate, ProductCategoryDelegate,ProductCollectionDelegate,UICollectionViewDelegate,UICollectionViewDataSource>
 
 
 + (Front_EndVC *)sharedFrontEnd_VC;
@@ -20,13 +21,14 @@
 
 - (IBAction)ShoppingCartSelected:(id)sender;
 -(void)cellClickedWithRow:(NSInteger)clickedCell;
-- (IBAction)PanGesture:(id)sender;
 - (IBAction)moveCollectionView:(id)sender;
-
+- (IBAction)SwitchViews:(id)sender;
 //@property (nonatomic)  BOOL *collectionContainer;
 //@property (nonatomic)  BOOL *collectionContainer;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *switchViewsOutlet;
 
 @property (weak, nonatomic) IBOutlet UIView *collectionContainer;
+
 
 @property (weak, nonatomic) IBOutlet UIView *collectionViewView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *Shopping_Cart_Outlet;

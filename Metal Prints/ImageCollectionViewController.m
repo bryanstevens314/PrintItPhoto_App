@@ -70,9 +70,10 @@
     if ([self sharedAppDelegate].phoneImageArray.count != 0) {
         loadingImages = YES;
         int x = 0;
+        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
         for (NSArray *imgArray1 in [self sharedAppDelegate].phoneImageArray) {
             x++;
-            ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+            
             [library assetForURL:[imgArray1 objectAtIndex:0]
                      resultBlock:^(ALAsset *asset) {
                          
@@ -161,11 +162,12 @@ UIAlertController *loadingAlert;
 -(void)SingleTap:(UITapGestureRecognizer *)gesture{
     CGPoint location = [gesture locationInView:self.collectionView];
     NSIndexPath *tappedIndexPath = [self.collectionView indexPathForItemAtPoint:location];
-    ImageCollectionViewCell* cell = [self.collectionView  cellForItemAtIndexPath:tappedIndexPath];
+    ImageCollectionViewCell *cell = [self.collectionView  cellForItemAtIndexPath:tappedIndexPath];
     iPath = tappedIndexPath;
     currentTempURL = cell.imgURL;
     tempThumbImg = cell.imageViewCell.image;
-    [self performSegueWithIdentifier:@"addCartItem" sender:self];
+    NSArray *array = @[iPath,currentTempURL,tempThumbImg ];
+    [self.delegate SelectedImageWithData:array];
 }
 
 -(void)doubleTap:(UITapGestureRecognizer *)gesture{
@@ -232,27 +234,53 @@ NSIndexPath *firstSelectedIndexPath;
                      
                      if (fullImg.size.width < fullImg.size.height) {
                          NSLog(@"portrait");
-                         float newWidth = (self.view.bounds.size.height - 315) * division;
-                         bigImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, newWidth, self.view.bounds.size.height - 315)];
+                         float newWidth = (self.view.bounds.size.height - 260) * division;
+                         // create graphics context with screen size
+                         CGRect screenRect = [[UIScreen mainScreen] bounds];
+                         UIGraphicsBeginImageContext(screenRect.size);
+                         CGContextRef ctx = UIGraphicsGetCurrentContext();
+                         [[UIColor blackColor] set];
+                         CGContextFillRect(ctx, screenRect);
+                         
+                         // grab reference to our window
+                         UIWindow *window = [UIApplication sharedApplication].keyWindow;
+                         
+                         // transfer content into our context
+                         [window.layer renderInContext:ctx];
+                         UIImage *screengrab = UIGraphicsGetImageFromCurrentImageContext();
+                         UIGraphicsEndImageContext();
+                         UIImageView *blurImageView = [[UIImageView alloc] initWithImage:[self blur:screengrab]];
+                         blurImageView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
+                         [[self sharedAppDelegate].window addSubview:blurImageView];
+                         bigImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, newWidth, self.view.bounds.size.height - 260)];
                          bigImageView.center = CGPointMake(self.view.bounds.size.width/2,self.view.bounds.size.height/2);
                          bigImageView.image = fullImg;
+                         bigImageView.alpha = 0.0;
+                         [self.view addSubview:bigImageView];
+                         [self.view bringSubviewToFront:bigImageView];
                          //            UIImage *blurredImage = [self blurImage];
                          //            backgroungImageview = [[UIImageView alloc] initWithFrame:self.view.bounds];
                          //            backgroungImageview.image = blurredImage;
                          //            [self.view addSubview:backgroungImageview];
-                         [self.view addSubview:bigImageView];
+                         [UIView beginAnimations:@"bucketsOff" context:nil];
+                         [UIView setAnimationDuration:0.2];
+                         [UIView setAnimationDelegate:self];
+                         bigImageView.alpha = 1.0;
+                         //animate off screen
+                         [UIView commitAnimations];
+                         
                      }
                      if (fullImg.size.width > fullImg.size.height) {
                          NSLog(@"landscape");
-                         float newHeight = (self.view.bounds.size.width - 90) / division;
-                         bigImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width - 90, newHeight)];
+                         float newHeight = (self.view.bounds.size.width - 45) / division;
+                         bigImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width - 45, newHeight)];
                          bigImageView.center = CGPointMake(self.view.bounds.size.width/2,self.view.bounds.size.height/2);
                          bigImageView.image = fullImg;
                          [self.view addSubview:bigImageView];
                      }
                      if (fullImg.size.width == fullImg.size.height) {
                          NSLog(@"square");
-                         bigImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width - 100, self.view.bounds.size.width - 100)];
+                         bigImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width - 50, self.view.bounds.size.width - 50)];
                          bigImageView.center = CGPointMake(self.view.bounds.size.width/2,self.view.bounds.size.height/2);
                          bigImageView.image = fullImg;
                          [self.view addSubview:bigImageView];
@@ -269,7 +297,7 @@ NSIndexPath *firstSelectedIndexPath;
     {
         
         CGPoint location = [gesture locationInView:self.collectionView];
-        NSIndexPath *selectedIndexPath = [self.collectionView indexPathForItemAtPoint:location];
+        //NSIndexPath *selectedIndexPath = [self.collectionView indexPathForItemAtPoint:location];
         NSLog(@"Ended selection");
         ImageCollectionViewCell* cell = [self.collectionView cellForItemAtIndexPath:firstSelectedIndexPath];
         cell.imageViewCell.frame = initialRect;
@@ -278,6 +306,34 @@ NSIndexPath *firstSelectedIndexPath;
     }
 }
 
+
+- (UIImage*) blur:(UIImage*)theImage
+{
+    // ***********If you need re-orienting (e.g. trying to blur a photo taken from the device camera front facing camera in portrait mode)
+    // theImage = [self reOrientIfNeeded:theImage];
+    
+    // create our blurred image
+    CIContext *context = [CIContext contextWithOptions:nil];
+    CIImage *inputImage = [CIImage imageWithCGImage:theImage.CGImage];
+    
+    // setting up Gaussian Blur (we could use one of many filters offered by Core Image)
+    CIFilter *filter = [CIFilter filterWithName:@"CIGaussianBlur"];
+    [filter setValue:inputImage forKey:kCIInputImageKey];
+    [filter setValue:[NSNumber numberWithFloat:15.0f] forKey:@"inputRadius"];
+    CIImage *result = [filter valueForKey:kCIOutputImageKey];
+    
+    // CIGaussianBlur has a tendency to shrink the image a little,
+    // this ensures it matches up exactly to the bounds of our original image
+    CGImageRef cgImage = [context createCGImage:result fromRect:[inputImage extent]];
+    
+    UIImage *returnImage = [UIImage imageWithCGImage:cgImage];//create a UIImage for this function to "return" so that ARC can manage the memory of the blur... ARC can't manage CGImageRefs so we need to release it before this function "returns" and ends.
+    CGImageRelease(cgImage);//release CGImageRef because ARC doesn't manage this on its own.
+    
+    return returnImage;
+    
+    // *************** if you need scaling
+    // return [[self class] scaleIfNeeded:cgImage];
+}
 
 
 - (UIImage *)blurImage{
@@ -321,8 +377,9 @@ NSIndexPath *firstSelectedIndexPath;
 UIActivityIndicatorView *activityIndicator;
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
+
     self.toggleOutlet.tintColor = [UIColor lightGrayColor];
-    
+    //self.tabBarController.tabBar.alpha = 0.9;
 //    if ([self sharedAppDelegate].mutableImageArray.count == 0) {
 //        loadingAlert = [UIAlertController alertControllerWithTitle:@""
 //                                                           message:@"Loading Images"
@@ -529,41 +586,40 @@ NSInteger numberOfCells = 0;
     //cell.cellImage = thumbImg;
 
     
-//    //cell.cellImageView.contentMode = UIViewContentModeScaleAspectFit;
-//    cell.imageViewCell.contentMode = UIViewContentModeScaleAspectFill;
-//    cell.imageViewCell.clipsToBounds = YES;
+    //cell.cellImageView.contentMode = UIViewContentModeScaleAspectFit;
+    cell.imageViewCell.contentMode = UIViewContentModeScaleAspectFill;
+    cell.imageViewCell.clipsToBounds = YES;
 //    cell.imageViewCell.frame  = CGRectMake(0, 0, cell.bounds.size.width-2, cell.bounds.size.width - 2);
 //    cell.imageViewCell.center = CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2);
 //    cell.imageViewCell.image = thumbImg;
 //    [cell.contentView addSubview:cell.imageViewCell];
-    
-    float division = thumbImg.size.width/thumbImg.size.height;
-    
-    if (thumbImg.size.width < thumbImg.size.height) {
-        NSLog(@"portrait");
-        NSLog(@"ImageView %@",cell.cellImageView);
-        float newWidth = (cell.bounds.size.height - 5) * division;
-        cell.imageViewCell.frame  = CGRectMake(0, 0, newWidth, cell.bounds.size.height - 5);
-        cell.imageViewCell.center = CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2);
-        cell.imageViewCell.image = thumbImg;
-        [cell.contentView addSubview:cell.imageViewCell];
-        NSLog(@"ImageView 2 %@",cell.cellImageView);
-    }
-    if (thumbImg.size.width > thumbImg.size.height) {
-        NSLog(@"landscape");
-        float newHeight = (cell.bounds.size.width - 5) / division;
-        [cell.imageViewCell setFrame:CGRectMake(0, 0, cell.bounds.size.width - 5, newHeight)];
+//    
+//    float division = thumbImg.size.width/thumbImg.size.height;
+//    
+//    if (thumbImg.size.width < thumbImg.size.height) {
+//        NSLog(@"portrait");
+//        float newWidth = (cell.bounds.size.height - 5) * division;
+//        cell.imageViewCell.frame  = CGRectMake(0, 0, newWidth, cell.bounds.size.height - 5);
+//        cell.imageViewCell.center = CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2);
+//        cell.imageViewCell.image = thumbImg;
+//        [cell.contentView addSubview:cell.imageViewCell];
+//        NSLog(@"ImageView 2 %@",cell.cellImageView);
+//    }
+//    if (thumbImg.size.width > thumbImg.size.height) {
+//        NSLog(@"landscape");
+//        float newHeight = (cell.bounds.size.width - 5) / division;
+//        [cell.imageViewCell setFrame:CGRectMake(0, 0, cell.bounds.size.width - 5, newHeight)];
+//        [cell.imageViewCell setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
+//        cell.imageViewCell.image = thumbImg;
+//        [cell.contentView addSubview:cell.imageViewCell];
+//    }
+//    if (thumbImg.size.width == thumbImg.size.height) {
+//        NSLog(@"square");
+        [cell.imageViewCell setFrame:CGRectMake(0, 0, cell.bounds.size.height - 2, cell.bounds.size.height - 2)];
         [cell.imageViewCell setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
         cell.imageViewCell.image = thumbImg;
         [cell.contentView addSubview:cell.imageViewCell];
-    }
-    if (thumbImg.size.width == thumbImg.size.height) {
-        NSLog(@"square");
-        [cell.imageViewCell setFrame:CGRectMake(0, 0, cell.bounds.size.height - 20, cell.bounds.size.height - 20)];
-        [cell.imageViewCell setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
-        cell.imageViewCell.image = thumbImg;
-        [cell.contentView addSubview:cell.imageViewCell];
-    }
+    //}
 
     
     if ([highlighted isEqualToString:@"YES"]) {
@@ -722,7 +778,7 @@ NSIndexPath *iPath;
     
 
     if ([segue.identifier isEqualToString:@"addCartItem"]) {
-        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"", returnbuttontitle) style:UIBarButtonItemStyleBordered target:nil action:nil];
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"", returnbuttontitle) style:UIBarButtonItemStylePlain target:nil action:nil];
         self.navigationItem.backBarButtonItem = backButton;
         DetailsTVC *details = segue.destinationViewController;
         details.delegate = self;

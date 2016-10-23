@@ -63,7 +63,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self sharedAppDelegate].TheTabController = self;
-    
+//    UITabBar *tabBar = self.tabBar;
+//    
+//    [[UITabBar appearance] setBackgroundImage:[UIImage new]];
+//    [[UITabBar appearance] setShadowImage:[UIImage new]];
+//    
+//    UIVisualEffectView *blurView = [[UIVisualEffectView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, tabBar.bounds.size.height)];
+//    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
+//    [blurView setEffect:blurEffect];
+//    
+//    UIView *maskView = [[UIView alloc] initWithFrame:blurView.frame];
+//    maskView.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.1];
+//    [blurView addSubview:maskView];
+//    
+//    [tabBar insertSubview:blurView atIndex:0];
     // Do any additional setup after loading the view.
 }
 

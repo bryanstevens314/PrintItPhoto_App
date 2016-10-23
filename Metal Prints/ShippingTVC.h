@@ -20,7 +20,7 @@
 @end
 
 
-@interface ShippingTVC : UITableViewController <StateTableViewControllerDelegate>
+@interface ShippingTVC : UITableViewController 
 @property (weak, nonatomic) id<ShippingTVCDelegate> delegate;
 + (ShippingTVC *)sharedShippingTVC;
 

@@ -514,12 +514,23 @@ BOOL loadingView;
 {
     NSString *string;
     if (self.For_Aluminum_TextField.inputView == pickerView) {
-        
-        if (row == 0) {
-            string = @"Easel";
+        if ([self.Product_Outlet.text isEqualToString:@"2x3"]) {
+            if (row == 0) {
+                string = @"Magnet";
+                self.For_Aluminum_TextField.text = string;
+            }
+            if (row == 1) {
+                string = @"No mount";
+                self.For_Aluminum_TextField.text = string;
+            }
         }
-        if (row == 1) {
-            string = @"Wall mount";
+        else{
+            if (row == 0) {
+                string = @"Easel";
+            }
+            if (row == 1) {
+                string = @"Wall mount";
+            }
         }
     }
     if (self.Retouching_TextField.inputView == pickerView) {
@@ -611,6 +622,7 @@ BOOL loadingView;
         }
         
         if (self.Product_Outlet.inputView == pickerView) {
+            imageCropped = NO;
             self.selectedRow = row;
             if (self.selectedSection1 == 0) {
                 NSArray *array = [[self sharedAppDelegate].AluminumProductArray objectAtIndex:row];
@@ -642,6 +654,7 @@ BOOL loadingView;
         }
         
         if (self.Category_Outlet.inputView == pickerView) {
+            imageCropped = NO;
             self.Category_Outlet.text = [[self sharedAppDelegate].categoryArray objectAtIndex:row];
             
             self.selectedSection1 = row;
@@ -654,6 +667,11 @@ BOOL loadingView;
                     [self.aluminumOptionsCell.contentView setAlpha:1];
                     self.For_Aluminum_TextField.enabled = YES;
                     self.For_Aluminum_TextField.text = @"Easel";
+                    if (self.selectedSection1 == 0) {
+                        NSArray *array = [[self sharedAppDelegate].AluminumProductArray objectAtIndex:row];
+                        self.currentProductArray = array;
+                        self.Product_Outlet.text = [array objectAtIndex:0];
+                    }
                 }
             }
             
@@ -756,7 +774,7 @@ BOOL loadingView;
  // Pass the selected object to the new view controller.
 
      if ([segue.identifier isEqualToString:@"PayForPrint"]) {
-         UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"Back", returnbuttontitle) style:     UIBarButtonItemStyleBordered target:nil action:nil];
+         UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"Back", returnbuttontitle) style:     UIBarButtonItemStylePlain target:nil action:nil];
          self.navigationItem.backBarButtonItem = backButton;
      }
  }
@@ -787,6 +805,21 @@ BOOL loadingView;
 
 }
 
+- (IBAction)addQuantity:(id)sender {
+    int quan = [self.Quantity_TextField.text intValue];
+    quan++;
+    self.Quantity_TextField.text = [NSString stringWithFormat:@"%i",quan];
+}
+
+- (IBAction)subtractQuantity:(id)sender {
+    int quan = [self.Quantity_TextField.text intValue];
+    if (quan != 1) {
+        quan--;
+        self.Quantity_TextField.text = [NSString stringWithFormat:@"%i",quan];
+    }
+
+}
+
 -(void)cropImage{
     [self cropImage:self.imgView.image];
 }
@@ -803,12 +836,16 @@ BOOL loadingView;
     }
     else
     {
-        UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                              message:@"Device has no camera"
-                                                             delegate:nil
-                                                    cancelButtonTitle:@"OK"
-                                                    otherButtonTitles: nil];
-        [myAlertView show];
+        UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"" message:@"This device doesn't have a cmaera"preferredStyle:UIAlertControllerStyleActionSheet];
+        
+        UIAlertAction *cropAction = [UIAlertAction actionWithTitle:@"OK"
+                                                             style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                 [alert2 dismissViewControllerAnimated:YES completion:nil];
+                                                             }];
+        
+        [alert2 addAction:cropAction];
+        
+        [self presentViewController:alert2 animated:YES completion:nil];
     }
 }
 
@@ -958,18 +995,31 @@ BOOL loadingView;
                  UIImage *fullImg = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
 
                  self.currentImage = fullImg;
+                 NSLog(@"%f",self.currentImage.size.height);
                  ImageCropViewController *controller = [[ImageCropViewController alloc] initWithImage:self.currentImage];
                  controller.delegate = self;
                  controller.blurredBackground = YES;
                  UIImage *productImage = [self.currentProductArray objectAtIndex:2];
                  NSLog(@"%@",[self.currentProductArray objectAtIndex:1]);
                  float ratio1 = productImage.size.width/productImage.size.height;
+                 NSLog(@"%f",ratio1);
                  controller.ratio = ratio1;
+                 if (productImage.size.width < productImage.size.height) {
+                     NSLog(@"portrait");
+                     float newWidth = (self.view.bounds.size.height - 100) * ratio1;
+                     [controller setCropArea:CGRectMake(0, 0, newWidth,  self.view.bounds.size.height - 100)];
+                 }
+                 if (productImage.size.width > productImage.size.height) {
+                     NSLog(@"landscape");
+                     float newHeight = (self.view.bounds.size.width - 50) / ratio1;
+                     [controller setCropArea:CGRectMake(0, 0, self.view.bounds.size.width - 50,  newHeight)];
+                 }
+                 if (productImage.size.width == productImage.size.height) {
+                     NSLog(@"square");
+                     [controller setCropArea:CGRectMake(0, 0, self.view.bounds.size.width - 20,  self.view.bounds.size.width - 20)];
+                 }
+
                  
-                 
-                 
-                 int cropWidth = 250 *ratio1;
-                 [controller setCropArea:CGRectMake(0, 0, cropWidth,  250)];
                  
                  
                  [[self navigationController] pushViewController:controller animated:YES];
@@ -1030,13 +1080,14 @@ BOOL loadingView;
         self.imgView.userInteractionEnabled = YES;
         [self.imgView addGestureRecognizer:tapGesture];
     }
-    
+    imageCropped = YES;
     
 }
 
 
 - (void)ImageCropViewControllerDidCancel:(ImageCropViewController *)controller{
     //self.imgView.image = image;
+    imageCropped = NO;
     [[self navigationController] popViewControllerAnimated:YES];
 }
 
@@ -1047,6 +1098,7 @@ BOOL loadingView;
 }
 
 
+BOOL imageCropped;
 - (IBAction)AddItemToCart:(id)sender {
     
     if (!self.imgView.image) {
@@ -1062,36 +1114,20 @@ BOOL loadingView;
         [self presentViewController:alert2 animated:YES completion:nil];
     }
     else{
-//        NSNumberFormatter *format = [[NSNumberFormatter alloc]init];
-//        [format setNumberStyle:NSNumberFormatterDecimalStyle];
-//        [format setMaximumFractionDigits:2];
-//        [format setMinimumFractionDigits:2];
-//        double imageRatio = self.image.size.height/self.image.size.width;
-//        NSNumber *anumber = [NSNumber numberWithDouble:imageRatio];
-//        
-//        UIImage *productImage = [self.currentProductArray objectAtIndex:2];
-//        double productRatio = productImage.size.height/productImage.size.width;
-//        double productRatioAlt = productImage.size.width/productImage.size.height ;
-//        NSNumber *productNumver = [NSNumber numberWithDouble:productRatio];
-//        NSNumber *productRatioNumberAlt = [NSNumber numberWithDouble:productRatioAlt];
-//        
-////        NSLog(@"%@",imageRatioString);
-////        NSLog(@"%@",productRatioString);
-////        NSLog(@"%@",productRatioAltString);
-//
-//        if (anumber != productNumver || anumber != productRatioNumberAlt) {
-//            UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"" message:@"Please crop your photo"preferredStyle:UIAlertControllerStyleAlert];
-//
-//            UIAlertAction *cropAction = [UIAlertAction actionWithTitle:@"Crop Image"
-//                                                                   style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-//                                                                       [self cropImage:self.imgView.image];
-//                                                                   }]; // 2
-//
-//            [alert2 addAction:cropAction];
-//            
-//            [self presentViewController:alert2 animated:YES completion:nil];
-//        }
-//        else{
+
+        if (imageCropped == NO) {
+            UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"" message:@"Please crop your photo"preferredStyle:UIAlertControllerStyleAlert];
+
+            UIAlertAction *cropAction = [UIAlertAction actionWithTitle:@"Crop Image"
+                                                                   style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                       [self cropImage:self.imgView.image];
+                                                                   }]; // 2
+
+            [alert2 addAction:cropAction];
+            
+            [self presentViewController:alert2 animated:YES completion:nil];
+        }
+        else{
     
             NSString *price = @"";
             NSString *product = @"";
@@ -1387,7 +1423,7 @@ BOOL loadingView;
         
         //[self performSegueWithIdentifier:@"PayForPrint" sender:self];
         // Dispose of any resources that can be recreated.
-    //}
+    }
     
 }
 @end
