@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "NonCopyPasteTextField.h"
 #import "ImageCropView.h"
-
+#import "CropController.h"
+#import "TOCropViewController.h"
 @class DetailsTVC;
 
 @protocol DetailsTVCDelegate
@@ -20,7 +21,7 @@
 
 @end
 
-@interface DetailsTVC : UITableViewController<UIPickerViewDelegate,UIPickerViewDataSource,UIImagePickerControllerDelegate,ImageCropViewControllerDelegate, UINavigationControllerDelegate>
+@interface DetailsTVC : UITableViewController<UIPickerViewDelegate,UIPickerViewDataSource,UIImagePickerControllerDelegate,ImageCropViewControllerDelegate, CropControllerDelegate,TOCropViewControllerDelegate, UINavigationControllerDelegate>
 @property (weak, nonatomic) id<DetailsTVCDelegate> delegate;
 
 + (DetailsTVC *)sharedDetailsTVCInstance;

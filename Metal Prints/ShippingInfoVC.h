@@ -15,14 +15,20 @@
 
 @protocol ShippingInfoVCDelegate
 
+@optional
 - (void)FinishedEnteringShippingInformationWithTaxPercent:(float)percent;
+-(void)FinishedEnteringShippingInformation;
 
 @end
 
 
-@interface ShippingInfoVC : UIViewController <UIPickerViewDelegate,UIPickerViewDataSource,ShippingTVCDelegate,StateTableViewControllerDelegate>
+@interface ShippingInfoVC : UIViewController <ShippingTVCDelegate,StateTableViewControllerDelegate>
 @property (weak, nonatomic) id<ShippingInfoVCDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UIView *orderDataView;
+@property (retain, nonatomic) NSDictionary *addressDict;
+@property (nonatomic) NSInteger selectedRow;
+@property(nonatomic) BOOL savingAddress;
+@property(nonatomic) BOOL editingAddress;
 //@property (retain, nonatomic) STPPaymentContext *paymentContext;
-- (IBAction)PresentNextView:(id)sender;
+
 @end

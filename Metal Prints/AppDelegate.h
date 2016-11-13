@@ -14,6 +14,7 @@
 #import "ImageCollectionViewController.h"
 #import "TabController.h"
 #import "LaunchController.h"
+#import "CropController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -35,6 +36,8 @@
 @property ( nonatomic)NSInteger cartTotal;
 @property ( nonatomic) BOOL shippingOK;
 @property ( nonatomic) BOOL billingOK;
+@property ( nonatomic) BOOL cartIsMainController;
+@property ( nonatomic) BOOL displayingCart;
 @property (nonatomic)NSInteger cartPrintTotal;
 @property (retain, nonatomic) KCSAppdataStore *store;
 @property (retain, nonatomic) TabController *TheTabController;
@@ -48,6 +51,7 @@
 @property (nonatomic) NSInteger totalImageCount;
 
 @property (retain, nonatomic) NSMutableArray *phoneImageArray;
+@property (retain, nonatomic) NSMutableArray *savedAddressesArray;
 @property (retain, nonatomic) NSMutableArray *highlightedArray;
 
 @end

@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "ProductCategoryCell.h"
+#import "ProductsTVC.h"
+#import "ProductCollectionViewController.h"
+#import "DetailsTVC.h"
+#import "ImageCollectionViewController.h"
+#import "ShoppingCartTVC.h"
+#import <QuartzCore/QuartzCore.h>
 
 @class ProductCategorySelectionCollection;
 
@@ -18,10 +24,13 @@
 
 @end
 
-@interface ProductCategorySelectionCollection : UICollectionViewController <UIGestureRecognizerDelegate>{
+@interface ProductCategorySelectionCollection : UICollectionViewController <UIGestureRecognizerDelegate,ShoppingCartTVCDelegate,ProductDelegate,DetailsTVCDelegate, ProductCategoryDelegate>{
     BOOL displayingProducts;
     BOOL finished;
 }
+
+- (void)FinishedLoadingImages;
+-(void)SlideOverView;
 @property (weak, nonatomic) id<ProductCategoryDelegate> delegate;
 
 + (ProductCategorySelectionCollection *)sharedProductCategorySelectionCollection;

@@ -35,7 +35,7 @@
     
 //    UIBarButtonItem *rightBarButtonItem7 = [[UIBarButtonItem alloc] initWithTitle:@"Place Order" style:UIBarButtonItemStylePlain target:self action:@selector(PlaceOrder)];
 //    [self.navigationItem setRightBarButtonItem:rightBarButtonItem7];
-[self.navigationItem setTitle:@"Confirm"];
+[self.navigationItem setTitle:@"Confirmation"];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -55,6 +55,8 @@ NSString *taxTotalString;
 float totalPlusTaxToCharge;
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
+    self.placeOrderOutlet.layer.cornerRadius = 2;
+    self.placeOrderOutlet.clipsToBounds = YES;
     self.cartTotal_Outlet.text = [NSString stringWithFormat:@"$%ld.00",(long)[self sharedAppDelegate].cartTotal];
     if ([self sharedAppDelegate].cartTotal < 50)
     {
@@ -71,21 +73,27 @@ float totalPlusTaxToCharge;
             
             UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
             [cell setAccessoryType:UITableViewCellAccessoryNone];
-            
+            NSInteger shippingCost = 0;
+            if ([self sharedAppDelegate].cartTotal > 50) {
+                self.shipping_Outlet.text = @"Free";
+            }
+            else{
+                self.shipping_Outlet.text = @"$7.00";
+                shippingCost = 7;
+            }
             if (![[self sharedAppDelegate].taxPercentString isEqualToString:@"0"]) {
                 float totalTax = [taxPercentString floatValue] * [self sharedAppDelegate].cartTotal;
-                float totalPrice = totalTax + [self sharedAppDelegate].cartTotal + 7;
+                float totalPrice = totalTax + [self sharedAppDelegate].cartTotal + shippingCost;
                 taxTotalString = [NSString stringWithFormat:@"$%.2f",totalTax];;
                 self.tax_Outlet.text = taxTotalString;
                 self.totalPrice_Outlet.text = [NSString stringWithFormat:@"$%.2f",totalPrice];
-                self.shipping_Outlet.text = @"$7.00";
                 self.cartTotal_Outlet.text = [NSString stringWithFormat:@"$%ld.00",(long)[self sharedAppDelegate].cartTotal];
             }
             else{
-                float totalPrice = [self sharedAppDelegate].cartTotal + 7;
+                float totalPrice = [self sharedAppDelegate].cartTotal + shippingCost;
                 self.tax_Outlet.text = @"No Tax";
                 self.totalPrice_Outlet.text = [NSString stringWithFormat:@"$%.2f",totalPrice];
-                self.shipping_Outlet.text = @"$7.00";
+
                 self.cartTotal_Outlet.text = [NSString stringWithFormat:@"$%ld.00",(long)[self sharedAppDelegate].cartTotal];
             }
         }
@@ -106,7 +114,7 @@ float totalPlusTaxToCharge;
 }
 
 
-BOOL displayedIt;
+
 UIAlertController *calculatingTax;
 -(void)viewDidAppear:(BOOL)animated{
     if ([self sharedAppDelegate].shippingOK) {
@@ -114,6 +122,21 @@ UIAlertController *calculatingTax;
         [super viewDidAppear:YES];
 
     }
+    else{
+        if (self.displayedIt == NO) {
+            self.displayedIt = YES;
+            [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] animated:YES scrollPosition:UITableViewScrollPositionTop];
+            [self.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] animated:YES];
+            [self performSegueWithIdentifier:@"showShipping" sender:self];
+        }
+        
+
+    }
+
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:YES];
 
 }
 
@@ -220,7 +243,7 @@ UIAlertController *uploadAlert;
         [self sharedAppDelegate].shoppingCart = nil;
         [self sharedAppDelegate].cartTotal = 0;
         [self sharedAppDelegate].cartPrintTotal = 0;
-        NSArray *array2 = @[[NSString stringWithFormat:@"%ld",(long)[self sharedAppDelegate].cartTotal], [NSString stringWithFormat:@"%ld",(long)[self sharedAppDelegate].cartPrintTotal]];
+//        NSArray *array2 = @[[NSString stringWithFormat:@"%ld",(long)[self sharedAppDelegate].cartTotal], [NSString stringWithFormat:@"%ld",(long)[self sharedAppDelegate].cartPrintTotal]];
 //        [NSKeyedArchiver archiveRootObject:array2 toFile:[self archiveCartTotals]];
 //        [NSKeyedArchiver archiveRootObject:[self sharedAppDelegate].shoppingCart toFile:[self archivePathShoppingCart]];
         [self performSegueWithIdentifier:@"OrderPlaced" sender:self];
@@ -329,6 +352,7 @@ UIAlertController *uploadAlert;
     if ([segue.identifier isEqualToString:@"showShipping"]) {
         ShippingInfoVC *shipVC = segue.destinationViewController;
         shipVC.delegate = self;
+        shipVC.savingAddress = NO;
         UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"", returnbuttontitle) style:UIBarButtonItemStylePlain target:nil action:nil];
         self.navigationItem.backBarButtonItem = backButton;
     }

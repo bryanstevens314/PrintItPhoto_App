@@ -10,6 +10,10 @@
 
 #import "AppDelegate.h"
 
+#import "SWRevealViewController.h"
+
+#import "OrderOverViewTVC.h"
+
 @interface ShoppingCartTVC (){
     int cartTotal;
     BOOL edited;
@@ -19,6 +23,7 @@
 @property (nonatomic, retain) NSMutableArray *cellArray;
 @property (nonatomic, retain) NSMutableArray *cellPriceArray;
 @property (retain, nonatomic) UIToolbar* keyboardDoneButtonView;
+@property (nonatomic) float originalOrigin;
 @end
 
 @implementation ShoppingCartTVC
@@ -71,7 +76,7 @@
 }
 
 UIBarButtonItem *rightBarButtonItem6;
-UIButton *proceedButton;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 //    rightBarButtonItem6 = [[UIBarButtonItem alloc] initWithTitle:@"Place Order" style:UIBarButtonItemStylePlain target:self action:@selector(EnterShipping)];
@@ -82,21 +87,20 @@ UIButton *proceedButton;
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.tabBarController.tabBar.alpha = 0.93;
     
-    proceedButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    proceedButton.frame = CGRectMake(0, 0, 353, 50);
-    [proceedButton addTarget:self action:@selector(EnterShipping) forControlEvents:UIControlEventTouchUpInside];
-    [proceedButton setTitle:@"Proceed with order" forState:UIControlStateNormal];
-    proceedButton.backgroundColor = [UIColor colorWithRed:41.0/255.0 green:127.0/255.0 blue:184.0/255.0 alpha:1];
-    proceedButton.center = CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height-80);
-    [self.navigationController.view addSubview:proceedButton];
-    [self.navigationController.view bringSubviewToFront:proceedButton];
-    
+    CGRect tableFrame = CGRectMake(0, 64, self.view.frame.size.width, self.view.bounds.size.height-64);
+    self.tableView.frame = tableFrame;
     CGRect rect = self.toolBar.frame;
     rect.origin.y = MIN(0, [[self navigationController] navigationBar].bounds.size.height);
     self.toolBar.frame = rect;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
-    
+    UIImage *background = [UIImage imageNamed:@"Hamburger_icon.svg.png"];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button addTarget:self action:@selector(toggleReveal11) forControlEvents:UIControlEventTouchUpInside]; //adding action
+    [button setBackgroundImage:background forState:UIControlStateNormal];
+    button.frame = CGRectMake(0 ,0,35,30);
+    UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    [self.navigationItem setLeftBarButtonItem:leftBarButtonItem];
     //[self.navigationController setToolbarHidden:NO animated:YES];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -104,9 +108,49 @@ UIButton *proceedButton;
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
--(void)viewWillAppear{
-NSLog(@"ViewWillAppear");
-//self.tabBarController.tabBar.alpha = 0.9;
+
+
+UIButton *proceedButton12;
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+
+    if ([self sharedAppDelegate].cartIsMainController == YES) {
+        if (proceedButton12 == nil) {
+            proceedButton12 = [UIButton buttonWithType:UIButtonTypeCustom];
+            proceedButton12.frame = CGRectMake(0, 0, 353, 50);
+            proceedButton12.layer.cornerRadius = 2;
+            proceedButton12.clipsToBounds = YES;
+            [proceedButton12 addTarget:self action:@selector(startShipping) forControlEvents:UIControlEventTouchUpInside];
+            [proceedButton12 setTitle:@"Proceed with order" forState:UIControlStateNormal];
+            proceedButton12.backgroundColor = [UIColor colorWithRed:41.0/255.0 green:127.0/255.0 blue:184.0/255.0 alpha:1];
+            proceedButton12.center = CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height-35);
+            self.originalOrigin = proceedButton12.frame.origin.y;
+            [self.view insertSubview:proceedButton12 aboveSubview:self.view];
+        }
+        else{
+            self.originalOrigin = proceedButton12.frame.origin.y;
+            [self.view insertSubview:proceedButton12 aboveSubview:self.view];
+        }
+    }
+
+    
+    //self.tableView.contentInset = UIEdgeInsetsMake(64, 0, -64, 0);
+}
+
+// to make the button float over the tableView including tableHeader
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGRect tableBounds = self.tableView.bounds;
+    CGRect floatingButtonFrame = proceedButton12.frame;
+    floatingButtonFrame.origin.y = self.originalOrigin + tableBounds.origin.y;
+    proceedButton12.frame = floatingButtonFrame;
+    
+    [self.view bringSubviewToFront:proceedButton12]; // float over the tableHeader
+}
+
+
+
+-(void)startShipping{
+    [self performSegueWithIdentifier:@"StartOrder" sender:self];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -118,50 +162,31 @@ NSLog(@"ViewWillAppear");
     self.total_Outlet.title = [NSString stringWithFormat:@"$%li",(long)[self sharedAppDelegate].cartTotal];
     self.totalPrints.title = [NSString stringWithFormat:@"%li",(long)[self sharedAppDelegate].cartPrintTotal];
 
-    if (proceedButton) {
-        NSLog(@"!!!!!!!!!!!!");
-        proceedButton.hidden = NO;
-    }
-    else{
-        NSLog(@"?????????");
-        proceedButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        proceedButton.frame = CGRectMake(0, 0, 353, 50);
-        [proceedButton addTarget:self action:@selector(EnterShipping) forControlEvents:UIControlEventTouchUpInside];
-        [proceedButton setTitle:@"Proceed with order" forState:UIControlStateNormal];
-        proceedButton.backgroundColor = [UIColor colorWithRed:41.0/255.0 green:127.0/255.0 blue:184.0/255.0 alpha:1];
-        proceedButton.center = CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height-80);
-        [self.navigationController.view addSubview:proceedButton];
-        [self.navigationController.view bringSubviewToFront:proceedButton];
-    }
+
     //[self.tableView reloadData];
 }
 
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
-    proceedButton.hidden = YES;
 }
 
-- (void)EnterShipping {
-    
-    if ([self sharedAppDelegate].shoppingCart.count != 0) {
-        [self performSegueWithIdentifier:@"StartCheckOut" sender:self];
-    }
-    else{
-        UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"" message:@"You must add items to your cart before proceeding"preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"OK"
-                                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                                                                   [alert2 dismissViewControllerAnimated:YES completion:nil];
-                                                               }]; // 2
-        
-        [alert2 addAction:cameraAction];
-        
-        [self presentViewController:alert2 animated:YES completion:nil];
-    }
-    
 
-    //[self sendEmail];
+
+UITapGestureRecognizer *singleTap11;
+-(void)toggleReveal11{
+    //collView.collectionView.userInteractionEnabled = NO;
+    singleTap11 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(SingleTap11:)];
+    singleTap11.numberOfTapsRequired = 1;
+    [self.tableView  addGestureRecognizer:singleTap11];
+    [self.revealViewController revealToggle];
+}
+
+-(void)SingleTap11:(UITapGestureRecognizer *)gesture{
+    
+    [self.revealViewController revealToggle];
+    [self.tableView removeGestureRecognizer:singleTap11];
+    singleTap11 = nil;
 }
 
 -(void)sendEmail
@@ -280,6 +305,10 @@ NSInteger numberOfPrints;
         cell.addOutlet.tag = indexPath.row;
         cell.subtractOutlet.tag = indexPath.row;
         cell.quantity_TextField.tag = indexPath.row;
+        cell.addOutlet.layer.cornerRadius = 2;
+        cell.addOutlet.clipsToBounds = YES;
+        cell.subtractOutlet.layer.cornerRadius = 2;
+        cell.subtractOutlet.clipsToBounds = YES;
         int price = [[array objectAtIndex:2] intValue];
         int quan = [[array objectAtIndex:1] intValue];
         
@@ -297,7 +326,6 @@ NSInteger numberOfPrints;
         NSLog(@"%f",thumbImg.size.height);
         
         float division = thumbImg.size.width/thumbImg.size.height;
-        int centerY = cell.bounds.size.height + (cell.product.bounds.origin.x + cell.product.bounds.size.height) ;
         
         if (thumbImg.size.width < thumbImg.size.height) {
             NSLog(@"portrait");
@@ -356,7 +384,15 @@ NSInteger selectedSection;
     self.editingImageIndexPath = indexPath;
     selectedRow = indexPath.row;
     edited = YES;
-    [self performSegueWithIdentifier:@"EditCartItem" sender:self];
+    NSArray *array5 = @[currentItem,indexPath,[NSString stringWithFormat:@"%ld",(long)selectedRow],@"YES"];
+    if ([self sharedAppDelegate].cartIsMainController == YES) {
+        [self performSegueWithIdentifier:@"EditCartItem" sender:self];
+    }
+    else{
+        [self.delegate SelectedRowWithData:array5];
+    }
+    
+    //[self performSegueWithIdentifier:@"EditCartItem" sender:self];
     NSLog(@"");
 }
 
@@ -413,10 +449,6 @@ NSInteger selectedSection;
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }
     NSLog(@"Deleted row.");
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-
 }
 
 
@@ -606,26 +638,7 @@ int beginningQuantity;
 
 
 
-- (void)camera1
-{
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-    {
-        self.imagePicker= [[UIImagePickerController alloc] init];
-        self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        //self.imagePicker.allowsEditing = YES;
-        self.imagePicker.delegate = self;
-        [self presentViewController:self.imagePicker animated:YES completion:nil];
-    }
-    else
-    {
-        UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                              message:@"Device has no camera"
-                                                             delegate:nil
-                                                    cancelButtonTitle:@"OK"
-                                                    otherButtonTitles: nil];
-        [myAlertView show];
-    }
-}
+
 
 
 
@@ -640,29 +653,7 @@ int beginningQuantity;
 
 
 
--(void)handleTap:(UIGestureRecognizer *)sender{
-    
-    UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"" message:@""preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"Take Photo"
-                                                           style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                                                               [self camera1];
-                                                           }]; // 2
-    
-    UIAlertAction *libraryAction = [UIAlertAction actionWithTitle:@"Choose Image"
-                                                            style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                                                                [self library];
-                                                            }]; // 2
-    [cameraAction setValue:[[UIImage imageNamed:@"camera.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forKey:@"image"];
-    [libraryAction setValue:[[UIImage imageNamed:@"photo icon.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]   forKey:@"image"];
-    
-    [alert2 addAction:cameraAction];
-    [alert2 addAction:libraryAction];
-    [alert2 addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-        // Called when user taps outside
-    }]];
-    [self presentViewController:alert2 animated:YES completion:nil];
-}
+
 
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
@@ -681,15 +672,15 @@ int beginningQuantity;
     
     if (image.size.width < image.size.height) {
         NSLog(@"<");
-        cell.imgView = [[UIImageView alloc] initWithFrame:CGRectMake(8, 40, 93.75, 125)];
+        cell.imgView.frame = CGRectMake(8, 40, 93.75, 125);
     }
     if (image.size.width > image.size.height) {
         NSLog(@">");
-        cell.imgView = [[UIImageView alloc] initWithFrame:CGRectMake(8, 48, 93, 70)];
+        cell.imgView.frame = CGRectMake(8, 48, 93, 70);
     }
     if (image.size.width == image.size.height) {
         NSLog(@">");
-        cell.imgView = [[UIImageView alloc] initWithFrame:CGRectMake(8, 44, 124, 124)];
+        cell.imgView.frame = CGRectMake(8, 44, 124, 124);
     }
     //Initialization
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
@@ -760,13 +751,26 @@ int beginningQuantity;
         NSIndexPath *path = [NSIndexPath indexPathForRow:selectedRow inSection:0];
         VC.selectedImageIndex = path;
         
-        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"", returnbuttontitle) style:     UIBarButtonItemStylePlain target:nil action:nil];
-        self.navigationItem.backBarButtonItem = backButton;
+        if (self.navigationItem.backBarButtonItem == nil) {
+            UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"", returnbuttontitle) style:     UIBarButtonItemStylePlain target:nil action:nil];
+            self.navigationItem.backBarButtonItem = backButton;
+        }
+
     }
     
     if ([segue.identifier isEqualToString:@"StartCheckOut"]) {
-        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"", returnbuttontitle) style:     UIBarButtonItemStylePlain target:nil action:nil];
-        self.navigationItem.backBarButtonItem = backButton;
+        if (self.navigationItem.backBarButtonItem == nil) {
+            UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"", returnbuttontitle) style:     UIBarButtonItemStylePlain target:nil action:nil];
+            self.navigationItem.backBarButtonItem = backButton;
+        }
+    }
+    if ([segue.identifier isEqualToString:@"StartOrder"]) {
+        OrderOverViewTVC *orderOverView = segue.destinationViewController;
+        orderOverView.displayedIt = NO;
+        if (self.navigationItem.backBarButtonItem == nil) {
+            UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"", returnbuttontitle) style:     UIBarButtonItemStylePlain target:nil action:nil];
+            self.navigationItem.backBarButtonItem = backButton;
+        }
     }
 }
 

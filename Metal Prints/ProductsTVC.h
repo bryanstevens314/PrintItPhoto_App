@@ -11,6 +11,7 @@
 
 @protocol ProductDelegate
 
+@optional
 - (void)ProductSelectedWithRow:(NSInteger)row andSection:(NSInteger)section;
 
 @end

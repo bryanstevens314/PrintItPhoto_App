@@ -18,6 +18,11 @@
 
 @implementation PaymentVC
 
+
+- (void)paymentContextDidChange:(STPPaymentContext *)paymentContext{
+    
+    
+}
 - (AppDelegate *)sharedAppDelegate
 {
     

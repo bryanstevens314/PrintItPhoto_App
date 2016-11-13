@@ -12,6 +12,7 @@
 #import <UIKit/UIKit.h>
 #import "DetailsTVC.h"
 #import "HighlightedImageCVC.h"
+#import "ShoppingCartTVC.h"
 
 @class ImageCollectionViewController;
 
@@ -22,15 +23,18 @@
 @end
 
 
-@interface ImageCollectionViewController : UICollectionViewController <HighlightedImageCVCDelegate,DetailsTVCDelegate,UIGestureRecognizerDelegate>{
+@interface ImageCollectionViewController : UICollectionViewController <HighlightedImageCVCDelegate,DetailsTVCDelegate,ShoppingCartTVCDelegate,UIGestureRecognizerDelegate>{
     BOOL reloadView;
     BOOL loadingImages;
 }
 @property (weak, nonatomic) id<ImageCollectionViewControllerDelegate> delegate;
 + (ImageCollectionViewController *)sharedImageCollectionViewController;
+
+
 -(void)reloadTheCollectionView;
 -(void)removeHighlightedImagesFromView;
 -(void)cellSelectedAtIndex:(NSIndexPath*)selectedImagePath;
+- (IBAction)DisplayCart:(id)sender;
 - (IBAction)ToggleSelectedImages:(id)sender;
 @property (strong, nonatomic, readonly) UILongPressGestureRecognizer *longPressGesture1;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *toggleOutlet;

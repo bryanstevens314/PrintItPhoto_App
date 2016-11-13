@@ -8,9 +8,9 @@
 
 @import Stripe;
 #import "AppDelegate.h"
-#import "Order.h"
 #import "Reachability.h"
-#import "Front_EndVC.h"
+#import "ProductCategorySelectionCollection.h"
+
 
 @interface AppDelegate (){
     NSTimer *pingTimer;
@@ -32,47 +32,49 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     // Override point for customization after application launch.
+//    NSError *error;
+//    [[NSFileManager defaultManager] removeItemAtPath:[self archiveAddresses] error:&error];
      [[STPPaymentConfiguration sharedConfiguration] setPublishableKey:@"pk_test_ksluG61goDFXFGzyXZiRriat"];
-    self.AluminumProductArray = @[@[@"2x3",@"6",[UIImage imageNamed:@"2x3 aluminum.png"], @"00000", @"A2x3"],
-                                @[@"4x4",@"12",[UIImage imageNamed:@"4x4 aluminum.png"], @"00000", @"A4x4"],
-                                  @[@"4x6",@"15",[UIImage imageNamed:@"4x6 aluminum.png"], @"00000", @"A4x6"],
-                                 @[@"5x5",@"15",[UIImage imageNamed:@"5x5  aluminum.png"], @"00000", @"A5x5"],
+    self.AluminumProductArray = @[@[@"2x3",@"6",[UIImage imageNamed:@"2x3 aluminum.png"], @"00000", @"A2x3", [NSValue valueWithCGSize:CGSizeMake(3.0f, 2.0f)]],
+                                @[@"4x4",@"12",[UIImage imageNamed:@"4x4 aluminum.png"], @"00000", @"A4x4", [NSValue valueWithCGSize:CGSizeMake(4.0f, 4.0f)]],
+                                  @[@"4x6",@"15",[UIImage imageNamed:@"4x6 aluminum.png"], @"00000", @"A4x6", [NSValue valueWithCGSize:CGSizeMake(4.0f, 6.0f)]],
+                                 @[@"5x5",@"15",[UIImage imageNamed:@"5x5  aluminum.png"], @"00000", @"A5x5", [NSValue valueWithCGSize:CGSizeMake(5.0f, 5.0f)]],
                                   
-                                 @[@"5x7",@"18",[UIImage imageNamed:@"5x7 aluminum.png"], @"00000", @"A5x7"],
-                                 @[@"5x10",@"22",[UIImage imageNamed:@"5x10 aluminum.png"], @"00000", @"A5x10"],
-                                  @[@"5x11",@"25",[UIImage imageNamed:@"5x11 aluminum.png"], @"00000", @"A5x11"],
-                                  @[@"5x17",@"32",[UIImage imageNamed:@"5x17 aluminum.png"], @"00000", @"A5x17"],
-                                  @[@"8x8",@"22",[UIImage imageNamed:@"8x8 aluminum.png"], @"00000", @"A8x8"],
-                                  @[@"8x10",@"24",[UIImage imageNamed:@"8x10 aluminum.png"], @"00000", @"A8x10"],
-                                 @[@"8x12",@"28",[UIImage imageNamed:@"8x12 aluminum.png"], @"00000", @"A8x12"],
-                                  @[@"10x10",@"28",[UIImage imageNamed:@"10x10 aluminum.png"], @"00000", @"A10x10"],
-                                  @[@"11x14",@"40",[UIImage imageNamed:@"11x14 aluminum.png"], @"00000", @"A11x14"],
-                                  @[@"11x17",@"48",[UIImage imageNamed:@"11x17 aluminum.png"], @"00000", @"A11x17"],
-                                  @[@"12x12",@"40",[UIImage imageNamed:@"12x12 aluminum.png"], @"00000", @"A12x12"],
-                                 @[@"12x18",@"54",[UIImage imageNamed:@"12x18 aluminum.png"], @"00000", @"A12x18"],];
+                                 @[@"5x7",@"18",[UIImage imageNamed:@"5x7 aluminum.png"], @"00000", @"A5x7", [NSValue valueWithCGSize:CGSizeMake(5.0f, 7.0f)]],
+                                 @[@"5x10",@"22",[UIImage imageNamed:@"5x10 aluminum.png"], @"00000", @"A5x10", [NSValue valueWithCGSize:CGSizeMake(5.0f, 10.0f)]],
+                                  @[@"5x11",@"25",[UIImage imageNamed:@"5x11 aluminum.png"], @"00000", @"A5x11", [NSValue valueWithCGSize:CGSizeMake(5.0f, 11.0f)]],
+                                  @[@"5x17",@"32",[UIImage imageNamed:@"5x17 aluminum.png"], @"00000", @"A5x17", [NSValue valueWithCGSize:CGSizeMake(5.0f, 17.0f)]],
+                                  @[@"8x8",@"22",[UIImage imageNamed:@"8x8 aluminum.png"], @"00000", @"A8x8", [NSValue valueWithCGSize:CGSizeMake(8.0f, 8.0f)]],
+                                  @[@"8x10",@"24",[UIImage imageNamed:@"8x10 aluminum.png"], @"00000", @"A8x10", [NSValue valueWithCGSize:CGSizeMake(8.0f, 10.0f)]],
+                                 @[@"8x12",@"28",[UIImage imageNamed:@"8x12 aluminum.png"], @"00000", @"A8x12", [NSValue valueWithCGSize:CGSizeMake(8.0f, 12.0f)]],
+                                  @[@"10x10",@"28",[UIImage imageNamed:@"10x10 aluminum.png"], @"00000", @"A10x10", [NSValue valueWithCGSize:CGSizeMake(10.0f, 10.0f)]],
+                                  @[@"11x14",@"40",[UIImage imageNamed:@"11x14 aluminum.png"], @"00000", @"A11x14", [NSValue valueWithCGSize:CGSizeMake(11.0f, 14.0f)]],
+                                  @[@"11x17",@"48",[UIImage imageNamed:@"11x17 aluminum.png"], @"00000", @"A11x17", [NSValue valueWithCGSize:CGSizeMake(11.0f, 17.0f)]],
+                                  @[@"12x12",@"40",[UIImage imageNamed:@"12x12 aluminum.png"], @"00000", @"A12x12", [NSValue valueWithCGSize:CGSizeMake(12.0f, 12.0f)]],
+                                 @[@"12x18",@"54",[UIImage imageNamed:@"12x18 aluminum.png"], @"00000", @"A12x18", [NSValue valueWithCGSize:CGSizeMake(12.0f, 18.0f)]],];
     
-    self.WoodenProductArray = @[@[@"8x8",@"36",[UIImage imageNamed:@"8x8 wood.png"], @"00000", @"W8x8"],
-                               @[@"8x10",@"40",[UIImage imageNamed:@"8x10 wood.png"], @"00000", @"W8x10"],
-                               @[@"10x10",@"44",[UIImage imageNamed:@"10x10 wood.png"], @"00000", @"W10x10"],
-                               @[@"11x14",@"48",[UIImage imageNamed:@"11x14 wood.png"], @"00000", @"W11x14"],];
+    self.WoodenProductArray = @[@[@"8x8",@"36",[UIImage imageNamed:@"8x8 wood.png"], @"00000", @"W8x8", [NSValue valueWithCGSize:CGSizeMake(8.0f, 8.0f)]],
+                               @[@"8x10",@"40",[UIImage imageNamed:@"8x10 wood.png"], @"00000", @"W8x10", [NSValue valueWithCGSize:CGSizeMake(8.0f, 10.0f)]],
+                               @[@"10x10",@"44",[UIImage imageNamed:@"10x10 wood.png"], @"00000", @"W10x10", [NSValue valueWithCGSize:CGSizeMake(10.0f, 10.0f)]],
+                               @[@"11x14",@"48",[UIImage imageNamed:@"11x14 wood.png"], @"00000", @"W11x14", [NSValue valueWithCGSize:CGSizeMake(11.0f, 14.0f)]],];
     
-    self.TileProductArray = @[@[@"4x4",@"14",[UIImage imageNamed:@"4x4 tile.png"], @"00000", @"T4x4"],
-                             @[@"6x6",@"18",[UIImage imageNamed:@"6x6 tile.png"], @"00000", @"T6x6"],
-                              @[@"6x8",@"22",[UIImage imageNamed:@"6x8 tile.png"], @"00000", @"T6x8"],
-                              @[@"8x10",@"30",[UIImage imageNamed:@"8x10 tile.png"], @"00000", @"T8x10"],];
+    self.TileProductArray = @[@[@"4x4",@"14",[UIImage imageNamed:@"4x4 tile.png"], @"00000", @"T4x4", [NSValue valueWithCGSize:CGSizeMake(4.0f, 4.0f)]],
+                             @[@"6x6",@"18",[UIImage imageNamed:@"6x6 tile.png"], @"00000", @"T6x6", [NSValue valueWithCGSize:CGSizeMake(6.0f, 6.0f)]],
+                              @[@"6x8",@"22",[UIImage imageNamed:@"6x8 tile.png"], @"00000", @"T6x8", [NSValue valueWithCGSize:CGSizeMake(6.0f, 8.0f)]],
+                              @[@"8x10",@"30",[UIImage imageNamed:@"8x10 tile.png"], @"00000", @"T8x10", [NSValue valueWithCGSize:CGSizeMake(8.0f, 10.0f)]],];
     
-    self.SlateProductArray = @[@[@"6x6",@"24",[UIImage imageNamed:@"6x6 slate.png"], @"00000", @"S6x6"],
-                               @[@"6x8",@"30",[UIImage imageNamed:@"6x8 slate.png"], @"00000", @"S6x8"],
-                               @[@"8x12",@"36",[UIImage imageNamed:@"8x12 slate.png"], @"00000", @"S8x12"],];
+    self.SlateProductArray = @[@[@"6x6",@"24",[UIImage imageNamed:@"6x6 slate.png"], @"00000", @"S6x6", [NSValue valueWithCGSize:CGSizeMake(6.0f, 6.0f)]],
+                               @[@"6x8",@"30",[UIImage imageNamed:@"6x8 slate.png"], @"00000", @"S6x8", [NSValue valueWithCGSize:CGSizeMake(6.0f, 8.0f)]],
+                               @[@"8x12",@"36",[UIImage imageNamed:@"8x12 slate.png"], @"00000", @"S8x12", [NSValue valueWithCGSize:CGSizeMake(8.0f, 12.0f)]],];
     
-    self.OtherProductArray = @[@[@"Square Keychain",@"12",[UIImage imageNamed:@"8x12 slate.png"], @"00000", @"O-SKey"],
-                              @[@"Rectangle Keychain",@"12",[UIImage imageNamed:@"8x12 slate.png"], @"00000", @"O-RKey"],
-                              @[@"Long Keychaing",@"12",[UIImage imageNamed:@"8x12 slate.png"], @"00000", @"O-LKey"],
-                              @[@"Dog Tag",@"12",[UIImage imageNamed:@"8x12 slate.png"], @"00000", @"0-DTag"],
-                              @[@"Square Pendant",@"16",[UIImage imageNamed:@"8x12 slate.png"], @"00000", @"O-SPen"],
-                              @[@"Round Pendant",@"16",[UIImage imageNamed:@"8x12 slate.png"], @"00000", @"O-RPen"],
-                              @[@"Long Pendant",@"18",[UIImage imageNamed:@"8x12 slate.png"], @"00000", @"O-LPen"],
-                              @[@"Clock",@"36",[UIImage imageNamed:@"8x12 slate.png"], @"00000", @"O-Clock"],];
+    self.OtherProductArray = @[@[@"Square Keychain",@"12",[UIImage imageNamed:@"8x12 slate.png"], @"00000", @"O-SKey", [NSValue valueWithCGSize:CGSizeMake(3.0f, 2.0f)]],
+                              @[@"Rectangle Keychain",@"12",[UIImage imageNamed:@"8x12 slate.png"], @"00000", @"O-RKey", [NSValue valueWithCGSize:CGSizeMake(3.0f, 2.0f)]],
+                              @[@"Long Keychaing",@"12",[UIImage imageNamed:@"8x12 slate.png"], @"00000", @"O-LKey", [NSValue valueWithCGSize:CGSizeMake(3.0f, 2.0f)]],
+                              @[@"Dog Tag",@"12",[UIImage imageNamed:@"8x12 slate.png"], @"00000", @"0-DTag", [NSValue valueWithCGSize:CGSizeMake(3.0f, 2.0f)]],
+                              @[@"Square Pendant",@"16",[UIImage imageNamed:@"8x12 slate.png"], @"00000", @"O-SPen", [NSValue valueWithCGSize:CGSizeMake(3.0f, 2.0f)]],
+                              @[@"Round Pendant",@"16",[UIImage imageNamed:@"8x12 slate.png"], @"00000", @"O-RPen", [NSValue valueWithCGSize:CGSizeMake(3.0f, 2.0f)]],
+                              @[@"Long Pendant",@"18",[UIImage imageNamed:@"8x12 slate.png"], @"00000", @"O-LPen", [NSValue valueWithCGSize:CGSizeMake(3.0f, 2.0f)]],
+                              @[@"Clock",@"36",[UIImage imageNamed:@"8x12 slate.png"], @"00000", @"O-Clock", [NSValue valueWithCGSize:CGSizeMake(3.0f, 2.0f)]],];
     
     self.categoryArray = @[@"Aluminum",@"Wood",@"Tile",@"Slate",@"Other Goodies",];
     
@@ -83,12 +85,19 @@
         self.shoppingCart = [[NSMutableArray alloc] init];
     }
     
-    if ([[NSFileManager defaultManager] fileExistsAtPath:[self archivehighlightedImages]]) {
-        self.highlightedArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archivehighlightedImages]];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:[self archiveAddresses]]) {
+        self.savedAddressesArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archiveAddresses]];
     }
     else{
-        self.highlightedArray = [[NSMutableArray alloc] init];
+        self.savedAddressesArray = [[NSMutableArray alloc] init];
     }
+    
+//    if ([[NSFileManager defaultManager] fileExistsAtPath:[self archivehighlightedImages]]) {
+//        self.highlightedArray = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archivehighlightedImages]];
+//    }
+//    else{
+//        self.highlightedArray = [[NSMutableArray alloc] init];
+//    }
     if ([[NSFileManager defaultManager] fileExistsAtPath:[self archiveCartTotals]]) {
         NSArray *array = [NSKeyedUnarchiver unarchiveObjectWithFile:[self archiveCartTotals]];
         self.cartTotal = [[array objectAtIndex:0] integerValue];
@@ -101,39 +110,39 @@
     // Start Monitoring
     [reachability startNotifier];
 
-    if ([self InternetConnected]) {
-        
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://final-project-order-viewer-stevens-apps.c9users.io/recieve_data.php"]];
-        NSDictionary *cartItem = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  @"1",@"user_Opened_App",nil];
-        NSError *error2;
-        NSData *finalJSONdata = [NSJSONSerialization dataWithJSONObject:cartItem options:0 error:&error2];
-        
-        //NSLog(@"%.2f MB",(float)finalJSONdata.length/1024.0f/1024.0f);
-        
-        [request setHTTPBody:finalJSONdata];
-        [request setHTTPMethod:@"POST"];
-        [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-        [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[finalJSONdata length]] forHTTPHeaderField:@"Content-Length"];
-        
-        
-        NSError *err;
-        NSURLResponse *response;
-        
-        
-        
-        NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
-        NSString *responseString = [[NSString alloc]initWithData:responseData encoding:NSASCIIStringEncoding];
-        
-        
-        if(responseString)
-        {
-            //[self performSegueWithIdentifier:@"OrderPlaced" sender:self];
-            NSLog(@"got response==%@", responseString);
-            
-        }
-    }
+//    if ([self InternetConnected]) {
+//        
+//        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://final-project-order-viewer-stevens-apps.c9users.io/recieve_data.php"]];
+//        NSDictionary *cartItem = [NSDictionary dictionaryWithObjectsAndKeys:
+//                                  @"1",@"user_Opened_App",nil];
+//        NSError *error2;
+//        NSData *finalJSONdata = [NSJSONSerialization dataWithJSONObject:cartItem options:0 error:&error2];
+//        
+//        //NSLog(@"%.2f MB",(float)finalJSONdata.length/1024.0f/1024.0f);
+//        
+//        [request setHTTPBody:finalJSONdata];
+//        [request setHTTPMethod:@"POST"];
+//        [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+//        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+//        [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[finalJSONdata length]] forHTTPHeaderField:@"Content-Length"];
+//        
+//        
+//        NSError *err;
+//        NSURLResponse *response;
+//        
+//        
+//        
+//        NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
+//        NSString *responseString = [[NSString alloc]initWithData:responseData encoding:NSASCIIStringEncoding];
+//        
+//        
+//        if(responseString)
+//        {
+//            //[self performSegueWithIdentifier:@"OrderPlaced" sender:self];
+//            NSLog(@"got response==%@", responseString);
+//            
+//        }
+//    }
     
     self.loadingImages  = YES;
     self.reloadImageCollection = NO;
@@ -178,7 +187,7 @@ NSInteger x = 0;
         }
         else{
             self.loadingImages = NO;
-            [[Front_EndVC sharedFrontEnd_VC] FinishedLoadingImages];
+            [[ProductCategorySelectionCollection sharedProductCategorySelectionCollection] FinishedLoadingImages];
         }
 //        else{
 //            int x = 0;
@@ -355,6 +364,12 @@ NSInteger x = 0;
     NSArray *documentDirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docDir = documentDirs[0];
     return [docDir stringByAppendingPathComponent:@"orderAttempt"];
+}
+
+- (NSString*)archiveAddresses{
+    NSArray *documentDirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docDir = documentDirs[0];
+    return [docDir stringByAppendingPathComponent:@"addresses"];
 }
 
 @end

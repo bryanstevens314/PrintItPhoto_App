@@ -8,9 +8,16 @@
 
 #import "ProductCategorySelectionCollection.h"
 #import "AppDelegate.h"
+#import "SWRevealViewController.h"
+#import "ProductCollectionViewController.h"
 
 @interface ProductCategorySelectionCollection ()
-
+@property(nonatomic) NSInteger selectedProduct;
+@property(nonatomic) NSInteger selectedProductSection;
+@property(nonatomic) NSArray* currentArray1;
+@property(nonatomic, retain) ShoppingCartTVC *cartVC;
+@property(nonatomic, retain) UIButton *proceedButton;
+@property(nonatomic) BOOL imagesPresenting;
 @end
 
 @implementation ProductCategorySelectionCollection
@@ -79,6 +86,8 @@ static NSString * const reuseIdentifier = @"Cell";
     
 }
 
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -88,23 +97,68 @@ static NSString * const reuseIdentifier = @"Cell";
     // Register cell classes
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     finished = YES;
-    UIScreenEdgePanGestureRecognizer *pan = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self
-                                                                                              action:@selector(PanGestureInitiated:)];
-    [pan setEdges:UIRectEdgeLeft];
-    [pan setDelegate:self];
-    [self.view addGestureRecognizer:pan];
 
-
+    UIImage *background = [UIImage imageNamed:@"Hamburger_icon.svg.png"];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button addTarget:self action:@selector(toggleReveal1) forControlEvents:UIControlEventTouchUpInside]; //adding action
+    [button setBackgroundImage:background forState:UIControlStateNormal];
+    button.frame = CGRectMake(0 ,0,35,30);
+    UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    [self.navigationItem setLeftBarButtonItem:leftBarButtonItem];
+    
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:41.0/255.0 green:127.0/255.0 blue:184.0/255.0 alpha:1];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    
+    
+    
     
     // Do any additional setup after loading the view.
 }
 
 
-
+UIImageView *launchImageView;
+ProductCategorySelectionCollection *collView;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
+    NSLog(@"View will appear");
+    finished = YES;
+
     //self.tabBarController.tabBar.alpha = 0.9;
-    // Dispose of any resources that can be recreated.
+    if ([self sharedAppDelegate].loadingImages == YES) {
+        NSLog(@"Loading Images");
+        LaunchController *launchControl = [LaunchController sharedLaunchController];
+        [[self sharedAppDelegate].window addSubview:launchControl.view];
+        [[self sharedAppDelegate].window bringSubviewToFront:launchControl.view];
+    }
+    [self.navigationItem setTitle:@"Store"];
+    
+    if (singleTap) {
+        [collView.collectionView removeGestureRecognizer:singleTap];
+        singleTap = nil;
+    }
+    
+    self.cartVC = [ShoppingCartTVC sharedShoppingCartTVC];
+    self.cartVC.delegate = self;
+    self.proceedButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.proceedButton.frame = CGRectMake(0, 0, 353, 50);
+    self.proceedButton.layer.cornerRadius = 2;
+    self.proceedButton.clipsToBounds = YES;
+    [self.proceedButton addTarget:self action:@selector(EnterShipping) forControlEvents:UIControlEventTouchUpInside];
+    [self.proceedButton setTitle:@"Proceed with order" forState:UIControlStateNormal];
+    self.proceedButton.backgroundColor = [UIColor colorWithRed:41.0/255.0 green:127.0/255.0 blue:184.0/255.0 alpha:1];
+    self.proceedButton.center = CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height-35);
+    
+    if ([self sharedAppDelegate].displayingCart == YES) {
+        [self sharedAppDelegate].displayingCart = YES;
+        [self.navigationItem setTitle:@"Cart"];
+        
+        //self.switchViewsOutlet.image = [UIImage imageNamed:@"Home Icon.png"];
+        [self.view addSubview:self.cartVC.view];
+        [self.view addSubview:self.proceedButton];
+        [self.view bringSubviewToFront:self.proceedButton];
+        
+    }
 }
 
 /*
@@ -177,27 +231,368 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    NSLog(@"Selected");
     displayingProducts = YES;
     if (finished == YES) {
+        [collectionView deselectItemAtIndexPath:indexPath animated:YES];
+        NSLog(@"Selected1");
         [self.delegate selectedCategoryWithSection:indexPath.row];
     }
 
 }
 
-/*
-// Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath {
-	return NO;
+
+UITapGestureRecognizer *singleTap;
+-(void)toggleReveal1{
+    //collView.collectionView.userInteractionEnabled = NO;
+    singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(SingleTap:)];
+    singleTap.numberOfTapsRequired = 1;
+    if ([self sharedAppDelegate].displayingCart == NO) {
+        
+        [self.collectionView addGestureRecognizer:singleTap];
+        //[self.proceedButton addGestureRecognizer:singleTap];
+    }
+    else{
+        
+        [self.cartVC.tableView addGestureRecognizer:singleTap];
+        [self.proceedButton addGestureRecognizer:singleTap];
+    }
+    
+    [self.revealViewController revealToggle];
 }
 
-- (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	return NO;
+-(void)SingleTap:(UITapGestureRecognizer *)gesture{
+    
+    [self.revealViewController revealToggle];
+    if ([self sharedAppDelegate].displayingCart == NO) {
+        [self.collectionView removeGestureRecognizer:singleTap];
+        [self.proceedButton removeGestureRecognizer:singleTap];
+    }
+    else{
+        [self.cartVC.view removeGestureRecognizer:singleTap];
+        [self.proceedButton removeGestureRecognizer:singleTap];
+    }
+    
+    singleTap = nil;
 }
 
-- (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	
+
+
+
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
 }
-*/
+
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:YES];
+    
+    if (self.imagesPresenting == YES) {
+        self.imagesPresenting = NO;
+        [self.navigationItem setTitle:@"Store"];
+        [self.proceedButton removeFromSuperview];
+        //self.switchViewsOutlet.image = [UIImage imageNamed:@"Cart Icon.png"];
+        [self.cartVC.view removeFromSuperview];
+        
+    }
+    
+}
+
+- (void)FinishedLoadingImages {
+    NSLog(@"Finished");
+    
+    [[LaunchController sharedLaunchController].view removeFromSuperview];
+    
+}
+
+
+
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"ProductContainer"]) {
+        ProductsTVC *tvc = segue.destinationViewController;
+        tvc.delegate = self;
+    }
+    if ([segue.identifier isEqualToString:@"StartOrder"]) {
+        if (imageSelectionData == nil) {
+            NSLog(@"preparing segue");
+            DetailsTVC *order = segue.destinationViewController;
+            order.selectedRow = self.selectedProduct;
+            order.selectedSection1 = self.selectedProductSection;
+            order.currentProductArray1 = self.currentArray1;
+            order.delegate = self;
+            if (self.navigationItem.backBarButtonItem == nil) {
+                UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"", returnbuttontitle) style:     UIBarButtonItemStylePlain target:nil action:nil];
+                self.navigationItem.backBarButtonItem = backButton;
+            }
+            
+            NSLog(@"initiating segue");
+        }
+        else{
+            if (self.navigationItem.backBarButtonItem == nil) {
+                UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"", returnbuttontitle) style:     UIBarButtonItemStylePlain target:nil action:nil];
+                self.navigationItem.backBarButtonItem = backButton;
+            }
+            DetailsTVC *details = segue.destinationViewController;
+            details.delegate = self;
+            details.editingCartItem = YES;
+            details.selectedCartRow = [[imageSelectionData objectAtIndex:2] integerValue];
+            details.selectedImageIndex = [imageSelectionData objectAtIndex:1];
+            imageSelectionData = nil;
+            
+            
+        }
+    }
+    if ([segue.identifier isEqualToString:@"presentPhotos"]) {
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"", returnbuttontitle) style:     UIBarButtonItemStylePlain target:nil action:nil];
+        self.navigationItem.backBarButtonItem = backButton;
+    }
+
+    
+}
+
+
+-(void)addedCartItem{
+    [self.navigationController popViewControllerAnimated:YES];
+    
+}
+
+- (IBAction)ShoppingCartSelected:(id)sender {
+    
+    
+    
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://final-project-order-viewer-stevens-apps.c9users.io/recieve_data.php"]];
+    
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
+                          @"Bryan Stevens",@"name",
+                          @"1930 10th st",@"shipping_address",
+                          @"bryan@yahoo.com",@"email", nil];
+    
+    NSError *error;
+    
+    NSData *jsonData =[NSJSONSerialization dataWithJSONObject:dict options:0 error:&error];
+    
+    [request setHTTPBody:jsonData];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[jsonData length]] forHTTPHeaderField:@"Content-Length"];
+    
+    
+    NSError *err;
+    NSURLResponse *response;
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
+    NSString *responseString = [[NSString alloc]initWithData:responseData encoding:NSASCIIStringEncoding];
+    
+    
+    
+    if(responseString)
+    {
+        NSLog(@"got response==%@", responseString);
+    }
+    else
+    {
+        NSLog(@"faield to connect");
+    }
+    
+}
+
+
+- (void)ProductSelectedWithRow:(NSInteger)row Section:(NSInteger)section andArray:(NSArray*)curArray {
+    NSLog(@"Product selected");
+    self.selectedProduct = row;
+    self.selectedProductSection = section;
+    self.currentArray1 = curArray;
+    [self performSegueWithIdentifier:@"StartOrder" sender:self];
+}
+
+-(void)cellClickedWithRow:(NSInteger)clickedCell{
+    NSLog(@"CellClicked");
+    //ProductCategorySelectionCollection *collView = [ProductCategorySelectionCollection sharedProductCategorySelectionCollection];
+    //[collView.collectionView removeFromSuperview];
+    
+}
+
+
+//-(void)backClicked{
+//    ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
+//    [UIView animateWithDuration:0.2f animations:^{
+//        productCollectionVC.collectionView.frame = CGRectOffset(productCollectionVC.collectionView.frame, self.view.frame.size.width, 0);
+//        
+//        self.navigationItem.leftBarButtonItem = nil;
+//        self.navigationItem.title = @"Store";
+//    }];
+//}
+
+
+-(void)userSlideViewAway{
+    self.navigationItem.leftBarButtonItem = nil;
+    self.navigationItem.title = @"Store";
+}
+
+- (void)selectedCategoryWithSection:(NSInteger)section{
+    NSLog(@"Selected2");
+    if (section == 0) {
+        NSLog(@"Aluminum");
+        
+        ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
+        productCollectionVC.delegate = self;
+        productCollectionVC.currentProductArray = [self sharedAppDelegate].AluminumProductArray;
+        productCollectionVC.selectedSection = section;
+        productCollectionVC.navigationItem.title = @"Aluminum";
+        UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        [[self navigationItem] setBackBarButtonItem:newBackButton];
+        [self.navigationController pushViewController:productCollectionVC animated:YES];
+        
+    }
+    if (section == 1) {
+        ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
+        productCollectionVC.delegate = self;
+        productCollectionVC.currentProductArray = [self sharedAppDelegate].WoodenProductArray;
+        productCollectionVC.selectedSection = section;
+        productCollectionVC.navigationItem.title = @"Wood";
+        UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        [[self navigationItem] setBackBarButtonItem:newBackButton];
+        [self.navigationController pushViewController:productCollectionVC animated:YES];
+        
+    }
+    if (section == 2) {
+        ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
+        productCollectionVC.delegate = self;
+        productCollectionVC.currentProductArray = [self sharedAppDelegate].TileProductArray;
+        productCollectionVC.selectedSection = section;
+        productCollectionVC.navigationItem.title = @"Tile";
+        UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        [[self navigationItem] setBackBarButtonItem:newBackButton];
+        [self.navigationController pushViewController:productCollectionVC animated:YES];
+        
+    }
+    if (section == 3) {
+        ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
+        productCollectionVC.delegate = self;
+        productCollectionVC.currentProductArray = [self sharedAppDelegate].SlateProductArray;
+        productCollectionVC.selectedSection = section;
+        productCollectionVC.navigationItem.title = @"Slate";
+        UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        [[self navigationItem] setBackBarButtonItem:newBackButton];
+        [self.navigationController pushViewController:productCollectionVC animated:YES];
+        
+    }
+    if (section == 4) {
+        ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
+        productCollectionVC.delegate = self;
+        productCollectionVC.currentProductArray = [self sharedAppDelegate].OtherProductArray;
+        productCollectionVC.selectedSection = section;
+        productCollectionVC.navigationItem.title = @"Other Goodies";
+        UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+        [[self navigationItem] setBackBarButtonItem:newBackButton];
+        [self.navigationController pushViewController:productCollectionVC animated:YES];
+        
+    }
+    
+    [self.navigationItem setTitle:[[self sharedAppDelegate].categoryArray objectAtIndex:section]];
+}
+
+
+
+- (IBAction)SwitchViews:(id)sender {
+    if (self.cartVC) {
+        if ([self sharedAppDelegate].displayingCart == NO) {
+            [self sharedAppDelegate].displayingCart = YES;
+            [self.navigationItem setTitle:@"Cart"];
+            
+            //self.switchViewsOutlet.image = [UIImage imageNamed:@"Home Icon.png"];
+            [self.view addSubview:self.cartVC.view];
+            [self.view addSubview:self.proceedButton];
+            [self.view bringSubviewToFront:self.proceedButton];
+            
+        }
+        else{
+            [self sharedAppDelegate].displayingCart = NO;
+            [self.navigationItem setTitle:@"Store"];
+            [self.proceedButton removeFromSuperview];
+            //self.switchViewsOutlet.image = [UIImage imageNamed:@"Cart Icon.png"];
+            [self.cartVC.view removeFromSuperview];
+        }
+    }
+    else{
+        [self sharedAppDelegate].displayingCart = YES;
+        [self.navigationItem setTitle:@"Cart"];
+        //self.switchViewsOutlet.image = [UIImage imageNamed:@"Home Icon.png"];
+        self.cartVC = [ShoppingCartTVC sharedShoppingCartTVC];
+        self.cartVC.delegate = self;
+        [self.view addSubview:self.cartVC.view];
+        if (self.proceedButton) {
+            NSLog(@"!!!!!!!!!!!!");
+            [self.view addSubview:self.proceedButton];
+            [self.view bringSubviewToFront:self.proceedButton];
+        }
+        else{
+            NSLog(@"?????????");
+            self.proceedButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            self.proceedButton.frame = CGRectMake(0, 0, 353, 50);
+            self.proceedButton.layer.cornerRadius = 10;
+            self.proceedButton.clipsToBounds = YES;
+            [self.proceedButton addTarget:self action:@selector(EnterShipping) forControlEvents:UIControlEventTouchUpInside];
+            [self.proceedButton setTitle:@"Proceed with order" forState:UIControlStateNormal];
+            self.proceedButton.backgroundColor = [UIColor colorWithRed:41.0/255.0 green:127.0/255.0 blue:184.0/255.0 alpha:1];
+            self.proceedButton.center = CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height-30);
+            [self.view addSubview:self.proceedButton];
+            [self.view bringSubviewToFront:self.proceedButton];
+        }
+    }
+    
+    
+}
+
+
+- (void)editedCartItem{
+    NSLog(@"Got here");
+    [self.cartVC.tableView reloadData];
+    [self.navigationController popViewControllerAnimated:YES];
+    
+}
+
+
+- (void)EnterShipping {
+    
+    if ([self sharedAppDelegate].shoppingCart.count != 0) {
+        [self performSegueWithIdentifier:@"StartCheckOut" sender:self];
+    }
+    else{
+        UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"" message:@"You must add items to your cart before proceeding"preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"OK"
+                                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                   [alert2 dismissViewControllerAnimated:YES completion:nil];
+                                                               }]; // 2
+        
+        [alert2 addAction:cameraAction];
+        
+        [self presentViewController:alert2 animated:YES completion:nil];
+    }
+    
+    
+    //[self sendEmail];
+}
+
+- (void)SelectedRowWithData:(NSArray*)data{
+    imageSelectionData = data;
+    [self performSegueWithIdentifier:@"StartOrder" sender:self];
+    
+}
+
+
+NSArray *imageSelectionData;
+- (void)SelectedImageWithData:(NSArray*)data{
+    imageSelectionData = data;
+    [self performSegueWithIdentifier:@"StartOrder" sender:self];
+    
+}
 
 
 

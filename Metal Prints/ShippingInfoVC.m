@@ -86,22 +86,34 @@ UIBarButtonItem *rightBarButtonItem5;
         [self sharedAppDelegate].userSettings.shipping.state = @"";
         [self sharedAppDelegate].userSettings.shipping.country = @"";
     }
+
     
     
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
-    if (stateSelected == NO) {
-        shippingTable.name_TextField.text = [self sharedAppDelegate].userSettings.shipping.Name;
-        shippingTable.street_TextField.text = [self sharedAppDelegate].userSettings.shipping.street;
-        shippingTable.apt_TextField.text = [self sharedAppDelegate].userSettings.shipping.apt;
-        shippingTable.city_TextField.text = [self sharedAppDelegate].userSettings.shipping.city;
-        shippingTable.zip_TextField.text = [self sharedAppDelegate].userSettings.shipping.zip;
-        shippingTable.state_TextField.text = [self sharedAppDelegate].userSettings.shipping.state;
-        shippingTable.country_Textfield.text = [self sharedAppDelegate].userSettings.shipping.country;
+
+    if (self.editingAddress == NO) {
+        if (stateSelected == NO) {
+            shippingTable.name_TextField.text = [self sharedAppDelegate].userSettings.shipping.Name;
+            shippingTable.street_TextField.text = [self sharedAppDelegate].userSettings.shipping.street;
+            shippingTable.apt_TextField.text = [self sharedAppDelegate].userSettings.shipping.apt;
+            shippingTable.city_TextField.text = [self sharedAppDelegate].userSettings.shipping.city;
+            shippingTable.zip_TextField.text = [self sharedAppDelegate].userSettings.shipping.zip;
+            shippingTable.state_TextField.text = [self sharedAppDelegate].userSettings.shipping.state;
+            shippingTable.country_Textfield.text = [self sharedAppDelegate].userSettings.shipping.country;
+        }
     }
-    
+    else{
+        shippingTable.name_TextField.text = [self.addressDict objectForKey:@"name"];
+        shippingTable.street_TextField.text = [self.addressDict objectForKey:@"street"];
+        shippingTable.apt_TextField.text = [self.addressDict objectForKey:@"apt"];
+        shippingTable.city_TextField.text = [self.addressDict objectForKey:@"city"];
+        shippingTable.zip_TextField.text = [self.addressDict objectForKey:@"zip"];
+        shippingTable.state_TextField.text = [self.addressDict objectForKey:@"state"];
+        shippingTable.country_Textfield.text = [self.addressDict objectForKey:@"country"];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -199,6 +211,7 @@ UIAlertController *calculatingTax1;
         
 //        [self sharedAppDelegate].userSettings = [[UserObject alloc] init];
 //        [self sharedAppDelegate].userSettings.shipping = [[UserShipping alloc] init];
+        if (self.savingAddress == NO) {
         [self sharedAppDelegate].userSettings.shipping.Name = shippingTable.name_TextField.text;
         
         [self sharedAppDelegate].userSettings.shipping.street = shippingTable.street_TextField.text;
@@ -213,34 +226,58 @@ UIAlertController *calculatingTax1;
         
         [self sharedAppDelegate].userSettings.shipping.country = shippingTable.country_Textfield.text;
 
-        calculatingTax1 = [UIAlertController alertControllerWithTitle:@""
-                                                                message:@"Calculating Tax"
-                                                         preferredStyle:UIAlertControllerStyleAlert]; // 1
         
-        UIViewController *customVC     = [[UIViewController alloc] init];
-        [calculatingTax1.view setFrame:CGRectMake(0, 300, 320, 275)];
-        
-        UIActivityIndicatorView* spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        [spinner startAnimating];
-        [customVC.view addSubview:spinner];
-        [spinner setCenter:CGPointMake(100, 27)];
-        
-        [customVC.view addConstraint:[NSLayoutConstraint
-                                      constraintWithItem: spinner
-                                      attribute:NSLayoutAttributeCenterX
-                                      relatedBy:NSLayoutRelationEqual
-                                      toItem:customVC.view
-                                      attribute:NSLayoutAttributeCenterX
-                                      multiplier:1.0f
-                                      constant:0.0f]];
-        
-        
-        [calculatingTax1 setValue:customVC forKey:@"contentViewController"];
-        
-        [self presentViewController:calculatingTax1 animated:YES completion:nil];
-        NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(waiting) userInfo:nil repeats:NO];
-        
-        
+            calculatingTax1 = [UIAlertController alertControllerWithTitle:@""
+                                                                  message:@"Calculating Tax"
+                                                           preferredStyle:UIAlertControllerStyleAlert]; // 1
+            
+            UIViewController *customVC     = [[UIViewController alloc] init];
+            [calculatingTax1.view setFrame:CGRectMake(0, 300, 320, 275)];
+            
+            UIActivityIndicatorView* spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            [spinner startAnimating];
+            [customVC.view addSubview:spinner];
+            [spinner setCenter:CGPointMake(100, 27)];
+            
+            [customVC.view addConstraint:[NSLayoutConstraint
+                                          constraintWithItem: spinner
+                                          attribute:NSLayoutAttributeCenterX
+                                          relatedBy:NSLayoutRelationEqual
+                                          toItem:customVC.view
+                                          attribute:NSLayoutAttributeCenterX
+                                          multiplier:1.0f
+                                          constant:0.0f]];
+            
+            
+            [calculatingTax1 setValue:customVC forKey:@"contentViewController"];
+            
+            [self presentViewController:calculatingTax1 animated:YES completion:nil];
+            NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(waiting) userInfo:nil repeats:NO];
+            
+            
+        }
+        else{
+            NSDictionary *cartItem = [NSDictionary dictionaryWithObjectsAndKeys:
+                                      shippingTable.name_TextField.text,@"name",
+                                      
+                                      shippingTable.street_TextField.text,@"street",
+                                      shippingTable.apt_TextField.text,@"apt",
+                                      shippingTable.city_TextField.text,@"city",
+                                      shippingTable.state_TextField.text,@"state",
+                                      shippingTable.zip_TextField.text,@"zip",
+                                      shippingTable.country_Textfield.text,@"country",nil];
+            if (![self sharedAppDelegate].savedAddressesArray) {
+                [self sharedAppDelegate].savedAddressesArray = [[NSMutableArray alloc] init];
+            }
+            if (self.editingAddress == NO) {
+                [[self sharedAppDelegate].savedAddressesArray insertObject:cartItem atIndex:0];
+            }
+            else{
+                [[self sharedAppDelegate].savedAddressesArray replaceObjectAtIndex:self.selectedRow withObject:cartItem];
+            }
+            [NSKeyedArchiver archiveRootObject:[self sharedAppDelegate].savedAddressesArray toFile:[self archiveAddresses]];
+            [self.delegate FinishedEnteringShippingInformation];
+        }
         
     }
     else{
@@ -342,5 +379,13 @@ BOOL stateSelected;
         self.navigationItem.backBarButtonItem = backButton;
     }
 }
+
+
+- (NSString*)archiveAddresses{
+    NSArray *documentDirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docDir = documentDirs[0];
+    return [docDir stringByAppendingPathComponent:@"addresses"];
+}
+
 
 @end

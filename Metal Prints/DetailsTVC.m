@@ -9,6 +9,7 @@
 #import "DetailsTVC.h"
 #import "AppDelegate.h"
 
+
 @interface DetailsTVC ()
 @property (retain, nonatomic) UIPickerView *picker1;
 @property (retain, nonatomic) UIPickerView *picker2;
@@ -91,7 +92,7 @@
         NSArray *array = [[self sharedAppDelegate].AluminumProductArray objectAtIndex:self.selectedRow];
         
         self.Product_Outlet.text = [array objectAtIndex:0];
-        
+        self.For_Aluminum_TextField.text = @"Magnet";
         self.rowCount = [self sharedAppDelegate].AluminumProductArray.count;
         self.currentProductArray = array;
     }
@@ -278,7 +279,8 @@ BOOL loadingView;
                      resultBlock:^(ALAsset *asset) {
                          UIImage *thumbImg = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
                          UIImage *fullImg = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
-                         self.image = fullImg;
+                         NSData *data = [[NSData alloc]initWithBase64EncodedString:[self.currentItemToEdit objectAtIndex:7] options:NSDataBase64DecodingIgnoreUnknownCharacters];
+                         self.image = [UIImage imageWithData:data];
                          self.currentImage = fullImg;
                          //                 if (self.collectionImgView) {
                          //                     self.collectionImgView = nil;
@@ -295,24 +297,22 @@ BOOL loadingView;
                          if (self.image.size.width < self.image.size.height) {
                              NSLog(@"portrait");
                              
-                             float newWidth = (cell.bounds.size.height - 39) * division;
-                             [self.imgView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 39)];
-                             int centerY = cell.bounds.size.height/2 + 10;
-                             [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,centerY)];
+                             float newWidth = (cell.bounds.size.height - 36) * division;
+                             [self.imgView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 36)];
+                             [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2 + 10)];
                              self.imgView.image = self.image;
                          }
                          if (self.image.size.width > self.image.size.height) {
                              NSLog(@"landscape");
-                             float newWidth = (cell.bounds.size.height - 65) * division;
-                             [self.imgView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 65)];
-                             int centerY = cell.bounds.size.height/2 + 10;
-                             [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,centerY)];
+                             float newWidth = (cell.bounds.size.height - 36) * division;
+                             [self.imgView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 36)];
+                             [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2 + 11)];
                              self.imgView.image = self.image;
                          }
                          if (self.image.size.width == self.image.size.height) {
                              NSLog(@"square");
-                             [self.imgView setFrame:CGRectMake(0, 0, cell.bounds.size.height - 65, cell.bounds.size.height - 65)];
-                             [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2 + 7)];
+                             [self.imgView setFrame:CGRectMake(0, 0, cell.bounds.size.height - 34, cell.bounds.size.height - 34)];
+                             [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2 + 15)];
                              self.imgView.image = self.image;
                          }
                          [self.view addSubview:self.imgView];
@@ -342,6 +342,7 @@ BOOL loadingView;
             //                           ];
         }
         if (self.startingFromHighlightedImage == YES) {
+            imageCropped = NO;
             [self.detailButton setTitle:@"Add To Cart" forState:UIControlStateNormal];
             NSLog(@"got here");
             self.currentArray = [[self sharedAppDelegate].phoneImageArray objectAtIndex:self.selectedImageIndex.row];
@@ -413,6 +414,7 @@ BOOL loadingView;
     [super viewDidAppear:YES];
 
 }
+
 
 
 - (void)pickerDoneClicked:(id)sender {
@@ -624,6 +626,12 @@ BOOL loadingView;
         if (self.Product_Outlet.inputView == pickerView) {
             imageCropped = NO;
             self.selectedRow = row;
+            if (row == 0) {
+                self.For_Aluminum_TextField.text = @"Magnet";
+            }
+            else{
+                self.For_Aluminum_TextField.text = @"Easel";
+            }
             if (self.selectedSection1 == 0) {
                 NSArray *array = [[self sharedAppDelegate].AluminumProductArray objectAtIndex:row];
                 self.currentProductArray = array;
@@ -777,6 +785,19 @@ BOOL loadingView;
          UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"Back", returnbuttontitle) style:     UIBarButtonItemStylePlain target:nil action:nil];
          self.navigationItem.backBarButtonItem = backButton;
      }
+     if ([segue.identifier isEqualToString:@"presentCropController"]) {
+         CropController *cropVC = segue.destinationViewController;
+         cropVC.delegate = self;
+         cropVC.cropImage = self.currentImage;
+         UIImage *productImage = [self.currentProductArray objectAtIndex:2];
+         NSLog(@"%@",[self.currentProductArray objectAtIndex:1]);
+         float ratio1 = productImage.size.width/productImage.size.height;
+         cropVC.cropRatio = ratio1;
+
+         UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"Cancel", returnbuttontitle) style:     UIBarButtonItemStylePlain target:nil action:nil];
+         self.navigationItem.backBarButtonItem = backButton;
+     }
+     
  }
 
 - (IBAction)camera:(id)sender {
@@ -821,7 +842,82 @@ BOOL loadingView;
 }
 
 -(void)cropImage{
-    [self cropImage:self.imgView.image];
+    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+    [library assetForURL: self.selectedImageURL
+             resultBlock:^(ALAsset *asset) {
+                 UIImage *fullImg = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
+                 
+                 self.currentImage = fullImg;
+                 TOCropViewController *cropViewController = [[TOCropViewController alloc] initWithImage:self.currentImage];
+                 cropViewController.delegate = self;
+                 cropViewController.aspectRatioPreset = TOCropViewControllerAspectRatioPresetCustom;
+                 cropViewController.customAspectRatio = [[self.currentProductArray objectAtIndex:5] CGSizeValue];
+                 [self presentViewController:cropViewController animated:YES completion:nil];
+//                 [self performSegueWithIdentifier:@"presentCropController" sender:self];
+             }
+     
+            failureBlock:^(NSError *error){ NSLog(@"operation was not successfull!"); } ];
+    
+    
+}
+
+- (void)cropViewController:(TOCropViewController *)cropViewController didCropToImage:(UIImage *)image withRect:(CGRect)cropRect angle:(NSInteger)angle
+{
+    croppingImage = YES;
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    if (self.imgView) {
+        NSLog(@"Here");
+        [self.imgView removeFromSuperview];
+        self.imgView = nil;
+    }
+    self.image = nil;
+    self.image = image;
+    NSIndexPath *indePath = [NSIndexPath indexPathForRow:0 inSection:0];
+    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indePath];
+    float division = self.image.size.width/self.image.size.height;
+    self.imgView = [[UIImageView alloc] init];
+    if (self.image.size.width < self.image.size.height) {
+        NSLog(@"portrait");
+        
+        float newWidth = (cell.bounds.size.height - 39) * division;
+        [self.imgView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 39)];
+        int centerY = cell.bounds.size.height/2 + 10;
+        [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,centerY)];
+        self.imgView.image = self.image;
+    }
+    if (self.image.size.width > self.image.size.height) {
+        NSLog(@"landscape");
+        float newWidth = (cell.bounds.size.height - 65) * division;
+        [self.imgView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 65)];
+        int centerY = cell.bounds.size.height/2 + 10;
+        [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,centerY)];
+        self.imgView.image = self.image;
+    }
+    if (self.image.size.width == self.image.size.height) {
+        NSLog(@"square");
+        [self.imgView setFrame:CGRectMake(0, 0, cell.bounds.size.height - 65, cell.bounds.size.height - 65)];
+        [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2 + 7)];
+        self.imgView.image = self.image;
+    }
+    [self.view addSubview:self.imgView];
+    if (self.imgView.gestureRecognizers == 0) {
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+        
+        
+        tapGesture.numberOfTapsRequired = 1;
+        tapGesture.cancelsTouchesInView = NO;
+        self.imgView.userInteractionEnabled = YES;
+        [self.imgView addGestureRecognizer:tapGesture];
+    }
+    imageCropped = YES;
+}
+
+
+- (void)cropViewController:(nonnull TOCropViewController *)cropViewController didFinishCancelled:(BOOL)cancelled{
+    
+    imageCropped = NO;
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)camera1
@@ -987,6 +1083,56 @@ BOOL loadingView;
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
+-(void)FinishedCroppingImageWithImage:(UIImage*)croppedImage{
+    croppingImage = YES;
+    [[self navigationController] popViewControllerAnimated:YES];
+    
+    if (self.imgView) {
+        [self.imgView removeFromSuperview];
+        self.imgView = nil;
+    }
+    self.image = nil;
+    self.image = croppedImage;
+    NSIndexPath *indePath = [NSIndexPath indexPathForRow:0 inSection:0];
+    UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indePath];
+    float division = self.image.size.width/self.image.size.height;
+    self.imgView = [[UIImageView alloc] init];
+    if (self.image.size.width < self.image.size.height) {
+        NSLog(@"portrait");
+        
+        float newWidth = (cell.bounds.size.height - 39) * division;
+        [self.imgView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 39)];
+        int centerY = cell.bounds.size.height/2 + 10;
+        [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,centerY)];
+        self.imgView.image = self.image;
+    }
+    if (self.image.size.width > self.image.size.height) {
+        NSLog(@"landscape");
+        float newWidth = (cell.bounds.size.height - 65) * division;
+        [self.imgView setFrame:CGRectMake(0, 0, newWidth, cell.bounds.size.height - 65)];
+        int centerY = cell.bounds.size.height/2 + 10;
+        [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,centerY)];
+        self.imgView.image = self.image;
+    }
+    if (self.image.size.width == self.image.size.height) {
+        NSLog(@"square");
+        [self.imgView setFrame:CGRectMake(0, 0, cell.bounds.size.height - 65, cell.bounds.size.height - 65)];
+        [self.imgView setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2 + 7)];
+        self.imgView.image = self.image;
+    }
+    [self.view addSubview:self.imgView];
+    if (self.imgView.gestureRecognizers == 0) {
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+        
+        
+        tapGesture.numberOfTapsRequired = 1;
+        tapGesture.cancelsTouchesInView = NO;
+        self.imgView.userInteractionEnabled = YES;
+        [self.imgView addGestureRecognizer:tapGesture];
+    }
+    imageCropped = YES;
+    
+}
 
 - (void)cropImage:(UIImage *)image{
     ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
@@ -1120,7 +1266,7 @@ BOOL imageCropped;
 
             UIAlertAction *cropAction = [UIAlertAction actionWithTitle:@"Crop Image"
                                                                    style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                                                                       [self cropImage:self.imgView.image];
+                                                                       [self cropImage];
                                                                    }]; // 2
 
             [alert2 addAction:cropAction];

@@ -8,6 +8,8 @@
 
 #import "ImageCollectionViewController.h"
 #import "AppDelegate.h"
+#import "SWRevealViewController.h"
+#import "OrderOverViewTVC.h"
 
 @interface ImageCollectionViewController (){
     BOOL newSelection;
@@ -124,6 +126,14 @@ UIAlertController *loadingAlert;
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSLog(@"Image View did load");
+    UIImage *background = [UIImage imageNamed:@"Hamburger_icon.svg.png"];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button addTarget:self action:@selector(toggleReveal) forControlEvents:UIControlEventTouchUpInside]; //adding action
+    [button setBackgroundImage:background forState:UIControlStateNormal];
+    button.frame = CGRectMake(0 ,0,35,30);
+    UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    [self.navigationItem setLeftBarButtonItem:leftBarButtonItem];
+    [self.navigationItem setTitle:@"My Photos"];
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:41.0/255.0 green:127.0/255.0 blue:184.0/255.0 alpha:0.6];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
@@ -146,9 +156,9 @@ UIAlertController *loadingAlert;
     
     [self.collectionView addGestureRecognizer:_longPressGesture1];
     
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(SingleTap:)];
-    singleTap.numberOfTapsRequired = 1;
-    [self.collectionView  addGestureRecognizer:singleTap];
+//    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(SingleTap:)];
+//    singleTap.numberOfTapsRequired = 1;
+//    [self.collectionView  addGestureRecognizer:singleTap];
     
 //    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTap:)];
 //    doubleTap.numberOfTapsRequired = 2;
@@ -159,16 +169,36 @@ UIAlertController *loadingAlert;
 }
 
 
--(void)SingleTap:(UITapGestureRecognizer *)gesture{
-    CGPoint location = [gesture locationInView:self.collectionView];
-    NSIndexPath *tappedIndexPath = [self.collectionView indexPathForItemAtPoint:location];
-    ImageCollectionViewCell *cell = [self.collectionView  cellForItemAtIndexPath:tappedIndexPath];
-    iPath = tappedIndexPath;
-    currentTempURL = cell.imgURL;
-    tempThumbImg = cell.imageViewCell.image;
-    NSArray *array = @[iPath,currentTempURL,tempThumbImg ];
-    [self.delegate SelectedImageWithData:array];
+
+
+
+UITapGestureRecognizer *singleTap1;
+-(void)toggleReveal{
+    //self.collectionView.userInteractionEnabled = NO;
+    singleTap1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(SingleTap1:)];
+    singleTap1.numberOfTapsRequired = 1;
+    [self.collectionView  addGestureRecognizer:singleTap1];
+    [self.revealViewController revealToggle];
 }
+
+-(void)SingleTap1:(UITapGestureRecognizer *)gesture{
+    
+    [self.revealViewController revealToggle];
+    //self.collectionView.userInteractionEnabled = YES;
+    [self.collectionView removeGestureRecognizer:singleTap1];
+    singleTap1 = nil;
+}
+
+
+//-(void)SingleTap:(UITapGestureRecognizer *)gesture{
+//    CGPoint location = [gesture locationInView:self.collectionView];
+//    NSIndexPath *tappedIndexPath = [self.collectionView indexPathForItemAtPoint:location];
+//    ImageCollectionViewCell *cell = [self.collectionView  cellForItemAtIndexPath:tappedIndexPath];
+//    iPath = tappedIndexPath;
+//    currentTempURL = cell.imgURL;
+//    tempThumbImg = cell.imageViewCell.image;
+//    [self performSegueWithIdentifier:@"addCartItem" sender:self];
+//}
 
 -(void)doubleTap:(UITapGestureRecognizer *)gesture{
     CGPoint location = [gesture locationInView:self.collectionView];
@@ -213,6 +243,7 @@ CGRect initialRect;
 UIImageView *bigImageView;
 UIImageView *backgroungImageview;
 NSIndexPath *firstSelectedIndexPath;
+UIImageView *blurImageView;
 -(void)gestureHandler1:(UISwipeGestureRecognizer *)gesture
 {
     
@@ -229,6 +260,27 @@ NSIndexPath *firstSelectedIndexPath;
                  resultBlock:^(ALAsset *asset) {
                      UIImage *fullImg = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
                      NSLog(@"Image:%@",fullImg);
+//                     CGRect screenRect = [[UIScreen mainScreen] bounds];
+//                     UIGraphicsBeginImageContext(screenRect.size);
+//                     CGContextRef ctx = UIGraphicsGetCurrentContext();
+//                     [[UIColor blackColor] set];
+//                     CGContextFillRect(ctx, screenRect);
+//                     
+//                     // grab reference to our window
+//                     UIWindow *window = [UIApplication sharedApplication].keyWindow;
+//                     
+//                     // transfer content into our context
+//                     [window.layer renderInContext:ctx];
+//                     UIImage *screengrab = UIGraphicsGetImageFromCurrentImageContext();
+//                     UIGraphicsEndImageContext();
+//                     if (!blurImageView) {
+//                         blurImageView = [[UIImageView alloc] initWithImage:[self blur:screengrab]];
+//                         blurImageView.frame = CGRectMake(-50, -50, self.view.bounds.size.width+100, self.view.bounds.size.height+100);
+//                     }
+//                     else{
+//                         blurImageView.image = [self blur:screengrab];
+//                     }
+                     //[[self sharedAppDelegate].window addSubview:blurImageView];
                     initialRect = cell.imageViewCell.frame;
                      float division = cell.imageViewCell.image.size.width/cell.imageViewCell.image.size.height;
                      
@@ -236,38 +288,16 @@ NSIndexPath *firstSelectedIndexPath;
                          NSLog(@"portrait");
                          float newWidth = (self.view.bounds.size.height - 260) * division;
                          // create graphics context with screen size
-                         CGRect screenRect = [[UIScreen mainScreen] bounds];
-                         UIGraphicsBeginImageContext(screenRect.size);
-                         CGContextRef ctx = UIGraphicsGetCurrentContext();
-                         [[UIColor blackColor] set];
-                         CGContextFillRect(ctx, screenRect);
+
                          
-                         // grab reference to our window
-                         UIWindow *window = [UIApplication sharedApplication].keyWindow;
-                         
-                         // transfer content into our context
-                         [window.layer renderInContext:ctx];
-                         UIImage *screengrab = UIGraphicsGetImageFromCurrentImageContext();
-                         UIGraphicsEndImageContext();
-                         UIImageView *blurImageView = [[UIImageView alloc] initWithImage:[self blur:screengrab]];
-                         blurImageView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
-                         [[self sharedAppDelegate].window addSubview:blurImageView];
+                         if (bigImageView) {
+                             bigImageView = nil;
+                         }
                          bigImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, newWidth, self.view.bounds.size.height - 260)];
                          bigImageView.center = CGPointMake(self.view.bounds.size.width/2,self.view.bounds.size.height/2);
                          bigImageView.image = fullImg;
-                         bigImageView.alpha = 0.0;
                          [self.view addSubview:bigImageView];
-                         [self.view bringSubviewToFront:bigImageView];
-                         //            UIImage *blurredImage = [self blurImage];
-                         //            backgroungImageview = [[UIImageView alloc] initWithFrame:self.view.bounds];
-                         //            backgroungImageview.image = blurredImage;
-                         //            [self.view addSubview:backgroungImageview];
-                         [UIView beginAnimations:@"bucketsOff" context:nil];
-                         [UIView setAnimationDuration:0.2];
-                         [UIView setAnimationDelegate:self];
-                         bigImageView.alpha = 1.0;
-                         //animate off screen
-                         [UIView commitAnimations];
+
                          
                      }
                      if (fullImg.size.width > fullImg.size.height) {
@@ -295,13 +325,12 @@ NSIndexPath *firstSelectedIndexPath;
     }
     if(UIGestureRecognizerStateEnded == gesture.state)
     {
-        
-        CGPoint location = [gesture locationInView:self.collectionView];
         //NSIndexPath *selectedIndexPath = [self.collectionView indexPathForItemAtPoint:location];
         NSLog(@"Ended selection");
         ImageCollectionViewCell* cell = [self.collectionView cellForItemAtIndexPath:firstSelectedIndexPath];
         cell.imageViewCell.frame = initialRect;
         [bigImageView removeFromSuperview];
+        [blurImageView removeFromSuperview];
         
     }
 }
@@ -378,90 +407,32 @@ UIActivityIndicatorView *activityIndicator;
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
 
+
+    
     self.toggleOutlet.tintColor = [UIColor lightGrayColor];
-    //self.tabBarController.tabBar.alpha = 0.9;
-//    if ([self sharedAppDelegate].mutableImageArray.count == 0) {
-//        loadingAlert = [UIAlertController alertControllerWithTitle:@""
-//                                                           message:@"Loading Images"
-//                                                    preferredStyle:UIAlertControllerStyleAlert]; // 1
-//        
-//        UIViewController *customVC     = [[UIViewController alloc] init];
-//        [loadingAlert.view setFrame:CGRectMake(0, 300, 320, 275)];
-//        
-//        UIActivityIndicatorView* spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-//        [spinner startAnimating];
-//        [customVC.view addSubview:spinner];
-//        [spinner setCenter:CGPointMake(100, 27)];
-//        
-//        [customVC.view addConstraint:[NSLayoutConstraint
-//                                      constraintWithItem: spinner
-//                                      attribute:NSLayoutAttributeCenterX
-//                                      relatedBy:NSLayoutRelationEqual
-//                                      toItem:customVC.view
-//                                      attribute:NSLayoutAttributeCenterX
-//                                      multiplier:1.0f
-//                                      constant:0.0f]];
-//        
-//        
-//        [loadingAlert setValue:customVC forKey:@"contentViewController"];
-//        [self presentViewController:loadingAlert animated:YES completion:nil];
-//    }
-    
+    cartVC1 = [ShoppingCartTVC sharedShoppingCartTVC];
+    cartVC1.delegate = self;
+    proceedButton1 = [UIButton buttonWithType:UIButtonTypeCustom];
+    proceedButton1.frame = CGRectMake(0, 0, 353, 50);
+    proceedButton1.layer.cornerRadius = 2;
+    proceedButton1.clipsToBounds = YES;
+    [proceedButton1 addTarget:self action:@selector(EnterShipping1) forControlEvents:UIControlEventTouchUpInside];
+    [proceedButton1 setTitle:@"Proceed with order" forState:UIControlStateNormal];
+    proceedButton1.backgroundColor = [UIColor colorWithRed:41.0/255.0 green:127.0/255.0 blue:184.0/255.0 alpha:1];
+    proceedButton1.center = CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height-35);
 
     
-//    int x = 0;
-//    loadingImages = YES;
-//    for (NSURL *imgURL in [self sharedAppDelegate].phoneImageArray) {
-//        //NSLog(@"%@",imgURL);
-//        
-//        x++;
-//        ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-//        [library assetForURL:imgURL
-//                 resultBlock:^(ALAsset *asset) {
-//                     
-//                     if (x != [self sharedAppDelegate].phoneImageArray.count) {
-//                         
-//                         UIImage *thumbImg = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
-//                         NSLog(@"Width %f Height %f",thumbImg.size.width, thumbImg.size.height);
-//                         NSArray *anArray = @[thumbImg,imgURL, @""];
-//                         [[self sharedAppDelegate].mutableImageArray addObject:anArray];
-//                         [self.mutableHighlightedArray addObject:@""];
-//                     }
-//                     if (x == [self sharedAppDelegate].phoneImageArray.count) {
-//                         NSLog( @"Number of cells: %i",x);
-//                         UIImage *thumbImg = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
-//                         NSArray *anArray = @[thumbImg,imgURL,@""];
-//                         [[self sharedAppDelegate].mutableImageArray addObject:anArray];
-//                         [self.mutableHighlightedArray addObject:@""];
-//
-//                         
-//                         loadingImages = NO;
-//                         reloadView = YES;
-//                         [self.collectionView reloadData];
-//                     }
-//                     
-//                     //UIImage *fullImg = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
-//                     //                 if (self.collectionImgView) {
-//                     //                     self.collectionImgView = nil;
-//                     //                 }
-//                     
-//                 }
-//         
-//                failureBlock:^(NSError *error){
-//                    NSLog(@"operation was not successfull!");
-//                }];
-//    }
+    if ([self sharedAppDelegate].displayingCart == YES) {
 
-    
-    //    if (loadingImages == YES) {
-//        activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-//        activityIndicator.frame = CGRectMake(0.0, 0.0, 40, 40.0);
-//        activityIndicator.center = self.view.center;
-//        CGAffineTransform transform = CGAffineTransformMakeScale(1.25f, 1.25f);
-//        activityIndicator.transform = transform;
-//        [self.view addSubview: activityIndicator];
-//        [activityIndicator startAnimating];
-//    }
+        [self sharedAppDelegate].displayingCart = YES;
+        [self.navigationItem setTitle:@"Cart"];
+        
+        //self.switchViewsOutlet.image = [UIImage imageNamed:@"Home Icon.png"];
+        [self.view addSubview:cartVC1.view];
+        [self.view addSubview:proceedButton1];
+        [self.view bringSubviewToFront:proceedButton1];
+
+    }
 
 }
 
@@ -519,7 +490,19 @@ UIActivityIndicatorView *activityIndicator;
 
 }
 
-
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:YES];
+    
+    if (imagesPresenting1 == YES) {
+        imagesPresenting1 = NO;
+        [self.navigationItem setTitle:@"Store"];
+        [proceedButton1 removeFromSuperview];
+        //self.switchViewsOutlet.image = [UIImage imageNamed:@"Cart Icon.png"];
+        [cartVC1.view removeFromSuperview];
+        
+    }
+    
+}
 
 
 
@@ -564,11 +547,12 @@ NSInteger numberOfCells = 0;
     else{
         numberOfCells = [self sharedAppDelegate].phoneImageArray.count;
     }
+    NSLog(@"Rows: %ld",(long)numberOfCells);
     return numberOfCells;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
+    NSLog(@"Creating cell");
     static NSString *identifier = @"Cell";
     
     ImageCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
@@ -577,7 +561,8 @@ NSInteger numberOfCells = 0;
         cell.imageViewCell = nil;
     }
     cell.imageViewCell = [[UIImageView alloc] init];
-    
+    cell.imageViewCell.layer.cornerRadius = 2;
+    cell.imageViewCell.clipsToBounds = YES;
     
     NSArray *urlImageArray = [[self sharedAppDelegate].phoneImageArray objectAtIndex:indexPath.row];
     cell.imgURL = [urlImageArray objectAtIndex:0];
@@ -674,7 +659,11 @@ NSIndexPath *selectedIndex;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     NSLog(@"Collection selected");
 
-
+    ImageCollectionViewCell *cell = [self.collectionView  cellForItemAtIndexPath:indexPath];
+    iPath = indexPath;
+    currentTempURL = cell.imgURL;
+    tempThumbImg = cell.imageViewCell.image;
+    [self performSegueWithIdentifier:@"addCartItem" sender:self];
    
 }
 
@@ -742,6 +731,93 @@ HighlightedImageCVC *imagevc;
 }
 
 
+NSArray *imageSelectionData1;
+- (void)SelectedRowWithData:(NSArray*)data{
+    imageSelectionData1 = data;
+    [self performSegueWithIdentifier:@"addCartItem" sender:self];
+    
+}
+
+
+ShoppingCartTVC *cartVC1;
+UIButton *proceedButton1;
+BOOL imagesPresenting1;
+- (IBAction)DisplayCart:(id)sender {
+    
+    if (cartVC1) {
+        if ([self sharedAppDelegate].displayingCart == NO) {
+            [self sharedAppDelegate].displayingCart = YES;
+            [self.navigationItem setTitle:@"Cart"];
+            
+            //self.switchViewsOutlet.image = [UIImage imageNamed:@"Home Icon.png"];
+            [self.view addSubview:cartVC1.view];
+            [self.view addSubview:proceedButton1];
+            [self.view bringSubviewToFront:proceedButton1];
+            
+        }
+        else{
+            [self sharedAppDelegate].displayingCart = NO;
+            [self.navigationItem setTitle:@"Store"];
+            [proceedButton1 removeFromSuperview];
+            //self.switchViewsOutlet.image = [UIImage imageNamed:@"Cart Icon.png"];
+            [cartVC1.view removeFromSuperview];
+        }
+    }
+    else{
+        [self sharedAppDelegate].displayingCart = YES;
+        [self.navigationItem setTitle:@"Cart"];
+        //self.switchViewsOutlet.image = [UIImage imageNamed:@"Home Icon.png"];
+        cartVC1 = [ShoppingCartTVC sharedShoppingCartTVC];
+        cartVC1.delegate = self;
+        [self.view addSubview:cartVC1.view];
+        if (proceedButton1) {
+            NSLog(@"!!!!!!!!!!!!");
+            [self.view addSubview:proceedButton1];
+            [self.view bringSubviewToFront:proceedButton1];
+        }
+        else{
+            NSLog(@"?????????");
+            proceedButton1 = [UIButton buttonWithType:UIButtonTypeCustom];
+            proceedButton1.frame = CGRectMake(0, 0, 353, 50);
+            proceedButton1.layer.cornerRadius = 2;
+            proceedButton1.clipsToBounds = YES;
+            [proceedButton1 addTarget:self action:@selector(EnterShipping1) forControlEvents:UIControlEventTouchUpInside];
+            [proceedButton1 setTitle:@"Proceed with order" forState:UIControlStateNormal];
+            proceedButton1.backgroundColor = [UIColor colorWithRed:41.0/255.0 green:127.0/255.0 blue:184.0/255.0 alpha:1];
+            proceedButton1.center = CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height-35);
+            [self.view addSubview:proceedButton1];
+            [self.view bringSubviewToFront:proceedButton1];
+        }
+    }
+    
+}
+
+
+
+
+- (void)EnterShipping1 {
+    
+    if ([self sharedAppDelegate].shoppingCart.count != 0) {
+        [self performSegueWithIdentifier:@"StartCheckOut1" sender:self];
+    }
+    else{
+        UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"" message:@"You must add items to your cart before proceeding"preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"OK"
+                                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                   [alert2 dismissViewControllerAnimated:YES completion:nil];
+                                                               }]; // 2
+        
+        [alert2 addAction:cameraAction];
+        
+        [self presentViewController:alert2 animated:YES completion:nil];
+    }
+    
+    
+    //[self sendEmail];
+}
+
+
 NSArray *currentTempArray;
 NSURL *currentTempURL;
 UIImage *tempThumbImg;
@@ -777,19 +853,38 @@ NSIndexPath *iPath;
     NSLog(@"Preparing for segue");
     
 
+
     if ([segue.identifier isEqualToString:@"addCartItem"]) {
         UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"", returnbuttontitle) style:UIBarButtonItemStylePlain target:nil action:nil];
         self.navigationItem.backBarButtonItem = backButton;
-        DetailsTVC *details = segue.destinationViewController;
-        details.delegate = self;
-        details.selectedImageIndex = iPath;
-        details.startingFromHighlightedImage = YES;
-        details.selectedImageURL = currentTempURL;
-        details.thumbImg = tempThumbImg;
-//        details.currentImage = tempImage;
-//        NSLog(@"temp Array: %@",currentTempArray);
-//        NSLog(@"temp Array: %@",details.currentImageArray);
+
+        if ([self sharedAppDelegate].cartIsMainController == YES) {
+            DetailsTVC *details = segue.destinationViewController;
+            details.editingCartItem = YES;
+            //NSArray *array5 = @[currentItem,indexPath,[NSString stringWithFormat:@"%ld",(long)selectedRow],@"YES"];
+            details.selectedCartRow = [[imageSelectionData1 objectAtIndex:2] integerValue];
+            details.selectedImageIndex = [imageSelectionData1 objectAtIndex:1];
+        }
+        else{
+            DetailsTVC *details = segue.destinationViewController;
+            details.delegate = self;
+            details.selectedImageIndex = iPath;
+            details.startingFromHighlightedImage = YES;
+            details.selectedImageURL = currentTempURL;
+            details.thumbImg = tempThumbImg;
+        }
+        //        details.currentImage = tempImage;
+        //        NSLog(@"temp Array: %@",currentTempArray);
+        //        NSLog(@"temp Array: %@",details.currentImageArray);
     }
+    if ([segue.identifier isEqualToString:@"StartCheckOut1"]) {
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"", returnbuttontitle) style:UIBarButtonItemStylePlain target:nil action:nil];
+        self.navigationItem.backBarButtonItem = backButton;
+        
+        OrderOverViewTVC *orderOverView = segue.destinationViewController;
+        orderOverView.displayedIt = NO;
+    }
+
 }
 
 

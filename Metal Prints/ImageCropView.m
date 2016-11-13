@@ -410,7 +410,7 @@ CGRect SquareCGRectAtCenter(CGFloat centerX, CGFloat centerY, CGFloat size) {
 
     //control points
     controlPointSize = DEFAULT_CONTROL_POINT_SIZE;
-    int initialCropAreaSize = self.imageView.frame.size.width/2;
+    int initialCropAreaSize = self.imageView.frame.size.width;
     CGPoint centerInView = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
     topLeftPoint = [self createControlPointAt:SquareCGRectAtCenter(centerInView.x - initialCropAreaSize,
                                                                    centerInView.y - initialCropAreaSize, 
@@ -427,8 +427,14 @@ CGRect SquareCGRectAtCenter(CGFloat centerX, CGFloat centerY, CGFloat size) {
                                                                     centerInView.y - initialCropAreaSize, controlPointSize)];
     
     //the "hole"
-    CGRect cropArea = [self cropAreaFromControlPoints];
+    int cropWidth = self.imageView.frame.size.width;
+    int cropHeight = cropWidth * self.cropRatio;
+    CGRect cropArea = CGRectMake(0, 0, cropWidth, cropHeight);
+    
+
+    
     cropAreaView = [[UIView alloc] initWithFrame:cropArea];
+    cropAreaView.center = CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
     cropAreaView.opaque = NO;
     cropAreaView.backgroundColor = [UIColor clearColor];
 //    UIPanGestureRecognizer* dragRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleDrag:)];
@@ -436,6 +442,20 @@ CGRect SquareCGRectAtCenter(CGFloat centerX, CGFloat centerY, CGFloat size) {
 //    dragRecognizer.minimumNumberOfTouches = 1;
 //    dragRecognizer.maximumNumberOfTouches = 2;
 //    [self.viewForBaselineLayout addGestureRecognizer:dragRecognizer];
+    
+    topLeftPoint = [self createControlPointAt:SquareCGRectAtCenter(cropAreaView.frame.origin.x,
+                                                                   cropAreaView.frame.origin.y,
+                                                                   controlPointSize)];
+    
+    bottomLeftPoint = [self createControlPointAt:SquareCGRectAtCenter(cropAreaView.frame.origin.x,
+                                                                      cropAreaView.frame.origin.y + cropHeight,
+                                                                      controlPointSize)];
+    
+    bottomRightPoint = [self createControlPointAt:SquareCGRectAtCenter(cropAreaView.frame.origin.x + cropWidth,
+                                                                       cropAreaView.frame.origin.y + cropHeight, controlPointSize) ];
+    
+    topRightPoint = [self createControlPointAt:SquareCGRectAtCenter(cropAreaView.frame.origin.x + cropWidth,
+                                                                    cropAreaView.frame.origin.y, controlPointSize)];
     
     [self addSubview:_imageView];
     [self addSubview:self.shadeView];

@@ -8,7 +8,7 @@
 
 #import "ShippingTVC.h"
 #import "AppDelegate.h"
-#import "Order.h"
+#import "SavedInfoTVC.h"
 
 
 @interface ShippingTVC ()
@@ -68,19 +68,16 @@
     [self.keyboardDoneButtonView1 sizeToFit];
     UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
-    UIImage* image3 = [UIImage imageNamed:@"back-forward-arrow.png"];
-    CGRect frameimg = CGRectMake(0, 0, 33, 25);
-    UIButton *someButton = [[UIButton alloc] initWithFrame:frameimg];
-    [someButton setBackgroundImage:image3 forState:UIControlStateNormal];
-    [someButton addTarget:self action:@selector(BackClicked:)
-         forControlEvents:UIControlEventTouchUpInside];
-    [someButton setShowsTouchWhenHighlighted:YES];
-    
-    UIBarButtonItem *backButton =[[UIBarButtonItem alloc] initWithCustomView:someButton];
+    UIImage *image = [[UIImage imageNamed:@"list-icon-32.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(SavedContacts)];
+    UIBarButtonItem *backButton =[[UIBarButtonItem alloc] initWithTitle:@"Back"
+                                                                  style:UIBarButtonItemStyleDone target:self
+                                                                 action:@selector(BackClicked:)];
     
     UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:@"Next"
                                                                    style:UIBarButtonItemStyleDone target:self
                                                                   action:@selector(NextClicked:)];
+    
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
                                                                    style:UIBarButtonItemStyleDone target:self
                                                                   action:@selector(DoneClicked:)];
@@ -102,6 +99,21 @@
     self.country_Textfield.inputAccessoryView = self.keyboardDoneButtonView1;
     
    
+}
+
+-(void)SavedContacts{
+    
+    UIView *contactsView = [[UIView alloc] initWithFrame:CGRectMake(0,self.keyboardDoneButtonView1.frame.origin.y, self.view.bounds.size.width, 250)];
+    SavedInfoTVC *savedInfo = [SavedInfoTVC sharedSavedInfoTVC];
+    [savedInfo.view setFrame:contactsView.frame];
+    
+    [contactsView addSubview: savedInfo.view];
+    [self.navigationController.view addSubview:contactsView];
+//    [UIView animateWithDuration:0.2f animations:^{
+//        contactsView.frame = CGRectOffset(contactsView.frame, 0, 250);
+//        
+//    }];
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated{

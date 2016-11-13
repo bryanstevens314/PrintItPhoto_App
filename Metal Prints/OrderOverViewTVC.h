@@ -26,5 +26,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *tax_Outlet;
 @property (weak, nonatomic) IBOutlet UILabel *shipping_Outlet;
 @property (weak, nonatomic) IBOutlet UILabel *totalPrice_Outlet;
+@property (nonatomic) BOOL displayedIt;
 - (IBAction)PlaceTheOrder:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *placeOrderOutlet;
 @end
