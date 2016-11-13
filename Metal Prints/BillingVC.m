@@ -186,10 +186,15 @@ UIAlertController *chargingCardAlert;
             [CCTable.zip resignFirstResponder];
         }
         
-        [self sharedAppDelegate].userSettings.billing = [[UserBilling alloc] init];
+        if (![self sharedAppDelegate].userSettings.billing) {
+            [self sharedAppDelegate].userSettings.billing = [[UserBilling alloc] init];
+        }
+        if (![self sharedAppDelegate].userSettings.billing.payment) {
+            [self sharedAppDelegate].userSettings.billing.payment = [[UserPayment alloc] init];
+        }
         
 
-        [self sharedAppDelegate].userSettings.billing.payment.CCN = CCTable.ccn.text;
+        [self sharedAppDelegate].userSettings.billing.payment.CCN = [CCTable.ccn.text stringByReplacingOccurrencesOfString:@" " withString:@""];
         [self sharedAppDelegate].userSettings.billing.payment.expMonth = CCTable.currentMonth;
         
         [self sharedAppDelegate].userSettings.billing.payment.expYear = CCTable.currentYear;

@@ -430,7 +430,7 @@ UILabel *progressLabel;
         [self sharedAppDelegate].total_TaxCharged = taxTotalString;
         [self sharedAppDelegate].taxPercentString = taxPercentString;
         chargingCardAlert1 = [UIAlertController alertControllerWithTitle:@""
-                                                                 message:@"Submitting your order, plesae do not exit the app."
+                                                                 message:@"Submitting your order...."
                                                           preferredStyle:UIAlertControllerStyleAlert]; // 1
         
         [chargingCardAlert1.view setFrame:CGRectMake(0, 300, 320, 275)];
