@@ -86,6 +86,7 @@ NSTimer *timer2;
 
     NSInteger totalAmount = self.totalPlusTax * 100;
     NSInteger fee = totalAmount * 0.3;
+    NSLog(@"Total: %ld",(long)totalAmount);
     NSString *stringAmount = [NSString stringWithFormat:@"%li",(long)totalAmount];
     NSString *feeAmount = [NSString stringWithFormat:@"%li",(long)fee];
     NSDictionary *chargeParams = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -124,6 +125,7 @@ NSTimer *timer2;
         id json = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
         NSString *successString = [json objectForKey:@"status"];
         if ([successString isEqualToString:@"succeeded"]) {
+            chargeID = [json objectForKey:@"stripeChargeID"];;
             NSArray *orderAttemptArray = @[@"charge successful",@"upload not attempted"];
             [NSKeyedArchiver archiveRootObject:orderAttemptArray toFile:[self archiveOrderAttemp]];
             timer2 = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(PostData) userInfo:nil repeats:NO];
@@ -144,6 +146,9 @@ NSTimer *timer2;
     }
 }
 
+
+
+NSString *chargeID;
 -(void)PostData{
     [timer2 invalidate];
     timer2 = nil;
@@ -181,7 +186,8 @@ NSTimer *timer2;
                                                                    state,@"state",
                                                                    zip,@"zip",
                                                                    @"US",@"country",
-                                                                   shippingAddress,@"shipping_address", nil];
+                                                                   shippingAddress,@"shipping_address",
+                                                                   chargeID,@"stripeChargeID",nil];
     [mutDict setObject:[self sharedAppDelegate].userSettings.shipping.shippingDict forKey:@"customer"];
     int i = 0;
     NSMutableDictionary *mutDict1 = [[NSMutableDictionary alloc] init];
@@ -260,7 +266,6 @@ NSTimer *timer2;
 }
 -(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-    NSLog(@"%lld", response.expectedContentLength);
     if(response)
     {
         NSError *error;

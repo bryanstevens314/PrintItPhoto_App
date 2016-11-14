@@ -44,7 +44,7 @@
     displayIt = YES;
     
     
-
+    updatingView = NO;
     
 }
 
@@ -55,62 +55,63 @@ NSString *taxTotalString;
 float totalPlusTaxToCharge;
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
-    self.placeOrderOutlet.layer.cornerRadius = 2;
-    self.placeOrderOutlet.clipsToBounds = YES;
-    self.cartTotal_Outlet.text = [NSString stringWithFormat:@"$%ld.00",(long)[self sharedAppDelegate].cartTotal];
-    if ([self sharedAppDelegate].cartTotal < 50)
-    {
-        self.shipping_Outlet.text = @"Free";
-    }
-    if ([self sharedAppDelegate].shippingOK == YES) {
-
+    if (updatingView == NO) {
+        self.placeOrderOutlet.layer.cornerRadius = 2;
+        self.placeOrderOutlet.clipsToBounds = YES;
+        self.cartTotal_Outlet.text = [NSString stringWithFormat:@"$%ld.00",(long)[self sharedAppDelegate].cartTotal];
+        if ([self sharedAppDelegate].cartTotal > 50)
+        {
+            self.shipping_Outlet.text = @"Free";
+        }
         if ([self sharedAppDelegate].shippingOK == YES) {
-            self.shipping_Address.text = [NSString stringWithFormat:@"%@",[self sharedAppDelegate].userSettings.shipping.Name];
-            self.shipping_City.text = [NSString stringWithFormat:@"%@",[self sharedAppDelegate].userSettings.shipping.street];
-            self.shipping_ZIP.text = [NSString stringWithFormat:@"%@ %@, %@", [self sharedAppDelegate].userSettings.shipping.city, [self sharedAppDelegate].userSettings.shipping.state, [self sharedAppDelegate].userSettings.shipping.zip];
-            //    self.shipping_ZIP.text = [NSString stringWithFormat:@"%@",[self sharedAppDelegate].userSettings.shipping.zip];
-            [self.shipping_Entered setImage:[UIImage imageNamed:@"MW-Icon-CheckMark.svg.png"]];
+                self.shipping_Address.text = [NSString stringWithFormat:@"%@",[self sharedAppDelegate].userSettings.shipping.Name];
+                self.shipping_City.text = [NSString stringWithFormat:@"%@",[self sharedAppDelegate].userSettings.shipping.street];
+                self.shipping_ZIP.text = [NSString stringWithFormat:@"%@ %@, %@", [self sharedAppDelegate].userSettings.shipping.city, [self sharedAppDelegate].userSettings.shipping.state, [self sharedAppDelegate].userSettings.shipping.zip];
+                //    self.shipping_ZIP.text = [NSString stringWithFormat:@"%@",[self sharedAppDelegate].userSettings.shipping.zip];
+                [self.shipping_Entered setImage:[UIImage imageNamed:@"MW-Icon-CheckMark.svg.png"]];
+                
+                UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+                [cell setAccessoryType:UITableViewCellAccessoryNone];
+                NSInteger shippingCost = 0;
+                if ([self sharedAppDelegate].cartTotal > 50) {
+                    self.shipping_Outlet.text = @"Free";
+                }
+                else{
+                    self.shipping_Outlet.text = @"$7.00";
+                    shippingCost = 7;
+                }
+                if (![[self sharedAppDelegate].taxPercentString isEqualToString:@"0"]) {
+                    float totalTax = [taxPercentString floatValue] * [self sharedAppDelegate].cartTotal;
+                    float totalPrice = totalTax + [self sharedAppDelegate].cartTotal + shippingCost;
+                    taxTotalString = [NSString stringWithFormat:@"$%.2f",totalTax];;
+                    self.tax_Outlet.text = taxTotalString;
+                    self.totalPrice_Outlet.text = [NSString stringWithFormat:@"$%.2f",totalPrice];
+                    self.cartTotal_Outlet.text = [NSString stringWithFormat:@"$%ld.00",(long)[self sharedAppDelegate].cartTotal];
+                }
+                else{
+                    float totalPrice = [self sharedAppDelegate].cartTotal + shippingCost;
+                    self.tax_Outlet.text = @"No Tax";
+                    self.totalPrice_Outlet.text = [NSString stringWithFormat:@"$%.2f",totalPrice];
+                    
+                    self.cartTotal_Outlet.text = [NSString stringWithFormat:@"$%ld.00",(long)[self sharedAppDelegate].cartTotal];
+                }
+            }
+            if ([self sharedAppDelegate].billingOK == YES) {
+                NSString *code = [[self sharedAppDelegate].userSettings.billing.payment.CCN substringFromIndex: [[self sharedAppDelegate].userSettings.billing.payment.CCN length] - 4];
+                
+                [self sharedAppDelegate].userSettings.billing.payment.CCN = [NSString stringWithFormat:@"**** **** **** %@",code];
+                self.billing_Name.text = [NSString stringWithFormat:@"%@",[self sharedAppDelegate].userSettings.billing.firstName];
+                self.billing_Card.text = [NSString stringWithFormat:@"**** **** **** %@",code] ;
+                //            self.billing_Exp.text = [NSString stringWithFormat:@"%@/%@",[self sharedAppDelegate].userSettings.billing.payment.expMonth, [self sharedAppDelegate].userSettings.billing.payment.expYear];
+                [self.billing_Entered setImage:[UIImage imageNamed:@"MW-Icon-CheckMark.svg.png"]];
+                
+                UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
+                [cell setAccessoryType:UITableViewCellAccessoryNone];
+            }
             
-            UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-            [cell setAccessoryType:UITableViewCellAccessoryNone];
-            NSInteger shippingCost = 0;
-            if ([self sharedAppDelegate].cartTotal > 50) {
-                self.shipping_Outlet.text = @"Free";
-            }
-            else{
-                self.shipping_Outlet.text = @"$7.00";
-                shippingCost = 7;
-            }
-            if (![[self sharedAppDelegate].taxPercentString isEqualToString:@"0"]) {
-                float totalTax = [taxPercentString floatValue] * [self sharedAppDelegate].cartTotal;
-                float totalPrice = totalTax + [self sharedAppDelegate].cartTotal + shippingCost;
-                taxTotalString = [NSString stringWithFormat:@"$%.2f",totalTax];;
-                self.tax_Outlet.text = taxTotalString;
-                self.totalPrice_Outlet.text = [NSString stringWithFormat:@"$%.2f",totalPrice];
-                self.cartTotal_Outlet.text = [NSString stringWithFormat:@"$%ld.00",(long)[self sharedAppDelegate].cartTotal];
-            }
-            else{
-                float totalPrice = [self sharedAppDelegate].cartTotal + shippingCost;
-                self.tax_Outlet.text = @"No Tax";
-                self.totalPrice_Outlet.text = [NSString stringWithFormat:@"$%.2f",totalPrice];
+        
+    }
 
-                self.cartTotal_Outlet.text = [NSString stringWithFormat:@"$%ld.00",(long)[self sharedAppDelegate].cartTotal];
-            }
-        }
-        if ([self sharedAppDelegate].billingOK == YES) {
-            NSString *code = [[self sharedAppDelegate].userSettings.billing.payment.CCN substringFromIndex: [[self sharedAppDelegate].userSettings.billing.payment.CCN length] - 4];
-            
-            [self sharedAppDelegate].userSettings.billing.payment.CCN = [NSString stringWithFormat:@"**** **** **** %@",code];
-            self.billing_Name.text = [NSString stringWithFormat:@"%@",[self sharedAppDelegate].userSettings.billing.firstName];
-            self.billing_Card.text = [NSString stringWithFormat:@"**** **** **** %@",code] ;
-//            self.billing_Exp.text = [NSString stringWithFormat:@"%@/%@",[self sharedAppDelegate].userSettings.billing.payment.expMonth, [self sharedAppDelegate].userSettings.billing.payment.expYear];
-            [self.billing_Entered setImage:[UIImage imageNamed:@"MW-Icon-CheckMark.svg.png"]];
-            
-            UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
-            [cell setAccessoryType:UITableViewCellAccessoryNone];
-        }
-
-   }
 }
 
 
@@ -369,30 +370,59 @@ UIAlertController *uploadAlert;
     
 }
 
+BOOL updatingView;
 - (void)FinishedEnteringShippingInformationWithTaxPercent:(float)percent{
     NSLog(@"!!!");
     [self sharedAppDelegate].shippingOK = YES;
     [self.navigationController popViewControllerAnimated:YES];
+    updatingView = YES;
     if (percent != 0) {
+        if ([self sharedAppDelegate].cartTotal < 50) {
+            [self sharedAppDelegate].taxPercentString = [NSString stringWithFormat:@"%.2f",percent];
+            float totalTax = percent * [self sharedAppDelegate].cartTotal;
+            float totalPrice = totalTax + [self sharedAppDelegate].cartTotal;
+            NSLog(@"Total: %f",totalPrice);
+            totalPlusTaxToCharge = totalPrice;
+            taxPercentString = [NSString stringWithFormat:@"%f",percent];
+            taxTotalString = [NSString stringWithFormat:@"%.2f",totalTax];
+            self.tax_Outlet.text = taxTotalString;
+            self.totalPrice_Outlet.text = [NSString stringWithFormat:@"$%.2f",totalPrice];
+            self.shipping_Outlet.text = @"Free";
+            self.cartTotal_Outlet.text = [NSString stringWithFormat:@"$%ld.00",(long)[self sharedAppDelegate].cartTotal];
+        }
+        else{
+            [self sharedAppDelegate].taxPercentString = [NSString stringWithFormat:@"%.2f",percent];
+            float totalTax = percent * [self sharedAppDelegate].cartTotal;
+            float totalPrice = totalTax + [self sharedAppDelegate].cartTotal + 7;
+            NSLog(@"Total: %f",totalPrice);
+            totalPlusTaxToCharge = totalPrice;
+            taxPercentString = [NSString stringWithFormat:@"%f",percent];
+            taxTotalString = [NSString stringWithFormat:@"%.2f",totalTax];
+            self.tax_Outlet.text = taxTotalString;
+            self.totalPrice_Outlet.text = [NSString stringWithFormat:@"$%.2f",totalPrice];
+            self.shipping_Outlet.text = @"$7.00";
+            self.cartTotal_Outlet.text = [NSString stringWithFormat:@"$%ld.00",(long)[self sharedAppDelegate].cartTotal];
+        }
 
-        [self sharedAppDelegate].taxPercentString = [NSString stringWithFormat:@"%.2f",percent];
-        float totalTax = percent * [self sharedAppDelegate].cartTotal;
-        float totalPrice = totalTax + [self sharedAppDelegate].cartTotal + 7;
-        totalPlusTaxToCharge = totalPrice;
-        taxPercentString = [NSString stringWithFormat:@"%f",percent];
-        taxTotalString = [NSString stringWithFormat:@"%.2f",totalTax];
-        self.tax_Outlet.text = taxTotalString;
-        self.totalPrice_Outlet.text = [NSString stringWithFormat:@"$%.2f",totalPrice];
-        self.shipping_Outlet.text = @"$7.00";
-        self.cartTotal_Outlet.text = [NSString stringWithFormat:@"$%ld.00",(long)[self sharedAppDelegate].cartTotal];
     }
     else{
-        [self sharedAppDelegate].userSettings.billing.tax_Percent = @"0";
-        float totalPrice = [self sharedAppDelegate].cartTotal + 7;
-        self.tax_Outlet.text = @"No Tax";
-        self.totalPrice_Outlet.text = [NSString stringWithFormat:@"$%.2f",totalPrice];
-        self.shipping_Outlet.text = @"$7.00";
-        self.cartTotal_Outlet.text = [NSString stringWithFormat:@"$%ld.00",(long)[self sharedAppDelegate].cartTotal];
+        if ([self sharedAppDelegate].cartTotal < 50) {
+            [self sharedAppDelegate].userSettings.billing.tax_Percent = @"0";
+            float totalPrice = [self sharedAppDelegate].cartTotal;
+            self.tax_Outlet.text = @"No Tax";
+            self.totalPrice_Outlet.text = [NSString stringWithFormat:@"$%.2f",totalPrice];
+            self.shipping_Outlet.text = @"$7.00";
+            self.cartTotal_Outlet.text = [NSString stringWithFormat:@"$%ld.00",(long)[self sharedAppDelegate].cartTotal];
+        }
+        else{
+            [self sharedAppDelegate].userSettings.billing.tax_Percent = @"0";
+            float totalPrice = [self sharedAppDelegate].cartTotal + 7;
+            self.tax_Outlet.text = @"No Tax";
+            self.totalPrice_Outlet.text = [NSString stringWithFormat:@"$%.2f",totalPrice];
+            self.shipping_Outlet.text = @"Free";
+            self.cartTotal_Outlet.text = [NSString stringWithFormat:@"$%ld.00",(long)[self sharedAppDelegate].cartTotal];
+        }
+
     }
 
     self.shipping_Address.text = [NSString stringWithFormat:@"%@",[self sharedAppDelegate].userSettings.shipping.Name];
@@ -402,6 +432,7 @@ UIAlertController *uploadAlert;
     
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
     [cell setAccessoryType:UITableViewCellAccessoryNone];
+    updatingView = NO;
 }
 
 - (void)FinishedEnteringBillingInformation{

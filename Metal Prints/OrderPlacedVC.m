@@ -24,8 +24,7 @@
 }
 
 - (void)Done {
-    TabController *tController = [TabController sharedTabController];
-    [self presentViewController:tController animated:YES completion:nil];
+    [self performSegueWithIdentifier:@"DoneWithOrder" sender:self];
 }
 
 /*

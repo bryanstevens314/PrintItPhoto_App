@@ -73,7 +73,6 @@
 		FB2A095B1DC2ED940097D7B8 /* Untitled-1.png in Resources */ = {isa = PBXBuildFile; fileRef = FB2A095A1DC2ED940097D7B8 /* Untitled-1.png */; };
 		FB2A095D1DC2FC5A0097D7B8 /* cartNotifier.png in Resources */ = {isa = PBXBuildFile; fileRef = FB2A095C1DC2FC5A0097D7B8 /* cartNotifier.png */; };
 		FB2A09601DC4319A0097D7B8 /* ContactUSTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = FB2A095F1DC4319A0097D7B8 /* ContactUSTVC.m */; };
-		FB2A09621DC540240097D7B8 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = FB2A09611DC540240097D7B8 /* logo.png */; };
 		FB2A09651DCD71080097D7B8 /* CropController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB2A09641DCD71080097D7B8 /* CropController.m */; };
 		FB2A098B1DCE6E210097D7B8 /* TOCropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB2A098A1DCE6E210097D7B8 /* TOCropViewController.m */; };
 		FB2A09941DCE6E2A0097D7B8 /* TOCropOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = FB2A098D1DCE6E2A0097D7B8 /* TOCropOverlayView.m */; };
@@ -86,7 +85,6 @@
 		FB2A09A31DCE6E360097D7B8 /* UIImage+CropRotate.m in Sources */ = {isa = PBXBuildFile; fileRef = FB2A099F1DCE6E360097D7B8 /* UIImage+CropRotate.m */; };
 		FB2A09AC1DD2B4BA0097D7B8 /* Cart Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FB2A09AB1DD2B4BA0097D7B8 /* Cart Icon.png */; };
 		FB2E84491DD7DF4B00941FC5 /* FAQ.m in Sources */ = {isa = PBXBuildFile; fileRef = FB2E84481DD7DF4B00941FC5 /* FAQ.m */; };
-		FB2E844B1DD7E05100941FC5 /* list-icon-32.png in Resources */ = {isa = PBXBuildFile; fileRef = FB2E844A1DD7E05100941FC5 /* list-icon-32.png */; };
 		FB35D0EB1D5AE03100BCD6C6 /* ProductCategorySelectionCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = FB35D0EA1D5AE03100BCD6C6 /* ProductCategorySelectionCollection.m */; };
 		FB35D0EE1D5AE3C000BCD6C6 /* ProductCategoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FB35D0ED1D5AE3C000BCD6C6 /* ProductCategoryCell.m */; };
 		FB35D0F11D5BB63100BCD6C6 /* ProductCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FB35D0F01D5BB63100BCD6C6 /* ProductCollectionViewController.m */; };
@@ -272,7 +270,6 @@
 		FB2A095C1DC2FC5A0097D7B8 /* cartNotifier.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cartNotifier.png; sourceTree = "<group>"; };
 		FB2A095E1DC4319A0097D7B8 /* ContactUSTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUSTVC.h; sourceTree = "<group>"; };
 		FB2A095F1DC4319A0097D7B8 /* ContactUSTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactUSTVC.m; sourceTree = "<group>"; };
-		FB2A09611DC540240097D7B8 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = "../../PrintIt Photo/logo.png"; sourceTree = "<group>"; };
 		FB2A09631DCD71080097D7B8 /* CropController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CropController.h; sourceTree = "<group>"; };
 		FB2A09641DCD71080097D7B8 /* CropController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CropController.m; sourceTree = "<group>"; };
 		FB2A09881DCE6E210097D7B8 /* TOCropViewController-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TOCropViewController-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -297,7 +294,6 @@
 		FB2A09AB1DD2B4BA0097D7B8 /* Cart Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Cart Icon.png"; sourceTree = "<group>"; };
 		FB2E84471DD7DF4B00941FC5 /* FAQ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FAQ.h; sourceTree = "<group>"; };
 		FB2E84481DD7DF4B00941FC5 /* FAQ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FAQ.m; sourceTree = "<group>"; };
-		FB2E844A1DD7E05100941FC5 /* list-icon-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "list-icon-32.png"; path = "../../../Downloads/list-icon-32.png"; sourceTree = "<group>"; };
 		FB35D0E91D5AE03100BCD6C6 /* ProductCategorySelectionCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductCategorySelectionCollection.h; sourceTree = "<group>"; };
 		FB35D0EA1D5AE03100BCD6C6 /* ProductCategorySelectionCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductCategorySelectionCollection.m; sourceTree = "<group>"; };
 		FB35D0EC1D5AE3C000BCD6C6 /* ProductCategoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductCategoryCell.h; sourceTree = "<group>"; };
@@ -539,7 +535,6 @@
 		932F2E951CC88BD10050094A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				FB2A09611DC540240097D7B8 /* logo.png */,
 				FB2A095C1DC2FC5A0097D7B8 /* cartNotifier.png */,
 				FB2A093F1DC189F90097D7B8 /* Hamburger_icon-small.png */,
 				FB2A09561DC2ED800097D7B8 /* Hamburger_icon.svg.png */,
@@ -796,7 +791,6 @@
 			children = (
 				932F2ED61CC897FC0050094A /* ShippingTVC.h */,
 				932F2ED71CC897FC0050094A /* ShippingTVC.m */,
-				FB2E844A1DD7E05100941FC5 /* list-icon-32.png */,
 				932F2ED31CC897ED0050094A /* CCTVC.h */,
 				932F2ED41CC897ED0050094A /* CCTVC.m */,
 				FB4CB1B91DA48EA900A9A982 /* StateTableViewController.h */,
@@ -973,12 +967,10 @@
 				FB2A095D1DC2FC5A0097D7B8 /* cartNotifier.png in Resources */,
 				FB5435891D8117A30069BA98 /* 5x10 aluminum.png in Resources */,
 				FB5435991D8117AA0069BA98 /* 8x12 slate.png in Resources */,
-				FB2E844B1DD7E05100941FC5 /* list-icon-32.png in Resources */,
 				FB5435901D8117A30069BA98 /* 11x14 aluminum.png in Resources */,
 				FB5435A01D8117B00069BA98 /* 6x8 tile.png in Resources */,
 				9369C8D11D3F250A00FCD2CC /* MW-Icon-CheckMark.svg.png in Resources */,
 				FB2A095B1DC2ED940097D7B8 /* Untitled-1.png in Resources */,
-				FB2A09621DC540240097D7B8 /* logo.png in Resources */,
 				932F2F111CC988460050094A /* photo icon.png in Resources */,
 				9369C8CF1D3DC6CC00FCD2CC /* photo-gallery-512.png in Resources */,
 				FB2A09AC1DD2B4BA0097D7B8 /* Cart Icon.png in Resources */,

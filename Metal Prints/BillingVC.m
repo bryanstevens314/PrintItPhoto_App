@@ -218,7 +218,7 @@ UIAlertController *chargingCardAlert;
         [self sharedAppDelegate].userSettings.billing.email = CCTable.email.text;
         
         chargingCardAlert = [UIAlertController alertControllerWithTitle:@""
-                                                    message:@""
+                                                    message:@"Verifying card..."
                                              preferredStyle:UIAlertControllerStyleAlert]; // 1
         
         UIViewController *customVC     = [[UIViewController alloc] init];
