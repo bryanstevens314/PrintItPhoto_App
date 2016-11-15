@@ -125,7 +125,8 @@ NSTimer *timer2;
         id json = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
         NSString *successString = [json objectForKey:@"status"];
         if ([successString isEqualToString:@"succeeded"]) {
-            chargeID = [json objectForKey:@"stripeChargeID"];;
+            chargeID = [json objectForKey:@"stripeChargeID"];
+            customerID = [json objectForKey:@"customerID"];
             NSArray *orderAttemptArray = @[@"charge successful",@"upload not attempted"];
             [NSKeyedArchiver archiveRootObject:orderAttemptArray toFile:[self archiveOrderAttemp]];
             timer2 = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(PostData) userInfo:nil repeats:NO];
@@ -149,6 +150,7 @@ NSTimer *timer2;
 
 
 NSString *chargeID;
+NSString *customerID;
 -(void)PostData{
     [timer2 invalidate];
     timer2 = nil;
@@ -187,7 +189,8 @@ NSString *chargeID;
                                                                    zip,@"zip",
                                                                    @"US",@"country",
                                                                    shippingAddress,@"shipping_address",
-                                                                   chargeID,@"stripeChargeID",nil];
+                                                                   chargeID,@"stripeChargeID",
+                                                                   customerID,@"customerID",nil];
     [mutDict setObject:[self sharedAppDelegate].userSettings.shipping.shippingDict forKey:@"customer"];
     int i = 0;
     NSMutableDictionary *mutDict1 = [[NSMutableDictionary alloc] init];
