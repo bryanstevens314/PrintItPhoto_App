@@ -67,12 +67,10 @@ UIImageView *logoImage;
 //    view.backgroundColor=[UIColor colorWithRed:41.0/255.0 green:127.0/255.0 blue:184.0/255.0 alpha:0.6];
 //    [[self sharedAppDelegate].window.rootViewController.view addSubview:view];
     self.tableView.backgroundColor = [UIColor colorWithRed:41.0/255.0 green:127.0/255.0 blue:184.0/255.0 alpha:1];
-
-    UIImageView *logoImage1;
-    NSLog(@"PreparRightView");
-    logoImage1 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo.png"]];
-    logoImage1.frame = CGRectMake(self.view.frame.origin.x, -190, 200, 92.5);
-    [self.view addSubview:logoImage1];
+    
+    logoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo.png"]];
+    logoImage.frame = CGRectMake(self.view.frame.origin.x, -190, 200, 92.5);
+    [self.view insertSubview:logoImage aboveSubview:self.tableView];
 
     
 }
