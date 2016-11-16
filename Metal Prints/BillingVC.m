@@ -328,6 +328,7 @@ BOOL stateSelected1;
 - (void)pickedState:(NSString*)state{
     
     [self.navigationController popViewControllerAnimated:YES];
+    NSLog(@"State: %@",state);
     CCTable.stateText.text = state;
     stateSelected1 = YES;
 }
@@ -339,6 +340,9 @@ BOOL stateSelected1;
 
     if ([segue.identifier isEqualToString:@"showStates1"]) {
         StateTableViewController *states = segue.destinationViewController;
+        if (states.delegate) {
+            states.delegate = nil;
+        }
         states.delegate = self;
         
         UIBarButtonItem *backButton = [[UIBarButtonItem alloc]initWithTitle:NSLocalizedString(@"Back", returnbuttontitle) style:     UIBarButtonItemStylePlain target:nil action:nil];
