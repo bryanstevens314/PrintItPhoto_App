@@ -24,7 +24,7 @@
 
 @end
 
-@interface ProductCategorySelectionCollection : UICollectionViewController <UIGestureRecognizerDelegate,ShoppingCartTVCDelegate,ProductDelegate,DetailsTVCDelegate, ProductCategoryDelegate>{
+@interface ProductCategorySelectionCollection : UICollectionViewController <UIGestureRecognizerDelegate,ProductCollectionDelegate,ShoppingCartTVCDelegate,ProductDelegate,DetailsTVCDelegate>{
     BOOL displayingProducts;
     BOOL finished;
 }

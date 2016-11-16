@@ -254,7 +254,7 @@
             <objects>
                 <collectionViewController storyboardIdentifier="productDisplayCollection" id="t4e-mf-5N1" customClass="ProductCollectionViewController" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" id="kSW-xP-nVh">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="44" width="375" height="623"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="2" minimumInteritemSpacing="0.0" id="xdA-z5-cDj">
@@ -307,18 +307,18 @@
             <objects>
                 <collectionViewController storyboardIdentifier="productCategoryCollection" automaticallyAdjustsScrollViewInsets="NO" id="AZj-5q-CCT" customClass="ProductCategorySelectionCollection" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" id="wBP-La-3dG">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="44" width="375" height="623"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="2" minimumInteritemSpacing="0.0" id="Q7U-EL-jEi">
                             <size key="itemSize" width="375" height="150"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="66" maxX="0.0" maxY="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="collectionCell" id="dYV-0y-3Uz" customClass="ProductCategoryCell">
-                                <rect key="frame" x="0.0" y="66" width="375" height="150"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="150"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="150"/>
@@ -351,11 +351,12 @@
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" id="Vfq-TJ-7HZ"/>
                     <nil key="simulatedStatusBarMetrics"/>
-                    <nil key="simulatedTopBarMetrics"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
-                        <segue destination="MSr-5U-wRL" kind="show" identifier="StartOrder" id="fei-QB-vkA"/>
+                        <segue destination="t4e-mf-5N1" kind="show" identifier="showProducts" id="kGB-pm-26q"/>
+                        <segue destination="MSr-5U-wRL" kind="show" identifier="StartOrder" id="Swg-6a-21f"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1No-gl-u74" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2301,20 +2302,20 @@
         <image name="up-down.png" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="hzr-hg-fBG"/>
         <segue reference="5Yu-4M-FTp"/>
+        <segue reference="hzr-hg-fBG"/>
+        <segue reference="rfA-RS-gjc"/>
         <segue reference="YW8-kN-EYX"/>
         <segue reference="aIR-ye-MLz"/>
-        <segue reference="fei-QB-vkA"/>
-        <segue reference="rfA-RS-gjc"/>
-        <segue reference="shE-cc-M5q"/>
-        <segue reference="SZc-zU-yWm"/>
-        <segue reference="s0e-kw-3sH"/>
-        <segue reference="ca0-Ia-YtB"/>
-        <segue reference="AWc-gn-RnZ"/>
-        <segue reference="5FA-4x-iJV"/>
-        <segue reference="IHJ-QT-qDs"/>
+        <segue reference="Swg-6a-21f"/>
         <segue reference="bfy-FH-Ayz"/>
+        <segue reference="5FA-4x-iJV"/>
+        <segue reference="s0e-kw-3sH"/>
+        <segue reference="AWc-gn-RnZ"/>
+        <segue reference="SZc-zU-yWm"/>
+        <segue reference="ca0-Ia-YtB"/>
+        <segue reference="shE-cc-M5q"/>
+        <segue reference="IHJ-QT-qDs"/>
         <segue reference="fE4-dW-ZgC"/>
     </inferredMetricsTieBreakers>
 </document>
