@@ -230,13 +230,15 @@ ProductCategorySelectionCollection *collView;
     return YES;
 }
 
+NSInteger selectedSection1;
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     NSLog(@"Selected");
     displayingProducts = YES;
     if (finished == YES) {
         [collectionView deselectItemAtIndexPath:indexPath animated:YES];
         NSLog(@"Selected1");
-        [self.delegate selectedCategoryWithSection:indexPath.row];
+        selectedSection1 = indexPath.row;
+        [self performSegueWithIdentifier:@"showProducts" sender:self];
     }
 
 }
@@ -316,6 +318,57 @@ UITapGestureRecognizer *singleTap;
         ProductsTVC *tvc = segue.destinationViewController;
         tvc.delegate = self;
     }
+
+    if ([segue.identifier isEqualToString:@"showProducts"]) {
+        ProductCollectionViewController *tvc = segue.destinationViewController;
+        tvc.delegate = self;
+        if (selectedSection1 == 0) {
+            NSLog(@"Aluminum");
+            
+            tvc.currentProductArray = [self sharedAppDelegate].AluminumProductArray;
+            
+            tvc.selectedSection = selectedSection1;
+            tvc.navigationItem.title = @"Aluminum";
+            UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+            [[self navigationItem] setBackBarButtonItem:newBackButton];
+            
+        }
+        if (selectedSection1 == 1) {
+            tvc.currentProductArray = [self sharedAppDelegate].WoodenProductArray;
+            tvc.selectedSection = selectedSection1;
+            tvc.navigationItem.title = @"Wood";
+            UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+            [[self navigationItem] setBackBarButtonItem:newBackButton];
+            
+        }
+        if (selectedSection1 == 2) {
+            tvc.currentProductArray = [self sharedAppDelegate].TileProductArray;
+            tvc.selectedSection = selectedSection1;
+            tvc.navigationItem.title = @"Tile";
+            UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+            [[self navigationItem] setBackBarButtonItem:newBackButton];
+            
+        }
+        if (selectedSection1 == 3) {
+
+            tvc.currentProductArray = [self sharedAppDelegate].SlateProductArray;
+            tvc.selectedSection = selectedSection1;
+            tvc.navigationItem.title = @"Slate";
+            UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+            [[self navigationItem] setBackBarButtonItem:newBackButton];
+            
+        }
+        if (selectedSection1 == 4) {
+            tvc.currentProductArray = [self sharedAppDelegate].OtherProductArray;
+            tvc.selectedSection = selectedSection1;
+            tvc.navigationItem.title = @"Other Goodies";
+            UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+            [[self navigationItem] setBackBarButtonItem:newBackButton];
+            
+        }
+        
+    }
+    
     if ([segue.identifier isEqualToString:@"StartOrder"]) {
         if (imageSelectionData == nil) {
             NSLog(@"preparing segue");
@@ -486,7 +539,7 @@ UITapGestureRecognizer *singleTap;
         ProductCollectionViewController *productCollectionVC = [ProductCollectionViewController sharedProductCollectionVC];
         productCollectionVC.delegate = self;
         productCollectionVC.currentProductArray = [self sharedAppDelegate].OtherProductArray;
-        productCollectionVC.selectedSection = section;
+        productCollectionVC.selectedSection= section;
         productCollectionVC.navigationItem.title = @"Other Goodies";
         UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
         [[self navigationItem] setBackBarButtonItem:newBackButton];

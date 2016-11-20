@@ -77,44 +77,20 @@
     
 }
 
-NSTimer *timer2;
-- (void)createBackendChargeWithToken:(STPToken *)token completion:(void (^)(PKPaymentAuthorizationStatus))completion {
-    NSArray *orderAttemptArray = @[@"charge attempted",@"upload not attempted"];
-    [NSKeyedArchiver archiveRootObject:orderAttemptArray toFile:[self archiveOrderAttemp]];
-    
+-(void)VerifyConnectionToServer{
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://final-project-order-viewer-stevens-apps.c9users.io/stripeStuff.php"]];
-
-    NSInteger totalAmount = self.totalPlusTax * 100;
-    NSInteger fee = totalAmount * 0.3;
-    NSLog(@"Total: %ld",(long)totalAmount);
-    NSString *stringAmount = [NSString stringWithFormat:@"%li",(long)totalAmount];
-    NSString *feeAmount = [NSString stringWithFormat:@"%li",(long)fee];
-    NSDictionary *chargeParams = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  token.tokenId, @"stripeToken",
-                                  stringAmount, @"chargeAmount",
-                                  @"example charge", @"description",
-                                  @"incrementing ID", @"orderID",
-                                  [self sharedAppDelegate].userSettings.billing.firstName, @"name",
-                                  feeAmount, @"fee",
-                                  [self sharedAppDelegate].taxPercentString, @"tax_Percent",
-                                  [self sharedAppDelegate].total_TaxCharged, @"tax_TotalCharged",nil];
-    
+    NSDictionary *chargeParams = [NSDictionary dictionaryWithObjectsAndKeys:@"8w0eF7uBgx5e2azW0714p5IQVKuF8c95", @"key",nil];
     NSError *error2;
     NSData *finalJSONdata = [NSJSONSerialization dataWithJSONObject:chargeParams options:0 error:&error2];
-    
     
     [request setHTTPBody:finalJSONdata];
     [request setHTTPMethod:@"POST"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[finalJSONdata length]] forHTTPHeaderField:@"Content-Length"];
-    
-    
+
     NSError *err;
     NSURLResponse *response;
-    
-    
-    
     NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
     NSString *responseString = [[NSString alloc]initWithData:responseData encoding:NSASCIIStringEncoding];
     
@@ -124,20 +100,21 @@ NSTimer *timer2;
         NSLog(@"%@",responseString);
         id json = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
         NSString *successString = [json objectForKey:@"status"];
-        if ([successString isEqualToString:@"succeeded"]) {
-            chargeID = [json objectForKey:@"stripeChargeID"];
-            customerID = [json objectForKey:@"customerID"];
-            NSArray *orderAttemptArray = @[@"charge successful",@"upload not attempted"];
-            [NSKeyedArchiver archiveRootObject:orderAttemptArray toFile:[self archiveOrderAttemp]];
-            timer2 = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(PostData) userInfo:nil repeats:NO];
-            [self.delegate CardSuccessFullyCharged];
+        if ([successString isEqualToString:@"success"]) {
+            [self sharedAppDelegate].serverToken = [json objectForKey:@"token"];
+            if ([self sharedAppDelegate].serverToken.length == 12) {
+                
+                [self.delegate retirevedToken];
+            }
+            else{
+                [self.delegate failedToRetireveToken];
+            }
+
         }
         else{
-            NSError *error;
-            [[NSFileManager defaultManager] removeItemAtPath:[self archiveOrderAttemp] error:&error];
-            [self.delegate CardFailedToCharged];
+            [self.delegate failedToRetireveToken];
         }
-
+        
         
         
     }
@@ -145,6 +122,81 @@ NSTimer *timer2;
         NSLog(@"Error!");
         
     }
+}
+
+NSTimer *timer2;
+- (void)createBackendChargeWithToken:(STPToken *)token completion:(void (^)(PKPaymentAuthorizationStatus))completion {
+    if ([self sharedAppDelegate].serverToken.length == 12) {
+        NSArray *orderAttemptArray = @[@"charge attempted",@"upload not attempted"];
+        [NSKeyedArchiver archiveRootObject:orderAttemptArray toFile:[self archiveOrderAttemp]];
+        
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://final-project-order-viewer-stevens-apps.c9users.io/stripeStuff.php"]];
+        
+        NSInteger totalAmount = self.totalPlusTax * 100;
+        NSInteger fee = totalAmount * 0.3;
+        NSLog(@"Total: %ld",(long)totalAmount);
+        NSString *stringAmount = [NSString stringWithFormat:@"%li",(long)totalAmount];
+        NSString *feeAmount = [NSString stringWithFormat:@"%li",(long)fee];
+        NSDictionary *chargeParams = [NSDictionary dictionaryWithObjectsAndKeys:
+                                      token.tokenId, @"stripeToken",
+                                      stringAmount, @"chargeAmount",
+                                      @"example charge", @"description",
+                                      @"incrementing ID", @"orderID",
+                                      [self sharedAppDelegate].userSettings.billing.firstName, @"name",
+                                      feeAmount, @"fee",
+                                      [self sharedAppDelegate].taxPercentString, @"tax_Percent",
+                                      [self sharedAppDelegate].total_TaxCharged, @"tax_TotalCharged",nil];
+        
+        NSError *error2;
+        NSData *finalJSONdata = [NSJSONSerialization dataWithJSONObject:chargeParams options:0 error:&error2];
+        
+        
+        [request setHTTPBody:finalJSONdata];
+        [request setHTTPMethod:@"POST"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[finalJSONdata length]] forHTTPHeaderField:@"Content-Length"];
+        
+        
+        NSError *err;
+        NSURLResponse *response;
+        
+        
+        
+        NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
+        NSString *responseString = [[NSString alloc]initWithData:responseData encoding:NSASCIIStringEncoding];
+        
+        
+        if(responseString)
+        {
+            NSLog(@"%@",responseString);
+            id json = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+            NSString *successString = [json objectForKey:@"status"];
+            if ([successString isEqualToString:@"succeeded"]) {
+                chargeID = [json objectForKey:@"stripeChargeID"];
+                customerID = [json objectForKey:@"customerID"];
+                NSArray *orderAttemptArray = @[@"charge successful",@"upload not attempted"];
+                [NSKeyedArchiver archiveRootObject:orderAttemptArray toFile:[self archiveOrderAttemp]];
+                timer2 = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(PostData) userInfo:nil repeats:NO];
+                [self.delegate CardSuccessFullyCharged];
+            }
+            else{
+                NSError *error;
+                [[NSFileManager defaultManager] removeItemAtPath:[self archiveOrderAttemp] error:&error];
+                [self.delegate CardFailedToCharged];
+            }
+            
+            
+            
+        }
+        else{
+            NSLog(@"Error!");
+            
+        }
+        [self sharedAppDelegate].serverToken = nil;
+
+    }
+    
 }
 
 
