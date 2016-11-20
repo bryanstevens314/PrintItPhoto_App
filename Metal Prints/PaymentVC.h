@@ -32,6 +32,7 @@
 
 + (PaymentVC *)sharedPaymentVC;
 - (void)retrieveStripeToken;
+-(void)VerifyConnectionToServer;
 - (void)createBackendChargeWithToken:(STPToken *)token completion:(void (^)(PKPaymentAuthorizationStatus))completion;
 
 @property (weak, nonatomic) IBOutlet UIView *tableContentView1;

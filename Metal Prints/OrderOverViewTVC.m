@@ -148,6 +148,37 @@ UIAlertController *calculatingTax;
 
 #pragma  mark PaymentDelegate
 
+
+- (void)retirevedToken{
+    [[PaymentVC sharedPaymentVC] createBackendChargeWithToken:[self sharedAppDelegate].userSettings.billing.payment.stripe_Token completion:nil];
+    
+}
+
+
+- (void)failedToRetireveToken{
+    [chargingCardAlert1 dismissViewControllerAnimated:YES completion:^{
+        if (alert) {
+            alert = nil;
+        }
+        alert = [UIAlertController alertControllerWithTitle:@"" message:@"Failure to connect to server. Please try again."preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"OK"
+                                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                   [alert dismissViewControllerAnimated:YES completion:nil];
+                                                                   if ([self sharedAppDelegate].serverToken) {
+                                                                       [self sharedAppDelegate].serverToken = nil;
+                                                                   }
+                                                                   
+                                                               }]; // 2
+        
+        [alert addAction:cameraAction];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+    }];
+    
+}
+
+
 UIAlertController *alert;
 
 - (void)CardSuccessFullyCharged{
@@ -500,7 +531,7 @@ UILabel *progressLabel;
             }
             [PaymentVC sharedPaymentVC].delegate = self;
             [PaymentVC sharedPaymentVC].totalPlusTax = totalPlusTaxToCharge;
-            [[PaymentVC sharedPaymentVC] createBackendChargeWithToken:[self sharedAppDelegate].userSettings.billing.payment.stripe_Token completion:nil];
+            [[PaymentVC sharedPaymentVC] VerifyConnectionToServer];
         }];
         
     }

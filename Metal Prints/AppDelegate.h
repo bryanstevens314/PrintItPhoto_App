@@ -44,6 +44,7 @@
 @property (retain, nonatomic) UserObject *userSettings;
 @property (retain, nonatomic)NSString *taxPercentString;
 @property (retain, nonatomic)NSString *total_TaxCharged;
+@property (retain, nonatomic)NSString *serverToken;
 @property (nonatomic) BOOL signedIn;
 @property (nonatomic) BOOL newCartItem;
 @property (nonatomic) BOOL reloadImageCollection;
