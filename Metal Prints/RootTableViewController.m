@@ -68,9 +68,7 @@ UIImageView *logoImage;
 //    [[self sharedAppDelegate].window.rootViewController.view addSubview:view];
     self.tableView.backgroundColor = [UIColor colorWithRed:41.0/255.0 green:127.0/255.0 blue:184.0/255.0 alpha:1];
     
-    logoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo.png"]];
-    logoImage.frame = CGRectMake(self.view.frame.origin.x, -190, 200, 92.5);
-    [self.view insertSubview:logoImage aboveSubview:self.tableView];
+
 
     
 }
@@ -91,6 +89,18 @@ UIImageView *logoImage;
     CGFloat headerHeight = (self.view.frame.size.height - (44 * [self.tableView numberOfRowsInSection:0])) / 2;
     
     self.tableView.contentInset = UIEdgeInsetsMake(headerHeight, 0, -headerHeight, 0);
+    if (logoImage) {
+        logoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo.png"]];
+        logoImage.frame = CGRectMake(self.view.frame.origin.x, -190, 200, 92.5);
+        [self.view insertSubview:logoImage aboveSubview:self.tableView];
+        self.originalOriginRoot = logoImage.frame.origin.y;
+    }
+    else{
+        logoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo.png"]];
+        logoImage.frame = CGRectMake(self.view.frame.origin.x, -190, 200, 92.5);
+        [self.view insertSubview:logoImage aboveSubview:self.tableView];
+        self.originalOriginRoot = logoImage.frame.origin.y;
+    }
 //    if (logoImage) {
 //
 //        [self.view addSubview:logoImage];
@@ -129,7 +139,7 @@ UIImageView *logoImage;
         displayed = NO;
         //logoImage.hidden = YES;
         [UIView animateWithDuration:0.31f animations:^{
-            logoImage.frame = CGRectMake(-200, -200, 200, 92.5);
+            logoImage.frame = CGRectMake(-30, -190, 200, 92.5);
         }];
     }
     if (displayed == NO) {
@@ -216,12 +226,19 @@ UIImageView *logoImage;
 
     }
 }
+
+-(void)SlideLogo{
+    
+    [UIView animateWithDuration:0.31f animations:^{
+        logoImage.frame = CGRectMake(-30, -190, 200, 92.5);
+    }];
+}
+
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     displayed = NO;
-    [UIView animateWithDuration:0.1f animations:^{
-        logoImage.frame = CGRectMake(-230, 35, 220, 70);
-    }];
+    NSTimer *slidetimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(SlideLogo) userInfo:nil repeats:NO];
 
     if (indexPath.row == 0) {
         [self sharedAppDelegate].displayingCart = NO;

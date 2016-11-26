@@ -110,39 +110,36 @@
     // Start Monitoring
     [reachability startNotifier];
 
-//    if ([self InternetConnected]) {
-//        
-//        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://final-project-order-viewer-stevens-apps.c9users.io/recieve_data.php"]];
-//        NSDictionary *cartItem = [NSDictionary dictionaryWithObjectsAndKeys:
-//                                  @"1",@"user_Opened_App",nil];
-//        NSError *error2;
-//        NSData *finalJSONdata = [NSJSONSerialization dataWithJSONObject:cartItem options:0 error:&error2];
-//        
-//        //NSLog(@"%.2f MB",(float)finalJSONdata.length/1024.0f/1024.0f);
-//        
-//        [request setHTTPBody:finalJSONdata];
-//        [request setHTTPMethod:@"POST"];
-//        [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-//        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-//        [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[finalJSONdata length]] forHTTPHeaderField:@"Content-Length"];
-//        
-//        
-//        NSError *err;
-//        NSURLResponse *response;
-//        
-//        
-//        
-//        NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
-//        NSString *responseString = [[NSString alloc]initWithData:responseData encoding:NSASCIIStringEncoding];
-//        
-//        
-//        if(responseString)
-//        {
-//            //[self performSegueWithIdentifier:@"OrderPlaced" sender:self];
-//            NSLog(@"got response==%@", responseString);
-//            
-//        }
-//    }
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://final-project-order-viewer-stevens-apps.c9users.io/analytics.php"]];
+    NSDictionary *cartItem = [NSDictionary dictionaryWithObjectsAndKeys:
+                              @"appLaunch",@"type",nil];
+    NSError *error2;
+    NSData *finalJSONdata = [NSJSONSerialization dataWithJSONObject:cartItem options:0 error:&error2];
+    
+    //NSLog(@"%.2f MB",(float)finalJSONdata.length/1024.0f/1024.0f);
+    
+    [request setHTTPBody:finalJSONdata];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[finalJSONdata length]] forHTTPHeaderField:@"Content-Length"];
+    
+    
+    NSError *err;
+    NSURLResponse *response;
+    
+    
+    
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
+    NSString *responseString = [[NSString alloc]initWithData:responseData encoding:NSASCIIStringEncoding];
+    
+    
+    if(responseString)
+    {
+        //[self performSegueWithIdentifier:@"OrderPlaced" sender:self];
+        NSLog(@"got response==%@", responseString);
+        
+    }
     
     self.loadingImages  = YES;
     self.reloadImageCollection = NO;
