@@ -162,36 +162,36 @@ BOOL started1 = NO;
     ProductCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"productCell" forIndexPath:indexPath];
     NSArray *productArray = [self.currentProductArray objectAtIndex:indexPath.row];
     cell.productName.text = [productArray objectAtIndex:0];
-    if (cell.theProductImage) {
-        [cell.theProductImage removeFromSuperview];
-        cell.theProductImage = nil;
-    }
-    cell.theProductImage = [[UIImageView alloc] init];
-    UIImage *image = [productArray objectAtIndex:2];
-    
-    if (image.size.height/6 > 84) {
-        float ratio = image.size.width/image.size.height;
-        int theWidth = 84 * ratio;
-        [cell.theProductImage setFrame:CGRectMake(0, 0, theWidth, 84)];
-    }
-    else if (image.size.width/6 > cell.bounds.size.width-10){
-        float ratio = image.size.width/image.size.height;
-        int theHeight = (cell.bounds.size.width-10)/ratio;
-        [cell.theProductImage setFrame:CGRectMake(0, 0, (cell.bounds.size.width-10), theHeight)];
-    }
-    else{
-        [cell.theProductImage setFrame:CGRectMake(0, 0, image.size.width/6, image.size.height/6)];
-    }
-    
-    [cell.theProductImage setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
-    cell.theProductImage.image = image;
-    
-    [cell.contentView addSubview:cell.theProductImage];
-    [cell.theProductImage.layer setCornerRadius:7];
-    cell.theProductImage.layer.masksToBounds = YES;
-    if (indexPath.row == 4) {
-        NSLog(@"image hieght:%f",image.size.height/6);
-    }
+//    if (cell.theProductImage) {
+//        [cell.theProductImage removeFromSuperview];
+//        cell.theProductImage = nil;
+//    }
+//    cell.theProductImage = [[UIImageView alloc] init];
+//    UIImage *image = [productArray objectAtIndex:2];
+//    
+//    if (image.size.height/6 > 84) {
+//        float ratio = image.size.width/image.size.height;
+//        int theWidth = 84 * ratio;
+//        [cell.theProductImage setFrame:CGRectMake(0, 0, theWidth, 84)];
+//    }
+//    else if (image.size.width/6 > cell.bounds.size.width-10){
+//        float ratio = image.size.width/image.size.height;
+//        int theHeight = (cell.bounds.size.width-10)/ratio;
+//        [cell.theProductImage setFrame:CGRectMake(0, 0, (cell.bounds.size.width-10), theHeight)];
+//    }
+//    else{
+//        [cell.theProductImage setFrame:CGRectMake(0, 0, image.size.width/6, image.size.height/6)];
+//    }
+//    
+//    [cell.theProductImage setCenter:CGPointMake(cell.bounds.size.width/2,cell.bounds.size.height/2)];
+//    cell.theProductImage.image = image;
+//    
+//    [cell.contentView addSubview:cell.theProductImage];
+//    [cell.theProductImage.layer setCornerRadius:7];
+//    cell.theProductImage.layer.masksToBounds = YES;
+//    if (indexPath.row == 4) {
+//        NSLog(@"image hieght:%f",image.size.height/6);
+//    }
 //    float division = image.size.width/image.size.height;
 //    
 //    if (image.size.width < image.size.height) {

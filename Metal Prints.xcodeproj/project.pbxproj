@@ -61,6 +61,7 @@
 		93B4DED11CCF25B900C6E07A /* CartTVCCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 93B4DED01CCF25B900C6E07A /* CartTVCCell.m */; };
 		93C8CBDD1D1EFECB00EA4C5A /* ImageCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C8CBDC1D1EFECB00EA4C5A /* ImageCollectionViewController.m */; };
 		93CB294D1D4C1D0F00DD5F76 /* HighlightedImageCVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 93CB294C1D4C1D0F00DD5F76 /* HighlightedImageCVC.m */; };
+		FB15B12C1DEFD2F200361B06 /* 4x4 aluminmun metal photo print front.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FB15B12B1DEFD2F200361B06 /* 4x4 aluminmun metal photo print front.jpg */; };
 		FB164B3D1DB2B85500A7331C /* Home Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FB164B3A1DB2B85500A7331C /* Home Icon.png */; };
 		FB164B3E1DB2B85500A7331C /* My Photos Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FB164B3B1DB2B85500A7331C /* My Photos Icon.png */; };
 		FB2A09341DBCAC460097D7B8 /* Next Button copy.png in Resources */ = {isa = PBXBuildFile; fileRef = FB2A09331DBCAC460097D7B8 /* Next Button copy.png */; };
@@ -256,6 +257,7 @@
 		93C8CBDC1D1EFECB00EA4C5A /* ImageCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCollectionViewController.m; sourceTree = "<group>"; };
 		93CB294B1D4C1D0F00DD5F76 /* HighlightedImageCVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HighlightedImageCVC.h; sourceTree = "<group>"; };
 		93CB294C1D4C1D0F00DD5F76 /* HighlightedImageCVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HighlightedImageCVC.m; sourceTree = "<group>"; };
+		FB15B12B1DEFD2F200361B06 /* 4x4 aluminmun metal photo print front.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "4x4 aluminmun metal photo print front.jpg"; path = "../../../Downloads/4x4 aluminmun metal photo print front.jpg"; sourceTree = "<group>"; };
 		FB164B3A1DB2B85500A7331C /* Home Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Home Icon.png"; sourceTree = "<group>"; };
 		FB164B3B1DB2B85500A7331C /* My Photos Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "My Photos Icon.png"; sourceTree = "<group>"; };
 		FB2A09331DBCAC460097D7B8 /* Next Button copy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Next Button copy.png"; sourceTree = "<group>"; };
@@ -471,6 +473,7 @@
 				FBF301CB1D6ABBD90076C070 /* User */,
 				FBE8DDE81D79157400693765 /* LaunchController.h */,
 				FBE8DDE91D79157400693765 /* LaunchController.m */,
+				FB15B12B1DEFD2F200361B06 /* 4x4 aluminmun metal photo print front.jpg */,
 				932F2E981CC88BD10050094A /* AppDelegate.h */,
 				932F2E991CC88BD10050094A /* AppDelegate.m */,
 				FB2A09631DCD71080097D7B8 /* CropController.h */,
@@ -975,6 +978,7 @@
 				9369C8D11D3F250A00FCD2CC /* MW-Icon-CheckMark.svg.png in Resources */,
 				FB2A095B1DC2ED940097D7B8 /* Untitled-1.png in Resources */,
 				932F2F111CC988460050094A /* photo icon.png in Resources */,
+				FB15B12C1DEFD2F200361B06 /* 4x4 aluminmun metal photo print front.jpg in Resources */,
 				FB2E844F1DE188EE00941FC5 /* logo.png in Resources */,
 				9369C8CF1D3DC6CC00FCD2CC /* photo-gallery-512.png in Resources */,
 				FB2A09AC1DD2B4BA0097D7B8 /* Cart Icon.png in Resources */,
