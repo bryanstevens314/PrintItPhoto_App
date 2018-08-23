@@ -13,4 +13,5 @@
 @interface ContactUSTVC : UITableViewController <UIPickerViewDelegate,UIPickerViewDataSource,MFMailComposeViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *problemTextField;
+- (IBAction)Contact:(id)sender;
 @end

@@ -1377,7 +1377,6 @@ const int FrontViewPositionNone = 0xff;
 
 - (void)_dispatchSetFrontViewPosition:(FrontViewPosition)frontViewPosition animated:(BOOL)animated
 {
-    NSLog(@"Reveal Toggle2");
     NSTimeInterval duration = animated?_toggleAnimationDuration:0.0;
     __weak SWRevealViewController *theSelf = self;
     _enqueue( [theSelf _setFrontViewPosition:frontViewPosition withDuration:duration] );
@@ -1572,7 +1571,6 @@ const int FrontViewPositionNone = 0xff;
                 [_delegate revealController:self didMoveToPosition:newPosition];
         }
     };
-NSLog(@"FrontViewDeployment1");
     return completion;
 }
 
@@ -1580,7 +1578,6 @@ NSLog(@"FrontViewDeployment1");
 // that must be invoked on animation completion in order to finish deployment
 - (void (^)(void))_rearViewDeploymentForNewFrontViewPosition:(FrontViewPosition)newPosition
 {
-    NSLog(@"RearViewDeployment");
     if ( _presentFrontViewHierarchically )
         newPosition = FrontViewPositionRight;
     
@@ -1604,7 +1601,6 @@ NSLog(@"FrontViewDeployment1");
         if ( disappear )
             [_contentView unloadRearView];
     };
-    NSLog(@"RearViewDeployment1");
     return completion;
 }
 

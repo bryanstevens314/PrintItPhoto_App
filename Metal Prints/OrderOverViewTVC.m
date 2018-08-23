@@ -8,7 +8,7 @@
 
 #import "OrderOverViewTVC.h"
 #import "AppDelegate.h"
-#import "CartTVC.h"
+#import "Communicate.h";
 
 @interface OrderOverViewTVC ()
 {
@@ -30,7 +30,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSLog(@"!!!");
+    for (NSArray *cartArray in [self sharedAppDelegate].shoppingCart) {
+        NSLog(@"product:%@",[cartArray objectAtIndex:0]);
+    }
+    //NSLog(@"Shopping cart:%@",[self sharedAppDelegate].shoppingCart);
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
 //    UIBarButtonItem *rightBarButtonItem7 = [[UIBarButtonItem alloc] initWithTitle:@"Place Order" style:UIBarButtonItemStylePlain target:self action:@selector(PlaceOrder)];
@@ -531,7 +534,9 @@ UILabel *progressLabel;
             }
             [PaymentVC sharedPaymentVC].delegate = self;
             [PaymentVC sharedPaymentVC].totalPlusTax = totalPlusTaxToCharge;
-            [[PaymentVC sharedPaymentVC] VerifyConnectionToServer];
+            NSLog(@"Begin");
+            
+            [[PaymentVC sharedPaymentVC] begin];
         }];
         
     }

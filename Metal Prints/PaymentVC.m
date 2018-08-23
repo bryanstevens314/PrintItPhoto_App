@@ -9,9 +9,12 @@
 #import "PaymentVC.h"
 #import "AppDelegate.h"
 #import <Stripe/Stripe.h>
+#import "Communicate.h"
 
 @interface PaymentVC (){
-    NSURLConnection *connectionManager;
+    
+    Communicate *comm;
+    NSString *theToken;
 }
 
 @end
@@ -76,9 +79,21 @@
     }];
     
 }
+-(void)begin{
+    if (comm == nil) {
+        comm = [[Communicate alloc] init];
+    }
+    theToken = [comm authenticate];
+    NSLog(@"authenticated");
+    NSLog(@"%@",theToken);
+    if ([theToken isEqualToString:@"269C877DCFFB2533DA41A97CAAB91"]) {
+        NSLog(@"token correct");
+        [self createBackendChargeWithToken:[self sharedAppDelegate].userSettings.billing.payment.stripe_Token completion:nil];
+    }
+}
 
 -(void)VerifyConnectionToServer{
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://final-project-order-viewer-stevens-apps.c9users.io/stripeStuff.php"]];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://print-it-photo-stevens-apps.c9users.io/authenticate.php"]];
     NSDictionary *chargeParams = [NSDictionary dictionaryWithObjectsAndKeys:@"8w0eF7uBgx5e2azW0714p5IQVKuF8c95", @"key",nil];
     NSError *error2;
     NSData *finalJSONdata = [NSJSONSerialization dataWithJSONObject:chargeParams options:0 error:&error2];
@@ -97,21 +112,25 @@
     
     if(responseString)
     {
-        NSLog(@"%@",responseString);
-        id json = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
+
+        id json = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:nil];
+
         NSString *successString = [json objectForKey:@"status"];
         if ([successString isEqualToString:@"success"]) {
             [self sharedAppDelegate].serverToken = [json objectForKey:@"token"];
-            if ([self sharedAppDelegate].serverToken.length == 12) {
-                
+            if ([self sharedAppDelegate].serverToken.length == 29) {
+                NSLog(@"authenticated");
                 [self.delegate retirevedToken];
             }
             else{
+                NSLog(@"failed token authentification");
+                NSLog(@"%@",[self sharedAppDelegate].serverToken);
                 [self.delegate failedToRetireveToken];
             }
 
         }
         else{
+            NSLog(@"no success");
             [self.delegate failedToRetireveToken];
         }
         
@@ -126,17 +145,18 @@
 
 NSTimer *timer2;
 - (void)createBackendChargeWithToken:(STPToken *)token completion:(void (^)(PKPaymentAuthorizationStatus))completion {
-    if ([self sharedAppDelegate].serverToken.length == 12) {
+NSLog(@"charging");
         NSArray *orderAttemptArray = @[@"charge attempted",@"upload not attempted"];
         [NSKeyedArchiver archiveRootObject:orderAttemptArray toFile:[self archiveOrderAttemp]];
         
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://final-project-order-viewer-stevens-apps.c9users.io/stripeStuff.php"]];
+
         
         NSInteger totalAmount = self.totalPlusTax * 100;
         NSInteger fee = totalAmount * 0.3;
         NSLog(@"Total: %ld",(long)totalAmount);
         NSString *stringAmount = [NSString stringWithFormat:@"%li",(long)totalAmount];
         NSString *feeAmount = [NSString stringWithFormat:@"%li",(long)fee];
+    NSLog(@"Stripe token:%@",token.stripeID);
         NSDictionary *chargeParams = [NSDictionary dictionaryWithObjectsAndKeys:
                                       token.tokenId, @"stripeToken",
                                       stringAmount, @"chargeAmount",
@@ -145,57 +165,23 @@ NSTimer *timer2;
                                       [self sharedAppDelegate].userSettings.billing.firstName, @"name",
                                       feeAmount, @"fee",
                                       [self sharedAppDelegate].taxPercentString, @"tax_Percent",
-                                      [self sharedAppDelegate].total_TaxCharged, @"tax_TotalCharged",nil];
+                                      [self sharedAppDelegate].total_TaxCharged, @"tax_TotalCharged",
+                                      @"charged",@"type",
+                                      theToken, @"token", nil];
+    NSArray *idArray = [comm stripeCharge:chargeParams];
+    if (idArray != nil){
+        chargeID = [idArray objectAtIndex:0];
+        customerID = [idArray objectAtIndex:1];
+        NSLog(@"Customer id:%@",customerID);
+        NSLog(@"charge id:%@",chargeID);
+        NSLog(@"successfully charged");
+        timer2 = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(PostData) userInfo:nil repeats:NO];
+    
+    }else{
         
-        NSError *error2;
-        NSData *finalJSONdata = [NSJSONSerialization dataWithJSONObject:chargeParams options:0 error:&error2];
-        
-        
-        [request setHTTPBody:finalJSONdata];
-        [request setHTTPMethod:@"POST"];
-        [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-        [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[finalJSONdata length]] forHTTPHeaderField:@"Content-Length"];
-        
-        
-        NSError *err;
-        NSURLResponse *response;
-        
-        
-        
-        NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
-        NSString *responseString = [[NSString alloc]initWithData:responseData encoding:NSASCIIStringEncoding];
-        
-        
-        if(responseString)
-        {
-            NSLog(@"%@",responseString);
-            id json = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:nil];
-            NSString *successString = [json objectForKey:@"status"];
-            if ([successString isEqualToString:@"succeeded"]) {
-                chargeID = [json objectForKey:@"stripeChargeID"];
-                customerID = [json objectForKey:@"customerID"];
-                NSArray *orderAttemptArray = @[@"charge successful",@"upload not attempted"];
-                [NSKeyedArchiver archiveRootObject:orderAttemptArray toFile:[self archiveOrderAttemp]];
-                timer2 = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(PostData) userInfo:nil repeats:NO];
-                [self.delegate CardSuccessFullyCharged];
-            }
-            else{
-                NSError *error;
-                [[NSFileManager defaultManager] removeItemAtPath:[self archiveOrderAttemp] error:&error];
-                [self.delegate CardFailedToCharged];
-            }
-            
-            
-            
-        }
-        else{
-            NSLog(@"Error!");
-            
-        }
-        [self sharedAppDelegate].serverToken = nil;
-
     }
+
+    
     
 }
 
@@ -211,10 +197,6 @@ NSString *customerID;
     
     NSArray *orderAttemptArray = @[@"charge successful",@"upload attempted"];
     [NSKeyedArchiver archiveRootObject:orderAttemptArray toFile:[self archiveOrderAttemp]];
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://final-project-order-viewer-stevens-apps.c9users.io/recieve_data.php"]];
-    
-    
     
     NSMutableDictionary *mutDict = [[NSMutableDictionary alloc] init];
     NSString *name = [self sharedAppDelegate].userSettings.shipping.Name;
@@ -243,6 +225,7 @@ NSString *customerID;
                                                                    shippingAddress,@"shipping_address",
                                                                    chargeID,@"stripeChargeID",
                                                                    customerID,@"customerID",nil];
+    //NSLog(@"Shipping info:%@",[self sharedAppDelegate].userSettings.shipping.shippingDict);
     [mutDict setObject:[self sharedAppDelegate].userSettings.shipping.shippingDict forKey:@"customer"];
     int i = 0;
     NSMutableDictionary *mutDict1 = [[NSMutableDictionary alloc] init];
@@ -257,7 +240,7 @@ NSString *customerID;
         //                           self.textView.text,
         //                           imgData
         //                           ];
-        
+        NSLog(@"Product:%@",[array1 objectAtIndex:0]);
         NSString *prod = [array1 objectAtIndex:0];
         NSString *quan = [array1 objectAtIndex:1];
         NSString *retouch = [array1 objectAtIndex:3];
@@ -279,44 +262,14 @@ NSString *customerID;
     }
     
     [mutDict setObject:mutDict1 forKey:@"shopping_Cart"];
-    
-    NSError *error2;
-    NSData *finalJSONdata = [NSJSONSerialization dataWithJSONObject:mutDict options:0 error:&error2];
-    
-    //NSLog(@"%.2f MB",(float)finalJSONdata.length/1024.0f/1024.0f);
-    
-    [request setHTTPBody:finalJSONdata];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[finalJSONdata length]] forHTTPHeaderField:@"Content-Length"];
-    
-    
-//    NSError *err;
-//    NSURLResponse *response;
-    
-    
-    connectionManager = [[NSURLConnection alloc] initWithRequest:request
-                                                             delegate:self];
-//    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
-//    NSLog(@"File size is : %.2f MB",(float)responseData.length/1024.0f/1024.0f);
-//    NSString *responseString = [[NSString alloc]initWithData:responseData encoding:NSASCIIStringEncoding];
-//    
-//    
-//    if(responseString)
-//    {
-//        //[self performSegueWithIdentifier:@"OrderPlaced" sender:self];
-//        NSLog(@"got response==%@", responseString);
-//        //[self sendEmail];
-//        [self.delegate ImagesSuccessFullyUploaded];
-//
-//    }
-//    else
-//    {
-//        NSLog(@"faield to connect");
-//        [self.delegate imageUploadFailure];
-//        
-//    }
+
+    BOOL success = [comm postData:mutDict withDelegate:self];
+    if (success) {
+        [self sendEmail];
+        [self.delegate ImagesSuccessFullyUploaded];
+    }else{
+        [self.delegate imageUploadFailure];
+    }
     
 }
 -(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
@@ -325,7 +278,7 @@ NSString *customerID;
     {
         NSError *error;
         [[NSFileManager defaultManager] removeItemAtPath:[self archiveOrderAttemp] error:&error];
-        [self sendEmail];
+        
         [self.delegate ImagesSuccessFullyUploaded];
         
     }
@@ -342,7 +295,7 @@ NSString *customerID;
 - (void)connection:(NSURLConnection *)connection  didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 {
     float prog = (totalBytesWritten / (totalBytesExpectedToWrite * 1.0f) * 100);
-    NSLog(@"%f",prog);
+    //NSLog(@"%f",prog);
     [self.delegate imageUploadPercent:prog];
 }
 
@@ -351,8 +304,8 @@ NSString *customerID;
     
     Sendpulse* sendpulse = [[Sendpulse alloc] initWithUserIdandSecret:@"8663ca13cd9f05ef1f538f8d6295ff0e" :@"1af4a885aaaa45faa3ee21e763cc5667"];
     
-    NSDictionary *from = [NSDictionary dictionaryWithObjectsAndKeys:@"PrintItPhotot", @"name", @"b.stevens.photo@gmail.com", @"email", nil];
-    NSMutableArray* to = [[NSMutableArray alloc] initWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:@"Alan Fraser", @"name", @"b.stevens.photo", @"email", nil], nil];
+    NSDictionary *from = [NSDictionary dictionaryWithObjectsAndKeys:@"PrintItPhoto", @"name", @"b.stevens.photo@gmail.com", @"email", nil];
+    NSMutableArray* to = [[NSMutableArray alloc] initWithObjects:[NSDictionary dictionaryWithObjectsAndKeys:@"Alan Fraser", @"name", @"b.stevens.photo@gmail.com", @"email", nil], nil];
     //NSString *messageBody = [NSString stringWithFormat:@"test Email"];
     NSMutableDictionary *emaildata = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"", @"html", @"Congratulations!", @"text",@"You got an order!",@"subject",from,@"from",to,@"to", nil];
     [sendpulse smtpSendMail:emaildata];

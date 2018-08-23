@@ -45,27 +45,28 @@
 {
     static DetailsTVC *sharedInstance = nil;
     
+    
     UIStoryboard *storyboard;
-    
-    // detect the height of our screen
-    int height = [UIScreen mainScreen].bounds.size.height;
-    
-    if (height == 480) {
-        storyboard = [UIStoryboard storyboardWithName:@"Main_3.5_inch" bundle:nil];
-        // NSLog(@"Device has a 3.5inch Display.");
-    }
-    if (height == 568) {
-        storyboard = [UIStoryboard storyboardWithName:@"Main_4_inch" bundle:nil];
-        // NSLog(@"Device has a 4inch Display.");
-    }
-    if (height == 667) {
-        storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        // NSLog(@"Device has a 4inch Display.");
-    }
-    if (height == 736) {
-        storyboard = [UIStoryboard storyboardWithName:@"Main_5.5_inch" bundle:nil];
-        // NSLog(@"Device has a 4inch Display.");
-    }
+    storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    //    // detect the height of our screen
+    //    int height = [UIScreen mainScreen].bounds.size.height;
+    //
+    //    if (height == 480) {
+    //        storyboard = [UIStoryboard storyboardWithName:@"Main_3.5_inch" bundle:nil];
+    //        // NSLog(@"Device has a 3.5inch Display.");
+    //    }
+    //    if (height == 568) {
+    //        storyboard = [UIStoryboard storyboardWithName:@"Main_4_inch" bundle:nil];
+    //        // NSLog(@"Device has a 4inch Display.");
+    //    }
+    //    if (height == 667) {
+    //        storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    //        // NSLog(@"Device has a 4inch Display.");
+    //    }
+    //    if (height == 736) {
+    //        storyboard = [UIStoryboard storyboardWithName:@"Main_5.5_inch" bundle:nil];
+    //        // NSLog(@"Device has a 4inch Display.");
+    //    }
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedInstance = (DetailsTVC*)[storyboard instantiateViewControllerWithIdentifier: @"details"];
@@ -88,11 +89,20 @@
     
     
     self.Category_Outlet.text = [[self sharedAppDelegate].categoryArray objectAtIndex:self.selectedSection1];
+    
     if (self.selectedSection1 == 0) {
         NSArray *array = [[self sharedAppDelegate].AluminumProductArray objectAtIndex:self.selectedRow];
         
         self.Product_Outlet.text = [array objectAtIndex:0];
-        self.For_Aluminum_TextField.text = @"Magnet";
+
+        if ([self.Product_Outlet.text isEqualToString:@"2x3"]) {
+            NSLog(@"category text:%@",self.Category_Outlet.text);
+            self.For_Aluminum_TextField.text = @"Magnet";
+        }
+        else{
+            NSLog(@"category text:%@",self.Category_Outlet.text);
+            self.For_Aluminum_TextField.text = @"Easel";
+        }
         self.rowCount = [self sharedAppDelegate].AluminumProductArray.count;
         self.currentProductArray = array;
     }
@@ -173,7 +183,6 @@
     self.For_Aluminum_TextField.inputView = self.picker1;
     self.For_Aluminum_TextField.adjustsFontSizeToFitWidth = YES;
     self.For_Aluminum_TextField.textColor = [UIColor blackColor];
-    self.For_Aluminum_TextField.text = @"Easel";
     self.For_Aluminum_TextField.inputAccessoryView = self.keyboardDoneButtonView;
     self.textView.layer.borderWidth = 1.0f;
     self.textView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
@@ -223,7 +232,15 @@ BOOL loadingView;
                 NSArray *array = [[self sharedAppDelegate].AluminumProductArray objectAtIndex:self.selectedRow];
                 
                 self.Product_Outlet.text = [array objectAtIndex:0];
-                self.For_Aluminum_TextField.text = @"Easel";
+                if ([self.Category_Outlet.text isEqualToString:@"2x3"]) {
+                    NSLog(@"category text:%@",self.Category_Outlet.text);
+                    self.For_Aluminum_TextField.text = @"Magnet";
+                }
+                else{
+                    NSLog(@"category text:%@",self.Category_Outlet.text);
+                    self.For_Aluminum_TextField.text = @"Easel";
+                }
+                
                 self.rowCount = [self sharedAppDelegate].AluminumProductArray.count;
                 self.currentProductArray = array;
             }
@@ -479,8 +496,13 @@ BOOL loadingView;
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
     NSInteger rows = 0;
     if (self.For_Aluminum_TextField.inputView == pickerView) {
+        if ([self.Product_Outlet.text isEqualToString:@"2x3"]) {
+            rows = 2;
+        }
+        else{
+            rows = 3;
+        }
         
-        rows = 2;
     }
     if (self.Retouching_TextField.inputView == pickerView) {
         
@@ -514,9 +536,12 @@ BOOL loadingView;
 // The data to return for the row and component (column) that's being passed in
 - (NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
+    
     NSString *string;
     if (self.For_Aluminum_TextField.inputView == pickerView) {
+        NSLog(@"title for row");
         if ([self.Product_Outlet.text isEqualToString:@"2x3"]) {
+            NSLog(@"title for row1");
             if (row == 0) {
                 string = @"Magnet";
                 self.For_Aluminum_TextField.text = string;
@@ -527,11 +552,18 @@ BOOL loadingView;
             }
         }
         else{
+            NSLog(@"title for row2");
             if (row == 0) {
                 string = @"Easel";
+                self.For_Aluminum_TextField.text = string;
             }
             if (row == 1) {
                 string = @"Wall mount";
+                self.For_Aluminum_TextField.text = string;
+            }
+            if (row == 2) {
+                string = @"No mount";
+                self.For_Aluminum_TextField.text = string;
             }
         }
     }
@@ -596,13 +628,25 @@ BOOL loadingView;
         
         NSString *string;
         if (self.For_Aluminum_TextField.inputView == pickerView) {
-            
-            if (row == 0) {
-                string = @"Easel";
+            if ([self.Product_Outlet.text isEqualToString:@"2x3"]) {
+                if (row == 0) {
+                    string = @"Magnet";
+                }
+                if (row == 1) {
+                    string = @"No mount";
+                }
+            }else{
+                if (row == 0) {
+                    string = @"Easel";
+                }
+                if (row == 1) {
+                    string = @"Wall mount";
+                }
+                if (row == 2) {
+                    string = @"No mount";
+                }
             }
-            if (row == 1) {
-                string = @"Wall mount";
-            }
+
             self.For_Aluminum_TextField.text = string;
             
         }

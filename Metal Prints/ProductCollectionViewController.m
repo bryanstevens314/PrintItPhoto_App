@@ -29,26 +29,26 @@ static NSString * const reuseIdentifier = @"Cell";
     static ProductCollectionViewController *sharedInstance = nil;
     
     UIStoryboard *storyboard;
-    
-    // detect the height of our screen
-    int height = [UIScreen mainScreen].bounds.size.height;
-    
-    if (height == 480) {
-        storyboard = [UIStoryboard storyboardWithName:@"Main_3.5_inch" bundle:nil];
-        // NSLog(@"Device has a 3.5inch Display.");
-    }
-    if (height == 568) {
-        storyboard = [UIStoryboard storyboardWithName:@"Main_4_inch" bundle:nil];
-        // NSLog(@"Device has a 4inch Display.");
-    }
-    if (height == 667) {
-        storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        // NSLog(@"Device has a 4inch Display.");
-    }
-    if (height == 736) {
-        storyboard = [UIStoryboard storyboardWithName:@"Main_5.5_inch" bundle:nil];
-        // NSLog(@"Device has a 4inch Display.");
-    }
+    storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    //    // detect the height of our screen
+    //    int height = [UIScreen mainScreen].bounds.size.height;
+    //
+    //    if (height == 480) {
+    //        storyboard = [UIStoryboard storyboardWithName:@"Main_3.5_inch" bundle:nil];
+    //        // NSLog(@"Device has a 3.5inch Display.");
+    //    }
+    //    if (height == 568) {
+    //        storyboard = [UIStoryboard storyboardWithName:@"Main_4_inch" bundle:nil];
+    //        // NSLog(@"Device has a 4inch Display.");
+    //    }
+    //    if (height == 667) {
+    //        storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    //        // NSLog(@"Device has a 4inch Display.");
+    //    }
+    //    if (height == 736) {
+    //        storyboard = [UIStoryboard storyboardWithName:@"Main_5.5_inch" bundle:nil];
+    //        // NSLog(@"Device has a 4inch Display.");
+    //    }
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedInstance = (ProductCollectionViewController*)[storyboard instantiateViewControllerWithIdentifier: @"productDisplayCollection"];
@@ -158,10 +158,22 @@ BOOL started1 = NO;
     return self.currentProductArray.count;
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGFloat width = [UIScreen mainScreen].bounds.size.width;
+    CGFloat size = width / 2;
+    return CGSizeMake(size, size);
+}
+
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     ProductCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"productCell" forIndexPath:indexPath];
+    CGFloat width = [UIScreen mainScreen].bounds.size.width;
+    CGFloat size = width / 2;
     NSArray *productArray = [self.currentProductArray objectAtIndex:indexPath.row];
+    cell.productImage.frame = CGRectMake(0, 0, size, size);
     cell.productName.text = [productArray objectAtIndex:0];
+    
+    
 //    if (cell.theProductImage) {
 //        [cell.theProductImage removeFromSuperview];
 //        cell.theProductImage = nil;

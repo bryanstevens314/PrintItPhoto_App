@@ -8,6 +8,8 @@
 
 #import "ContactUSTVC.h"
 #import "SWRevealViewController.h"
+#import "Communicate.h"
+#import "AppDelegate.h"
 
 @interface ContactUSTVC ()
 @property (nonatomic) float originalOrigin1;
@@ -16,7 +18,15 @@
 @property (retain, nonatomic) NSArray* problemArray;
 @end
 
-@implementation ContactUSTVC
+@implementation ContactUSTVC{
+    Communicate *comm;
+}
+
+- (AppDelegate *)sharedAppDelegate
+{
+    
+    return (AppDelegate *)[UIApplication sharedApplication].delegate;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -79,32 +89,32 @@ UIButton *proceedButton3;
     [super viewWillAppear:YES];
     //[self.tableView setContentOffset:CGPointMake(0, -20)];
     [self.navigationItem setTitle:@"Support"];
-    if (proceedButton3 == nil) {
-        
-        proceedButton3 = [UIButton buttonWithType:UIButtonTypeCustom];
-        proceedButton3.frame = CGRectMake(0, 0, 353, 50);
-        proceedButton3.layer.cornerRadius = 2;
-        proceedButton3.clipsToBounds = YES;
-        [proceedButton3 addTarget:self action:@selector(Contact) forControlEvents:UIControlEventTouchUpInside];
-        [proceedButton3 setTitle:@"Contact Us" forState:UIControlStateNormal];
-        proceedButton3.backgroundColor = [UIColor colorWithRed:41.0/255.0 green:127.0/255.0 blue:184.0/255.0 alpha:1];
-        proceedButton3.center = CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height- 40);
-        self.originalOrigin1 = proceedButton3.frame.origin.y;
-        [self.view insertSubview:proceedButton3 aboveSubview:self.view];
-    }
-    else{
-        proceedButton3 = nil;
-        proceedButton3 = [UIButton buttonWithType:UIButtonTypeCustom];
-        proceedButton3.frame = CGRectMake(0, 0, 353, 50);
-        proceedButton3.layer.cornerRadius = 2;
-        proceedButton3.clipsToBounds = YES;
-        [proceedButton3 addTarget:self action:@selector(Contact) forControlEvents:UIControlEventTouchUpInside];
-        [proceedButton3 setTitle:@"Contact Us" forState:UIControlStateNormal];
-        proceedButton3.backgroundColor = [UIColor colorWithRed:41.0/255.0 green:127.0/255.0 blue:184.0/255.0 alpha:1];
-        proceedButton3.center = CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height- 40);
-        self.originalOrigin1 = proceedButton3.frame.origin.y;
-        [self.view insertSubview:proceedButton3 aboveSubview:self.view];
-    }
+//    if (proceedButton3 == nil) {
+//        
+//        proceedButton3 = [UIButton buttonWithType:UIButtonTypeCustom];
+//        proceedButton3.frame = CGRectMake(0, 0, 353, 50);
+//        proceedButton3.layer.cornerRadius = 2;
+//        proceedButton3.clipsToBounds = YES;
+//        [proceedButton3 addTarget:self action:@selector(Contact) forControlEvents:UIControlEventTouchUpInside];
+//        [proceedButton3 setTitle:@"Contact Us" forState:UIControlStateNormal];
+//        proceedButton3.backgroundColor = [UIColor colorWithRed:41.0/255.0 green:127.0/255.0 blue:184.0/255.0 alpha:1];
+//        proceedButton3.center = CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height- 40);
+//        self.originalOrigin1 = proceedButton3.frame.origin.y;
+//        [self.view insertSubview:proceedButton3 aboveSubview:self.view];
+//    }
+//    else{
+//        proceedButton3 = nil;
+//        proceedButton3 = [UIButton buttonWithType:UIButtonTypeCustom];
+//        proceedButton3.frame = CGRectMake(0, 0, 353, 50);
+//        proceedButton3.layer.cornerRadius = 2;
+//        proceedButton3.clipsToBounds = YES;
+//        [proceedButton3 addTarget:self action:@selector(Contact) forControlEvents:UIControlEventTouchUpInside];
+//        [proceedButton3 setTitle:@"Contact Us" forState:UIControlStateNormal];
+//        proceedButton3.backgroundColor = [UIColor colorWithRed:41.0/255.0 green:127.0/255.0 blue:184.0/255.0 alpha:1];
+//        proceedButton3.center = CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height- 40);
+//        self.originalOrigin1 = proceedButton3.frame.origin.y;
+//        [self.view insertSubview:proceedButton3 aboveSubview:self.view];
+//    }
 
 
 }
@@ -141,7 +151,7 @@ UIButton *proceedButton3;
 // Catpure the picker view selection
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-    selectedProblem = YES;
+
     if (self.problemTextField.inputView == pickerView) {
 
         self.problemTextField.text = [self.problemArray objectAtIndex:row];
@@ -155,57 +165,25 @@ UIButton *proceedButton3;
 
 // to make the button float over the tableView including tableHeader
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    CGRect tableBounds = self.tableView.bounds;
-    CGRect floatingButtonFrame = proceedButton3.frame;
-    floatingButtonFrame.origin.y = self.originalOrigin1 + tableBounds.origin.y;
-    proceedButton3.frame = floatingButtonFrame;
-    
-    [self.view bringSubviewToFront:proceedButton3]; // float over the tableHeader
+//    CGRect tableBounds = self.tableView.bounds;
+//    CGRect floatingButtonFrame = proceedButton3.frame;
+//    floatingButtonFrame.origin.y = self.originalOrigin1 + tableBounds.origin.y;
+//    proceedButton3.frame = floatingButtonFrame;
+//    
+//    [self.view bringSubviewToFront:proceedButton3]; // float over the tableHeader
 }
 
 
-BOOL selectedProblem;
--(void)Contact{
-    
-    if (selectedProblem == NO) {
-        UIAlertController *alert2 = [UIAlertController alertControllerWithTitle:@"" message:@"Please select the problem you're having"preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"OK"
-                                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                                                                   [alert2 dismissViewControllerAnimated:YES completion:nil];
-                                                                   [self.problemTextField becomeFirstResponder];
-                                                               }]; // 2
-        
-        [alert2 addAction:cameraAction];
-        
-        [self presentViewController:alert2 animated:YES completion:nil];
 
-    }
-    else{
-        // From within your active view controller
-        if([MFMailComposeViewController canSendMail]) {
-            [UINavigationBar appearance].barTintColor = [UIColor colorWithRed:41.0/255.0 green:127.0/255.0 blue:184.0/255.0 alpha:0.6];
-            [UINavigationBar appearance].tintColor = [UIColor whiteColor];
-            
-            MFMailComposeViewController *mailCont = [[MFMailComposeViewController alloc] init];
-            [mailCont.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
-            mailCont.navigationBar.tintColor = [UIColor whiteColor];
-            mailCont.mailComposeDelegate = self;
-            
-            [mailCont setSubject:@""];
-            [mailCont setToRecipients:[NSArray arrayWithObject:@"bryan_stevens314@yahoo.com"]];
-            [mailCont setMessageBody:@"" isHTML:NO];
-            
-            [self presentModalViewController:mailCont animated:YES];
-        }
-    }
-    
-    
-
-}
 // Then implement the delegate method
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
-    [self dismissModalViewControllerAnimated:YES];
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {    
+    if (comm == nil) {
+        comm = [[Communicate alloc] init];
+    }
+    BOOL success = [comm supportMessageSent:[self sharedAppDelegate].serverToken];
+    if (success) {
+        [self dismissModalViewControllerAnimated:YES];
+    }
 }
 
 UITapGestureRecognizer *singleTap22;
@@ -315,4 +293,22 @@ BOOL displayFAQ;
 }
 */
 
+- (IBAction)Contact:(id)sender {
+    // From within your active view controller
+    if([MFMailComposeViewController canSendMail]) {
+        [UINavigationBar appearance].barTintColor = [UIColor colorWithRed:41.0/255.0 green:127.0/255.0 blue:184.0/255.0 alpha:0.6];
+        [UINavigationBar appearance].tintColor = [UIColor whiteColor];
+        
+        MFMailComposeViewController *mailCont = [[MFMailComposeViewController alloc] init];
+        [mailCont.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+        mailCont.navigationBar.tintColor = [UIColor whiteColor];
+        mailCont.mailComposeDelegate = self;
+        
+        [mailCont setSubject:@""];
+        [mailCont setToRecipients:[NSArray arrayWithObject:@"bryan_stevens314@yahoo.com"]];
+        [mailCont setMessageBody:@"" isHTML:NO];
+        
+        [self presentModalViewController:mailCont animated:YES];
+    }
+}
 @end

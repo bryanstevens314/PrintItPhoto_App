@@ -31,27 +31,28 @@
 {
     static RootTableViewController *sharedInstance = nil;
     
+    
     UIStoryboard *storyboard;
-    
-    // detect the height of our screen
-    int height = [UIScreen mainScreen].bounds.size.height;
-    
-    if (height == 480) {
-        storyboard = [UIStoryboard storyboardWithName:@"Main_3.5_inch" bundle:nil];
-        // NSLog(@"Device has a 3.5inch Display.");
-    }
-    if (height == 568) {
-        storyboard = [UIStoryboard storyboardWithName:@"Main_4_inch" bundle:nil];
-        // NSLog(@"Device has a 4inch Display.");
-    }
-    if (height == 667) {
-        storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        // NSLog(@"Device has a 4inch Display.");
-    }
-    if (height == 736) {
-        storyboard = [UIStoryboard storyboardWithName:@"Main_5.5_inch" bundle:nil];
-        // NSLog(@"Device has a 4inch Display.");
-    }
+    storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    //    // detect the height of our screen
+    //    int height = [UIScreen mainScreen].bounds.size.height;
+    //
+    //    if (height == 480) {
+    //        storyboard = [UIStoryboard storyboardWithName:@"Main_3.5_inch" bundle:nil];
+    //        // NSLog(@"Device has a 3.5inch Display.");
+    //    }
+    //    if (height == 568) {
+    //        storyboard = [UIStoryboard storyboardWithName:@"Main_4_inch" bundle:nil];
+    //        // NSLog(@"Device has a 4inch Display.");
+    //    }
+    //    if (height == 667) {
+    //        storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    //        // NSLog(@"Device has a 4inch Display.");
+    //    }
+    //    if (height == 736) {
+    //        storyboard = [UIStoryboard storyboardWithName:@"Main_5.5_inch" bundle:nil];
+    //        // NSLog(@"Device has a 4inch Display.");
+    //    }
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedInstance = (RootTableViewController*)[storyboard instantiateViewControllerWithIdentifier: @"RootSlideOverController"];
@@ -63,9 +64,8 @@
 UIImageView *logoImage;
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0,[UIScreen mainScreen].bounds.size.width, 20)];
-//    view.backgroundColor=[UIColor colorWithRed:41.0/255.0 green:127.0/255.0 blue:184.0/255.0 alpha:0.6];
-//    [[self sharedAppDelegate].window.rootViewController.view addSubview:view];
+
+    
     self.tableView.backgroundColor = [UIColor colorWithRed:41.0/255.0 green:127.0/255.0 blue:184.0/255.0 alpha:1];
     
 
@@ -75,12 +75,12 @@ UIImageView *logoImage;
 
 // to make the button float over the tableView including tableHeader
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    CGRect tableBounds = self.tableView.bounds;
-    CGRect floatingButtonFrame = logoImage.frame;
-    floatingButtonFrame.origin.y = self.originalOriginRoot + tableBounds.origin.y;
-    logoImage.frame = floatingButtonFrame;
-    
-    [self.view bringSubviewToFront:logoImage]; // float over the tableHeader
+//    CGRect tableBounds = self.view.bounds;
+//    CGRect floatingButtonFrame = logoImage.frame;
+//    floatingButtonFrame.origin.y = self.originalOriginRoot + tableBounds.origin.y;
+//    logoImage.frame = floatingButtonFrame;
+//    
+//    [self.tableView bringSubviewToFront:logoImage]; // float over the tableHeader
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -89,18 +89,24 @@ UIImageView *logoImage;
     CGFloat headerHeight = (self.view.frame.size.height - (44 * [self.tableView numberOfRowsInSection:0])) / 2;
     
     self.tableView.contentInset = UIEdgeInsetsMake(headerHeight, 0, -headerHeight, 0);
-    if (logoImage) {
+    
+    if (logoImage == NULL) {
+        
         logoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo.png"]];
-        logoImage.frame = CGRectMake(self.view.frame.origin.x, -190, 200, 92.5);
-        [self.view insertSubview:logoImage aboveSubview:self.tableView];
+        logoImage.frame = CGRectMake(self.view.frame.origin.x, -160, 200, 92.5);
+        logoImage.clipsToBounds = YES;
+        logoImage.layer.zPosition = MAXFLOAT;
+        [self.view insertSubview:logoImage aboveSubview:self.view];
         self.originalOriginRoot = logoImage.frame.origin.y;
+        
     }
     else{
-        logoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo.png"]];
-        logoImage.frame = CGRectMake(self.view.frame.origin.x, -190, 200, 92.5);
-        [self.view insertSubview:logoImage aboveSubview:self.tableView];
-        self.originalOriginRoot = logoImage.frame.origin.y;
+        logoImage.frame = CGRectMake(self.view.frame.origin.x, -160, 200, 92.5);
+        logoImage.clipsToBounds = YES;
+        logoImage.layer.zPosition = MAXFLOAT;
+        [self.view insertSubview:logoImage aboveSubview:self.view];
     }
+
 //    if (logoImage) {
 //
 //        [self.view addSubview:logoImage];
@@ -138,9 +144,9 @@ UIImageView *logoImage;
     if (displayed == YES) {
         displayed = NO;
         //logoImage.hidden = YES;
-        [UIView animateWithDuration:0.31f animations:^{
-            logoImage.frame = CGRectMake(-30, -190, 200, 92.5);
-        }];
+//        [UIView animateWithDuration:0.31f animations:^{
+//            logoImage.frame = CGRectMake(-30, -190, 200, 92.5);
+//        }];
     }
     if (displayed == NO) {
         displayed = YES;

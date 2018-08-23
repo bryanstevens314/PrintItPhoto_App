@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ProductCollectionViewCell.h"
 #import "DetailsTVC.h"
-#import "TabController.h"
+
 
 @class ProductCollectionViewController;
 

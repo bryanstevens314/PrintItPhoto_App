@@ -31,6 +31,7 @@
 @property (weak, nonatomic) id<PaymentVCDelegate> delegate;
 
 + (PaymentVC *)sharedPaymentVC;
+-(void)begin;
 - (void)retrieveStripeToken;
 -(void)VerifyConnectionToServer;
 - (void)createBackendChargeWithToken:(STPToken *)token completion:(void (^)(PKPaymentAuthorizationStatus))completion;

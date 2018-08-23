@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 #import <KinveyKit/KinveyKit.h>
 #import <AssetsLibrary/AssetsLibrary.h>
-#import "TabController.h"
+
 #import "UserObject.h"
 #import "ImageCollectionViewController.h"
-#import "TabController.h"
+
 #import "LaunchController.h"
 #import "CropController.h"
 
@@ -40,7 +40,6 @@
 @property ( nonatomic) BOOL displayingCart;
 @property (nonatomic)NSInteger cartPrintTotal;
 @property (retain, nonatomic) KCSAppdataStore *store;
-@property (retain, nonatomic) TabController *TheTabController;
 @property (retain, nonatomic) UserObject *userSettings;
 @property (retain, nonatomic)NSString *taxPercentString;
 @property (retain, nonatomic)NSString *total_TaxCharged;

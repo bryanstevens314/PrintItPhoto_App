@@ -37,27 +37,28 @@
 {
     static ImageCollectionViewController *sharedInstance = nil;
     
+    
     UIStoryboard *storyboard;
-    
-    // detect the height of our screen
-    int height = [UIScreen mainScreen].bounds.size.height;
-    
-    if (height == 480) {
-        storyboard = [UIStoryboard storyboardWithName:@"Main_3.5_inch" bundle:nil];
-        // NSLog(@"Device has a 3.5inch Display.");
-    }
-    if (height == 568) {
-        storyboard = [UIStoryboard storyboardWithName:@"Main_4_inch" bundle:nil];
-        // NSLog(@"Device has a 4inch Display.");
-    }
-    if (height == 667) {
-        storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        // NSLog(@"Device has a 4inch Display.");
-    }
-    if (height == 736) {
-        storyboard = [UIStoryboard storyboardWithName:@"Main_5.5_inch" bundle:nil];
-        // NSLog(@"Device has a 4inch Display.");
-    }
+    storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    //    // detect the height of our screen
+    //    int height = [UIScreen mainScreen].bounds.size.height;
+    //
+    //    if (height == 480) {
+    //        storyboard = [UIStoryboard storyboardWithName:@"Main_3.5_inch" bundle:nil];
+    //        // NSLog(@"Device has a 3.5inch Display.");
+    //    }
+    //    if (height == 568) {
+    //        storyboard = [UIStoryboard storyboardWithName:@"Main_4_inch" bundle:nil];
+    //        // NSLog(@"Device has a 4inch Display.");
+    //    }
+    //    if (height == 667) {
+    //        storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    //        // NSLog(@"Device has a 4inch Display.");
+    //    }
+    //    if (height == 736) {
+    //        storyboard = [UIStoryboard storyboardWithName:@"Main_5.5_inch" bundle:nil];
+    //        // NSLog(@"Device has a 4inch Display.");
+    //    }
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedInstance = (ImageCollectionViewController*)[storyboard instantiateViewControllerWithIdentifier: @"ImageCollectionView"];
@@ -155,10 +156,9 @@ UIAlertController *loadingAlert;
     }
     
     [self.collectionView addGestureRecognizer:_longPressGesture1];
-    
-//    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(SingleTap:)];
+//    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(SingleTap1:)];
 //    singleTap.numberOfTapsRequired = 1;
-//    [self.collectionView  addGestureRecognizer:singleTap];
+//    [self.collectionView  addGestureRecognizer:singleTap1];
     
 //    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTap:)];
 //    doubleTap.numberOfTapsRequired = 2;
@@ -173,16 +173,30 @@ UIAlertController *loadingAlert;
 
 
 UITapGestureRecognizer *singleTap1;
+BOOL revealed1 = NO;
 -(void)toggleReveal{
-    //self.collectionView.userInteractionEnabled = NO;
-    singleTap1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(SingleTap1:)];
-    singleTap1.numberOfTapsRequired = 1;
-    [self.collectionView  addGestureRecognizer:singleTap1];
-    [self.revealViewController revealToggle];
+    if (revealed1 == NO) {
+        revealed1 = YES;
+        //self.collectionView.userInteractionEnabled = NO;
+        singleTap1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(SingleTapFunc:)];
+        singleTap1.numberOfTapsRequired = 1;
+        //singleTap1.cancelsTouchesInView = false;
+        [self.collectionView  addGestureRecognizer:singleTap1];
+        [self.revealViewController revealToggle];
+    }
+    else{
+        revealed1 = NO;
+        [self.revealViewController revealToggle];
+        //self.collectionView.userInteractionEnabled = YES;
+        [self.collectionView removeGestureRecognizer:singleTap1];
+        singleTap1 = nil;
+    }
+
+
 }
 
--(void)SingleTap1:(UITapGestureRecognizer *)gesture{
-    
+-(void)SingleTapFunc:(UITapGestureRecognizer *)gesture{
+    NSLog(@"SingleTapFunc");
     [self.revealViewController revealToggle];
     //self.collectionView.userInteractionEnabled = YES;
     [self.collectionView removeGestureRecognizer:singleTap1];
@@ -203,7 +217,7 @@ UITapGestureRecognizer *singleTap1;
 -(void)doubleTap:(UITapGestureRecognizer *)gesture{
     CGPoint location = [gesture locationInView:self.collectionView];
     NSIndexPath *tappedIndexPath = [self.collectionView indexPathForItemAtPoint:location];
-    ImageCollectionViewCell* cell = [self.collectionView  cellForItemAtIndexPath:tappedIndexPath];
+    ImageCollectionViewCell *cell = [self.collectionView  cellForItemAtIndexPath:tappedIndexPath];
     BOOL stop = NO;
     
     if (cell.cellIsHighlighted == YES) {
@@ -551,6 +565,14 @@ NSInteger numberOfCells = 0;
     return numberOfCells;
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGFloat width = [UIScreen mainScreen].bounds.size.width;
+    CGFloat size = width / 3;
+    return CGSizeMake(size, size);
+}
+
+
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"Creating cell");
     static NSString *identifier = @"Cell";
@@ -664,7 +686,7 @@ NSIndexPath *selectedIndex;
     currentTempURL = cell.imgURL;
     tempThumbImg = cell.imageViewCell.image;
     [self performSegueWithIdentifier:@"addCartItem" sender:self];
-   
+//
 }
 
 
@@ -859,6 +881,7 @@ NSIndexPath *iPath;
         self.navigationItem.backBarButtonItem = backButton;
 
         if ([self sharedAppDelegate].cartIsMainController == YES) {
+            NSLog(@"cartIsMainController");
             DetailsTVC *details = segue.destinationViewController;
             details.editingCartItem = YES;
             //NSArray *array5 = @[currentItem,indexPath,[NSString stringWithFormat:@"%ld",(long)selectedRow],@"YES"];
@@ -866,6 +889,7 @@ NSIndexPath *iPath;
             details.selectedImageIndex = [imageSelectionData1 objectAtIndex:1];
         }
         else{
+            NSLog(@"else");
             DetailsTVC *details = segue.destinationViewController;
             details.delegate = self;
             details.selectedImageIndex = iPath;

@@ -26,27 +26,28 @@
 {
     static ShippingInfoVC *sharedInstance = nil;
     
+    
     UIStoryboard *storyboard;
-    
-    // detect the height of our screen
-    int height = [UIScreen mainScreen].bounds.size.height;
-    
-    if (height == 480) {
-        storyboard = [UIStoryboard storyboardWithName:@"Main_3.5_inch" bundle:nil];
-        // NSLog(@"Device has a 3.5inch Display.");
-    }
-    if (height == 568) {
-        storyboard = [UIStoryboard storyboardWithName:@"Main_4_inch" bundle:nil];
-        // NSLog(@"Device has a 4inch Display.");
-    }
-    if (height == 667) {
-        storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        // NSLog(@"Device has a 4inch Display.");
-    }
-    if (height == 736) {
-        storyboard = [UIStoryboard storyboardWithName:@"Main_5.5_inch" bundle:nil];
-        // NSLog(@"Device has a 4inch Display.");
-    }
+    storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    //    // detect the height of our screen
+    //    int height = [UIScreen mainScreen].bounds.size.height;
+    //
+    //    if (height == 480) {
+    //        storyboard = [UIStoryboard storyboardWithName:@"Main_3.5_inch" bundle:nil];
+    //        // NSLog(@"Device has a 3.5inch Display.");
+    //    }
+    //    if (height == 568) {
+    //        storyboard = [UIStoryboard storyboardWithName:@"Main_4_inch" bundle:nil];
+    //        // NSLog(@"Device has a 4inch Display.");
+    //    }
+    //    if (height == 667) {
+    //        storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    //        // NSLog(@"Device has a 4inch Display.");
+    //    }
+    //    if (height == 736) {
+    //        storyboard = [UIStoryboard storyboardWithName:@"Main_5.5_inch" bundle:nil];
+    //        // NSLog(@"Device has a 4inch Display.");
+    //    }
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedInstance = (ShippingInfoVC*)[storyboard instantiateViewControllerWithIdentifier: @"ShippingInfo"];
@@ -226,33 +227,33 @@ UIAlertController *calculatingTax1;
         
         [self sharedAppDelegate].userSettings.shipping.country = shippingTable.country_Textfield.text;
 
-        
-            calculatingTax1 = [UIAlertController alertControllerWithTitle:@""
-                                                                  message:@"Calculating Tax"
-                                                           preferredStyle:UIAlertControllerStyleAlert]; // 1
-            
-            UIViewController *customVC     = [[UIViewController alloc] init];
-            [calculatingTax1.view setFrame:CGRectMake(0, 300, 320, 275)];
-            
-            UIActivityIndicatorView* spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-            [spinner startAnimating];
-            [customVC.view addSubview:spinner];
-            [spinner setCenter:CGPointMake(100, 27)];
-            
-            [customVC.view addConstraint:[NSLayoutConstraint
-                                          constraintWithItem: spinner
-                                          attribute:NSLayoutAttributeCenterX
-                                          relatedBy:NSLayoutRelationEqual
-                                          toItem:customVC.view
-                                          attribute:NSLayoutAttributeCenterX
-                                          multiplier:1.0f
-                                          constant:0.0f]];
-            
-            
-            [calculatingTax1 setValue:customVC forKey:@"contentViewController"];
-            
-            [self presentViewController:calculatingTax1 animated:YES completion:nil];
-            NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(waiting) userInfo:nil repeats:NO];
+        [self.delegate FinishedEnteringShippingInformationWithTaxPercent:0.075];
+//            calculatingTax1 = [UIAlertController alertControllerWithTitle:@""
+//                                                                  message:@"Calculating Tax"
+//                                                           preferredStyle:UIAlertControllerStyleAlert]; // 1
+//            
+//            UIViewController *customVC     = [[UIViewController alloc] init];
+//            [calculatingTax1.view setFrame:CGRectMake(0, 300, 320, 275)];
+//            
+//            UIActivityIndicatorView* spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+//            [spinner startAnimating];
+//            [customVC.view addSubview:spinner];
+//            [spinner setCenter:CGPointMake(100, 27)];
+//            
+//            [customVC.view addConstraint:[NSLayoutConstraint
+//                                          constraintWithItem: spinner
+//                                          attribute:NSLayoutAttributeCenterX
+//                                          relatedBy:NSLayoutRelationEqual
+//                                          toItem:customVC.view
+//                                          attribute:NSLayoutAttributeCenterX
+//                                          multiplier:1.0f
+//                                          constant:0.0f]];
+//            
+//            
+//            [calculatingTax1 setValue:customVC forKey:@"contentViewController"];
+//            
+//            [self presentViewController:calculatingTax1 animated:YES completion:nil];
+//            NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(waiting) userInfo:nil repeats:NO];
             
             
         }

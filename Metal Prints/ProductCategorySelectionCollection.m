@@ -31,33 +31,37 @@ static NSString * const reuseIdentifier = @"Cell";
     return (AppDelegate *)[UIApplication sharedApplication].delegate;
 }
 
-
+-(void)dealloc
+{
+    NSLog(@"viewcontroller is being deallocated");
+}
 
 + (ProductCategorySelectionCollection *)sharedProductCategorySelectionCollection
 {
     static ProductCategorySelectionCollection *sharedInstance = nil;
     
+    
     UIStoryboard *storyboard;
-    
-    // detect the height of our screen
-    int height = [UIScreen mainScreen].bounds.size.height;
-    
-    if (height == 480) {
-        storyboard = [UIStoryboard storyboardWithName:@"Main_3.5_inch" bundle:nil];
-        // NSLog(@"Device has a 3.5inch Display.");
-    }
-    if (height == 568) {
-        storyboard = [UIStoryboard storyboardWithName:@"Main_4_inch" bundle:nil];
-        // NSLog(@"Device has a 4inch Display.");
-    }
-    if (height == 667) {
-        storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        // NSLog(@"Device has a 4inch Display.");
-    }
-    if (height == 736) {
-        storyboard = [UIStoryboard storyboardWithName:@"Main_5.5_inch" bundle:nil];
-        // NSLog(@"Device has a 4inch Display.");
-    }
+    storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    //    // detect the height of our screen
+    //    int height = [UIScreen mainScreen].bounds.size.height;
+    //
+    //    if (height == 480) {
+    //        storyboard = [UIStoryboard storyboardWithName:@"Main_3.5_inch" bundle:nil];
+    //        // NSLog(@"Device has a 3.5inch Display.");
+    //    }
+    //    if (height == 568) {
+    //        storyboard = [UIStoryboard storyboardWithName:@"Main_4_inch" bundle:nil];
+    //        // NSLog(@"Device has a 4inch Display.");
+    //    }
+    //    if (height == 667) {
+    //        storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    //        // NSLog(@"Device has a 4inch Display.");
+    //    }
+    //    if (height == 736) {
+    //        storyboard = [UIStoryboard storyboardWithName:@"Main_5.5_inch" bundle:nil];
+    //        // NSLog(@"Device has a 4inch Display.");
+    //    }
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedInstance = (ProductCategorySelectionCollection*)[storyboard instantiateViewControllerWithIdentifier: @"productCategoryCollection"];
@@ -245,36 +249,34 @@ NSInteger selectedSection1;
 
 
 UITapGestureRecognizer *singleTap;
+BOOL revealed = NO;
 -(void)toggleReveal1{
-    //collView.collectionView.userInteractionEnabled = NO;
-    singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(SingleTap:)];
-    singleTap.numberOfTapsRequired = 1;
-    if ([self sharedAppDelegate].displayingCart == NO) {
-        
-        [self.collectionView addGestureRecognizer:singleTap];
-        //[self.proceedButton addGestureRecognizer:singleTap];
-    }
-    else{
-        
-        [self.cartVC.tableView addGestureRecognizer:singleTap];
-        [self.proceedButton addGestureRecognizer:singleTap];
-    }
     
-    [self.revealViewController revealToggle];
+    //if (revealed == NO) {
+        revealed = YES;
+        //collView.collectionView.userInteractionEnabled = NO;
+        singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(SingleTap:)];
+        singleTap.numberOfTapsRequired = 1;
+        //singleTap.cancelsTouchesInView = true;
+        [self.collectionView  addGestureRecognizer:singleTap];
+        [self.revealViewController revealToggle];
+//    }
+//    else{
+//        revealed = NO;
+//        [self.revealViewController revealToggle];
+//        //self.collectionView.userInteractionEnabled = YES;
+//        [self.collectionView removeGestureRecognizer:singleTap];
+//        singleTap = nil;
+//    }
+
 }
 
 -(void)SingleTap:(UITapGestureRecognizer *)gesture{
     
+    NSLog(@"SingleTapFunc");
     [self.revealViewController revealToggle];
-    if ([self sharedAppDelegate].displayingCart == NO) {
-        [self.collectionView removeGestureRecognizer:singleTap];
-        [self.proceedButton removeGestureRecognizer:singleTap];
-    }
-    else{
-        [self.cartVC.view removeGestureRecognizer:singleTap];
-        [self.proceedButton removeGestureRecognizer:singleTap];
-    }
-    
+    //self.collectionView.userInteractionEnabled = YES;
+    [self.collectionView removeGestureRecognizer:singleTap];
     singleTap = nil;
 }
 
@@ -305,7 +307,7 @@ UITapGestureRecognizer *singleTap;
     NSLog(@"Finished");
     
     [[LaunchController sharedLaunchController].view removeFromSuperview];
-    
+
 }
 
 
@@ -314,10 +316,10 @@ UITapGestureRecognizer *singleTap;
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"ProductContainer"]) {
-        ProductsTVC *tvc = segue.destinationViewController;
-        tvc.delegate = self;
-    }
+//    if ([segue.identifier isEqualToString:@"ProductContainer"]) {
+//        ProductsTVC *tvc = segue.destinationViewController;
+//        tvc.delegate = self;
+//    }
 
     if ([segue.identifier isEqualToString:@"showProducts"]) {
         ProductCollectionViewController *tvc = segue.destinationViewController;
@@ -418,7 +420,7 @@ UITapGestureRecognizer *singleTap;
     
     
     
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://final-project-order-viewer-stevens-apps.c9users.io/recieve_data.php"]];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://print-it-photo-stevens-apps.c9users.io/recieve_data.php"]];
     
     NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
                           @"Bryan Stevens",@"name",

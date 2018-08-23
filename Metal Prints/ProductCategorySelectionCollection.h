@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ProductCategoryCell.h"
-#import "ProductsTVC.h"
+
 #import "ProductCollectionViewController.h"
 #import "DetailsTVC.h"
 #import "ImageCollectionViewController.h"
@@ -24,7 +24,7 @@
 
 @end
 
-@interface ProductCategorySelectionCollection : UICollectionViewController <UIGestureRecognizerDelegate,ProductCollectionDelegate,ShoppingCartTVCDelegate,ProductDelegate,DetailsTVCDelegate>{
+@interface ProductCategorySelectionCollection : UICollectionViewController <UIGestureRecognizerDelegate,ProductCollectionDelegate,ShoppingCartTVCDelegate,DetailsTVCDelegate>{
     BOOL displayingProducts;
     BOOL finished;
 }
